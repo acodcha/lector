@@ -1,0 +1,4 @@
+.vscode/
+bazel-*
+coverage/*
+MODULE.bazel.lock
