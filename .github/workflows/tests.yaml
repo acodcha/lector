@@ -28,30 +28,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@main
-      - name: Install the FindUtils and Clang-Format packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes findutils clang-format
+        uses: actions/checkout@v4
       - name: Print the version of the FindUtils package
         run: find --version
       - name: Print the version of the Clang-Format package
         run: clang-format --version
       - name: Check that all source code files are correctly formatted
         run: |
-          find . -iname *.hpp -or -iname *.cpp | xargs clang-format --style=file -i
+          find . -iname "*.hpp" -or -iname "*.cpp" | xargs clang-format --style=file -i
           CHANGES=$(git diff --name-only)
           if ! [ -z "$CHANGES" ]; then
             echo "Some source code files are incorrectly formatted. To format all source code files, run:"
-            echo "    find . -iname *.hpp -or -iname *.cpp | xargs clang-format --style=file -i"
-            exit 1;
+            echo "    find . -iname '*.hpp' -or -iname '*.cpp' | xargs clang-format --style=file -i"
+            exit 1
           fi
   build_and_test:
     name: Build and test Bazel targets
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v4
       - name: Setup Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
         with:
@@ -60,7 +56,5 @@ jobs:
           repository-cache: true
       - name: Print the version of the Bazel package
         run: bazel --version
-      - name: Build all Bazel targets
-        run: bazel build //...
       - name: Run all Bazel tests
         run: bazel test //...
