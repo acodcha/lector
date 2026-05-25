@@ -20,8 +20,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
-# Standard set of C++ compiler options used in the Args library's C++ targets.
-ARGS_CPP_COMPILER_OPTIONS = [
+CPP_COMPILER_OPTIONS = [
     "-O3",
     "-Wall",
     "-Wextra",
@@ -34,7 +33,7 @@ cc_library(
     name = "args",
     srcs = ["args.cpp"],
     hdrs = ["args.hpp"],
-    copts = ARGS_CPP_COMPILER_OPTIONS,
+    copts = CPP_COMPILER_OPTIONS,
     visibility = ["//visibility:public"],
 )
 
@@ -42,7 +41,7 @@ cc_test(
     name = "args_test",
     size = "small",
     srcs = ["args.test.cpp"],
-    copts = ARGS_CPP_COMPILER_OPTIONS,
+    copts = CPP_COMPILER_OPTIONS,
     visibility = ["//visibility:public"],
     deps = [
         "//:args",
