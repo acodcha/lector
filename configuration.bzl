@@ -20,6 +20,10 @@
 Defines the Bazel macros used throughout the Args library.
 """
 
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+
 # Standard set of C++ compiler options used in the Args library's C++ targets.
 ARGS_CPP_COMPILER_OPTIONS = [
     "-O3",
@@ -40,7 +44,7 @@ def args_cpp_binary(name, srcs, deps = [], **kwargs):
       deps: Optional. List of dependencies.
       **kwargs: Additional arguments passed to the native cc_binary rule.
     """
-    native.cc_binary(
+    cc_binary(
         name = name,
         srcs = srcs,
         deps = deps,
@@ -61,7 +65,7 @@ def args_cpp_library(name, hdrs, srcs, visibility, deps = [], **kwargs):
       deps: Optional. List of dependencies.
       **kwargs: Additional arguments passed to the native cc_library rule.
     """
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = hdrs,
         srcs = srcs,
@@ -83,7 +87,7 @@ def args_cpp_test(name, size, srcs, data = [], deps = [], **kwargs):
       deps: Optional. List of dependencies.
       **kwargs: Additional arguments passed to the native cc_test rule.
     """
-    native.cc_test(
+    cc_test(
         name = name,
         data = data,
         size = size,
