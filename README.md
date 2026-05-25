@@ -1,5 +1,7 @@
 # Args
 
+[![tests](https://github.com/acodcha/args/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/acodcha/args/actions/workflows/tests.yaml)
+
 Args is a C++ library for parsing command line arguments. Args is hosted at <https://github.com/acodcha/args>.
 
 - [**Requirements**](#requirements)
