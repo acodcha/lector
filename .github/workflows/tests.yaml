@@ -27,7 +27,8 @@ jobs:
     name: Check C++ source code formatting with Clang-Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout the repository
+        uses: actions/checkout@main
       - name: Install the FindUtils and Clang-Format packages
         run: |
           sudo apt-get update
@@ -49,23 +50,14 @@ jobs:
     name: Build and test Bazel targets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - name: Install the Curl, Git, and C++ packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes curl git g++
-      - name: Print the version of the Curl package
-        run: curl --version
-      - name: Print the version of the Git package
-        run: git --version
-      - name: Print the version of the C++ package
-        run: c++ --version
-      - name: Install the Bazel package
-        run: |
-          curl https://bazel.build/bazel-release.pub.gpg | sudo apt-key add -
-          echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
-          sudo apt-get update
-          sudo apt-get install --yes bazel
+      - name: Checkout the repository
+        uses: actions/checkout@main
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@v0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
       - name: Print the version of the Bazel package
         run: bazel --version
       - name: Build all Bazel targets
