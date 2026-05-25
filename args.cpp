@@ -17,13 +17,3 @@
 //     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "args.hpp"
-
-#include <string>
-
-namespace args {
-
-std::string hello_world() {
-  return "Hello, world!";
-}
-
-}  // namespace args
