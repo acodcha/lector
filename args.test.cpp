@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -29,6 +30,7 @@ namespace {
 
 namespace test {
 
+/// @brief Enumeration type used for testing the parsing of enumeration command line arguments.
 enum class Color : int8_t {
   Red,
   Green,
@@ -73,18 +75,19 @@ namespace {
 
 namespace test {
 
+/// @brief Labels of the command line arguments used for testing.
 enum class Label : int8_t {
-  Name,
+  Title,
   OutputDirectory,
   Color,
   Iterations,
   Tolerance,
-  Help
+  Help,
 };
 
 }  // namespace test
 
-TEST(Args, ArgumentConstructorDefaultBoolean) {
+TEST(Args, ArgumentConstructorBooleanBasic) {
   const ::args::Argument<::test::Label::Help, bool> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   EXPECT_TRUE(argument.keys().empty());
@@ -95,7 +98,23 @@ TEST(Args, ArgumentConstructorDefaultBoolean) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorDefaultEnumeration) {
+TEST(Args, ArgumentConstructorBooleanNoDefaultValue) {
+  const ::args::Argument<::test::Label::Help, bool> argument{
+    {"-h", "--help"},
+    "Print usage information.",
+    ::args::Importance::Optional,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Help);
+  const std::vector<std::string> expected_keys{"-h", "--help"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Print usage information.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorEnumerationBasic) {
   const ::args::Argument<::test::Label::Color, ::test::Color> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Color);
   EXPECT_TRUE(argument.keys().empty());
@@ -106,7 +125,40 @@ TEST(Args, ArgumentConstructorDefaultEnumeration) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorDefaultFilesystemPath) {
+TEST(Args, ArgumentConstructorEnumerationNoDefaultValue) {
+  const ::args::Argument<::test::Label::Color, ::test::Color> argument{
+    {"-c", "--color"},
+    "Main output color.",
+    ::args::Importance::Required,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Color);
+  const std::vector<std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorEnumerationWithDefaultValue) {
+  const ::args::Argument<::test::Label::Color, ::test::Color> argument{
+    {"-c", "--color"},
+    "Main output color.",
+    ::args::Importance::Optional,
+    ::test::Color::Red,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Color);
+  const std::vector<std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::test::Color::Red);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
+}
+
+TEST(Args, ArgumentConstructorFilesystemPathBasic) {
   const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument;
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
   EXPECT_TRUE(argument.keys().empty());
@@ -117,7 +169,40 @@ TEST(Args, ArgumentConstructorDefaultFilesystemPath) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorDefaultNumberDouble) {
+TEST(Args, ArgumentConstructorFilesystemPathNoDefaultValue) {
+  const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
+    {"-o", "--output"},
+    "Output directory.",
+    ::args::Importance::Required,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
+  const std::vector<std::string> expected_keys{"-o", "--output"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Output directory.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorFilesystemPathWithDefaultValue) {
+  const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
+    {"-o", "--output"},
+    "Output directory.",
+    ::args::Importance::Optional,
+    ::std::filesystem::path("/some/path"),
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
+  const std::vector<std::string> expected_keys{"-o", "--output"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Output directory.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::std::filesystem::path("/some/path"));
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path("/some/path"));
+}
+
+TEST(Args, ArgumentConstructorNumberDoubleBasic) {
   const ::args::Argument<::test::Label::Tolerance, double> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -128,8 +213,41 @@ TEST(Args, ArgumentConstructorDefaultNumberDouble) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorDefaultNumberInteger) {
-  const ::args::Argument<::test::Label::Iterations, int64_t> argument;
+TEST(Args, ArgumentConstructorNumberDoubleNoDefaultValue) {
+  const ::args::Argument<::test::Label::Tolerance, double> argument{
+    {"-t", "--tolerance"},
+    "Tolerance value.",
+    ::args::Importance::Required,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
+  const std::vector<std::string> expected_keys{"-t", "--tolerance"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Tolerance value.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorNumberDoubleWithDefaultValue) {
+  const ::args::Argument<::test::Label::Tolerance, double> argument{
+    {"-t", "--tolerance"},
+    "Tolerance value.",
+    ::args::Importance::Optional,
+    1.0E-3,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
+  const std::vector<std::string> expected_keys{"-t", "--tolerance"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Tolerance value.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 1.0E-3);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), 1.0E-3);
+}
+
+TEST(Args, ArgumentConstructorNumberIntegerBasic) {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
@@ -139,15 +257,260 @@ TEST(Args, ArgumentConstructorDefaultNumberInteger) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorDefaultString) {
-  const ::args::Argument<::test::Label::Name, ::std::string> argument;
-  EXPECT_EQ(argument.label(), ::test::Label::Name);
+TEST(Args, ArgumentConstructorNumberIntegerNoDefaultValue) {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Required,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorNumberIntegerWithDefaultValue) {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+}
+
+TEST(Args, ArgumentConstructorStringBasic) {
+  const ::args::Argument<::test::Label::Title, ::std::string> argument;
+  EXPECT_EQ(argument.label(), ::test::Label::Title);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorStringNoDefaultValue) {
+  const ::args::Argument<::test::Label::Title, ::std::string> argument{
+    {"-t", "--title"},
+    "Title of the application.",
+    ::args::Importance::Required,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Title);
+  const std::vector<std::string> expected_keys{"-t", "--title"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Title of the application.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+}
+
+TEST(Args, ArgumentConstructorStringWithDefaultValue) {
+  const ::args::Argument<::test::Label::Title, ::std::string> argument{
+    {"-t", "--title"},
+    "Title of the report.",
+    ::args::Importance::Optional,
+    "My Report",
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Title);
+  const std::vector<std::string> expected_keys{"-t", "--title"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Title of the report.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), "My Report");
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
+}
+
+TEST(Args, ArgumentCopyConstructor) {
+  const ::args::Argument<::test::Label::Iterations, int32_t> first{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(first.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  const ::args::Argument<::test::Label::Iterations, int32_t> second{first};
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), 100);
+}
+
+TEST(Args, ArgumentCopyAssignmentOperator) {
+  const ::args::Argument<::test::Label::Iterations, int32_t> first{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(first.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  ::args::Argument<::test::Label::Iterations, int32_t> second;
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_TRUE(second.keys().empty());
+  EXPECT_TRUE(second.description().empty());
+  EXPECT_EQ(second.importance(), ::args::Importance::Required);
+  EXPECT_EQ(second.default_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), ::std::nullopt);
+  second = first;
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), 100);
+}
+
+TEST(Args, ArgumentMoveConstructor) {
+  ::args::Argument<::test::Label::Iterations, int32_t> first{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(first.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  const ::args::Argument<::test::Label::Iterations, int32_t> second{std::move(first)};
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), 100);
+}
+
+TEST(Args, ArgumentMoveAssignmentOperator) {
+  ::args::Argument<::test::Label::Iterations, int32_t> first{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(first.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  ::args::Argument<::test::Label::Iterations, int32_t> second;
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_TRUE(second.keys().empty());
+  EXPECT_TRUE(second.description().empty());
+  EXPECT_EQ(second.importance(), ::args::Importance::Required);
+  EXPECT_EQ(second.default_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), ::std::nullopt);
+  second = std::move(first);
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), 100);
+}
+
+TEST(Args, ArgumentSetParsedValue) {
+  ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+    100,
+  };
+  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  argument.set(200);
+  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.parsed_value(), 200);
+  EXPECT_EQ(argument.parsed_or_default_value(), 200);
+}
+
+/// @brief Helper function that creates an invalid args::Argument with an optional non-boolean type
+/// and no default value.
+void create_invalid_argument_with_missing_default_value() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Optional,
+  };
+}
+
+/// @brief Helper function that creates an invalid args::Argument with a required non-boolean type
+/// and a default value.
+void create_invalid_argument_with_superfluous_default_value() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    ::args::Importance::Required,
+    100,
+  };
+}
+
+/// @brief Helper function that creates an invalid args::Argument with a boolean type and a default
+/// value.
+void create_invalid_boolean_argument_with_default_value() {
+  const ::args::Argument<::test::Label::Help, bool> argument{
+    {"-h", "--help"},
+    "Print usage information.",
+    ::args::Importance::Required,
+    true,
+  };
+}
+
+TEST(Args, ArgumentConstructorInvalid) {
+  EXPECT_ANY_THROW(create_invalid_argument_with_missing_default_value());
+  EXPECT_ANY_THROW(create_invalid_argument_with_superfluous_default_value());
+  EXPECT_ANY_THROW(create_invalid_boolean_argument_with_default_value());
 }
 
 TEST(Args, ParseBoolean) {

@@ -404,11 +404,195 @@ template <typename Type>
   }
 }
 
-/// @brief Forward declaration of the args::Argument class.
-/// @tparam Label The label of the command line argument.
+/// @brief A command line argument, including its label, keys, description, importance, default
+/// value, and parsed value.
+/// @tparam LabelValue Value of this command line argument's label. The label is used to uniquely
+/// identify the command line argument.
 /// @tparam Type The type of the command line argument.
-template <auto Label, typename Type = bool>
-class Argument;
+template <auto LabelValue, typename Type = bool>
+class Argument {
+public:
+  using ValueType = Type;
+
+  /// @brief Default constructor. Initializes the command line argument with no keys, an empty
+  /// description, required importance, and no default value.
+  Argument() noexcept {};
+
+  /// @brief Constructor for required command line arguments and optional boolean command line
+  /// arguments. No default value is needed.
+  /// @param[in] keys The keys that can be used to specify the command line argument.
+  /// @param[in] description The description of the command line argument. Used when printing usage
+  /// information. Set at construction.
+  /// @param[in] importance The importance of the command line argument. Required arguments must be
+  /// provided by the user, while optional arguments may or may not be provided by the user.
+  /// @throws std::invalid_argument if any of the parameters are invalid.
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+           const args::Importance importance)
+    : keys_{keys}, description_{description}, importance_{importance} {
+    validate_no_default_value();
+    validate_keys();
+    validate_description();
+    validate_importance();
+  }
+
+  /// @brief Constructor for optional non-boolean command line arguments. A default value must be
+  /// provided.
+  /// @param[in] keys The keys that can be used to specify the command line argument.
+  /// @param[in] description The description of the command line argument. Used when printing usage
+  /// information. Set at construction.
+  /// @param[in] importance The importance of the command line argument. Required arguments must be
+  /// provided by the user, while optional arguments may or may not be provided by the user.
+  /// @param[in] default_value The default value of the command line argument.
+  /// @throws std::invalid_argument if any of the parameters are invalid.
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+           const args::Importance importance, const Type& default_value)
+    : keys_{keys}, description_{description}, importance_{importance},
+      default_value_{default_value} {
+    validate_keys();
+    validate_description();
+    validate_importance();
+    validate_default_value();
+  }
+
+  /// @brief Destructor. Destroys this command line argument.
+  ~Argument() noexcept = default;
+
+  /// @brief Copy constructor. Constructs this command line argument by copying another one.
+  Argument(const Argument&) = default;
+
+  /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
+  /// @return This command line argument after the assignment.
+  Argument& operator=(const Argument&) = default;
+
+  /// @brief Move constructor. Constructs this command line argument by moving another one.
+  Argument(Argument&&) noexcept = default;
+
+  /// @brief Move assignment operator. Assigns this command line argument by moving another one.
+  /// @return This command line argument after the assignment.
+  Argument& operator=(Argument&&) noexcept = default;
+
+  /// @brief Label of this command line argument. Used to uniquely identify this command line
+  /// argument. Set at construction.
+  /// @return The label of this command line argument.
+  [[nodiscard]] static constexpr auto label() noexcept {
+    return LabelValue;
+  }
+
+  /// @brief Keys that can be used to specify this command line argument. Set at construction.
+  /// @return The keys that can be used to specify this command line argument.
+  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
+    return keys_;
+  }
+
+  /// @brief Description of this command line argument. Used when printing usage information. Set at
+  /// construction.
+  /// @return The description of this command line argument.
+  [[nodiscard]] std::string_view description() const noexcept {
+    return description_;
+  }
+
+  /// @brief Importance of this command line argument. Required arguments must be provided by the
+  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  /// @return The importance of this command line argument.
+  [[nodiscard]] args::Importance importance() const noexcept {
+    return importance_;
+  }
+
+  /// @brief Default value of this command line argument. Only relevant for optional non-boolean
+  /// arguments. Set at construction.
+  /// @return The default value of this command line argument.
+  [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
+    return default_value_;
+  }
+
+  /// @brief Parsed value of this command line argument. Set when this command line argument is
+  /// parsed.
+  /// @return The parsed value of this command line argument.
+  [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
+    return parsed_value_;
+  }
+
+  /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
+  /// returns the default value.
+  /// @return The value of this command line argument.
+  [[nodiscard]] const std::optional<Type>& parsed_or_default_value() const noexcept {
+    if (parsed_value_) {
+      return parsed_value_;
+    }
+    return default_value_;
+  }
+
+  /// @brief Sets the parsed value of this command line argument.
+  /// @param[in] value The parsed value to set.
+  void set(const Type& value) {
+    parsed_value_ = value;
+  }
+
+private:
+  /// @brief validates that an optional non-boolean argument does not have a default value. Called
+  /// by the constructor that does not specify a default value.
+  void validate_no_default_value() const {
+    if (!std::is_same_v<Type, bool> && importance_ == args::Importance::Optional) {
+      throw std::invalid_argument("An optional non-boolean argument must have a default value.");
+    }
+  }
+
+  /// @brief Validates the keys of this command line argument. Called by both constructors.
+  void validate_keys() const {
+    if (keys_.empty()) {
+      throw std::invalid_argument("An argument must have at least one key.");
+    }
+    for (const std::string& key : keys_) {
+      if (key.empty()) {
+        throw std::invalid_argument("An argument cannot have an empty key.");
+      }
+    }
+  };
+
+  /// @brief Validates the description of this command line argument. Called by both constructors.
+  void validate_description() const {
+    if (description_.empty()) {
+      throw std::invalid_argument("An argument cannot have an empty description.");
+    }
+  };
+
+  /// @brief Validates the importance of this command line argument. Called by both constructors.
+  void validate_importance() const {
+    if (importance_ != args::Importance::Optional && importance_ != args::Importance::Required) {
+      throw std::invalid_argument("Invalid importance.");
+    }
+  }
+
+  /// @brief Validates the default value of this command line argument. Called by the constructor
+  /// that specifies a default value.
+  void validate_default_value() const {
+    if (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument("A boolean argument cannot have a default value.");
+    }
+    if (importance_ == args::Importance::Required) {
+      throw std::invalid_argument("A required argument cannot have a default value.");
+    }
+  }
+
+  /// @brief Keys that can be used to specify this command line argument. Set at construction.
+  std::vector<std::string> keys_;
+
+  /// @brief Description of this command line argument. Used when printing usage information. Set at
+  /// construction.
+  std::string description_;
+
+  /// @brief Importance of this command line argument. Required arguments must be provided by the
+  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  args::Importance importance_{args::Importance::Required};
+
+  /// @brief Default value of this command line argument. Only relevant for optional non-boolean
+  /// arguments. Set at construction.
+  std::optional<Type> default_value_;
+
+  /// @brief Parsed value of this command line argument. Set when this command line argument is
+  /// parsed.
+  std::optional<Type> parsed_value_;
+};
 
 /// @brief Type trait used to extract the exact args::Argument<Label, Type> from a variadic pack of
 /// args::Arguments, using only the Label.
@@ -425,98 +609,6 @@ struct FindArgumentByLabel<Label, args::Argument<Label, Type>, Rest...> {
 template <auto Label, auto OtherLabel, typename OtherType, typename... Rest>
 struct FindArgumentByLabel<Label, args::Argument<OtherLabel, OtherType>, Rest...> {
   using type = typename args::FindArgumentByLabel<Label, Rest...>::type;
-};
-
-template <auto LabelValue, typename Type>
-class Argument {
-public:
-  using ValueType = Type;
-
-  /// @brief Default constructor. Initializes the command line argument with no keys, an empty
-  /// description, required importance, and no default value.
-  Argument() noexcept {};
-
-  /// @brief Constructor for required command line arguments and optional boolean command line
-  /// arguments. No default value is needed.
-  /// @param[in] keys The keys that can be used to specify the command line argument. For example,
-  /// the keys "-h" and "--help" can be used to specify a command line argument that shows a help
-  /// message.
-  /// @param[in] description A description of the command line argument, used for generating help
-  /// messages.
-  /// @param[in] importance The importance of the command line argument.
-  /// @throws std::invalid_argument if the importance is not valid for the type of command line
-  /// argument.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
-           const args::Importance importance)
-    : keys_{keys}, description_{description}, importance_{importance} {
-    if (!std::is_same_v<Type, bool> && importance != args::Importance::Required) {
-      throw std::invalid_argument("An optional non-boolean argument must have a default value.");
-    }
-  }
-
-  // Constructor for optional non-boolean command line arguments. A default value must be provided.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
-           const args::Importance importance, const Type& default_value)
-    : keys_{keys}, description_{description}, importance_{importance},
-      default_value_{default_value} {
-    if (std::is_same_v<Type, bool>) {
-      throw std::invalid_argument("A boolean argument cannot have a default value.");
-    } else if (importance != args::Importance::Optional) {
-      throw std::invalid_argument("A required argument cannot have a default value.");
-    }
-  }
-
-  ~Argument() noexcept = default;
-
-  Argument(const Argument&) = default;
-
-  Argument& operator=(const Argument&) = default;
-
-  Argument(Argument&&) noexcept = default;
-
-  Argument& operator=(Argument&&) noexcept = default;
-
-  [[nodiscard]] static constexpr auto label() noexcept {
-    return LabelValue;
-  }
-
-  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
-    return keys_;
-  }
-
-  [[nodiscard]] std::string_view description() const noexcept {
-    return description_;
-  }
-
-  [[nodiscard]] args::Importance importance() const noexcept {
-    return importance_;
-  }
-
-  [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
-    return default_value_;
-  }
-
-  [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
-    return parsed_value_;
-  }
-
-  [[nodiscard]] const std::optional<Type>& parsed_or_default_value() const {
-    if (parsed_value_) {
-      return parsed_value_;
-    }
-    return default_value_;
-  }
-
-private:
-  std::vector<std::string> keys_;
-
-  std::string description_;
-
-  args::Importance importance_{args::Importance::Required};
-
-  std::optional<Type> default_value_;
-
-  std::optional<Type> parsed_value_;
 };
 
 }  // namespace args
