@@ -22,11 +22,14 @@
 #include <array>
 #include <cstdint>
 #include <filesystem>
+#include <initializer_list>
 #include <optional>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <vector>
 
 namespace args {
 
@@ -422,6 +425,98 @@ struct FindArgumentByLabel<Label, args::Argument<Label, Type>, Rest...> {
 template <auto Label, auto OtherLabel, typename OtherType, typename... Rest>
 struct FindArgumentByLabel<Label, args::Argument<OtherLabel, OtherType>, Rest...> {
   using type = typename args::FindArgumentByLabel<Label, Rest...>::type;
+};
+
+template <auto LabelValue, typename Type>
+class Argument {
+public:
+  using ValueType = Type;
+
+  /// @brief Default constructor. Initializes the command line argument with no keys, an empty
+  /// description, required importance, and no default value.
+  Argument() noexcept {};
+
+  /// @brief Constructor for required command line arguments and optional boolean command line
+  /// arguments. No default value is needed.
+  /// @param[in] keys The keys that can be used to specify the command line argument. For example,
+  /// the keys "-h" and "--help" can be used to specify a command line argument that shows a help
+  /// message.
+  /// @param[in] description A description of the command line argument, used for generating help
+  /// messages.
+  /// @param[in] importance The importance of the command line argument.
+  /// @throws std::invalid_argument if the importance is not valid for the type of command line
+  /// argument.
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+           const args::Importance importance)
+    : keys_{keys}, description_{description}, importance_{importance} {
+    if (!std::is_same_v<Type, bool> && importance != args::Importance::Required) {
+      throw std::invalid_argument("An optional non-boolean argument must have a default value.");
+    }
+  }
+
+  // Constructor for optional non-boolean command line arguments. A default value must be provided.
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+           const args::Importance importance, const Type& default_value)
+    : keys_{keys}, description_{description}, importance_{importance},
+      default_value_{default_value} {
+    if (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument("A boolean argument cannot have a default value.");
+    } else if (importance != args::Importance::Optional) {
+      throw std::invalid_argument("A required argument cannot have a default value.");
+    }
+  }
+
+  ~Argument() noexcept = default;
+
+  Argument(const Argument&) = default;
+
+  Argument& operator=(const Argument&) = default;
+
+  Argument(Argument&&) noexcept = default;
+
+  Argument& operator=(Argument&&) noexcept = default;
+
+  [[nodiscard]] static constexpr auto label() noexcept {
+    return LabelValue;
+  }
+
+  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
+    return keys_;
+  }
+
+  [[nodiscard]] std::string_view description() const noexcept {
+    return description_;
+  }
+
+  [[nodiscard]] args::Importance importance() const noexcept {
+    return importance_;
+  }
+
+  [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
+    return default_value_;
+  }
+
+  [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
+    return parsed_value_;
+  }
+
+  [[nodiscard]] const std::optional<Type>& parsed_or_default_value() const {
+    if (parsed_value_) {
+      return parsed_value_;
+    }
+    return default_value_;
+  }
+
+private:
+  std::vector<std::string> keys_;
+
+  std::string description_;
+
+  args::Importance importance_{args::Importance::Required};
+
+  std::optional<Type> default_value_;
+
+  std::optional<Type> parsed_value_;
 };
 
 }  // namespace args
