@@ -20,6 +20,7 @@
 #define ARGS_HPP
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <initializer_list>
@@ -547,6 +548,13 @@ private:
         throw std::invalid_argument("An argument cannot have an empty key.");
       }
     }
+    for (std::size_t first{0}; first < keys_.size(); ++first) {
+      for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
+        if (keys_[first] == keys_[second]) {
+          throw std::invalid_argument("An argument cannot have duplicate keys.");
+        }
+      }
+    }
   };
 
   /// @brief Validates the description of this command line argument. Called by both constructors.
@@ -559,7 +567,7 @@ private:
   /// @brief Validates the importance of this command line argument. Called by both constructors.
   void validate_importance() const {
     if (importance_ != args::Importance::Optional && importance_ != args::Importance::Required) {
-      throw std::invalid_argument("Invalid importance.");
+      throw std::invalid_argument("An argument's importance must be either optional or required.");
     }
   }
 

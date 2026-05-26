@@ -477,7 +477,7 @@ TEST(Args, ArgumentSetParsedValue) {
 
 /// @brief Helper function that creates an invalid args::Argument with an optional non-boolean type
 /// and no default value.
-void create_invalid_argument_with_missing_default_value() {
+void create_invalid_argument_with_a_missing_default_value() {
   const ::args::Argument<::test::Label::Iterations, int32_t> argument{
     {"-i", "--iterations"},
     "Number of iterations.",
@@ -487,7 +487,7 @@ void create_invalid_argument_with_missing_default_value() {
 
 /// @brief Helper function that creates an invalid args::Argument with a required non-boolean type
 /// and a default value.
-void create_invalid_argument_with_superfluous_default_value() {
+void create_invalid_argument_with_a_superfluous_default_value() {
   const ::args::Argument<::test::Label::Iterations, int32_t> argument{
     {"-i", "--iterations"},
     "Number of iterations.",
@@ -496,9 +496,45 @@ void create_invalid_argument_with_superfluous_default_value() {
   };
 }
 
+/// @brief Helper function that creates an invalid args::Argument with an empty key.
+void create_invalid_argument_with_an_empty_key() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations", ""},
+    "Number of iterations.",
+    ::args::Importance::Required,
+  };
+}
+
+/// @brief Helper function that creates an invalid args::Argument with duplicate keys.
+void create_invalid_argument_with_duplicate_keys() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations", "-i"},
+    "Number of iterations.",
+    ::args::Importance::Required,
+  };
+}
+
+/// @brief Helper function that creates an invalid args::Argument with an empty description.
+void create_invalid_argument_with_empty_description() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "",
+    ::args::Importance::Required,
+  };
+}
+
+/// @brief Helper function that creates an invalid args::Argument with no keys.
+void create_invalid_argument_with_no_keys() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {},
+    "Number of iterations.",
+    ::args::Importance::Required,
+  };
+}
+
 /// @brief Helper function that creates an invalid args::Argument with a boolean type and a default
 /// value.
-void create_invalid_boolean_argument_with_default_value() {
+void create_invalid_boolean_argument_with_a_default_value() {
   const ::args::Argument<::test::Label::Help, bool> argument{
     {"-h", "--help"},
     "Print usage information.",
@@ -507,10 +543,24 @@ void create_invalid_boolean_argument_with_default_value() {
   };
 }
 
-TEST(Args, ArgumentConstructorInvalid) {
-  EXPECT_ANY_THROW(create_invalid_argument_with_missing_default_value());
-  EXPECT_ANY_THROW(create_invalid_argument_with_superfluous_default_value());
-  EXPECT_ANY_THROW(create_invalid_boolean_argument_with_default_value());
+/// @brief Helper function that creates an invalid args::Argument with an invalid importance value.
+void create_invalid_argument_with_invalid_importance() {
+  const ::args::Argument<::test::Label::Iterations, int32_t> argument{
+    {"-i", "--iterations"},
+    "Number of iterations.",
+    static_cast<::args::Importance>(123),
+  };
+}
+
+TEST(Args, ArgumentValidate) {
+  EXPECT_ANY_THROW(create_invalid_argument_with_a_missing_default_value());
+  EXPECT_ANY_THROW(create_invalid_argument_with_a_superfluous_default_value());
+  EXPECT_ANY_THROW(create_invalid_argument_with_an_empty_key());
+  EXPECT_ANY_THROW(create_invalid_argument_with_duplicate_keys());
+  EXPECT_ANY_THROW(create_invalid_argument_with_empty_description());
+  EXPECT_ANY_THROW(create_invalid_argument_with_invalid_importance());
+  EXPECT_ANY_THROW(create_invalid_argument_with_no_keys());
+  EXPECT_ANY_THROW(create_invalid_boolean_argument_with_a_default_value());
 }
 
 TEST(Args, ParseBoolean) {
