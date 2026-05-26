@@ -31,7 +31,6 @@ CPP_COMPILER_OPTIONS = [
 
 cc_library(
     name = "args",
-    srcs = ["args.cpp"],
     hdrs = ["args.hpp"],
     copts = CPP_COMPILER_OPTIONS,
     visibility = ["//visibility:public"],
