@@ -471,4 +471,10 @@ TEST(Args, ParseString) {
   EXPECT_EQ(args::parse<std::string>("Hello, world!"), std::string{"Hello, world!"});
 }
 
+TEST(Args, PrintEnumeration) {
+  EXPECT_EQ(args::print_enumeration<args::Importance>(args::Importance::Optional), "Optional");
+  EXPECT_EQ(args::print_enumeration<args::Importance>(args::Importance::Required), "Required");
+  EXPECT_EQ(args::print_enumeration<args::Importance>(static_cast<args::Importance>(123)), "");
+}
+
 }  // namespace

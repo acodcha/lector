@@ -30,15 +30,41 @@
 
 namespace args {
 
+/// @brief The official printing for a value of a specified type.
+/// @tparam Type The type of the value.
+template <typename Type>
+using Printing = std::pair<Type, std::string_view>;
+
 /// @brief A possible spelling for a value of a specified type.
 /// @tparam Type The type of the value.
 template <typename Type>
 using Spelling = std::pair<std::string_view, Type>;
 
+/// @brief Map of printings to their corresponding values of a specified type.
+/// @tparam Type The type of the values.
+template <typename Type>
+inline constexpr std::array<args::Printing<Type>, 0> Printings{};
+
 /// \brief Map of spellings to their corresponding values of a specified type.
 /// @tparam Type The type of the values.
 template <typename Type>
 inline constexpr std::array<args::Spelling<Type>, 0> Spellings{};
+
+/// @brief Prints a value of a specified enumeration type. The enumeration type must define a
+/// specialization of the args::Printings constant for its type.
+/// @tparam EnumerationType The enumeration type.
+/// @param[in] value The enumeration value to print.
+/// @return The string view representing the printed value.
+/// @throws std::invalid_argument if the value is not a valid enumeration value.
+template <typename EnumerationType>
+[[nodiscard]] constexpr std::string_view print_enumeration(const EnumerationType value) {
+  for (const auto& [enumeration_value, printing] : args::Printings<EnumerationType>) {
+    if (enumeration_value == value) {
+      return printing;
+    }
+  }
+  return std::string_view{};
+}
 
 /// @brief Parses a string view into an enumeration value. The enumeration type must define a
 /// specialization of the args::Spellings constant for its type.
@@ -66,16 +92,25 @@ enum class Importance : int8_t {
   Required = 1,
 };
 
+/// @brief Specialization of the args::Printings constant for the args::Importance enumeration.
+template <>
+inline constexpr std::array<args::Printing<args::Importance>, 2> Printings<args::Importance>{
+  {
+   {args::Importance::Optional, "Optional"},
+   {args::Importance::Required, "Required"},
+   }
+};
+
 /// @brief Specialization of the args::Spellings constant for the args::Importance enumeration.
 template <>
 inline constexpr std::array<args::Spelling<args::Importance>, 6> Spellings<args::Importance>{
   {
-   {"OPTIONAL", args::Importance::Optional},
    {"Optional", args::Importance::Optional},
-   {"optional", args::Importance::Optional},
-   {"REQUIRED", args::Importance::Required},
    {"Required", args::Importance::Required},
+   {"optional", args::Importance::Optional},
    {"required", args::Importance::Required},
+   {"OPTIONAL", args::Importance::Optional},
+   {"REQUIRED", args::Importance::Required},
    }
 };
 
