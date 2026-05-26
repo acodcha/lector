@@ -19,38 +19,40 @@
 #ifndef ARGS_HPP
 #define ARGS_HPP
 
-#include <algorithm>
+#include <array>
 #include <cstdint>
 #include <filesystem>
-#include <iostream>
 #include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <type_traits>
-#include <unordered_map>
-#include <vector>
 
 namespace args {
 
-/// \brief Map of spellings to their corresponding enumeration values.
-/// @tparam EnumerationType The enumeration type.
-template <typename EnumerationType>
-inline const std::unordered_map<std::string_view, EnumerationType> Spellings;
+/// @brief A possible spelling for a value of a specified type.
+/// @tparam Type The type of the value.
+template <typename Type>
+using Spelling = std::pair<std::string_view, Type>;
 
-/// @brief Parses a string into an enumeration value. The enumeration type must define a
+/// \brief Map of spellings to their corresponding values of a specified type.
+/// @tparam Type The type of the values.
+template <typename Type>
+inline constexpr std::array<args::Spelling<Type>, 0> Spellings{};
+
+/// @brief Parses a string view into an enumeration value. The enumeration type must define a
 /// specialization of the args::Spellings constant for its type.
 /// @tparam EnumerationType The enumeration type.
-/// @param[in] string The string to parse.
-/// @return The parsed enumeration value, or std::nullopt if the string could not be parsed into a
-/// valid enumeration value.
+/// @param[in] text The string view to parse.
+/// @return The parsed enumeration value, or std::nullopt if the string view could not be parsed
+/// into a valid enumeration value.
 template <typename EnumerationType>
-[[nodiscard]] std::optional<EnumerationType> parse_enumeration(const std::string_view string) {
-  const typename std::unordered_map<std::string_view, EnumerationType>::const_iterator found{
-    args::Spellings<EnumerationType>.find(string)};
-  if (found != args::Spellings<EnumerationType>.cend()) {
-    return found->second;
+[[nodiscard]] constexpr std::optional<EnumerationType> parse_enumeration(
+    const std::string_view text) {
+  for (const auto& [spelling, value] : args::Spellings<EnumerationType>) {
+    if (spelling == text) {
+      return value;
+    }
   }
   return std::nullopt;
 }
@@ -66,59 +68,55 @@ enum class Importance : int8_t {
 
 /// @brief Specialization of the args::Spellings constant for the args::Importance enumeration.
 template <>
-inline const std::unordered_map<std::string_view, args::Importance> Spellings<args::Importance>{
-  {"OPT",      args::Importance::Optional},
-  {"Opt",      args::Importance::Optional},
-  {"opt",      args::Importance::Optional},
-  {"OPTIONAL", args::Importance::Optional},
-  {"Optional", args::Importance::Optional},
-  {"optional", args::Importance::Optional},
-  {"REQ",      args::Importance::Required},
-  {"Req",      args::Importance::Required},
-  {"req",      args::Importance::Required},
-  {"REQUIRED", args::Importance::Required},
-  {"Required", args::Importance::Required},
-  {"required", args::Importance::Required},
+inline constexpr std::array<args::Spelling<args::Importance>, 6> Spellings<args::Importance>{
+  {
+   {"OPTIONAL", args::Importance::Optional},
+   {"Optional", args::Importance::Optional},
+   {"optional", args::Importance::Optional},
+   {"REQUIRED", args::Importance::Required},
+   {"Required", args::Importance::Required},
+   {"required", args::Importance::Required},
+   }
 };
 
-/// @brief Parses a string into a value of a specific type. If the type is an enumeration type, it
-/// must define a specialization of the args::Spellings constant for its type.
-/// @tparam Type The type of the value in which to parse the string.
-/// @param[in] string The string to parse.
-/// @return The parsed value, or std::nullopt if the string could not be parsed into a valid
+/// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
+/// it must define a specialization of the args::Spellings constant for its type.
+/// @tparam Type The type of the value in which to parse the string view.
+/// @param[in] text The string view to parse.
+/// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
 /// value.
 template <typename Type>
-[[nodiscard]] std::optional<Type> parse(const std::string_view string);
+[[nodiscard]] std::optional<Type> parse(const std::string_view text);
 
-/// @brief Parses a string into a boolean value. For example, the string "true" returns the boolean
-/// value true.
-/// @param[in] string  The string to parse.
-/// @return The parsed boolean value, or std::nullopt if the string could not be parsed into a valid
-/// boolean value.
+/// @brief Parses a string view into a boolean value. For example, the string view "true" returns
+/// the boolean value true.
+/// @param[in] text  The string view to parse.
+/// @return The parsed boolean value, or std::nullopt if the string view could not be parsed into a
+/// valid boolean value.
 template <>
-[[nodiscard]] std::optional<bool> parse(const std::string_view string) {
-  if (string == "TRUE" || string == "True" || string == "true" || string == "1") {
+[[nodiscard]] std::optional<bool> parse(const std::string_view text) {
+  if (text == "TRUE" || text == "True" || text == "true" || text == "1") {
     return true;
   }
-  if (string == "FALSE" || string == "False" || string == "false" || string == "0") {
+  if (text == "FALSE" || text == "False" || text == "false" || text == "0") {
     return false;
   }
   return std::nullopt;
 }
 
-/// @brief Parses a string into an 8-bit natural number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 8-bit natural number, or std::nullopt if the string could not be parsed into
-/// a valid 8-bit natural number.
+/// @brief Parses a string view into an 8-bit natural number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 8-bit natural number, or std::nullopt if the string view could not be parsed
+/// into a valid 8-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint8_t> parse(const std::string_view string) {
-  if (string.find('-') != std::string::npos) {
+[[nodiscard]] std::optional<uint8_t> parse(const std::string_view text) {
+  if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
   uint64_t number;
   try {
-    number = std::stoull(std::string{string});
+    number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -128,19 +126,19 @@ template <>
   return static_cast<uint8_t>(number);
 }
 
-/// @brief Parses a string into a 16-bit natural number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 16-bit natural number, or std::nullopt if the string could not be parsed into
-/// a valid 16-bit natural number.
+/// @brief Parses a string view into a 16-bit natural number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 16-bit natural number, or std::nullopt if the string view could not be parsed
+/// into a valid 16-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint16_t> parse(const std::string_view string) {
-  if (string.find('-') != std::string::npos) {
+[[nodiscard]] std::optional<uint16_t> parse(const std::string_view text) {
+  if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
   uint64_t number;
   try {
-    number = std::stoull(std::string{string});
+    number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -150,19 +148,19 @@ template <>
   return static_cast<uint16_t>(number);
 }
 
-/// @brief Parses a string into a 32-bit natural number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 32-bit natural number, or std::nullopt if the string could not be parsed into
-/// a valid 32-bit natural number.
+/// @brief Parses a string view into a 32-bit natural number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 32-bit natural number, or std::nullopt if the string view could not be parsed
+/// into a valid 32-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint32_t> parse(const std::string_view string) {
-  if (string.find('-') != std::string::npos) {
+[[nodiscard]] std::optional<uint32_t> parse(const std::string_view text) {
+  if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
   uint64_t number;
   try {
-    number = std::stoull(std::string{string});
+    number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -172,35 +170,35 @@ template <>
   return static_cast<uint32_t>(number);
 }
 
-/// @brief Parses a string into a 64-bit natural number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 64-bit natural number, or std::nullopt if the string could not be parsed into
-/// a valid 64-bit natural number.
+/// @brief Parses a string view into a 64-bit natural number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 64-bit natural number, or std::nullopt if the string view could not be parsed
+/// into a valid 64-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint64_t> parse(const std::string_view string) {
-  if (string.find('-') != std::string::npos) {
+[[nodiscard]] std::optional<uint64_t> parse(const std::string_view text) {
+  if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
   uint64_t number;
   try {
-    number = std::stoull(std::string{string});
+    number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
   return number;
 }
 
-/// @brief Parses a string into an 8-bit integer number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 8-bit integer number, or std::nullopt if the string could not be parsed into
-/// a valid 8-bit integer number.
+/// @brief Parses a string view into an 8-bit integer number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 8-bit integer number, or std::nullopt if the string view could not be parsed
+/// into a valid 8-bit integer number.
 template <>
-[[nodiscard]] std::optional<int8_t> parse(const std::string_view string) {
+[[nodiscard]] std::optional<int8_t> parse(const std::string_view text) {
   int64_t number;
   try {
-    number = std::stoll(std::string{string});
+    number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -213,16 +211,16 @@ template <>
   return static_cast<int8_t>(number);
 }
 
-/// @brief Parses a string into a 16-bit integer number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 16-bit integer number, or std::nullopt if the string could not be parsed into
-/// a valid 16-bit integer number.
+/// @brief Parses a string view into a 16-bit integer number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 16-bit integer number, or std::nullopt if the string view could not be parsed
+/// into a valid 16-bit integer number.
 template <>
-[[nodiscard]] std::optional<int16_t> parse(const std::string_view string) {
+[[nodiscard]] std::optional<int16_t> parse(const std::string_view text) {
   int64_t number;
   try {
-    number = std::stoll(std::string{string});
+    number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -235,16 +233,16 @@ template <>
   return static_cast<int16_t>(number);
 }
 
-/// @brief Parses a string into a 32-bit integer number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 32-bit integer number, or std::nullopt if the string could not be parsed into
-/// a valid 32-bit integer number.
+/// @brief Parses a string view into a 32-bit integer number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 32-bit integer number, or std::nullopt if the string view could not be parsed
+/// into a valid 32-bit integer number.
 template <>
-[[nodiscard]] std::optional<int32_t> parse(const std::string_view string) {
+[[nodiscard]] std::optional<int32_t> parse(const std::string_view text) {
   int64_t number;
   try {
-    number = std::stoll(std::string{string});
+    number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
@@ -257,106 +255,115 @@ template <>
   return static_cast<int32_t>(number);
 }
 
-/// @brief Parses a string into a 64-bit integer number. For example, the string "42" returns the
-/// number 42.
-/// @param[in] string The string to parse.
-/// @return The parsed 64-bit integer number, or std::nullopt if the string could not be parsed into
-/// a valid 64-bit integer number.
+/// @brief Parses a string view into a 64-bit integer number. For example, the string view "42"
+/// returns the number 42.
+/// @param[in] text The string view to parse.
+/// @return The parsed 64-bit integer number, or std::nullopt if the string view could not be parsed
+/// into a valid 64-bit integer number.
 template <>
-[[nodiscard]] std::optional<int64_t> parse(const std::string_view string) {
+[[nodiscard]] std::optional<int64_t> parse(const std::string_view text) {
   int64_t number;
   try {
-    number = std::stoll(std::string{string});
+    number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
   return number;
 }
 
-/// @brief Parses a string into a single-precision floating-point number. For example, the string
-/// "3.14" returns the number 3.14.
-/// @param[in] string The string to parse.
-/// @return The parsed single-precision floating-point number, or std::nullopt if the string could
-/// not be parsed into a valid single-precision floating-point number.
+/// @brief Parses a string view into a single-precision floating-point number. For example, the
+/// string view "3.14" returns the number 3.14.
+/// @param[in] text The string view to parse.
+/// @return The parsed single-precision floating-point number, or std::nullopt if the string view
+/// could not be parsed into a valid single-precision floating-point number.
 template <>
-[[nodiscard]] std::optional<float> parse(const std::string_view string) {
+[[nodiscard]] std::optional<float> parse(const std::string_view text) {
   float number;
   try {
-    number = std::stof(std::string{string});
+    number = std::stof(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
   return number;
 }
 
-/// @brief Parses a string into a double-precision floating-point number. For example, the string
-/// "3.14" returns the number 3.14.
-/// @param[in] string The string to parse.
-/// @return The parsed double-precision floating-point number, or std::nullopt if the string could
-/// not be parsed into a valid double-precision floating-point number.
+/// @brief Parses a string view into a double-precision floating-point number. For example, the
+/// string view "3.14" returns the number 3.14.
+/// @param[in] text The string view to parse.
+/// @return The parsed double-precision floating-point number, or std::nullopt if the string view
+/// could not be parsed into a valid double-precision floating-point number.
 template <>
-[[nodiscard]] std::optional<double> parse(const std::string_view string) {
+[[nodiscard]] std::optional<double> parse(const std::string_view text) {
   double number;
   try {
-    number = std::stod(std::string{string});
+    number = std::stod(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
   return number;
 }
 
-/// @brief Parses a string into an extended-precision floating-point number. For example, the string
-/// "3.14" returns the number 3.14.
-/// @param[in] string The string to parse.
-/// @return The parsed extended-precision floating-point number, or std::nullopt if the string could
-/// not be parsed into a valid extended-precision floating-point number.
+/// @brief Parses a string view into an extended-precision floating-point number. For example, the
+/// string view "3.14" returns the number 3.14.
+/// @param[in] text The string view to parse.
+/// @return The parsed extended-precision floating-point number, or std::nullopt if the string view
+/// could not be parsed into a valid extended-precision floating-point number.
 template <>
-[[nodiscard]] std::optional<long double> parse(const std::string_view string) {
+[[nodiscard]] std::optional<long double> parse(const std::string_view text) {
   long double number;
   try {
-    number = std::stold(std::string{string});
+    number = std::stold(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
   return number;
 }
 
-/// @brief Parses a string into a string. Does not mutate the string in any way.
-/// @param[in] string The string to parse.
+/// @brief Parses a string view into a string. Does not mutate the string view in any way.
+/// @param[in] text The string view to parse.
 /// @return The parsed string.
 template <>
-[[nodiscard]] std::optional<std::string> parse(const std::string_view string) {
-  return std::string{string};
+[[nodiscard]] std::optional<std::string> parse(const std::string_view text) {
+  return std::string{text};
 }
 
-/// @brief Parses a string into a filesystem path.
-/// @param[in] string The string to parse.
-/// @return The parsed filesystem path, or std::nullopt if the string could not be parsed into a
-/// valid filesystem path.
+/// @brief Parses a string view into a string view. Does not mutate the string view in any way.
+/// @param[in] text The string view to parse.
+/// @return The parsed string view.
 template <>
-[[nodiscard]] std::optional<std::filesystem::path> parse(const std::string_view string) {
-  return std::filesystem::path{string};
+[[nodiscard]] std::optional<std::string_view> parse(const std::string_view text) {
+  return text;
 }
 
-/// @brief Parses a string into a value of a specific type. If the type is an enumeration type, it
-/// must define a specialization of the args::Spellings constant for its type.
-/// @tparam Type The type of the value in which to parse the string.
-/// @param[in] string The string to parse.
-/// @return The parsed value, or std::nullopt if the string could not be parsed into a valid
+/// @brief Parses a string view into a filesystem path.
+/// @param[in] text The string view to parse.
+/// @return The parsed filesystem path, or std::nullopt if the string view could not be parsed into
+/// a valid filesystem path.
+template <>
+[[nodiscard]] std::optional<std::filesystem::path> parse(const std::string_view text) {
+  return std::filesystem::path{text};
+}
+
+/// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
+/// it must define a specialization of the args::Spellings constant for its type.
+/// @tparam Type The type of the value in which to parse the string view.
+/// @param[in] text The string view to parse.
+/// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
 /// value.
 template <typename Type>
-[[nodiscard]] std::optional<Type> parse(const std::string_view string) {
+[[nodiscard]] std::optional<Type> parse(const std::string_view text) {
   if constexpr (std::is_enum_v<Type>) {
-    return args::parse_enumeration<Type>(string);
+    return args::parse_enumeration<Type>(text);
+  } else {
+    std::istringstream stream{std::string{text}};
+    Type value;
+    if (stream >> value) {
+      if (stream.eof()) {
+        return value;
+      }
+    }
+    return std::nullopt;
   }
-
-  std::istringstream stream{std::string{string}};
-  Type value;
-  if (stream >> value) {
-    return value;
-  }
-
-  return std::nullopt;
 }
 
 /// @brief Forward declaration of the args::Argument class.

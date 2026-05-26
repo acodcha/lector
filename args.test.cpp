@@ -41,20 +41,35 @@ TEST(Args, ParseBoolean) {
 }
 
 TEST(Args, ParseEnumeration) {
+  static_assert(
+      args::parse_enumeration<args::Importance>("Optional").value() == args::Importance::Optional);
+  static_assert(!args::parse_enumeration<args::Importance>("Hello, world!").has_value());
+
   EXPECT_EQ(args::parse_enumeration<args::Importance>(""), std::nullopt);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("Hello, world!"), std::nullopt);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("OPT"), args::Importance::Optional);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("Opt"), args::Importance::Optional);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("opt"), args::Importance::Optional);
+  EXPECT_EQ(args::parse_enumeration<args::Importance>(" Optional"), std::nullopt);
+  EXPECT_EQ(args::parse_enumeration<args::Importance>("Optional "), std::nullopt);
+  EXPECT_EQ(args::parse_enumeration<args::Importance>(" Required"), std::nullopt);
+  EXPECT_EQ(args::parse_enumeration<args::Importance>("Required "), std::nullopt);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("OPTIONAL"), args::Importance::Optional);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("Optional"), args::Importance::Optional);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("optional"), args::Importance::Optional);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("REQ"), args::Importance::Required);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("Req"), args::Importance::Required);
-  EXPECT_EQ(args::parse_enumeration<args::Importance>("req"), args::Importance::Required);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("REQUIRED"), args::Importance::Required);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("Required"), args::Importance::Required);
   EXPECT_EQ(args::parse_enumeration<args::Importance>("required"), args::Importance::Required);
+
+  EXPECT_EQ(args::parse<args::Importance>(""), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>("Hello, world!"), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>(" Optional"), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>("Optional "), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>(" Required"), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>("Required "), std::nullopt);
+  EXPECT_EQ(args::parse<args::Importance>("OPTIONAL"), args::Importance::Optional);
+  EXPECT_EQ(args::parse<args::Importance>("Optional"), args::Importance::Optional);
+  EXPECT_EQ(args::parse<args::Importance>("optional"), args::Importance::Optional);
+  EXPECT_EQ(args::parse<args::Importance>("REQUIRED"), args::Importance::Required);
+  EXPECT_EQ(args::parse<args::Importance>("Required"), args::Importance::Required);
+  EXPECT_EQ(args::parse<args::Importance>("required"), args::Importance::Required);
 }
 
 TEST(Args, ParseFilesystemPath) {
