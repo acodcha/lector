@@ -325,7 +325,7 @@ TEST(Args, ArgumentsParsesValidCommandLineSuccessfully) {
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
 }
 
-TEST(Args, ArgumentConstructorBooleanBasic) {
+TEST(Args, ArgumentConstructorBooleanDefault) {
   const ::args::Argument<::test::Label::Help, bool> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   EXPECT_TRUE(argument.keys().empty());
@@ -333,22 +333,21 @@ TEST(Args, ArgumentConstructorBooleanBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorBooleanNoDefaultValue) {
+TEST(Args, ArgumentConstructorBooleanOptional) {
   const ::args::Argument<::test::Label::Help, bool> argument{::test::create_argument_help()};
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   const ::std::vector<::std::string> expected_keys{"-h", "--help"};
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Print usage information.");
   EXPECT_EQ(argument.importance(), ::args::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.default_value(), false);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
+  EXPECT_FALSE(argument.parsed_or_default_value());
 }
 
-TEST(Args, ArgumentConstructorEnumerationBasic) {
+TEST(Args, ArgumentConstructorEnumerationDefault) {
   const ::args::Argument<::test::Label::Color, ::test::Color> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Color);
   EXPECT_TRUE(argument.keys().empty());
@@ -356,10 +355,9 @@ TEST(Args, ArgumentConstructorEnumerationBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorEnumerationNoDefaultValue) {
+TEST(Args, ArgumentConstructorEnumerationRequired) {
   const ::args::Argument<::test::Label::Color, ::test::Color> argument{
     ::test::create_argument_color_required()};
   EXPECT_EQ(argument.label(), ::test::Label::Color);
@@ -369,10 +367,9 @@ TEST(Args, ArgumentConstructorEnumerationNoDefaultValue) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorEnumerationWithDefaultValue) {
+TEST(Args, ArgumentConstructorEnumerationOptional) {
   const ::args::Argument<::test::Label::Color, ::test::Color> argument{
     ::test::create_argument_color_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Color);
@@ -385,7 +382,7 @@ TEST(Args, ArgumentConstructorEnumerationWithDefaultValue) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
 }
 
-TEST(Args, ArgumentConstructorFilesystemPathBasic) {
+TEST(Args, ArgumentConstructorFilesystemPathDefault) {
   const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument;
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
   EXPECT_TRUE(argument.keys().empty());
@@ -393,10 +390,9 @@ TEST(Args, ArgumentConstructorFilesystemPathBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorFilesystemPathNoDefaultValue) {
+TEST(Args, ArgumentConstructorFilesystemPathRequired) {
   const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
     ::test::create_argument_output_directory_required()};
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
@@ -406,10 +402,9 @@ TEST(Args, ArgumentConstructorFilesystemPathNoDefaultValue) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorFilesystemPathWithDefaultValue) {
+TEST(Args, ArgumentConstructorFilesystemPathOptional) {
   const ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
     ::test::create_argument_output_directory_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
@@ -422,7 +417,7 @@ TEST(Args, ArgumentConstructorFilesystemPathWithDefaultValue) {
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path("/some/path"));
 }
 
-TEST(Args, ArgumentConstructorNumberDoubleBasic) {
+TEST(Args, ArgumentConstructorNumberDoubleDefault) {
   const ::args::Argument<::test::Label::Tolerance, double> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -430,10 +425,9 @@ TEST(Args, ArgumentConstructorNumberDoubleBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorNumberDoubleNoDefaultValue) {
+TEST(Args, ArgumentConstructorNumberDoubleRequired) {
   const ::args::Argument<::test::Label::Tolerance, double> argument{
     ::test::create_argument_tolerance_required()};
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
@@ -443,10 +437,9 @@ TEST(Args, ArgumentConstructorNumberDoubleNoDefaultValue) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorNumberDoubleWithDefaultValue) {
+TEST(Args, ArgumentConstructorNumberDoubleOptional) {
   const ::args::Argument<::test::Label::Tolerance, double> argument{
     ::test::create_argument_tolerance_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
@@ -459,7 +452,7 @@ TEST(Args, ArgumentConstructorNumberDoubleWithDefaultValue) {
   EXPECT_EQ(argument.parsed_or_default_value(), 1.0E-3);
 }
 
-TEST(Args, ArgumentConstructorNumberIntegerBasic) {
+TEST(Args, ArgumentConstructorNumberIntegerDefault) {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   EXPECT_TRUE(argument.keys().empty());
@@ -467,10 +460,9 @@ TEST(Args, ArgumentConstructorNumberIntegerBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorNumberIntegerNoDefaultValue) {
+TEST(Args, ArgumentConstructorNumberIntegerRequired) {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
     ::test::create_argument_iterations_required()};
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
@@ -480,10 +472,9 @@ TEST(Args, ArgumentConstructorNumberIntegerNoDefaultValue) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorNumberIntegerWithDefaultValue) {
+TEST(Args, ArgumentConstructorNumberIntegerOptional) {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
     ::test::create_argument_iterations_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
@@ -496,7 +487,7 @@ TEST(Args, ArgumentConstructorNumberIntegerWithDefaultValue) {
   EXPECT_EQ(argument.parsed_or_default_value(), 100);
 }
 
-TEST(Args, ArgumentConstructorStringBasic) {
+TEST(Args, ArgumentConstructorStringDefault) {
   const ::args::Argument<::test::Label::Title, ::std::string> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Title);
   EXPECT_TRUE(argument.keys().empty());
@@ -504,10 +495,9 @@ TEST(Args, ArgumentConstructorStringBasic) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorStringNoDefaultValue) {
+TEST(Args, ArgumentConstructorStringRequired) {
   const ::args::Argument<::test::Label::Title, ::std::string> argument{
     ::test::create_argument_title_required()};
   EXPECT_EQ(argument.label(), ::test::Label::Title);
@@ -517,10 +507,9 @@ TEST(Args, ArgumentConstructorStringNoDefaultValue) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::std::nullopt);
 }
 
-TEST(Args, ArgumentConstructorStringWithDefaultValue) {
+TEST(Args, ArgumentConstructorStringOptional) {
   const ::args::Argument<::test::Label::Title, ::std::string> argument{
     ::test::create_argument_title_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Title);
@@ -572,7 +561,6 @@ TEST(Args, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), ::args::Importance::Required);
   EXPECT_EQ(second.default_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), ::std::nullopt);
   second = first;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
@@ -622,7 +610,6 @@ TEST(Args, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), ::args::Importance::Required);
   EXPECT_EQ(second.default_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), ::std::nullopt);
   second = ::std::move(first);
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);

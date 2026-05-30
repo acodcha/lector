@@ -422,7 +422,8 @@ public:
   Argument() noexcept {};
 
   /// @brief Constructor for a required command line argument or a boolean command line argument. No
-  /// default value is needed.
+  /// default value is needed. Boolean command line arguments are always optional and always default
+  /// to false.
   /// @param[in] keys The keys that can be used to specify the command line argument.
   /// @param[in] description The description of the command line argument. Used when printing usage
   /// information. Set at construction.
@@ -431,6 +432,7 @@ public:
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? args::Importance::Optional : args::Importance::Required} {
+    set_boolean_default();
     validate_keys();
     validate_description();
   }
@@ -512,11 +514,14 @@ public:
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
   /// returns the default value.
   /// @return The value of this command line argument.
-  [[nodiscard]] const std::optional<Type>& parsed_or_default_value() const noexcept {
-    if (parsed_value_) {
-      return parsed_value_;
+  [[nodiscard]] const Type& parsed_or_default_value() const {
+    if (parsed_value_.has_value()) {
+      return parsed_value_.value();
     }
-    return default_value_;
+    if (default_value_.has_value()) {
+      return default_value_.value();
+    }
+    throw std::logic_error("No parsed or default value.");
   }
 
   /// @brief Sets the parsed value of this command line argument.
@@ -526,6 +531,15 @@ public:
   }
 
 private:
+  /// @brief If this command line argument is a boolean argument, sets its default value to false.
+  /// Called by the constructor that does not specify a default value. Boolean arguments are always
+  /// optional and always default to false.
+  void set_boolean_default() {
+    if constexpr (std::is_same_v<Type, bool>) {
+      default_value_ = false;
+    }
+  }
+
   /// @brief Validates the keys of this command line argument. Called by both constructors.
   void validate_keys() const {
     if (keys_.empty()) {
