@@ -92,16 +92,14 @@ enum class Label : ::std::int8_t {
 ::args::Argument<::test::Label::Title, ::std::string> create_argument_title_optional() {
   return ::args::Argument<::test::Label::Title, ::std::string>{
     ::std::initializer_list<::std::string>{"-t", "--title"},
-    "Title of the report.",
-    ::args::Importance::Optional, "My Report"
+    "Title of the report.", "My Report"
   };
 }
 
 ::args::Argument<::test::Label::Title, ::std::string> create_argument_title_required() {
   return ::args::Argument<::test::Label::Title, ::std::string>{
     ::std::initializer_list<::std::string>{"-t", "--title"},
-    "Title of the report.",
-    ::args::Importance::Required
+    "Title of the report."
   };
 }
 
@@ -110,7 +108,7 @@ create_argument_output_directory_optional() {
   return ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>{
     ::std::initializer_list<::std::string>{"-o", "--output"},
     "Output directory.",
-    ::args::Importance::Optional, ::std::filesystem::path("/some/path")
+    ::std::filesystem::path("/some/path")
   };
 }
 
@@ -118,8 +116,7 @@ create_argument_output_directory_optional() {
 create_argument_output_directory_required() {
   return ::args::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>{
     ::std::initializer_list<::std::string>{"-o", "--output"},
-    "Output directory.",
-    ::args::Importance::Required
+    "Output directory."
   };
 }
 
@@ -127,76 +124,49 @@ create_argument_output_directory_required() {
   return ::args::Argument<::test::Label::Color, ::test::Color>{
     ::std::initializer_list<::std::string>{"-c", "--color"},
     "Main output color.",
-    ::args::Importance::Optional, ::test::Color::Red
+    ::test::Color::Red
   };
 }
 
 ::args::Argument<::test::Label::Color, ::test::Color> create_argument_color_required() {
   return ::args::Argument<::test::Label::Color, ::test::Color>{
     ::std::initializer_list<::std::string>{"-c", "--color"},
-    "Main output color.",
-    ::args::Importance::Required
+    "Main output color."
   };
 }
 
 ::args::Argument<::test::Label::Iterations, ::std::int32_t> create_argument_iterations_optional() {
   return ::args::Argument<::test::Label::Iterations, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional, 100
+    "Number of iterations.", 100
   };
 }
 
 ::args::Argument<::test::Label::Iterations, ::std::int32_t> create_argument_iterations_required() {
   return ::args::Argument<::test::Label::Iterations, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Required
+    "Number of iterations."
   };
 }
 
 ::args::Argument<::test::Label::Tolerance, double> create_argument_tolerance_optional() {
   return ::args::Argument<::test::Label::Tolerance, double>{
     ::std::initializer_list<::std::string>{"-t", "--tolerance"},
-    "Tolerance value.",
-    ::args::Importance::Optional, 1.0E-3
+    "Tolerance value.", 1.0E-3
   };
 }
 
 ::args::Argument<::test::Label::Tolerance, double> create_argument_tolerance_required() {
   return ::args::Argument<::test::Label::Tolerance, double>{
     ::std::initializer_list<::std::string>{"-t", "--tolerance"},
-    "Tolerance value.",
-    ::args::Importance::Required
+    "Tolerance value."
   };
 }
 
 ::args::Argument<::test::Label::Help, bool> create_argument_help() {
   return ::args::Argument<::test::Label::Help, bool>{
     ::std::initializer_list<::std::string>{"-h", "--help"},
-    "Print usage information.",
-    ::args::Importance::Optional
-  };
-}
-
-/// @brief Helper function that creates an invalid args::Argument with an optional non-boolean type
-/// and no default value.
-void create_invalid_argument_with_a_missing_default_value() {
-  const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-  };
-}
-
-/// @brief Helper function that creates an invalid args::Argument with a required non-boolean type
-/// and a default value.
-void create_invalid_argument_with_a_superfluous_default_value() {
-  const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Required,
-    100,
+    "Print usage information."
   };
 }
 
@@ -204,8 +174,7 @@ void create_invalid_argument_with_a_superfluous_default_value() {
 void create_invalid_argument_with_an_empty_key() {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
     {"-i", "--iterations", ""},
-    "Number of iterations.",
-    ::args::Importance::Required,
+    "Number of iterations."
   };
 }
 
@@ -213,8 +182,7 @@ void create_invalid_argument_with_an_empty_key() {
 void create_invalid_argument_with_duplicate_keys() {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
     {"-i", "--iterations", "-i"},
-    "Number of iterations.",
-    ::args::Importance::Required,
+    "Number of iterations."
   };
 }
 
@@ -222,18 +190,14 @@ void create_invalid_argument_with_duplicate_keys() {
 void create_invalid_argument_with_empty_description() {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
     {"-i", "--iterations"},
-    "",
-    ::args::Importance::Required,
+    ""
   };
 }
 
 /// @brief Helper function that creates an invalid args::Argument with no keys.
 void create_invalid_argument_with_no_keys() {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    {},
-    "Number of iterations.",
-    ::args::Importance::Required,
-  };
+    {}, "Number of iterations."};
 }
 
 /// @brief Helper function that creates an invalid args::Argument with a boolean type and a default
@@ -242,17 +206,7 @@ void create_invalid_boolean_argument_with_a_default_value() {
   const ::args::Argument<::test::Label::Help, bool> argument{
     {"-h", "--help"},
     "Print usage information.",
-    ::args::Importance::Required,
     true,
-  };
-}
-
-/// @brief Helper function that creates an invalid args::Argument with an invalid importance value.
-void create_invalid_argument_with_invalid_importance() {
-  const ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    static_cast<::args::Importance>(123),
   };
 }
 
@@ -581,11 +535,7 @@ TEST(Args, ArgumentConstructorStringWithDefaultValue) {
 
 TEST(Args, ArgumentCopyConstructor) {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> first{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-    100,
-  };
+    ::test::create_argument_iterations_optional()};
   EXPECT_EQ(first.label(), ::test::Label::Iterations);
   const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
   EXPECT_EQ(first.keys(), expected_keys);
@@ -606,11 +556,7 @@ TEST(Args, ArgumentCopyConstructor) {
 
 TEST(Args, ArgumentCopyAssignmentOperator) {
   const ::args::Argument<::test::Label::Iterations, ::std::int32_t> first{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-    100,
-  };
+    ::test::create_argument_iterations_optional()};
   EXPECT_EQ(first.label(), ::test::Label::Iterations);
   const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
   EXPECT_EQ(first.keys(), expected_keys);
@@ -639,11 +585,7 @@ TEST(Args, ArgumentCopyAssignmentOperator) {
 
 TEST(Args, ArgumentMoveConstructor) {
   ::args::Argument<::test::Label::Iterations, ::std::int32_t> first{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-    100,
-  };
+    ::test::create_argument_iterations_optional()};
   EXPECT_EQ(first.label(), ::test::Label::Iterations);
   const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
   EXPECT_EQ(first.keys(), expected_keys);
@@ -664,11 +606,7 @@ TEST(Args, ArgumentMoveConstructor) {
 
 TEST(Args, ArgumentMoveAssignmentOperator) {
   ::args::Argument<::test::Label::Iterations, ::std::int32_t> first{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-    100,
-  };
+    ::test::create_argument_iterations_optional()};
   EXPECT_EQ(first.label(), ::test::Label::Iterations);
   const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
   EXPECT_EQ(first.keys(), expected_keys);
@@ -697,11 +635,7 @@ TEST(Args, ArgumentMoveAssignmentOperator) {
 
 TEST(Args, ArgumentSetParsedValue) {
   ::args::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    {"-i", "--iterations"},
-    "Number of iterations.",
-    ::args::Importance::Optional,
-    100,
-  };
+    ::test::create_argument_iterations_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -721,12 +655,9 @@ TEST(Args, ArgumentSetParsedValue) {
 }
 
 TEST(Args, ArgumentValidate) {
-  EXPECT_ANY_THROW(::test::create_invalid_argument_with_a_missing_default_value());
-  EXPECT_ANY_THROW(::test::create_invalid_argument_with_a_superfluous_default_value());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_an_empty_key());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_duplicate_keys());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_empty_description());
-  EXPECT_ANY_THROW(::test::create_invalid_argument_with_invalid_importance());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_no_keys());
   EXPECT_ANY_THROW(::test::create_invalid_boolean_argument_with_a_default_value());
 }
@@ -737,11 +668,9 @@ TEST(Args, ParseBoolean) {
   EXPECT_EQ(::args::parse<bool>("TRUE"), true);
   EXPECT_EQ(::args::parse<bool>("True"), true);
   EXPECT_EQ(::args::parse<bool>("true"), true);
-  EXPECT_EQ(::args::parse<bool>("1"), true);
   EXPECT_EQ(::args::parse<bool>("FALSE"), false);
   EXPECT_EQ(::args::parse<bool>("False"), false);
   EXPECT_EQ(::args::parse<bool>("false"), false);
-  EXPECT_EQ(::args::parse<bool>("0"), false);
 }
 
 TEST(Args, ParseEnumeration) {

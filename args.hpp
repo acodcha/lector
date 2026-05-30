@@ -136,10 +136,10 @@ template <typename Type>
 /// valid boolean value.
 template <>
 [[nodiscard]] std::optional<bool> parse(const std::string_view text) {
-  if (text == "TRUE" || text == "True" || text == "true" || text == "1") {
+  if (text == "TRUE" || text == "True" || text == "true") {
     return true;
   }
-  if (text == "FALSE" || text == "False" || text == "false" || text == "0") {
+  if (text == "FALSE" || text == "False" || text == "false") {
     return false;
   }
   return std::nullopt;
@@ -412,7 +412,7 @@ template <typename Type>
 /// @tparam LabelValue Value of this command line argument's label. The label is used to uniquely
 /// identify the command line argument.
 /// @tparam Type The type of the command line argument.
-template <auto LabelValue, typename Type = bool>
+template <auto LabelValue, typename Type>
 class Argument {
 public:
   using ValueType = Type;
@@ -421,39 +421,33 @@ public:
   /// description, required importance, and no default value.
   Argument() noexcept {};
 
-  /// @brief Constructor for required command line arguments and optional boolean command line
-  /// arguments. No default value is needed.
+  /// @brief Constructor for a required command line argument or a boolean command line argument. No
+  /// default value is needed.
   /// @param[in] keys The keys that can be used to specify the command line argument.
   /// @param[in] description The description of the command line argument. Used when printing usage
   /// information. Set at construction.
-  /// @param[in] importance The importance of the command line argument. Required arguments must be
-  /// provided by the user, while optional arguments may or may not be provided by the user.
   /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
-           const args::Importance importance)
-    : keys_{keys}, description_{description}, importance_{importance} {
-    validate_no_default_value();
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description)
+    : keys_{keys}, description_{description},
+      importance_{
+        std::is_same_v<Type, bool> ? args::Importance::Optional : args::Importance::Required} {
     validate_keys();
     validate_description();
-    validate_importance();
   }
 
-  /// @brief Constructor for optional non-boolean command line arguments. A default value must be
+  /// @brief Constructor for an optional non-boolean command line argument. A default value must be
   /// provided.
   /// @param[in] keys The keys that can be used to specify the command line argument.
   /// @param[in] description The description of the command line argument. Used when printing usage
   /// information. Set at construction.
-  /// @param[in] importance The importance of the command line argument. Required arguments must be
-  /// provided by the user, while optional arguments may or may not be provided by the user.
   /// @param[in] default_value The default value of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
   Argument(const std::initializer_list<std::string>& keys, const std::string& description,
-           const args::Importance importance, const Type& default_value)
-    : keys_{keys}, description_{description}, importance_{importance},
+           const Type& default_value)
+    : keys_{keys}, description_{description}, importance_{args::Importance::Optional},
       default_value_{default_value} {
     validate_keys();
     validate_description();
-    validate_importance();
     validate_default_value();
   }
 
@@ -532,14 +526,6 @@ public:
   }
 
 private:
-  /// @brief validates that an optional non-boolean argument does not have a default value. Called
-  /// by the constructor that does not specify a default value.
-  void validate_no_default_value() const {
-    if (!std::is_same_v<Type, bool> && importance_ == args::Importance::Optional) {
-      throw std::invalid_argument("An optional non-boolean argument must have a default value.");
-    }
-  }
-
   /// @brief Validates the keys of this command line argument. Called by both constructors.
   void validate_keys() const {
     if (keys_.empty()) {
@@ -553,7 +539,8 @@ private:
     for (std::size_t first{0}; first < keys_.size(); ++first) {
       for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
         if (keys_[first] == keys_[second]) {
-          throw std::invalid_argument("An argument cannot have duplicate keys.");
+          throw std::invalid_argument("An argument cannot have duplicate keys. The key '"
+                                      + keys_[first] + "' is duplicated.");
         }
       }
     }
@@ -566,21 +553,11 @@ private:
     }
   };
 
-  /// @brief Validates the importance of this command line argument. Called by both constructors.
-  void validate_importance() const {
-    if (importance_ != args::Importance::Optional && importance_ != args::Importance::Required) {
-      throw std::invalid_argument("An argument's importance must be either optional or required.");
-    }
-  }
-
   /// @brief Validates the default value of this command line argument. Called by the constructor
   /// that specifies a default value.
-  void validate_default_value() const {
-    if (std::is_same_v<Type, bool>) {
+  constexpr void validate_default_value() const {
+    if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument("A boolean argument cannot have a default value.");
-    }
-    if (importance_ == args::Importance::Required) {
-      throw std::invalid_argument("A required argument cannot have a default value.");
     }
   }
 
