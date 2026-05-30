@@ -19,11 +19,13 @@
 #ifndef ARGS_HPP
 #define ARGS_HPP
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <initializer_list>
+#include <iostream>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -88,7 +90,7 @@ template <typename EnumerationType>
 }
 
 /// @brief Importance of a command line argument.
-enum class Importance : int8_t {
+enum class Importance : std::int8_t {
   /// @brief The command line argument is optional; it may or may not be provided by the user.
   Optional = 0,
 
@@ -149,20 +151,20 @@ template <>
 /// @return The parsed 8-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 8-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint8_t> parse(const std::string_view text) {
+[[nodiscard]] std::optional<std::uint8_t> parse(const std::string_view text) {
   if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
-  uint64_t number;
+  std::uint64_t number;
   try {
     number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<uint64_t>(std::numeric_limits<uint8_t>::max())) {
+  if (number > static_cast<std::uint64_t>(std::numeric_limits<std::uint8_t>::max())) {
     return std::nullopt;
   }
-  return static_cast<uint8_t>(number);
+  return static_cast<std::uint8_t>(number);
 }
 
 /// @brief Parses a string view into a 16-bit natural number. For example, the string view "42"
@@ -171,20 +173,20 @@ template <>
 /// @return The parsed 16-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 16-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint16_t> parse(const std::string_view text) {
+[[nodiscard]] std::optional<std::uint16_t> parse(const std::string_view text) {
   if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
-  uint64_t number;
+  std::uint64_t number;
   try {
     number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<uint64_t>(std::numeric_limits<uint16_t>::max())) {
+  if (number > static_cast<std::uint64_t>(std::numeric_limits<std::uint16_t>::max())) {
     return std::nullopt;
   }
-  return static_cast<uint16_t>(number);
+  return static_cast<std::uint16_t>(number);
 }
 
 /// @brief Parses a string view into a 32-bit natural number. For example, the string view "42"
@@ -193,20 +195,20 @@ template <>
 /// @return The parsed 32-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 32-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint32_t> parse(const std::string_view text) {
+[[nodiscard]] std::optional<std::uint32_t> parse(const std::string_view text) {
   if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
-  uint64_t number;
+  std::uint64_t number;
   try {
     number = std::stoull(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<uint64_t>(std::numeric_limits<uint32_t>::max())) {
+  if (number > static_cast<std::uint64_t>(std::numeric_limits<std::uint32_t>::max())) {
     return std::nullopt;
   }
-  return static_cast<uint32_t>(number);
+  return static_cast<std::uint32_t>(number);
 }
 
 /// @brief Parses a string view into a 64-bit natural number. For example, the string view "42"
@@ -215,11 +217,11 @@ template <>
 /// @return The parsed 64-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 64-bit natural number.
 template <>
-[[nodiscard]] std::optional<uint64_t> parse(const std::string_view text) {
+[[nodiscard]] std::optional<std::uint64_t> parse(const std::string_view text) {
   if (text.find('-') != std::string::npos) {
     return std::nullopt;
   }
-  uint64_t number;
+  std::uint64_t number;
   try {
     number = std::stoull(std::string{text});
   } catch (...) {
@@ -234,20 +236,20 @@ template <>
 /// @return The parsed 8-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 8-bit integer number.
 template <>
-[[nodiscard]] std::optional<int8_t> parse(const std::string_view text) {
-  int64_t number;
+[[nodiscard]] std::optional<std::int8_t> parse(const std::string_view text) {
+  std::int64_t number;
   try {
     number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<int64_t>(std::numeric_limits<int8_t>::max())) {
+  if (number > static_cast<std::int64_t>(std::numeric_limits<std::int8_t>::max())) {
     return std::nullopt;
   }
-  if (number < static_cast<int64_t>(std::numeric_limits<int8_t>::lowest())) {
+  if (number < static_cast<std::int64_t>(std::numeric_limits<std::int8_t>::lowest())) {
     return std::nullopt;
   }
-  return static_cast<int8_t>(number);
+  return static_cast<std::int8_t>(number);
 }
 
 /// @brief Parses a string view into a 16-bit integer number. For example, the string view "42"
@@ -256,20 +258,20 @@ template <>
 /// @return The parsed 16-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 16-bit integer number.
 template <>
-[[nodiscard]] std::optional<int16_t> parse(const std::string_view text) {
-  int64_t number;
+[[nodiscard]] std::optional<std::int16_t> parse(const std::string_view text) {
+  std::int64_t number;
   try {
     number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<int64_t>(std::numeric_limits<int16_t>::max())) {
+  if (number > static_cast<std::int64_t>(std::numeric_limits<std::int16_t>::max())) {
     return std::nullopt;
   }
-  if (number < static_cast<int64_t>(std::numeric_limits<int16_t>::lowest())) {
+  if (number < static_cast<std::int64_t>(std::numeric_limits<std::int16_t>::lowest())) {
     return std::nullopt;
   }
-  return static_cast<int16_t>(number);
+  return static_cast<std::int16_t>(number);
 }
 
 /// @brief Parses a string view into a 32-bit integer number. For example, the string view "42"
@@ -278,20 +280,20 @@ template <>
 /// @return The parsed 32-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 32-bit integer number.
 template <>
-[[nodiscard]] std::optional<int32_t> parse(const std::string_view text) {
-  int64_t number;
+[[nodiscard]] std::optional<std::int32_t> parse(const std::string_view text) {
+  std::int64_t number;
   try {
     number = std::stoll(std::string{text});
   } catch (...) {
     return std::nullopt;
   }
-  if (number > static_cast<int64_t>(std::numeric_limits<int32_t>::max())) {
+  if (number > static_cast<std::int64_t>(std::numeric_limits<std::int32_t>::max())) {
     return std::nullopt;
   }
-  if (number < static_cast<int64_t>(std::numeric_limits<int32_t>::lowest())) {
+  if (number < static_cast<std::int64_t>(std::numeric_limits<std::int32_t>::lowest())) {
     return std::nullopt;
   }
-  return static_cast<int32_t>(number);
+  return static_cast<std::int32_t>(number);
 }
 
 /// @brief Parses a string view into a 64-bit integer number. For example, the string view "42"
@@ -300,8 +302,8 @@ template <>
 /// @return The parsed 64-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 64-bit integer number.
 template <>
-[[nodiscard]] std::optional<int64_t> parse(const std::string_view text) {
-  int64_t number;
+[[nodiscard]] std::optional<std::int64_t> parse(const std::string_view text) {
+  std::int64_t number;
   try {
     number = std::stoll(std::string{text});
   } catch (...) {
@@ -617,6 +619,161 @@ struct FindArgumentByLabel<Label, args::Argument<Label, Type>, Rest...> {
 template <auto Label, auto OtherLabel, typename OtherType, typename... Rest>
 struct FindArgumentByLabel<Label, args::Argument<OtherLabel, OtherType>, Rest...> {
   using type = typename args::FindArgumentByLabel<Label, Rest...>::type;
+};
+
+template <typename... ArgumentTypes>
+class Arguments {
+public:
+  // Move the variadic arguments into our tuple.
+  explicit Arguments(ArgumentTypes... arguments) : arguments_(std::move(arguments)...) {}
+
+  ~Arguments() noexcept = default;
+
+  Arguments(const Arguments&) = default;
+
+  Arguments& operator=(const Arguments&) = default;
+
+  Arguments(Arguments&&) noexcept = default;
+
+  Arguments& operator=(Arguments&&) noexcept = default;
+
+  [[nodiscard]] const std::filesystem::path& executable_path() const {
+    return executable_path_;
+  }
+
+  // Type-safe getter using the compile-time label.
+  template <auto Label>
+  [[nodiscard]] const auto& get() const {
+    using Type = typename args::FindArgumentByLabel<Label, ArgumentTypes...>::type;
+    return std::get<Type>(arguments_);
+  }
+
+  void print_execution() const {
+    std::cout << "Execution: ";
+    for (const std::string& argument : raw_arguments_) {
+      std::cout << argument << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  [[nodiscard]] std::string print_usage_information() const {
+    std::ostringstream stream;
+    stream << "Usage: " << executable_path_.filename().string() << " [options]" << std::endl
+           << "Options:" << std::endl;
+
+    // Fold expression to iterate over the tuple elements.
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            stream << "  ";
+            for (std::size_t index{0}; index < argument.keys().size(); ++index) {
+              stream << argument.keys()[index] << (index + 1 < argument.keys().size() ? ", " : "");
+            }
+
+            // If the parameter takes a value (isn't a pure bool flag), hint it.
+            if constexpr (
+                !std::is_same_v<typename std::decay_t<decltype(argument)>::ValueType, bool>) {
+              stream << " <value>";
+            }
+
+            stream << std::endl << "      " << argument.description();
+            if (argument.importance() == args::Importance::Required) {
+              stream << " [Required]";
+            } else if (argument.default_value()) {
+              stream << " [Optional]";
+            }
+            stream << std::endl;
+          }());
+        },
+        arguments_);
+
+    return stream.str();
+  }
+
+  bool parse(const int argc, char* argv[]) {
+    if (argc > 0) {
+      executable_path_ = argv[0];
+    }
+
+    for (std::size_t index{0}; index < static_cast<std::size_t>(argc); ++index) {
+      raw_arguments_.emplace_back(argv[index]);
+    }
+
+    bool success{true};
+
+    for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
+      std::string current_arg{argv[index]};
+      bool matched{false};
+
+      std::apply(
+          [&](auto&... argument) {
+            // Fold expression trick to simulate iterating and short-circuiting over the tuple.
+            (..., [&]() {
+              if (matched) {
+                // Skip if we already matched this token.
+                return;
+              }
+
+              if (std::find(argument.keys().begin(), argument.keys().end(), current_arg)
+                  != argument.keys().end()) {
+                matched = true;
+
+                using Type = typename std::decay_t<decltype(argument)>::ValueType;
+
+                // If it's a bool, its presence implies true (no trailing value required).
+                if constexpr (std::is_same_v<Type, bool>) {
+                  argument.set(true);
+                } else {
+                  if (index + 1 < static_cast<std::size_t>(argc)) {
+                    const std::string value_str{argv[++index]};
+                    const auto parsed{args::parse<Type>(value_str)};
+                    if (parsed) {
+                      argument.set(parsed.value());
+                    } else {
+                      std::cerr << "Error: Failed to parse value '" << value_str
+                                << "' for argument '" << current_arg << "'." << std::endl;
+                      success = false;
+                    }
+                  } else {
+                    std::cerr << "Error: Missing value for argument '" << current_arg << "'."
+                              << std::endl;
+                    success = false;
+                  }
+                }
+              }
+            }());
+          },
+          arguments_);
+
+      if (!matched) {
+        std::cerr << "Error: Unknown argument '" << current_arg << "'." << std::endl;
+        success = false;
+      }
+    }
+
+    // Check if all required arguments were provided.
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.importance() == args::Importance::Required
+                && !argument.parsed_value().has_value()) {
+              std::cerr << "Error: Missing required argument '" << argument.keys().front() << "'."
+                        << std::endl;
+              success = false;
+            }
+          }());
+        },
+        arguments_);
+
+    return success;
+  }
+
+private:
+  std::filesystem::path executable_path_;
+
+  std::tuple<ArgumentTypes...> arguments_;
+
+  std::vector<std::string> raw_arguments_;
 };
 
 }  // namespace args
