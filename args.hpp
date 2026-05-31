@@ -548,6 +548,51 @@ public:
     return result;
   }
 
+  /// @brief Prints the execution of this command line argument as a string.
+  /// @return The string that contains the execution of this command line argument.
+  std::string print_execution() const {
+    if constexpr (std::is_enum_v<Type>) {
+      if (parsed_value_.has_value()) {
+        return longest_key() + " " + std::string{args::print_enumeration(parsed_value_.value())};
+      }
+      return "";
+    } else if constexpr (std::is_same_v<Type, bool>) {
+      if (parsed_value_.has_value() && parsed_value_.value()) {
+        return longest_key();
+      }
+      return "";
+    } else if constexpr (std::numeric_limits<Type>::is_integer) {
+      if (parsed_value_.has_value()) {
+        return longest_key() + " " + std::to_string(parsed_value_.value());
+      }
+      return "";
+    } else if constexpr (std::is_floating_point_v<Type>) {
+      if (parsed_value_.has_value()) {
+        // TODO: Use a more precise way to convert floating-point numbers to strings.
+        return longest_key() + " " + std::to_string(parsed_value_.value());
+      }
+      return "";
+    } else if constexpr (
+        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
+      if (parsed_value_.has_value()) {
+        return longest_key() + " " + parsed_value_.value();
+      }
+      return "";
+    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
+      if (parsed_value_.has_value()) {
+        return longest_key() + " " + parsed_value_.value().string();
+      }
+      return "";
+    } else {
+      std::ostringstream stream;
+      if (parsed_value_.has_value()) {
+        stream << longest_key() << " " << parsed_value_.value();
+        return stream.str();
+      }
+      return "";
+    }
+  }
+
 private:
   /// @brief If this command line argument is a boolean argument, sets its default value to false.
   /// Called by the constructor that does not specify a default value. Boolean arguments are always
@@ -610,6 +655,18 @@ private:
     } else {
       return "<value>";
     }
+  }
+
+  /// @brief Returns the longest key of this command line argument.
+  /// @return The longest key of this command line argument.
+  const std::string& longest_key() const {
+    std::size_t longest_key_index{0};
+    for (std::size_t index{1}; index < keys_.size(); ++index) {
+      if (keys_[index].size() > keys_[longest_key_index].size()) {
+        longest_key_index = index;
+      }
+    }
+    return keys_[longest_key_index];
   }
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
