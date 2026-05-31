@@ -1,23 +1,23 @@
 // Copyright © 2026, Alexandre Coderre-Chabot.
 
-// This file is part of Args (https://github.com/acodcha/args), a C++ library for parsing command
-// line arguments. Args is licensed under the MIT License (https://mit-license.org).
+// This file is part of Lector (https://github.com/acodcha/lector), a C++ library for parsing
+// command line arguments. Lector is licensed under the MIT License (https://mit-license.org).
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 // associated documentation files (the "Software"), to deal in the Software without restriction,
 // including without limitation the rights to use, copy, modify, merge, publish, distribute,
 // sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-//   - The above copyright notice and this permission notice shall be included in all copies or
-//     substantial portions of the Software.
-//   - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
-//     BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-//     DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
-//     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// - The above copyright notice and this permission notice shall be included in all copies or
+//   substantial portions of the Software.
+// - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+//   BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+//   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+//   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM
+//   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef ARGS_HPP
-#define ARGS_HPP
+#ifndef LECTOR_HPP
+#define LECTOR_HPP
 
 #include <algorithm>
 #include <array>
@@ -35,7 +35,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace args {
+namespace lector {
 
 /// @brief The official printing for a value of a specified type.
 /// @tparam Type The type of the value.
@@ -50,22 +50,22 @@ using Spelling = std::pair<std::string_view, Type>;
 /// @brief Map of printings to their corresponding values of a specified type.
 /// @tparam Type The type of the values.
 template <typename Type>
-inline constexpr std::array<args::Printing<Type>, 0> Printings{};
+inline constexpr std::array<lector::Printing<Type>, 0> Printings{};
 
 /// \brief Map of spellings to their corresponding values of a specified type.
 /// @tparam Type The type of the values.
 template <typename Type>
-inline constexpr std::array<args::Spelling<Type>, 0> Spellings{};
+inline constexpr std::array<lector::Spelling<Type>, 0> Spellings{};
 
 /// @brief Prints a value of a specified enumeration type. The enumeration type must define a
-/// specialization of the args::Printings constant for its type.
+/// specialization of the lector::Printings constant for its type.
 /// @tparam EnumerationType The enumeration type.
 /// @param[in] value The enumeration value to print.
 /// @return The string view representing the printed value.
 /// @throws std::invalid_argument if the value is not a valid enumeration value.
 template <typename EnumerationType>
 [[nodiscard]] constexpr std::string_view print_enumeration(const EnumerationType value) {
-  for (const auto& [enumeration_value, printing] : args::Printings<EnumerationType>) {
+  for (const auto& [enumeration_value, printing] : lector::Printings<EnumerationType>) {
     if (enumeration_value == value) {
       return printing;
     }
@@ -74,7 +74,7 @@ template <typename EnumerationType>
 }
 
 /// @brief Parses a string view into an enumeration value. The enumeration type must define a
-/// specialization of the args::Spellings constant for its type.
+/// specialization of the lector::Spellings constant for its type.
 /// @tparam EnumerationType The enumeration type.
 /// @param[in] text The string view to parse.
 /// @return The parsed enumeration value, or std::nullopt if the string view could not be parsed
@@ -82,7 +82,7 @@ template <typename EnumerationType>
 template <typename EnumerationType>
 [[nodiscard]] constexpr std::optional<EnumerationType> parse_enumeration(
     const std::string_view text) {
-  for (const auto& [spelling, value] : args::Spellings<EnumerationType>) {
+  for (const auto& [spelling, value] : lector::Spellings<EnumerationType>) {
     if (spelling == text) {
       return value;
     }
@@ -99,30 +99,30 @@ enum class Importance : std::int8_t {
   Required = 1,
 };
 
-/// @brief Specialization of the args::Printings constant for the args::Importance enumeration.
+/// @brief Specialization of the lector::Printings constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<args::Printing<args::Importance>, 2> Printings<args::Importance>{
+inline constexpr std::array<lector::Printing<lector::Importance>, 2> Printings<lector::Importance>{
   {
-   {args::Importance::Optional, "Optional"},
-   {args::Importance::Required, "Required"},
+   {lector::Importance::Optional, "Optional"},
+   {lector::Importance::Required, "Required"},
    }
 };
 
-/// @brief Specialization of the args::Spellings constant for the args::Importance enumeration.
+/// @brief Specialization of the lector::Spellings constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<args::Spelling<args::Importance>, 6> Spellings<args::Importance>{
+inline constexpr std::array<lector::Spelling<lector::Importance>, 6> Spellings<lector::Importance>{
   {
-   {"Optional", args::Importance::Optional},
-   {"Required", args::Importance::Required},
-   {"optional", args::Importance::Optional},
-   {"required", args::Importance::Required},
-   {"OPTIONAL", args::Importance::Optional},
-   {"REQUIRED", args::Importance::Required},
+   {"Optional", lector::Importance::Optional},
+   {"Required", lector::Importance::Required},
+   {"optional", lector::Importance::Optional},
+   {"required", lector::Importance::Required},
+   {"OPTIONAL", lector::Importance::Optional},
+   {"REQUIRED", lector::Importance::Required},
    }
 };
 
 /// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
-/// it must define a specialization of the args::Spellings constant for its type.
+/// it must define a specialization of the lector::Spellings constant for its type.
 /// @tparam Type The type of the value in which to parse the string view.
 /// @param[in] text The string view to parse.
 /// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
@@ -387,7 +387,7 @@ template <>
 }
 
 /// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
-/// it must define a specialization of the args::Spellings constant for its type.
+/// it must define a specialization of the lector::Spellings constant for its type.
 /// @tparam Type The type of the value in which to parse the string view.
 /// @param[in] text The string view to parse.
 /// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
@@ -395,7 +395,7 @@ template <>
 template <typename Type>
 [[nodiscard]] std::optional<Type> parse(const std::string_view text) {
   if constexpr (std::is_enum_v<Type>) {
-    return args::parse_enumeration<Type>(text);
+    return lector::parse_enumeration<Type>(text);
   } else {
     std::istringstream stream{std::string{text}};
     Type value;
@@ -432,7 +432,7 @@ public:
   Argument(const std::initializer_list<std::string>& keys, const std::string& description)
     : keys_{keys}, description_{description},
       importance_{
-        std::is_same_v<Type, bool> ? args::Importance::Optional : args::Importance::Required} {
+        std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
     set_boolean_default();
     validate_keys();
     validate_description();
@@ -447,7 +447,7 @@ public:
   /// @throws std::invalid_argument if any of the parameters are invalid.
   Argument(const std::initializer_list<std::string>& keys, const std::string& description,
            const Type& default_value)
-    : keys_{keys}, description_{description}, importance_{args::Importance::Optional},
+    : keys_{keys}, description_{description}, importance_{lector::Importance::Optional},
       default_value_{default_value} {
     validate_keys();
     validate_description();
@@ -494,7 +494,7 @@ public:
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
   /// @return The importance of this command line argument.
-  [[nodiscard]] args::Importance importance() const noexcept {
+  [[nodiscard]] lector::Importance importance() const noexcept {
     return importance_;
   }
 
@@ -553,7 +553,7 @@ public:
   std::string print_execution() const {
     if constexpr (std::is_enum_v<Type>) {
       if (parsed_value_.has_value()) {
-        return longest_key() + " " + std::string{args::print_enumeration(parsed_value_.value())};
+        return longest_key() + " " + std::string{lector::print_enumeration(parsed_value_.value())};
       }
       return "";
     } else if constexpr (std::is_same_v<Type, bool>) {
@@ -678,7 +678,7 @@ private:
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
-  args::Importance importance_{args::Importance::Required};
+  lector::Importance importance_{lector::Importance::Required};
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
@@ -689,21 +689,21 @@ private:
   std::optional<Type> parsed_value_;
 };
 
-/// @brief Type trait used to extract the exact args::Argument<Label, Type> from a variadic pack of
-/// args::Arguments, using only the Label.
+/// @brief Type trait used to extract the exact lector::Argument<Label, Type> from a variadic pack
+/// of lector::Arguments, using only the Label.
 /// @tparam Label The label of the command line argument.
 /// @tparam Types The list of types of the command line arguments.
 template <auto Label, typename... Types>
 struct FindArgumentByLabel;
 
 template <auto Label, typename Type, typename... Rest>
-struct FindArgumentByLabel<Label, args::Argument<Label, Type>, Rest...> {
-  using type = args::Argument<Label, Type>;
+struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, Rest...> {
+  using type = lector::Argument<Label, Type>;
 };
 
 template <auto Label, auto OtherLabel, typename OtherType, typename... Rest>
-struct FindArgumentByLabel<Label, args::Argument<OtherLabel, OtherType>, Rest...> {
-  using type = typename args::FindArgumentByLabel<Label, Rest...>::type;
+struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>, Rest...> {
+  using type = typename lector::FindArgumentByLabel<Label, Rest...>::type;
 };
 
 template <typename... ArgumentTypes>
@@ -729,7 +729,7 @@ public:
   // Type-safe getter using the compile-time label.
   template <auto Label>
   [[nodiscard]] const auto& get() const {
-    using Type = typename args::FindArgumentByLabel<Label, ArgumentTypes...>::type;
+    using Type = typename lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
     return std::get<Type>(arguments_);
   }
 
@@ -762,7 +762,7 @@ public:
             }
 
             stream << std::endl << "      " << argument.description();
-            if (argument.importance() == args::Importance::Required) {
+            if (argument.importance() == lector::Importance::Required) {
               stream << " [Required]";
             } else if (argument.default_value()) {
               stream << " [Optional]";
@@ -811,7 +811,7 @@ public:
                 } else {
                   if (index + 1 < static_cast<std::size_t>(argc)) {
                     const std::string value_str{argv[++index]};
-                    const auto parsed{args::parse<Type>(value_str)};
+                    const auto parsed{lector::parse<Type>(value_str)};
                     if (parsed) {
                       argument.set(parsed.value());
                     } else {
@@ -840,7 +840,7 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == args::Importance::Required
+            if (argument.importance() == lector::Importance::Required
                 && !argument.parsed_value().has_value()) {
               std::cerr << "Error: Missing required argument '" << argument.keys().front() << "'."
                         << std::endl;
@@ -861,6 +861,6 @@ private:
   std::vector<std::string> raw_arguments_;
 };
 
-}  // namespace args
+}  // namespace lector
 
-#endif  // ARGS_HPP
+#endif  // LECTOR_HPP
