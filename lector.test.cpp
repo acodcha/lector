@@ -28,6 +28,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 namespace test {
@@ -882,7 +883,7 @@ TEST(Lector, ParseFilesystemPath) {
             ::std::filesystem::path{"/some/file.txt"});
 }
 
-TEST(Lector, ParseNumberDouble) {
+TEST(Lector, ParseNumberFloatingPointPrecisionDouble) {
   // Invalid.
   EXPECT_EQ(::lector::parse<double>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<double>("Hello, world!"), ::std::nullopt);
@@ -982,151 +983,7 @@ TEST(Lector, ParseNumberDouble) {
   EXPECT_EQ(::lector::parse<double>("-3.14e+12l"), -3.14E12);
 }
 
-TEST(Lector, ParseNumberFloat) {
-  // Invalid.
-  EXPECT_EQ(::lector::parse<float>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<float>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<float>("1.0E1000000000000000000000000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<float>("-1.0E1000000000000000000000000000000"), ::std::nullopt);
-
-  // Not-a-number.
-  ASSERT_TRUE(::lector::parse<float>("NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NAN").value()));
-  ASSERT_TRUE(::lector::parse<float>("NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NaN").value()));
-  ASSERT_TRUE(::lector::parse<float>("nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("nan").value()));
-  ASSERT_TRUE(::lector::parse<float>("-NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NAN").value()));
-  ASSERT_TRUE(::lector::parse<float>("-NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NaN").value()));
-  ASSERT_TRUE(::lector::parse<float>("-nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-nan").value()));
-
-  // Infinity.
-  EXPECT_EQ(::lector::parse<float>("INF"), ::std::numeric_limits<float>::infinity());
-  EXPECT_EQ(::lector::parse<float>("Inf"), ::std::numeric_limits<float>::infinity());
-  EXPECT_EQ(::lector::parse<float>("inf"), ::std::numeric_limits<float>::infinity());
-  EXPECT_EQ(::lector::parse<float>("-INF"), -::std::numeric_limits<float>::infinity());
-  EXPECT_EQ(::lector::parse<float>("-Inf"), -::std::numeric_limits<float>::infinity());
-  EXPECT_EQ(::lector::parse<float>("-inf"), -::std::numeric_limits<float>::infinity());
-
-  // Zero.
-  EXPECT_EQ(::lector::parse<float>("0F"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0f"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0L"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0l"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0.0F"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0.0f"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0.0"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0.0L"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("0.0l"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0F"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0f"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0L"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0l"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0.0F"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0.0f"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0.0"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0.0L"), 0.0F);
-  EXPECT_EQ(::lector::parse<float>("-0.0l"), 0.0F);
-
-  // Integer.
-  EXPECT_EQ(::lector::parse<float>("-10F"), -10.0F);
-  EXPECT_EQ(::lector::parse<float>("-10f"), -10.0F);
-  EXPECT_EQ(::lector::parse<float>("-10"), -10.0F);
-  EXPECT_EQ(::lector::parse<float>("-10L"), -10.0F);
-  EXPECT_EQ(::lector::parse<float>("-10l"), -10.0F);
-
-  // Decimal notation.
-  EXPECT_EQ(::lector::parse<float>("-3.14F"), -3.14F);
-  EXPECT_EQ(::lector::parse<float>("-3.14f"), -3.14F);
-  EXPECT_EQ(::lector::parse<float>("-3.14"), -3.14F);
-  EXPECT_EQ(::lector::parse<float>("-3.14L"), -3.14F);
-  EXPECT_EQ(::lector::parse<float>("-3.14l"), -3.14F);
-
-  // Scientific notation, small number.
-  EXPECT_EQ(::lector::parse<float>("-3.14E-12F"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E-12f"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E-12"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E-12L"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E-12l"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e-12F"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e-12f"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e-12"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e-12L"), -3.14E-12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e-12l"), -3.14E-12F);
-
-  // Scientific notation, large number.
-  EXPECT_EQ(::lector::parse<float>("-3.14E12F"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E12f"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E12"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E12L"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E12l"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e12F"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e12f"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e12"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e12L"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e12l"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E+12F"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E+12f"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E+12"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E+12L"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14E+12l"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e+12F"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e+12f"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e+12"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e+12L"), -3.14E12F);
-  EXPECT_EQ(::lector::parse<float>("-3.14e+12l"), -3.14E12F);
-}
-
-TEST(Lector, ParseNumberInteger8) {
-  EXPECT_EQ(::lector::parse<::std::int8_t>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("1000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("-1000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("-123"), -123);
-}
-
-TEST(Lector, ParseNumberInteger16) {
-  EXPECT_EQ(::lector::parse<::std::int16_t>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("1000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-1000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-123"), -123);
-}
-
-TEST(Lector, ParseNumberInteger32) {
-  EXPECT_EQ(::lector::parse<::std::int32_t>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("10000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("-10000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("-123"), -123);
-}
-
-TEST(Lector, ParseNumberInteger64) {
-  EXPECT_EQ(::lector::parse<::std::int64_t>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("1000000000000000000000000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("-1000000000000000000000000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("-123"), -123);
-}
-
-TEST(Lector, ParseNumberLongDouble) {
+TEST(Lector, ParseNumberFloatingPointPrecisionExtended) {
   // Invalid.
   EXPECT_EQ(::lector::parse<long double>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<long double>("Hello, world!"), ::std::nullopt);
@@ -1226,7 +1083,151 @@ TEST(Lector, ParseNumberLongDouble) {
   EXPECT_EQ(::lector::parse<long double>("-3.14e+12l"), -3.14E12L);
 }
 
-TEST(Lector, ParseNumberNatural8) {
+TEST(Lector, ParseNumberFloatingPointPrecisionSingle) {
+  // Invalid.
+  EXPECT_EQ(::lector::parse<float>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("-1.0E1000000000000000000000000000000"), ::std::nullopt);
+
+  // Not-a-number.
+  ASSERT_TRUE(::lector::parse<float>("NAN").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NAN").value()));
+  ASSERT_TRUE(::lector::parse<float>("NaN").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NaN").value()));
+  ASSERT_TRUE(::lector::parse<float>("nan").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("nan").value()));
+  ASSERT_TRUE(::lector::parse<float>("-NAN").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NAN").value()));
+  ASSERT_TRUE(::lector::parse<float>("-NaN").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NaN").value()));
+  ASSERT_TRUE(::lector::parse<float>("-nan").has_value());
+  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-nan").value()));
+
+  // Infinity.
+  EXPECT_EQ(::lector::parse<float>("INF"), ::std::numeric_limits<float>::infinity());
+  EXPECT_EQ(::lector::parse<float>("Inf"), ::std::numeric_limits<float>::infinity());
+  EXPECT_EQ(::lector::parse<float>("inf"), ::std::numeric_limits<float>::infinity());
+  EXPECT_EQ(::lector::parse<float>("-INF"), -::std::numeric_limits<float>::infinity());
+  EXPECT_EQ(::lector::parse<float>("-Inf"), -::std::numeric_limits<float>::infinity());
+  EXPECT_EQ(::lector::parse<float>("-inf"), -::std::numeric_limits<float>::infinity());
+
+  // Zero.
+  EXPECT_EQ(::lector::parse<float>("0F"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0f"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0L"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0l"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0.0F"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0.0f"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0.0"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0.0L"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("0.0l"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0F"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0f"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0L"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0l"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0.0F"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0.0f"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0.0"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0.0L"), 0.0F);
+  EXPECT_EQ(::lector::parse<float>("-0.0l"), 0.0F);
+
+  // Integer.
+  EXPECT_EQ(::lector::parse<float>("-10F"), -10.0F);
+  EXPECT_EQ(::lector::parse<float>("-10f"), -10.0F);
+  EXPECT_EQ(::lector::parse<float>("-10"), -10.0F);
+  EXPECT_EQ(::lector::parse<float>("-10L"), -10.0F);
+  EXPECT_EQ(::lector::parse<float>("-10l"), -10.0F);
+
+  // Decimal notation.
+  EXPECT_EQ(::lector::parse<float>("-3.14F"), -3.14F);
+  EXPECT_EQ(::lector::parse<float>("-3.14f"), -3.14F);
+  EXPECT_EQ(::lector::parse<float>("-3.14"), -3.14F);
+  EXPECT_EQ(::lector::parse<float>("-3.14L"), -3.14F);
+  EXPECT_EQ(::lector::parse<float>("-3.14l"), -3.14F);
+
+  // Scientific notation, small number.
+  EXPECT_EQ(::lector::parse<float>("-3.14E-12F"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E-12f"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E-12"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E-12L"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E-12l"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e-12F"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e-12f"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e-12"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e-12L"), -3.14E-12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e-12l"), -3.14E-12F);
+
+  // Scientific notation, large number.
+  EXPECT_EQ(::lector::parse<float>("-3.14E12F"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E12f"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E12"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E12L"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E12l"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e12F"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e12f"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e12"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e12L"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e12l"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E+12F"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E+12f"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E+12"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E+12L"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14E+12l"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e+12F"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e+12f"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e+12"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e+12L"), -3.14E12F);
+  EXPECT_EQ(::lector::parse<float>("-3.14e+12l"), -3.14E12F);
+}
+
+TEST(Lector, ParseNumberIntegerBits08) {
+  EXPECT_EQ(::lector::parse<::std::int8_t>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("1000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("-1000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("-0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("-123"), -123);
+}
+
+TEST(Lector, ParseNumberIntegerBits16) {
+  EXPECT_EQ(::lector::parse<::std::int16_t>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("1000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-1000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-123"), -123);
+}
+
+TEST(Lector, ParseNumberIntegerBits32) {
+  EXPECT_EQ(::lector::parse<::std::int32_t>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("10000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("-10000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("-0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("-123"), -123);
+}
+
+TEST(Lector, ParseNumberIntegerBits64) {
+  EXPECT_EQ(::lector::parse<::std::int64_t>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("-1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("-0"), 0);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("-123"), -123);
+}
+
+TEST(Lector, ParseNumberNaturalBits08) {
   EXPECT_EQ(::lector::parse<::std::uint8_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("-0"), ::std::nullopt);
@@ -1236,7 +1237,7 @@ TEST(Lector, ParseNumberNatural8) {
   EXPECT_EQ(::lector::parse<::std::uint8_t>("123"), 123);
 }
 
-TEST(Lector, ParseNumberNatural16) {
+TEST(Lector, ParseNumberNaturalBits16) {
   EXPECT_EQ(::lector::parse<::std::uint16_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("-0"), ::std::nullopt);
@@ -1246,7 +1247,7 @@ TEST(Lector, ParseNumberNatural16) {
   EXPECT_EQ(::lector::parse<::std::uint16_t>("123"), 123);
 }
 
-TEST(Lector, ParseNumberNatural32) {
+TEST(Lector, ParseNumberNaturalBits32) {
   EXPECT_EQ(::lector::parse<::std::uint32_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("-0"), ::std::nullopt);
@@ -1256,7 +1257,7 @@ TEST(Lector, ParseNumberNatural32) {
   EXPECT_EQ(::lector::parse<::std::uint32_t>("123"), 123);
 }
 
-TEST(Lector, ParseNumberNatural64) {
+TEST(Lector, ParseNumberNaturalBits64) {
   EXPECT_EQ(::lector::parse<::std::uint64_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("-0"), ::std::nullopt);
@@ -1267,8 +1268,18 @@ TEST(Lector, ParseNumberNatural64) {
 }
 
 TEST(Lector, ParseString) {
-  EXPECT_EQ(::lector::parse<::std::string>(""), ::std::string{""});
-  EXPECT_EQ(::lector::parse<::std::string>("Hello, world!"), ::std::string{"Hello, world!"});
+  EXPECT_EQ(::lector::parse<::std::string>(""), "");
+  EXPECT_EQ(::lector::parse<::std::string>("Hello, world!"), "Hello, world!");
+}
+
+TEST(Lector, ParseStringView) {
+  EXPECT_EQ(::lector::parse<::std::string_view>(""), "");
+  EXPECT_EQ(::lector::parse<::std::string_view>("Hello, world!"), "Hello, world!");
+}
+
+TEST(Lector, PrintBoolean) {
+  EXPECT_EQ(::lector::print(true), "true");
+  EXPECT_EQ(::lector::print(false), "false");
 }
 
 TEST(Lector, PrintEnumeration) {
@@ -1279,8 +1290,124 @@ TEST(Lector, PrintEnumeration) {
   EXPECT_EQ(
       ::lector::print_enumeration<::lector::Importance>(static_cast<::lector::Importance>(123)),
       "");
+
+  EXPECT_EQ(::lector::print<::lector::Importance>(::lector::Importance::Optional), "Optional");
+  EXPECT_EQ(::lector::print<::lector::Importance>(::lector::Importance::Required), "Required");
+  EXPECT_EQ(::lector::print<::lector::Importance>(static_cast<::lector::Importance>(123)), "");
 }
 
-// TODO: Add unit tests for the lector::print functions.
+TEST(Lector, PrintFilesystemPath) {
+  EXPECT_EQ(::lector::print<::std::filesystem::path>(""), "");
+  EXPECT_EQ(::lector::print<::std::filesystem::path>("/some/path"), "/some/path");
+  EXPECT_EQ(::lector::print<::std::filesystem::path>("file.txt"), "file.txt");
+  EXPECT_EQ(::lector::print<::std::filesystem::path>("/some/file.txt"), "/some/file.txt");
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
+  EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "-nan");
+  EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::quiet_NaN()), "nan");
+  EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::infinity()), "inf");
+  EXPECT_EQ(::lector::print<double>(-0.0), "-0.000000");
+  EXPECT_EQ(::lector::print<double>(0.0), "0.000000");
+  EXPECT_EQ(::lector::print<double>(-3.14), "-3.140000");
+  EXPECT_EQ(::lector::print<double>(3.14), "3.140000");
+  EXPECT_EQ(::lector::print<double>(-3.14E-8), "-0.000000");
+  EXPECT_EQ(::lector::print<double>(3.14E-8), "0.000000");
+  EXPECT_EQ(::lector::print<double>(-3.14E8), "-314000000.000000");
+  EXPECT_EQ(::lector::print<double>(3.14E8), "314000000.000000");
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
+  EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::quiet_NaN()), "-nan");
+  EXPECT_EQ(::lector::print<long double>(std::numeric_limits<long double>::quiet_NaN()), "nan");
+  EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<long double>(std::numeric_limits<long double>::infinity()), "inf");
+  EXPECT_EQ(::lector::print<long double>(-0.0L), "-0.000000");
+  EXPECT_EQ(::lector::print<long double>(0.0L), "0.000000");
+  EXPECT_EQ(::lector::print<long double>(-3.14L), "-3.140000");
+  EXPECT_EQ(::lector::print<long double>(3.14L), "3.140000");
+  EXPECT_EQ(::lector::print<long double>(-3.14E-8L), "-0.000000");
+  EXPECT_EQ(::lector::print<long double>(3.14E-8L), "0.000000");
+  EXPECT_EQ(::lector::print<long double>(-3.14E8L), "-314000000.000000");
+  EXPECT_EQ(::lector::print<long double>(3.14E8L), "314000000.000000");
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
+  EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::quiet_NaN()), "-nan");
+  EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::quiet_NaN()), "nan");
+  EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::infinity()), "inf");
+  EXPECT_EQ(::lector::print<float>(-0.0F), "-0.000000");
+  EXPECT_EQ(::lector::print<float>(0.0F), "0.000000");
+  EXPECT_EQ(::lector::print<float>(-3.14F), "-3.140000");
+  EXPECT_EQ(::lector::print<float>(3.14F), "3.140000");
+  EXPECT_EQ(::lector::print<float>(-3.14E-8F), "-0.000000");
+  EXPECT_EQ(::lector::print<float>(3.14E-8F), "0.000000");
+  EXPECT_EQ(::lector::print<float>(-3.14E8F), "-314000000.000000");
+  EXPECT_EQ(::lector::print<float>(3.14E8F), "314000000.000000");
+}
+
+TEST(Lector, PrintNumberIntegerBits08) {
+  EXPECT_EQ(::lector::print<::std::int8_t>(-123), "-123");
+  EXPECT_EQ(::lector::print<::std::int8_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::int8_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::int8_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberIntegerBits16) {
+  EXPECT_EQ(::lector::print<::std::int16_t>(-123), "-123");
+  EXPECT_EQ(::lector::print<::std::int16_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::int16_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::int16_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberIntegerBits32) {
+  EXPECT_EQ(::lector::print<::std::int32_t>(-123), "-123");
+  EXPECT_EQ(::lector::print<::std::int32_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::int32_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::int32_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberIntegerBits64) {
+  EXPECT_EQ(::lector::print<::std::int64_t>(-123), "-123");
+  EXPECT_EQ(::lector::print<::std::int64_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::int64_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::int64_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberNaturalBits08) {
+  EXPECT_EQ(::lector::print<::std::uint8_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::uint8_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::uint8_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberNaturalBits16) {
+  EXPECT_EQ(::lector::print<::std::uint16_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::uint16_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::uint16_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberNaturalBits32) {
+  EXPECT_EQ(::lector::print<::std::uint32_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::uint32_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::uint32_t>(123), "123");
+}
+
+TEST(Lector, PrintNumberNaturalBits64) {
+  EXPECT_EQ(::lector::print<::std::uint64_t>(-0), "0");
+  EXPECT_EQ(::lector::print<::std::uint64_t>(0), "0");
+  EXPECT_EQ(::lector::print<::std::uint64_t>(123), "123");
+}
+
+TEST(Lector, PrintString) {
+  EXPECT_EQ(::lector::print<::std::string>(""), "");
+  EXPECT_EQ(::lector::print<::std::string>("Hello, world!"), "Hello, world!");
+}
+
+TEST(Lector, PrintStringView) {
+  EXPECT_EQ(::lector::print<::std::string_view>(""), "");
+  EXPECT_EQ(::lector::print<::std::string_view>("Hello, world!"), "Hello, world!");
+}
 
 }  // namespace
