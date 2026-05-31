@@ -1281,4 +1281,6 @@ TEST(Lector, PrintEnumeration) {
       "");
 }
 
+// TODO: Add unit tests for the lector::print functions.
+
 }  // namespace

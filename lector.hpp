@@ -231,6 +231,8 @@ template <>
   return std::to_string(value);
 }
 
+// TODO: Add specializations of the lector::print function for character types.
+
 /// @brief Prints a string as a string.
 /// @param[in] value The string to print.
 /// @return The string that contains the printed string.
@@ -510,6 +512,8 @@ template <>
   }
   return number;
 }
+
+// TODO: Add specializations of the lector::parse function for character types.
 
 /// @brief Parses a string view into a string. Does not mutate the string view in any way.
 /// @param[in] text The string view to parse.
