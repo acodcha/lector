@@ -33,6 +33,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace lector {
@@ -120,6 +121,155 @@ inline constexpr std::array<lector::Spelling<lector::Importance>, 6> Spellings<l
    {"REQUIRED", lector::Importance::Required},
    }
 };
+
+/// @brief Prints a value of a specific type as a string.
+/// @tparam Type The type of the value to print.
+/// @param[in] value The value to print.
+/// @return The string that contains the printed value.
+template <typename Type>
+[[nodiscard]] std::string print(const Type& value);
+
+/// @brief Prints a boolean value as a string.
+/// @param[in] value The boolean value to print.
+/// @return The string that contains the printed boolean value.
+template <>
+[[nodiscard]] std::string print(const bool& value) {
+  if (value) {
+    return "true";
+  }
+  return "false";
+}
+
+/// @brief Prints an 8-bit natural number as a string.
+/// @param[in] value The 8-bit natural number to print.
+/// @return The string that contains the printed 8-bit natural number.
+template <>
+[[nodiscard]] std::string print(const std::uint8_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 16-bit natural number as a string.
+/// @param[in] value The 16-bit natural number to print.
+/// @return The string that contains the printed 16-bit natural number.
+template <>
+[[nodiscard]] std::string print(const std::uint16_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 32-bit natural number as a string.
+/// @param[in] value The 32-bit natural number to print.
+/// @return The string that contains the printed 32-bit natural number.
+template <>
+[[nodiscard]] std::string print(const std::uint32_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 64-bit natural number as a string.
+/// @param[in] value The 64-bit natural number to print.
+/// @return The string that contains the printed 64-bit natural number.
+template <>
+[[nodiscard]] std::string print(const std::uint64_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints an 8-bit integer number as a string.
+/// @param[in] value The 8-bit integer number to print.
+/// @return The string that contains the printed 8-bit integer number.
+template <>
+[[nodiscard]] std::string print(const std::int8_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 16-bit integer number as a string.
+/// @param[in] value The 16-bit integer number to print.
+/// @return The string that contains the printed 16-bit integer number.
+template <>
+[[nodiscard]] std::string print(const std::int16_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 32-bit integer number as a string.
+/// @param[in] value The 32-bit integer number to print.
+/// @return The string that contains the printed 32-bit integer number.
+template <>
+[[nodiscard]] std::string print(const std::int32_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a 64-bit integer number as a string.
+/// @param[in] value The 64-bit integer number to print.
+/// @return The string that contains the printed 64-bit integer number.
+template <>
+[[nodiscard]] std::string print(const std::int64_t& value) {
+  return std::to_string(value);
+}
+
+/// @brief Prints a single-precision floating-point number as a string.
+/// @param[in] value The single-precision floating-point number to print.
+/// @return The string that contains the printed single-precision floating-point number.
+template <>
+[[nodiscard]] std::string print(const float& value) {
+  // TODO: Use a more precise way of converting a floating-point number to a string.
+  return std::to_string(value);
+}
+
+/// @brief Prints a double-precision floating-point number as a string.
+/// @param[in] value The double-precision floating-point number to print.
+/// @return The string that contains the printed double-precision floating-point number.
+template <>
+[[nodiscard]] std::string print(const double& value) {
+  // TODO: Use a more precise way of converting a floating-point number to a string.
+  return std::to_string(value);
+}
+
+/// @brief Prints an extended-precision floating-point number as a string.
+/// @param[in] value The extended-precision floating-point number to print.
+/// @return The string that contains the printed extended-precision floating-point number.
+template <>
+[[nodiscard]] std::string print(const long double& value) {
+  // TODO: Use a more precise way of converting a floating-point number to a string.
+  return std::to_string(value);
+}
+
+/// @brief Prints a string as a string.
+/// @param[in] value The string to print.
+/// @return The string that contains the printed string.
+template <>
+[[nodiscard]] std::string print(const std::string& value) {
+  return value;
+}
+
+/// @brief Prints a string view as a string.
+/// @param[in] value The string view to print.
+/// @return The string that contains the printed string view.
+template <>
+[[nodiscard]] std::string print(const std::string_view& value) {
+  return std::string(value);
+}
+
+/// @brief Prints a filesystem path as a string.
+/// @param[in] value The filesystem path to print.
+/// @return The string that contains the printed filesystem path.
+template <>
+[[nodiscard]] std::string print(const std::filesystem::path& value) {
+  return value.string();
+}
+
+/// @brief Prints a value of a specific type as a string. If the type is an enumeration type, it
+/// must define a specialization of the lector::Printings constant for its type.
+/// @tparam Type The type of the value to print.
+/// @param[in] value The value to print.
+/// @return The string that contains the printed value.
+template <typename Type>
+[[nodiscard]] std::string print(const Type& value) {
+  if constexpr (std::is_enum_v<Type>) {
+    return std::string{lector::print_enumeration(value)};
+  } else {
+    std::ostringstream stream;
+    stream << value;
+    return stream.str();
+  }
+}
 
 /// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
 /// it must define a specialization of the lector::Spellings constant for its type.
@@ -458,18 +608,20 @@ public:
   ~Argument() noexcept = default;
 
   /// @brief Copy constructor. Constructs this command line argument by copying another one.
-  Argument(const Argument&) = default;
+  Argument(const lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
   /// @return This command line argument after the assignment.
-  Argument& operator=(const Argument&) = default;
+  lector::Argument<LabelValue, Type>& operator=(
+      const lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Move constructor. Constructs this command line argument by moving another one.
-  Argument(Argument&&) noexcept = default;
+  Argument(lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this command line argument by moving another one.
   /// @return This command line argument after the assignment.
-  Argument& operator=(Argument&&) noexcept = default;
+  lector::Argument<LabelValue, Type>& operator=(
+      lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Label of this command line argument. Used to uniquely identify this command line
   /// argument. Set at construction.
@@ -551,43 +703,14 @@ public:
   /// @brief Prints the execution of this command line argument as a string.
   /// @return The string that contains the execution of this command line argument.
   std::string print_execution() const {
-    if constexpr (std::is_enum_v<Type>) {
-      if (parsed_value_.has_value()) {
-        return longest_key() + " " + std::string{lector::print_enumeration(parsed_value_.value())};
-      }
-      return "";
-    } else if constexpr (std::is_same_v<Type, bool>) {
+    if constexpr (std::is_same_v<Type, bool>) {
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
       }
       return "";
-    } else if constexpr (std::numeric_limits<Type>::is_integer) {
-      if (parsed_value_.has_value()) {
-        return longest_key() + " " + std::to_string(parsed_value_.value());
-      }
-      return "";
-    } else if constexpr (std::is_floating_point_v<Type>) {
-      if (parsed_value_.has_value()) {
-        // TODO: Use a more precise way to convert floating-point numbers to strings.
-        return longest_key() + " " + std::to_string(parsed_value_.value());
-      }
-      return "";
-    } else if constexpr (
-        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
-      if (parsed_value_.has_value()) {
-        return longest_key() + " " + parsed_value_.value();
-      }
-      return "";
-    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
-      if (parsed_value_.has_value()) {
-        return longest_key() + " " + parsed_value_.value().string();
-      }
-      return "";
     } else {
-      std::ostringstream stream;
       if (parsed_value_.has_value()) {
-        stream << longest_key() << " " << parsed_value_.value();
-        return stream.str();
+        return longest_key() + " " + lector::print<Type>(parsed_value_.value());
       }
       return "";
     }
@@ -714,13 +837,15 @@ public:
 
   ~Arguments() noexcept = default;
 
-  Arguments(const Arguments&) = default;
+  Arguments(const lector::Arguments<ArgumentTypes...>&) = default;
 
-  Arguments& operator=(const Arguments&) = default;
+  lector::Arguments<ArgumentTypes...>& operator=(
+      const lector::Arguments<ArgumentTypes...>&) = default;
 
-  Arguments(Arguments&&) noexcept = default;
+  Arguments(lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
-  Arguments& operator=(Arguments&&) noexcept = default;
+  lector::Arguments<ArgumentTypes...>& operator=(
+      lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   [[nodiscard]] const std::filesystem::path& executable_path() const {
     return executable_path_;
