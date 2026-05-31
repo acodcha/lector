@@ -26,6 +26,7 @@
 #include <filesystem>
 #include <initializer_list>
 #include <iostream>
+#include <limits>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -530,6 +531,23 @@ public:
     parsed_value_ = value;
   }
 
+  /// @brief Prints the keys and value types of this command line argument as a string.
+  /// @return The string that contains the keys and value types.
+  std::string print_keys_and_value_types() const {
+    std::string result;
+    for (std::size_t index{0}; index < keys_.size(); ++index) {
+      const std::string value_type{print_value_type()};
+      result += keys_[index];
+      if (!value_type.empty()) {
+        result += " " + value_type;
+      }
+      if (index + 1 < keys_.size()) {
+        result += ", ";
+      }
+    }
+    return result;
+  }
+
 private:
   /// @brief If this command line argument is a boolean argument, sets its default value to false.
   /// Called by the constructor that does not specify a default value. Boolean arguments are always
@@ -572,6 +590,25 @@ private:
   constexpr void validate_default_value() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument("A boolean argument cannot have a default value.");
+    }
+  }
+
+  /// @brief Prints the value type of this command line argument as a string.
+  /// @return The string that contains the value type.
+  std::string print_value_type() const {
+    if (std::is_same_v<Type, bool>) {
+      return "";
+    } else if constexpr (std::numeric_limits<Type>::is_integer) {
+      return "<number>";
+    } else if constexpr (std::is_floating_point_v<Type>) {
+      return "<value>";
+    } else if constexpr (
+        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
+      return "<text>";
+    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
+      return "<path>";
+    } else {
+      return "<value>";
     }
   }
 

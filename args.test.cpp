@@ -333,6 +333,7 @@ TEST(Args, ArgumentConstructorBooleanDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorBooleanOptional) {
@@ -345,6 +346,7 @@ TEST(Args, ArgumentConstructorBooleanOptional) {
   EXPECT_EQ(argument.default_value(), false);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_FALSE(argument.parsed_or_default_value());
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-h, --help");
 }
 
 TEST(Args, ArgumentConstructorEnumerationDefault) {
@@ -355,6 +357,7 @@ TEST(Args, ArgumentConstructorEnumerationDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorEnumerationRequired) {
@@ -367,6 +370,7 @@ TEST(Args, ArgumentConstructorEnumerationRequired) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
 }
 
 TEST(Args, ArgumentConstructorEnumerationOptional) {
@@ -380,6 +384,7 @@ TEST(Args, ArgumentConstructorEnumerationOptional) {
   EXPECT_EQ(argument.default_value(), ::test::Color::Red);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
 }
 
 TEST(Args, ArgumentConstructorFilesystemPathDefault) {
@@ -390,6 +395,7 @@ TEST(Args, ArgumentConstructorFilesystemPathDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorFilesystemPathRequired) {
@@ -402,6 +408,7 @@ TEST(Args, ArgumentConstructorFilesystemPathRequired) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
 }
 
 TEST(Args, ArgumentConstructorFilesystemPathOptional) {
@@ -415,6 +422,7 @@ TEST(Args, ArgumentConstructorFilesystemPathOptional) {
   EXPECT_EQ(argument.default_value(), ::std::filesystem::path("/some/path"));
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path("/some/path"));
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
 }
 
 TEST(Args, ArgumentConstructorNumberDoubleDefault) {
@@ -425,6 +433,7 @@ TEST(Args, ArgumentConstructorNumberDoubleDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorNumberDoubleRequired) {
@@ -437,6 +446,7 @@ TEST(Args, ArgumentConstructorNumberDoubleRequired) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
 }
 
 TEST(Args, ArgumentConstructorNumberDoubleOptional) {
@@ -450,6 +460,7 @@ TEST(Args, ArgumentConstructorNumberDoubleOptional) {
   EXPECT_EQ(argument.default_value(), 1.0E-3);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 1.0E-3);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
 }
 
 TEST(Args, ArgumentConstructorNumberIntegerDefault) {
@@ -460,6 +471,7 @@ TEST(Args, ArgumentConstructorNumberIntegerDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorNumberIntegerRequired) {
@@ -472,6 +484,7 @@ TEST(Args, ArgumentConstructorNumberIntegerRequired) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentConstructorNumberIntegerOptional) {
@@ -485,6 +498,7 @@ TEST(Args, ArgumentConstructorNumberIntegerOptional) {
   EXPECT_EQ(argument.default_value(), 100);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentConstructorStringDefault) {
@@ -495,6 +509,7 @@ TEST(Args, ArgumentConstructorStringDefault) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
 }
 
 TEST(Args, ArgumentConstructorStringRequired) {
@@ -507,6 +522,7 @@ TEST(Args, ArgumentConstructorStringRequired) {
   EXPECT_EQ(argument.importance(), ::args::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
 }
 
 TEST(Args, ArgumentConstructorStringOptional) {
@@ -520,6 +536,7 @@ TEST(Args, ArgumentConstructorStringOptional) {
   EXPECT_EQ(argument.default_value(), "My Report");
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
 }
 
 TEST(Args, ArgumentCopyConstructor) {
@@ -541,6 +558,7 @@ TEST(Args, ArgumentCopyConstructor) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentCopyAssignmentOperator) {
@@ -569,6 +587,7 @@ TEST(Args, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentMoveConstructor) {
@@ -590,6 +609,7 @@ TEST(Args, ArgumentMoveConstructor) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentMoveAssignmentOperator) {
@@ -618,6 +638,7 @@ TEST(Args, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentSetParsedValue) {
@@ -639,6 +660,7 @@ TEST(Args, ArgumentSetParsedValue) {
   EXPECT_EQ(argument.default_value(), 100);
   EXPECT_EQ(argument.parsed_value(), 200);
   EXPECT_EQ(argument.parsed_or_default_value(), 200);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
 }
 
 TEST(Args, ArgumentValidate) {
