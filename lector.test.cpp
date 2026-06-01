@@ -155,7 +155,7 @@ create_argument_iterations_required() {
 ::lector::Argument<::test::Label::Tolerance, double> create_argument_tolerance_optional() {
   return ::lector::Argument<::test::Label::Tolerance, double>{
     ::std::initializer_list<::std::string>{"-t", "--tolerance"},
-    "Tolerance value.", 1.0E-3
+    "Tolerance value.", 0.03125
   };
 }
 
@@ -366,20 +366,6 @@ TEST(Lector, ArgumentConstructorEnumerationDefault) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorEnumerationRequired) {
-  const ::lector::Argument<::test::Label::Color, ::test::Color> argument{
-    ::test::create_argument_color_required()};
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
-  const ::std::vector<::std::string> expected_keys{"-c", "--color"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Main output color.");
-  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
-  EXPECT_EQ(argument.default_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
-}
-
 TEST(Lector, ArgumentConstructorEnumerationOptional) {
   const ::lector::Argument<::test::Label::Color, ::test::Color> argument{
     ::test::create_argument_color_optional()};
@@ -395,6 +381,20 @@ TEST(Lector, ArgumentConstructorEnumerationOptional) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
+TEST(Lector, ArgumentConstructorEnumerationRequired) {
+  const ::lector::Argument<::test::Label::Color, ::test::Color> argument{
+    ::test::create_argument_color_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::Color);
+  const ::std::vector<::std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
+  EXPECT_TRUE(argument.print_execution().empty());
+}
+
 TEST(Lector, ArgumentConstructorFilesystemPathDefault) {
   const ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument;
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
@@ -404,20 +404,6 @@ TEST(Lector, ArgumentConstructorFilesystemPathDefault) {
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
-}
-
-TEST(Lector, ArgumentConstructorFilesystemPathRequired) {
-  const ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
-    ::test::create_argument_output_directory_required()};
-  EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
-  const ::std::vector<::std::string> expected_keys{"-o", "--output"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Output directory.");
-  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
-  EXPECT_EQ(argument.default_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
@@ -436,7 +422,21 @@ TEST(Lector, ArgumentConstructorFilesystemPathOptional) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNumberDoubleDefault) {
+TEST(Lector, ArgumentConstructorFilesystemPathRequired) {
+  const ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path> argument{
+    ::test::create_argument_output_directory_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
+  const ::std::vector<::std::string> expected_keys{"-o", "--output"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Output directory.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
+  EXPECT_TRUE(argument.print_execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorNumberFloatingPointDefault) {
   const ::lector::Argument<::test::Label::Tolerance, double> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -448,7 +448,22 @@ TEST(Lector, ArgumentConstructorNumberDoubleDefault) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNumberDoubleRequired) {
+TEST(Lector, ArgumentConstructorNumberFloatingPointOptional) {
+  const ::lector::Argument<::test::Label::Tolerance, double> argument{
+    ::test::create_argument_tolerance_optional()};
+  EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
+  const ::std::vector<::std::string> expected_keys{"-t", "--tolerance"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Tolerance value.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 0.03125);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), 0.03125);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
+  EXPECT_TRUE(argument.print_execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorNumberFloatingPointRequired) {
   const ::lector::Argument<::test::Label::Tolerance, double> argument{
     ::test::create_argument_tolerance_required()};
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
@@ -462,21 +477,6 @@ TEST(Lector, ArgumentConstructorNumberDoubleRequired) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNumberDoubleOptional) {
-  const ::lector::Argument<::test::Label::Tolerance, double> argument{
-    ::test::create_argument_tolerance_optional()};
-  EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
-  const ::std::vector<::std::string> expected_keys{"-t", "--tolerance"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Tolerance value.");
-  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 1.0E-3);
-  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), 1.0E-3);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
-}
-
 TEST(Lector, ArgumentConstructorNumberIntegerDefault) {
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
@@ -486,20 +486,6 @@ TEST(Lector, ArgumentConstructorNumberIntegerDefault) {
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
-}
-
-TEST(Lector, ArgumentConstructorNumberIntegerRequired) {
-  const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> argument{
-    ::test::create_argument_iterations_required()};
-  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
-  const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Number of iterations.");
-  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
-  EXPECT_EQ(argument.default_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
@@ -518,6 +504,20 @@ TEST(Lector, ArgumentConstructorNumberIntegerOptional) {
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
+TEST(Lector, ArgumentConstructorNumberIntegerRequired) {
+  const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> argument{
+    ::test::create_argument_iterations_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::Iterations);
+  const ::std::vector<::std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(argument.print_execution().empty());
+}
+
 TEST(Lector, ArgumentConstructorStringDefault) {
   const ::lector::Argument<::test::Label::Title, ::std::string> argument;
   EXPECT_EQ(argument.label(), ::test::Label::Title);
@@ -527,20 +527,6 @@ TEST(Lector, ArgumentConstructorStringDefault) {
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
-}
-
-TEST(Lector, ArgumentConstructorStringRequired) {
-  const ::lector::Argument<::test::Label::Title, ::std::string> argument{
-    ::test::create_argument_title_required()};
-  EXPECT_EQ(argument.label(), ::test::Label::Title);
-  const ::std::vector<::std::string> expected_keys{"-t", "--title"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Title of the report.");
-  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
-  EXPECT_EQ(argument.default_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
   EXPECT_TRUE(argument.print_execution().empty());
 }
 
@@ -555,6 +541,20 @@ TEST(Lector, ArgumentConstructorStringOptional) {
   EXPECT_EQ(argument.default_value(), "My Report");
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
+  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
+  EXPECT_TRUE(argument.print_execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorStringRequired) {
+  const ::lector::Argument<::test::Label::Title, ::std::string> argument{
+    ::test::create_argument_title_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::Title);
+  const ::std::vector<::std::string> expected_keys{"-t", "--title"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Title of the report.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
   EXPECT_TRUE(argument.print_execution().empty());
 }
@@ -742,7 +742,7 @@ TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
   EXPECT_EQ(argument.print_execution(), "--output /another/path");
 }
 
-TEST(Lector, ArgumentSetParsedValueNumberDouble) {
+TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   ::lector::Argument<::test::Label::Tolerance, double> argument{
     ::test::create_argument_tolerance_optional()};
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
@@ -750,20 +750,20 @@ TEST(Lector, ArgumentSetParsedValueNumberDouble) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 1.0E-3);
+  EXPECT_EQ(argument.default_value(), 0.03125);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), 1.0E-3);
+  EXPECT_EQ(argument.parsed_or_default_value(), 0.03125);
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set(5.0E-3);
+  argument.set(0.015625);
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 1.0E-3);
-  EXPECT_EQ(argument.parsed_value(), 5.0E-3);
-  EXPECT_EQ(argument.parsed_or_default_value(), 5.0E-3);
+  EXPECT_EQ(argument.default_value(), 0.03125);
+  EXPECT_EQ(argument.parsed_value(), 0.015625);
+  EXPECT_EQ(argument.parsed_or_default_value(), 0.015625);
   EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.print_execution(), "--tolerance 0.005000");
+  EXPECT_EQ(argument.print_execution(), "--tolerance 0.0156250000000000000");
 }
 
 TEST(Lector, ArgumentSetParsedValueNumberInteger) {
@@ -1305,47 +1305,57 @@ TEST(Lector, PrintFilesystemPath) {
 
 TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "-nan");
-  EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<double>(-4096.0), "-4096.00000000000000");
+  EXPECT_EQ(::lector::print<double>(-512.0), "-512.000000000000000");
+  EXPECT_EQ(::lector::print<double>(-64.0), "-64.0000000000000000");
+  EXPECT_EQ(::lector::print<double>(-8.0), "-8.00000000000000000");
+  EXPECT_EQ(::lector::print<double>(-1.0), "-1.00000000000000000");
+  EXPECT_EQ(::lector::print<double>(-0.125), "-0.125000000000000000");
+  EXPECT_EQ(::lector::print<double>(-0.015625), "-0.0156250000000000000");
+  EXPECT_EQ(::lector::print<double>(-0.0), "0");
+  EXPECT_EQ(::lector::print<double>(0.0), "0");
+  EXPECT_EQ(::lector::print<double>(0.015625), "0.0156250000000000000");
+  EXPECT_EQ(::lector::print<double>(0.125), "0.125000000000000000");
+  EXPECT_EQ(::lector::print<double>(1.0), "1.00000000000000000");
+  EXPECT_EQ(::lector::print<double>(8.0), "8.00000000000000000");
+  EXPECT_EQ(::lector::print<double>(64.0), "64.0000000000000000");
+  EXPECT_EQ(::lector::print<double>(512.0), "512.000000000000000");
+  EXPECT_EQ(::lector::print<double>(4096.0), "4096.00000000000000");
   EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::infinity()), "inf");
-  EXPECT_EQ(::lector::print<double>(-0.0), "-0.000000");
-  EXPECT_EQ(::lector::print<double>(0.0), "0.000000");
-  EXPECT_EQ(::lector::print<double>(-3.14), "-3.140000");
-  EXPECT_EQ(::lector::print<double>(3.14), "3.140000");
-  EXPECT_EQ(::lector::print<double>(-3.14E-8), "-0.000000");
-  EXPECT_EQ(::lector::print<double>(3.14E-8), "0.000000");
-  EXPECT_EQ(::lector::print<double>(-3.14E8), "-314000000.000000");
-  EXPECT_EQ(::lector::print<double>(3.14E8), "314000000.000000");
+  EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::quiet_NaN()), "nan");
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
   EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::quiet_NaN()), "-nan");
-  EXPECT_EQ(::lector::print<long double>(std::numeric_limits<long double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<long double>(-0.0L), "0");
+  EXPECT_EQ(::lector::print<long double>(0.0L), "0");
   EXPECT_EQ(::lector::print<long double>(std::numeric_limits<long double>::infinity()), "inf");
-  EXPECT_EQ(::lector::print<long double>(-0.0L), "-0.000000");
-  EXPECT_EQ(::lector::print<long double>(0.0L), "0.000000");
-  EXPECT_EQ(::lector::print<long double>(-3.14L), "-3.140000");
-  EXPECT_EQ(::lector::print<long double>(3.14L), "3.140000");
-  EXPECT_EQ(::lector::print<long double>(-3.14E-8L), "-0.000000");
-  EXPECT_EQ(::lector::print<long double>(3.14E-8L), "0.000000");
-  EXPECT_EQ(::lector::print<long double>(-3.14E8L), "-314000000.000000");
-  EXPECT_EQ(::lector::print<long double>(3.14E8L), "314000000.000000");
+  EXPECT_EQ(::lector::print<long double>(std::numeric_limits<long double>::quiet_NaN()), "nan");
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
   EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::quiet_NaN()), "-nan");
-  EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::infinity()), "-inf");
+  EXPECT_EQ(::lector::print<float>(-4096.0F), "-4096.000000");
+  EXPECT_EQ(::lector::print<float>(-512.0F), "-512.0000000");
+  EXPECT_EQ(::lector::print<float>(-64.0F), "-64.00000000");
+  EXPECT_EQ(::lector::print<float>(-8.0F), "-8.000000000");
+  EXPECT_EQ(::lector::print<float>(-1.0F), "-1.000000000");
+  EXPECT_EQ(::lector::print<float>(-0.125F), "-0.1250000000");
+  EXPECT_EQ(::lector::print<float>(-0.015625F), "-0.01562500000");
+  EXPECT_EQ(::lector::print<float>(-0.0F), "0");
+  EXPECT_EQ(::lector::print<float>(0.0F), "0");
+  EXPECT_EQ(::lector::print<float>(0.015625F), "0.01562500000");
+  EXPECT_EQ(::lector::print<float>(0.125F), "0.1250000000");
+  EXPECT_EQ(::lector::print<float>(1.0F), "1.000000000");
+  EXPECT_EQ(::lector::print<float>(8.0F), "8.000000000");
+  EXPECT_EQ(::lector::print<float>(64.0F), "64.00000000");
+  EXPECT_EQ(::lector::print<float>(512.0F), "512.0000000");
+  EXPECT_EQ(::lector::print<float>(4096.0F), "4096.000000");
   EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::infinity()), "inf");
-  EXPECT_EQ(::lector::print<float>(-0.0F), "-0.000000");
-  EXPECT_EQ(::lector::print<float>(0.0F), "0.000000");
-  EXPECT_EQ(::lector::print<float>(-3.14F), "-3.140000");
-  EXPECT_EQ(::lector::print<float>(3.14F), "3.140000");
-  EXPECT_EQ(::lector::print<float>(-3.14E-8F), "-0.000000");
-  EXPECT_EQ(::lector::print<float>(3.14E-8F), "0.000000");
-  EXPECT_EQ(::lector::print<float>(-3.14E8F), "-314000000.000000");
-  EXPECT_EQ(::lector::print<float>(3.14E8F), "314000000.000000");
+  EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::quiet_NaN()), "nan");
 }
 
 TEST(Lector, PrintNumberIntegerBits08) {

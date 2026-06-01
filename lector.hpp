@@ -209,8 +209,73 @@ template <>
 /// @return The string that contains the printed single-precision floating-point number.
 template <>
 [[nodiscard]] std::string print(const float& value) {
-  // TODO: Use a more precise way of converting a floating-point number to a string.
-  return std::to_string(value);
+  const float absolute{std::abs(value)};
+  std::ostringstream stream;
+  if (absolute < 1.0F) {
+    // Interval: [0, 1[
+    if (absolute < 0.001F) {
+      // Interval: [0, 0.001[
+      if (absolute == 0.0F) {
+        // Interval: [0, 0]
+        stream << 0;
+      } else {
+        // Interval: ]0, 0.001[
+        stream << std::scientific << std::setprecision(std::numeric_limits<float>::max_digits10)
+               << value;
+      }
+    } else {
+      // Interval: [0.001, 1[
+      if (absolute < 0.1F) {
+        // Interval: [0.001, 0.1[
+        if (absolute < 0.01F) {
+          // Interval: [0.001, 0.01[
+          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 3)
+                 << value;
+        } else {
+          // Interval: [0.01, 0.1[
+          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 2)
+                 << value;
+        }
+      } else {
+        // Interval: [0.1, 1[
+        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 1)
+               << value;
+      }
+    }
+  } else {
+    // Interval: [1, +inf[
+    if (absolute < 1000.0F) {
+      // Interval: [1, 1000[
+      if (absolute < 10.0F) {
+        // Interval: [1, 10[
+        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10)
+               << value;
+      } else {
+        // Interval: [10, 1000[
+        if (absolute < 100.0F) {
+          // Interval: [10, 100[
+          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 1)
+                 << value;
+        } else {
+          // Interval: [100, 1000[
+          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 2)
+                 << value;
+        }
+      }
+    } else {
+      // Interval: [1000, +inf[
+      if (absolute < 10000.0F) {
+        // Interval: [1000, 10000[
+        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 3)
+               << value;
+      } else {
+        // Interval: [10000, +inf[
+        stream << std::scientific << std::setprecision(std::numeric_limits<float>::max_digits10)
+               << value;
+      }
+    }
+  }
+  return stream.str();
 }
 
 /// @brief Prints a double-precision floating-point number as a string.
@@ -218,8 +283,73 @@ template <>
 /// @return The string that contains the printed double-precision floating-point number.
 template <>
 [[nodiscard]] std::string print(const double& value) {
-  // TODO: Use a more precise way of converting a floating-point number to a string.
-  return std::to_string(value);
+  const double absolute{std::abs(value)};
+  std::ostringstream stream;
+  if (absolute < 1.0) {
+    // Interval: [0, 1[
+    if (absolute < 0.001) {
+      // Interval: [0, 0.001[
+      if (absolute == 0.0) {
+        // Interval: [0, 0]
+        stream << 0;
+      } else {
+        // Interval: ]0, 0.001[
+        stream << std::scientific << std::setprecision(std::numeric_limits<double>::max_digits10)
+               << value;
+      }
+    } else {
+      // Interval: [0.001, 1[
+      if (absolute < 0.1) {
+        // Interval: [0.001, 0.1[
+        if (absolute < 0.01) {
+          // Interval: [0.001, 0.01[
+          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 3)
+                 << value;
+        } else {
+          // Interval: [0.01, 0.1[
+          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 2)
+                 << value;
+        }
+      } else {
+        // Interval: [0.1, 1[
+        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 1)
+               << value;
+      }
+    }
+  } else {
+    // Interval: [1, +inf[
+    if (absolute < 1000.0) {
+      // Interval: [1, 1000[
+      if (absolute < 10.0) {
+        // Interval: [1, 10[
+        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10)
+               << value;
+      } else {
+        // Interval: [10, 1000[
+        if (absolute < 100.0) {
+          // Interval: [10, 100[
+          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 1)
+                 << value;
+        } else {
+          // Interval: [100, 1000[
+          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 2)
+                 << value;
+        }
+      }
+    } else {
+      // Interval: [1000, +inf[
+      if (absolute < 10000.0) {
+        // Interval: [1000, 10000[
+        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 3)
+               << value;
+      } else {
+        // Interval: [10000, +inf[
+        stream << std::scientific << std::setprecision(std::numeric_limits<double>::max_digits10)
+               << value;
+      }
+    }
+  }
+  return stream.str();
 }
 
 /// @brief Prints an extended-precision floating-point number as a string.
@@ -227,8 +357,73 @@ template <>
 /// @return The string that contains the printed extended-precision floating-point number.
 template <>
 [[nodiscard]] std::string print(const long double& value) {
-  // TODO: Use a more precise way of converting a floating-point number to a string.
-  return std::to_string(value);
+  const long double absolute{std::abs(value)};
+  std::ostringstream stream;
+  if (absolute < 1.0L) {
+    // Interval: [0, 1[
+    if (absolute < 0.001L) {
+      // Interval: [0, 0.001[
+      if (absolute == 0.0L) {
+        // Interval: [0, 0]
+        stream << 0;
+      } else {
+        // Interval: ]0, 0.001[
+        stream << std::scientific
+               << std::setprecision(std::numeric_limits<long double>::max_digits10) << value;
+      }
+    } else {
+      // Interval: [0.001, 1[
+      if (absolute < 0.1L) {
+        // Interval: [0.001, 0.1[
+        if (absolute < 0.01L) {
+          // Interval: [0.001, 0.01[
+          stream << std::fixed
+                 << std::setprecision(std::numeric_limits<long double>::max_digits10 + 3) << value;
+        } else {
+          // Interval: [0.01, 0.1[
+          stream << std::fixed
+                 << std::setprecision(std::numeric_limits<long double>::max_digits10 + 2) << value;
+        }
+      } else {
+        // Interval: [0.1, 1[
+        stream << std::fixed
+               << std::setprecision(std::numeric_limits<long double>::max_digits10 + 1) << value;
+      }
+    }
+  } else {
+    // Interval: [1, +inf[
+    if (absolute < 1000.0L) {
+      // Interval: [1, 1000[
+      if (absolute < 10.0L) {
+        // Interval: [1, 10[
+        stream << std::fixed << std::setprecision(std::numeric_limits<long double>::max_digits10)
+               << value;
+      } else {
+        // Interval: [10, 1000[
+        if (absolute < 100.0L) {
+          // Interval: [10, 100[
+          stream << std::fixed
+                 << std::setprecision(std::numeric_limits<long double>::max_digits10 - 1) << value;
+        } else {
+          // Interval: [100, 1000[
+          stream << std::fixed
+                 << std::setprecision(std::numeric_limits<long double>::max_digits10 - 2) << value;
+        }
+      }
+    } else {
+      // Interval: [1000, +inf[
+      if (absolute < 10000.0L) {
+        // Interval: [1000, 10000[
+        stream << std::fixed
+               << std::setprecision(std::numeric_limits<long double>::max_digits10 - 3) << value;
+      } else {
+        // Interval: [10000, +inf[
+        stream << std::scientific
+               << std::setprecision(std::numeric_limits<long double>::max_digits10) << value;
+      }
+    }
+  }
+  return stream.str();
 }
 
 // TODO: Add specializations of the lector::print function for character types.
