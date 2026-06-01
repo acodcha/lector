@@ -314,18 +314,17 @@ TEST(Lector, ArgumentsParsesValidCommandLineSuccessfully) {
   ::lector::Arguments arguments{
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
-
-  ::test::Command command{"./my_app", "-c", "Red", "-o", "/tmp/out", "-i", "200", "-h"};
-
+  const ::test::Command command{
+    "/path/to/executable", "-c", "Red", "-o", "/path/to/output", "-i", "200", "-h"};
   EXPECT_TRUE(arguments.parse(command.argc(), command.argv()));
-
-  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("./my_app"));
-
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_or_default_value(), ::test::Color::Red);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value(),
-            ::std::filesystem::path("/tmp/out"));
+            ::std::filesystem::path("/path/to/output"));
   EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_or_default_value(), 200);
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
+  EXPECT_EQ(arguments.print_execution(),
+            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentConstructorBooleanDefault) {

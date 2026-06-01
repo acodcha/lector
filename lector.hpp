@@ -426,8 +426,6 @@ template <>
   return stream.str();
 }
 
-// TODO: Add specializations of the lector::print function for character types.
-
 /// @brief Prints a string as a string.
 /// @param[in] value The string to print.
 /// @return The string that contains the printed string.
@@ -708,8 +706,6 @@ template <>
   return number;
 }
 
-// TODO: Add specializations of the lector::parse function for character types.
-
 /// @brief Parses a string view into a string. Does not mutate the string view in any way.
 /// @param[in] text The string view to parse.
 /// @return The parsed string.
@@ -806,7 +802,7 @@ public:
   /// @brief Destructor. Destroys this command line argument.
   ~Argument() noexcept = default;
 
-  /// @brief Copy constructor. Constructs this command line argument by copying another one.
+  /// @brief Copy constructor. Constructs a command line argument by copying another one.
   Argument(const lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
@@ -814,7 +810,7 @@ public:
   lector::Argument<LabelValue, Type>& operator=(
       const lector::Argument<LabelValue, Type>&) = default;
 
-  /// @brief Move constructor. Constructs this command line argument by moving another one.
+  /// @brief Move constructor. Constructs a command line argument by moving another one.
   Argument(lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this command line argument by moving another one.
@@ -842,13 +838,6 @@ public:
     return description_;
   }
 
-  /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, while optional arguments may or may not be provided by the user. Set at construction.
-  /// @return The importance of this command line argument.
-  [[nodiscard]] lector::Importance importance() const noexcept {
-    return importance_;
-  }
-
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
   /// @return The default value of this command line argument.
@@ -861,6 +850,13 @@ public:
   /// @return The parsed value of this command line argument.
   [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
     return parsed_value_;
+  }
+
+  /// @brief Importance of this command line argument. Required arguments must be provided by the
+  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  /// @return The importance of this command line argument.
+  [[nodiscard]] lector::Importance importance() const noexcept {
+    return importance_;
   }
 
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
@@ -998,10 +994,6 @@ private:
   /// construction.
   std::string description_;
 
-  /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, while optional arguments may or may not be provided by the user. Set at construction.
-  lector::Importance importance_{lector::Importance::Required};
-
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
   std::optional<Type> default_value_;
@@ -1009,6 +1001,10 @@ private:
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
   std::optional<Type> parsed_value_;
+
+  /// @brief Importance of this command line argument. Required arguments must be provided by the
+  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  lector::Importance importance_{lector::Importance::Required};
 };
 
 /// @brief Type trait used to extract the exact lector::Argument<Label, Type> from a variadic pack
@@ -1028,84 +1024,42 @@ struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>, Rest.
   using type = typename lector::FindArgumentByLabel<Label, Rest...>::type;
 };
 
+/// @brief A collection of command line arguments that can be parsed from argc and argv.
+/// @tparam ...ArgumentTypes Variadic list of the types of the command line arguments in this
+/// collection.
 template <typename... ArgumentTypes>
 class Arguments {
 public:
-  // Move the variadic arguments into our tuple.
+  /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
+  /// list of command line arguments.
   explicit Arguments(ArgumentTypes... arguments) : arguments_(std::move(arguments)...) {}
 
+  /// @brief Destructor. Destroys this collection of command line arguments.
   ~Arguments() noexcept = default;
 
+  /// @brief Copy constructor. Constructs a collection of command line argument by copying another
+  /// one.
   Arguments(const lector::Arguments<ArgumentTypes...>&) = default;
 
+  /// @brief Copy assignment operator. Assigns this collection of command line argument by copying
+  /// another one.
+  /// @return This collection of command line argument after the assignment.
   lector::Arguments<ArgumentTypes...>& operator=(
       const lector::Arguments<ArgumentTypes...>&) = default;
 
+  /// @brief Move constructor. Constructs a collection of command line argument by moving another
+  /// one.
   Arguments(lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
+  /// @brief Move assignment operator. Assigns this collection of command line argument by moving
+  /// another one.
+  /// @return This collection of command line argument after the assignment.
   lector::Arguments<ArgumentTypes...>& operator=(
       lector::Arguments<ArgumentTypes...>&&) noexcept = default;
-
-  [[nodiscard]] const std::filesystem::path& executable_path() const {
-    return executable_path_;
-  }
-
-  // Type-safe getter using the compile-time label.
-  template <auto Label>
-  [[nodiscard]] const auto& get() const {
-    using Type = typename lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
-    return std::get<Type>(arguments_);
-  }
-
-  void print_execution() const {
-    std::cout << "Execution: ";
-    for (const std::string& argument : raw_arguments_) {
-      std::cout << argument << " ";
-    }
-    std::cout << std::endl;
-  }
-
-  [[nodiscard]] std::string print_usage_information() const {
-    std::ostringstream stream;
-    stream << "Usage: " << executable_path_.filename().string() << " [options]" << std::endl
-           << "Options:" << std::endl;
-
-    // Fold expression to iterate over the tuple elements.
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            stream << "  ";
-            for (std::size_t index{0}; index < argument.keys().size(); ++index) {
-              stream << argument.keys()[index] << (index + 1 < argument.keys().size() ? ", " : "");
-            }
-
-            // If the parameter takes a value (isn't a pure bool flag), hint it.
-            if constexpr (
-                !std::is_same_v<typename std::decay_t<decltype(argument)>::ValueType, bool>) {
-              stream << " <value>";
-            }
-
-            stream << std::endl << "      " << argument.description();
-            if (argument.importance() == lector::Importance::Required) {
-              stream << " [Required]";
-            } else if (argument.default_value()) {
-              stream << " [Optional]";
-            }
-            stream << std::endl;
-          }());
-        },
-        arguments_);
-
-    return stream.str();
-  }
 
   bool parse(const int argc, char* argv[]) {
     if (argc > 0) {
       executable_path_ = argv[0];
-    }
-
-    for (std::size_t index{0}; index < static_cast<std::size_t>(argc); ++index) {
-      raw_arguments_.emplace_back(argv[index]);
     }
 
     bool success{true};
@@ -1177,12 +1131,80 @@ public:
     return success;
   }
 
-private:
-  std::filesystem::path executable_path_;
+  /// @brief Returns the executable path of this collection of command line arguments. If the
+  /// command line arguments have not yet been parsed, the returned path will be empty.
+  /// @return The executable path of this collection of command line arguments.
+  [[nodiscard]] const std::filesystem::path& executable_path() const {
+    return executable_path_;
+  }
 
+  /// @brief Returns a specified command line argument from this collection.
+  /// @tparam Label The label of the command line argument.
+  /// @return The specified command line argument.
+  template <auto Label>
+  [[nodiscard]] const auto& get() const {
+    using Type = typename lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
+    return std::get<Type>(arguments_);
+  }
+
+  /// @brief Prints the execution of this collection of command line argument as a string.
+  /// @return The string that contains the execution of this collection of command line argument.
+  std::string print_execution() const {
+    std::string printed_execution_arguments;
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (!printed_execution_arguments.empty()) {
+              printed_execution_arguments += " ";
+            }
+            printed_execution_arguments += argument.print_execution();
+          }());
+        },
+        arguments_);
+    return executable_path_.string() + " " + printed_execution_arguments;
+  }
+
+  /// @brief Prints the usage information of this collection of command line argument as a string.
+  /// @return The string that contains the usage information of this collection of command line
+  /// argument.
+  [[nodiscard]] std::string print_usage_information() const {
+    std::ostringstream stream;
+    stream << "Usage: " << executable_path_.filename().string() << " [options]" << std::endl
+           << "Options:" << std::endl;
+
+    // Fold expression to iterate over the tuple elements.
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            stream << "  ";
+            for (std::size_t index{0}; index < argument.keys().size(); ++index) {
+              stream << argument.keys()[index] << (index + 1 < argument.keys().size() ? ", " : "");
+            }
+
+            // If the parameter takes a value (isn't a pure bool flag), hint it.
+            if constexpr (
+                !std::is_same_v<typename std::decay_t<decltype(argument)>::ValueType, bool>) {
+              stream << " <value>";
+            }
+
+            stream << std::endl << "      " << argument.description();
+            if (argument.importance() == lector::Importance::Required) {
+              stream << " [Required]";
+            } else if (argument.default_value()) {
+              stream << " [Optional]";
+            }
+            stream << std::endl;
+          }());
+        },
+        arguments_);
+
+    return stream.str();
+  }
+
+private:
   std::tuple<ArgumentTypes...> arguments_;
 
-  std::vector<std::string> raw_arguments_;
+  std::filesystem::path executable_path_;
 };
 
 }  // namespace lector
