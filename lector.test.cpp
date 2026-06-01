@@ -325,6 +325,15 @@ TEST(Lector, ArgumentsParsesValidCommandLineSuccessfully) {
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
   EXPECT_EQ(arguments.print_execution(),
             "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+  EXPECT_EQ(arguments.print_usage_command(),
+            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+  std::ostringstream expected_usage_details;
+  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
+  expected_usage_details
+      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
+  expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
+  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentConstructorBooleanDefault) {

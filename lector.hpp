@@ -878,6 +878,19 @@ public:
     parsed_value_ = value;
   }
 
+  /// @brief Prints the longest key and its associated value type of this command line argument as a
+  /// string.
+  /// @return The string that contains the longest key and its associated value type.
+  std::string print_longest_key_and_value_type() const {
+    std::string result;
+    const std::string value_type{print_value_type()};
+    result += longest_key();
+    if (!value_type.empty()) {
+      result += " " + value_type;
+    }
+    return result;
+  }
+
   /// @brief Prints the keys and value types of this command line argument as a string.
   /// @return The string that contains the keys and value types.
   std::string print_keys_and_value_types() const {
@@ -1032,7 +1045,8 @@ class Arguments {
 public:
   /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
   /// list of command line arguments.
-  explicit Arguments(ArgumentTypes... arguments) : arguments_(std::move(arguments)...) {}
+  /// @param ...arguments The variadic list of command line arguments.
+  explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {}
 
   /// @brief Destructor. Destroys this collection of command line arguments.
   ~Arguments() noexcept = default;
@@ -1132,14 +1146,14 @@ public:
   }
 
   /// @brief Returns the executable path of this collection of command line arguments. If the
-  /// command line arguments have not yet been parsed, the returned path will be empty.
+  /// command line arguments have not yet been parsed from argc and argv, this path is empty.
   /// @return The executable path of this collection of command line arguments.
   [[nodiscard]] const std::filesystem::path& executable_path() const {
     return executable_path_;
   }
 
   /// @brief Returns a specified command line argument from this collection.
-  /// @tparam Label The label of the command line argument.
+  /// @tparam Label The label of the command line argument to return.
   /// @return The specified command line argument.
   template <auto Label>
   [[nodiscard]] const auto& get() const {
@@ -1164,46 +1178,67 @@ public:
     return executable_path_.string() + " " + printed_execution_arguments;
   }
 
-  /// @brief Prints the usage information of this collection of command line argument as a string.
-  /// @return The string that contains the usage information of this collection of command line
+  /// @brief Prints the usage command of this collection of command line argument as a string.
+  /// @return The string that contains the usage command of this collection of command line
   /// argument.
-  [[nodiscard]] std::string print_usage_information() const {
-    std::ostringstream stream;
-    stream << "Usage: " << executable_path_.filename().string() << " [options]" << std::endl
-           << "Options:" << std::endl;
-
-    // Fold expression to iterate over the tuple elements.
+  [[nodiscard]] std::string print_usage_command() const {
+    std::string result;
+    result += executable_path_.filename().string();
     std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            stream << "  ";
-            for (std::size_t index{0}; index < argument.keys().size(); ++index) {
-              stream << argument.keys()[index] << (index + 1 < argument.keys().size() ? ", " : "");
-            }
-
-            // If the parameter takes a value (isn't a pure bool flag), hint it.
-            if constexpr (
-                !std::is_same_v<typename std::decay_t<decltype(argument)>::ValueType, bool>) {
-              stream << " <value>";
-            }
-
-            stream << std::endl << "      " << argument.description();
             if (argument.importance() == lector::Importance::Required) {
-              stream << " [Required]";
-            } else if (argument.default_value()) {
-              stream << " [Optional]";
+              result += " " + argument.print_longest_key_and_value_type();
             }
-            stream << std::endl;
           }());
         },
         arguments_);
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.importance() == lector::Importance::Optional) {
+              result += " [" + argument.print_longest_key_and_value_type() + "]";
+            }
+          }());
+        },
+        arguments_);
+    return result;
+  }
 
+  /// @brief Prints the usage options of this collection of command line argument as a string.
+  /// @return The string that contains the usage options of this collection of command line
+  /// argument.
+  [[nodiscard]] std::string print_usage_options() const {
+    std::ostringstream stream;
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.importance() == lector::Importance::Required) {
+              stream << argument.print_keys_and_value_types() << "  " << argument.description()
+                     << std::endl;
+            }
+          }());
+        },
+        arguments_);
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.importance() == lector::Importance::Optional) {
+              stream << "[" << argument.print_keys_and_value_types() << "]  "
+                     << argument.description() << std::endl;
+            }
+          }());
+        },
+        arguments_);
     return stream.str();
   }
 
 private:
+  /// @brief Variadic collection of command line arguments.
   std::tuple<ArgumentTypes...> arguments_;
 
+  /// @brief Executable path of this collection of command line arguments. If the command line
+  /// arguments have not yet been parsed from argc and argv, this path is empty.
   std::filesystem::path executable_path_;
 };
 
