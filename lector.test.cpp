@@ -316,7 +316,7 @@ TEST(Lector, ArgumentsParsesValidCommandLineSuccessfully) {
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
   const ::test::Command command{
     "/path/to/executable", "-c", "Red", "-o", "/path/to/output", "-i", "200", "-h"};
-  EXPECT_TRUE(arguments.parse(command.argc(), command.argv()));
+  arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_or_default_value(), ::test::Color::Red);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value(),
@@ -690,7 +690,7 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), false);
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set(true);
+  argument.set_parsed_value(true);
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Print usage information.");
@@ -714,7 +714,7 @@ TEST(Lector, ArgumentSetParsedValueEnumeration) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set(::test::Color::Blue);
+  argument.set_parsed_value(::test::Color::Blue);
   EXPECT_EQ(argument.label(), ::test::Label::Color);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Main output color.");
@@ -738,7 +738,7 @@ TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "/some/path");
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set("/another/path");
+  argument.set_parsed_value("/another/path");
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Output directory.");
@@ -762,7 +762,7 @@ TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 0.03125);
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set(0.015625);
+  argument.set_parsed_value(0.015625);
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
@@ -786,7 +786,7 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 100);
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set(200);
+  argument.set_parsed_value(200);
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
@@ -810,7 +810,7 @@ TEST(Lector, ArgumentSetParsedValueString) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
   EXPECT_TRUE(argument.print_execution().empty());
-  argument.set("Some Other Report");
+  argument.set_parsed_value("Some Other Report");
   EXPECT_EQ(argument.label(), ::test::Label::Title);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Title of the report.");

@@ -862,6 +862,8 @@ public:
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
   /// returns the default value.
   /// @return The value of this command line argument.
+  /// @throws std::logic_error if this command line argument is missing both its parsed value and
+  /// its default value.
   [[nodiscard]] const Type& parsed_or_default_value() const {
     if (parsed_value_.has_value()) {
       return parsed_value_.value();
@@ -869,12 +871,13 @@ public:
     if (default_value_.has_value()) {
       return default_value_.value();
     }
-    throw std::logic_error("No parsed or default value.");
+    throw std::logic_error(
+        "No parsed or default value for argument '" + print_longest_key_and_value_type() + "'.");
   }
 
   /// @brief Sets the parsed value of this command line argument.
   /// @param[in] value The parsed value to set.
-  void set(const Type& value) {
+  void set_parsed_value(const Type& value) {
     parsed_value_ = value;
   }
 
@@ -935,37 +938,47 @@ private:
   }
 
   /// @brief Validates the keys of this command line argument. Called by both constructors.
+  /// @throws std::invalid_argument if any of this command line argument's keys are invalid.
   void validate_keys() const {
     if (keys_.empty()) {
-      throw std::invalid_argument("An argument must have at least one key.");
+      throw std::invalid_argument("All arguments must each have at least one key.");
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
-        throw std::invalid_argument("An argument cannot have an empty key.");
+        throw std::invalid_argument("Arguments cannot have empty keys.");
       }
     }
     for (std::size_t first{0}; first < keys_.size(); ++first) {
       for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
         if (keys_[first] == keys_[second]) {
-          throw std::invalid_argument("An argument cannot have duplicate keys. The key '"
-                                      + keys_[first] + "' is duplicated.");
+          throw std::invalid_argument(
+              "The key '" + keys_[first] + "' is duplicated in argument '"
+              + print_longest_key_and_value_type() + "'. Arguments cannot have duplicate keys. ");
         }
       }
     }
   };
 
   /// @brief Validates the description of this command line argument. Called by both constructors.
+  /// @throws std::invalid_argument if this command line argument's description is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw std::invalid_argument("An argument cannot have an empty description.");
+      throw std::invalid_argument(
+          "The argument '" + print_longest_key_and_value_type()
+          + "' has an empty description. All arguments must have descriptions.");
     }
   };
 
   /// @brief Validates the default value of this command line argument. Called by the constructor
   /// that specifies a default value.
+  /// @throws std::invalid_argument if this command line argument is boolean but has a default
+  /// value.
   constexpr void validate_default_value() const {
     if constexpr (std::is_same_v<Type, bool>) {
-      throw std::invalid_argument("A boolean argument cannot have a default value.");
+      throw std::invalid_argument(
+          "The boolean argument '" + print_longest_key_and_value_type()
+          + "' has a specified default value." + " Boolean arguments are always false by default"
+          + " and cannot have a specified default value.");
     }
   }
 
@@ -1071,78 +1084,17 @@ public:
   lector::Arguments<ArgumentTypes...>& operator=(
       lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
-  bool parse(const int argc, char* argv[]) {
-    if (argc > 0) {
-      executable_path_ = argv[0];
-    }
-
-    bool success{true};
-
-    for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
-      std::string current_arg{argv[index]};
-      bool matched{false};
-
-      std::apply(
-          [&](auto&... argument) {
-            // Fold expression trick to simulate iterating and short-circuiting over the tuple.
-            (..., [&]() {
-              if (matched) {
-                // Skip if we already matched this token.
-                return;
-              }
-
-              if (std::find(argument.keys().begin(), argument.keys().end(), current_arg)
-                  != argument.keys().end()) {
-                matched = true;
-
-                using Type = typename std::decay_t<decltype(argument)>::ValueType;
-
-                // If it's a bool, its presence implies true (no trailing value required).
-                if constexpr (std::is_same_v<Type, bool>) {
-                  argument.set(true);
-                } else {
-                  if (index + 1 < static_cast<std::size_t>(argc)) {
-                    const std::string value_str{argv[++index]};
-                    const auto parsed{lector::parse<Type>(value_str)};
-                    if (parsed) {
-                      argument.set(parsed.value());
-                    } else {
-                      std::cerr << "Error: Failed to parse value '" << value_str
-                                << "' for argument '" << current_arg << "'." << std::endl;
-                      success = false;
-                    }
-                  } else {
-                    std::cerr << "Error: Missing value for argument '" << current_arg << "'."
-                              << std::endl;
-                    success = false;
-                  }
-                }
-              }
-            }());
-          },
-          arguments_);
-
-      if (!matched) {
-        std::cerr << "Error: Unknown argument '" << current_arg << "'." << std::endl;
-        success = false;
-      }
-    }
-
-    // Check if all required arguments were provided.
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            if (argument.importance() == lector::Importance::Required
-                && !argument.parsed_value().has_value()) {
-              std::cerr << "Error: Missing required argument '" << argument.keys().front() << "'."
-                        << std::endl;
-              success = false;
-            }
-          }());
-        },
-        arguments_);
-
-    return success;
+  /// @brief Parses argc and argv to populate the parsed values of the command line arguments in
+  /// this collection.
+  /// @param[in] argc The number of command line arguments, including the executable path.
+  /// @param[in] argv The array of C-strings that represents the command line arguments, starting
+  /// with the executable path.
+  /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
+  /// encountered.
+  void parse(const int argc, char* argv[]) {
+    parse_executable_path(argc, argv);
+    parse_arguments(argc, argv);
+    validate_all_required_arguments_have_parsed_values();
   }
 
   /// @brief Returns the executable path of this collection of command line arguments. If the
@@ -1234,6 +1186,91 @@ public:
   }
 
 private:
+  /// @brief Parses the executable path from argc and argv. Called by the lector::Arguments::parse
+  /// method.
+  /// @param[in] argc The number of command line arguments, including the executable path.
+  /// @param[in] argv The array of C-strings that represents the command line arguments, starting
+  /// with the executable path.
+  void parse_executable_path(const int argc, char* argv[]) {
+    if (argc > 0) {
+      executable_path_ = argv[0];
+    }
+  }
+
+  /// @brief Parses the command line arguments from argc and argv, except for the executable path.
+  /// Starts at the second argument in argv. Called by the lector::Arguments::parse method.
+  /// @param[in] argc The number of command line arguments, including the executable path.
+  /// @param[in] argv The array of C-strings that represents the command line arguments, starting
+  /// with the executable path.
+  /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
+  /// encountered.
+  void parse_arguments(const int argc, char* argv[]) {
+    for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
+      std::string key{argv[index]};
+      bool matched{false};
+      std::apply(
+          [&](auto&... argument) {
+            (..., [&]() {
+              if (matched) {
+                // This key has already been matched to an argument. Skip all remaining arguments.
+                return;
+              }
+              if (std::find(argument.keys().begin(), argument.keys().end(), key)
+                  != argument.keys().cend()) {
+                if (argument.parsed_value().has_value()) {
+                  throw std::invalid_argument(
+                      "Duplicated argument '" + argument.print_longest_key_and_value_type() + "'.");
+                }
+                matched = true;
+                using Type = typename std::decay_t<decltype(argument)>::ValueType;
+                if constexpr (std::is_same_v<Type, bool>) {
+                  // A boolean argument's value is indicated by its presence.
+                  argument.set_parsed_value(true);
+                } else {
+                  if (index + 1 < static_cast<std::size_t>(argc)) {
+                    ++index;
+                    const std::string raw_value{argv[index]};
+                    const auto parsed_value{lector::parse<Type>(raw_value)};
+                    if (parsed_value.has_value()) {
+                      argument.set_parsed_value(parsed_value.value());
+                    } else {
+                      throw std::invalid_argument(
+                          "Invalid value '" + raw_value + "' for argument '"
+                          + argument.print_longest_key_and_value_type() + "'.");
+                    }
+                  } else {
+                    throw std::invalid_argument(
+                        "Missing value for argument '" + argument.print_longest_key_and_value_type()
+                        + "'.");
+                  }
+                }
+              }
+            }());
+          },
+          arguments_);
+      if (!matched) {
+        throw std::invalid_argument("Unknown argument '" + key + "'.");
+      }
+    }
+  }
+
+  /// @brief Validates that all required arguments have each successfully parsed a value from argc
+  /// and argv. Called by the lector::Arguments::parse method.
+  /// @throws std::invalid_argument if one or more required arguments are missing a parsed value.
+  void validate_all_required_arguments_have_parsed_values() const {
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.importance() == lector::Importance::Required
+                && !argument.parsed_value().has_value()) {
+              throw std::invalid_argument("Missing required argument '"
+                                          + argument.print_longest_key_and_value_type() + "'.");
+            }
+          }());
+        },
+        arguments_);
+  }
+
   /// @brief Variadic collection of command line arguments.
   std::tuple<ArgumentTypes...> arguments_;
 
