@@ -1127,6 +1127,9 @@ public:
           }());
         },
         arguments_);
+    if (printed_execution_arguments.empty()) {
+      return executable_path_.string();
+    }
     return executable_path_.string() + " " + printed_execution_arguments;
   }
 

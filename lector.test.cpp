@@ -217,6 +217,10 @@ void create_invalid_boolean_argument_with_a_default_value() {
 /// arguments.
 class Command {
 public:
+  /// @brief Default constructor. Initializes argc to 0 and argv to nullptr. Represents a completely
+  /// empty command line.
+  constexpr Command() noexcept = default;
+
   /// @brief Constructor. Builds argc and argv from the initializer list.
   /// @param[in] arguments The list of command line arguments, starting with the executable path.
   explicit Command(::std::initializer_list<::std::string> arguments)
@@ -310,7 +314,90 @@ private:
 
 namespace {
 
-TEST(Lector, ArgumentsParsesValidCommandLineSuccessfully) {
+TEST(Lector, ArgumentsDuplicatedArgument) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--output", "--iterations", "200", "--iterations", "300", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsExecutableOnlyNoArguments) {
+  ::lector::Arguments arguments;
+  const ::test::Command command{"/path/to/executable"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_EQ(arguments.print_execution(), "/path/to/executable");
+  EXPECT_EQ(arguments.print_usage_command(), "executable");
+  EXPECT_TRUE(arguments.print_usage_options().empty());
+}
+
+TEST(Lector, ArgumentsInvalidValueForArgument) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--output", "--iterations", "Hello, world!", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMissingArgumentRequired) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_output_directory_required(), ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMissingArgumentOptional) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_output_directory_required(), ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "--output", "/path/to/output"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
+            ::std::filesystem::path("/path/to/output"));
+  ASSERT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+}
+
+TEST(Lector, ArgumentsMissingValueArgumentFirst) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "--iterations", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMissingValueArgumentLast) {
+  ::lector::Arguments arguments{::test::create_argument_iterations_optional()};
+  const ::test::Command command{"/path/to/executable", "--iterations"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMissingValueArgumentMiddle) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_output_directory_required(),
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--output", "/path/to/output", "--iterations", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsNoExecutableNoArguments) {
+  ::lector::Arguments arguments;
+  const ::test::Command command;
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_TRUE(arguments.executable_path().empty());
+  EXPECT_TRUE(arguments.print_execution().empty());
+  EXPECT_TRUE(arguments.print_usage_command().empty());
+  EXPECT_TRUE(arguments.print_usage_options().empty());
+}
+
+TEST(Lector, ArgumentsUnknownArgument) {
+  ::lector::Arguments arguments{::test::create_argument_iterations_optional()};
+  const ::test::Command command{"/path/to/executable", "--iterations", "200", "--unknown"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsValid) {
   ::lector::Arguments arguments{
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
@@ -318,11 +405,11 @@ TEST(Lector, ArgumentsParsesValidCommandLineSuccessfully) {
     "/path/to/executable", "-c", "Red", "-o", "/path/to/output", "-i", "200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_or_default_value(), ::test::Color::Red);
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value(),
+  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_or_default_value(), 200);
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
+  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
             "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.print_usage_command(),
