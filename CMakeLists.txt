@@ -113,7 +113,7 @@ if(LECTOR_TEST)
     )
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(GoogleTest)
-    message(STATUS "The GoogleTest library was fetched from: https://github.com/google/googletest.git")
+    message(STATUS "The GoogleTest library was fetched from: https://github.com/google/googletest")
   endif()
 
   add_executable(lector_test ${PROJECT_SOURCE_DIR}/lector.test.cpp)

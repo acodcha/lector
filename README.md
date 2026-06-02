@@ -6,6 +6,7 @@ Lector is a C++ library for parsing command line arguments. Lector is hosted at 
 
 - [**Requirements**](#requirements)
 - [**Configuration**](#configuration): [Bazel](#configuration-bazel), [CMake](#configuration-cmake)
+- [**Usage**](#usage): [Bazel](#usage-bazel), [CMake](#usage-cmake)
 - [**License**](#license)
 
 ## Requirements
@@ -75,6 +76,93 @@ ctest
 ```
 
 [(Back to Configuration)](#configuration)
+
+## Usage
+
+- [Bazel](#usage-bazel)
+- [CMake](#usage-cmake)
+
+[(Back to Top)](#lector)
+
+### Usage: Bazel
+
+To use the Lector library in one of your Bazel C++ projects, first add the following code to your project's `MODULE.bazel` file:
+
+```starlark
+bazel_dep(name = "lector", version = "1.0.0")
+
+git_override(
+    module_name = "lector",
+    remote = "[https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)",
+    branch = "main",  # Alternatively, you can use `tag = "v1.0.0"` or `commit = "HEAD"`.
+)
+```
+
+Alternatively, if your project uses the legacy `WORKSPACE.bazel` system instead of the newer `MODULE.bazel` system, add the following to your project's `WORKSPACE.bazel` file:
+
+```starlark
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "lector",
+    remote = "[https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)",
+    branch = "main",  # Alternatively, you can use `tag = "v1.0.0"` or `commit = "HEAD"`.
+)
+```
+
+The above code automatically downloads the Lector library from GitHub and makes it available to your Bazel project.
+
+Next, link the Lector library to your C++ targets in your project's `BUILD.bazel` files:
+
+```starlark
+cc_library(
+    name = "my_library_name",
+    hdrs = ["my_file.hpp"],
+    srcs = ["my_file.cpp"],
+    deps = [
+        "@lector//:lector",
+    ],
+)
+```
+
+Once configured, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the library's contents are cleanly encapsulated within the `lector::` namespace.
+
+[(Back to Usage)](#usage)
+
+### Usage: CMake
+
+To use the Lector library in one of your CMake C++ projects, add the following code to your project's `CMakeLists.txt` file:
+
+```cmake
+find_package(lector CONFIG QUIET)
+
+if(lector_FOUND)
+  message(STATUS "The Lector library was found at: ${lector_CONFIG}")
+else()
+  include(FetchContent)
+  FetchContent_Declare(
+    lector
+    GIT_REPOSITORY [https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)
+    GIT_TAG main  # You can also specify a release tag such as: v1.0.0
+  )
+  FetchContent_MakeAvailable(lector)
+
+  # Create an alias so the target name is consistent with find_package.
+  add_library(lector::lector ALIAS lector)
+  message(STATUS "The Lector library was fetched from: https://github.com/acodcha/lector")
+endif()
+
+# [...]
+
+# Link the Lector library to your executable or library.
+target_link_libraries(your_target_name PRIVATE lector::lector)
+```
+
+The above CMake code checks whether the Lector library is already installed on your system; if not, it automatically downloads it from its GitHub repository and makes it available to your CMake project.
+
+Once configured, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the library's contents are cleanly encapsulated within the `lector::` namespace.
+
+[(Back to Usage)](#usage)
 
 ## License
 
