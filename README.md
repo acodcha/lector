@@ -14,11 +14,20 @@ Lector requires the following software to be installed on your system:
 
 - **Git:** The Git source control system must be installed on your system. On Ubuntu, install Git with `sudo apt install git` or visit <https://git-scm.com> for alternate means of installation.
 - **C++:** A C++ compiler with support for the C++17 standard or any more recent standard must be installed on your system. Any reasonably recent compiler for the C++ programming language should do, such as GCC. On Ubuntu, install GCC with `sudo apt install g++` or visit <https://gcc.gnu.org> for alternate means of installation.
-- **Bazel:** The Bazel build system must be installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
+- **Bazel** or **CMake:** Either the Bazel build system or the CMake build system must be installed on your system.
+  - **Bazel:** Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
+  - **CMake:** On Ubuntu, install the CMake build system with `sudo apt install cmake` or visit <https://cmake.org> for alternate means of installation.
 
 [(Back to Top)](#lector)
 
 ## Configuration
+
+- [**Bazel**](#configuration-bazel)
+- [**CMake**](#configuration-cmake)
+
+[(Back to Top)](#lector)
+
+### Configuration: Bazel
 
 Clone the Lector library's repository with:
 
@@ -39,7 +48,33 @@ Optionally run all Lector library tests from the base directory of the Lector re
 bazel test //...
 ```
 
-[(Back to Top)](#lector)
+[(Back to Configuration)](#configuration)
+
+### Configuration: CMake
+
+Clone the Lector library's repository with:
+
+```bash
+git clone git@github.com:acodcha/lector.git lector
+cd lector
+```
+
+Build the Lector library from the base directory of the Lector repository with:
+
+```bash
+cmake -B build -S .
+cmake --build
+```
+
+Optionally run all Lector library tests from the base directory of the Lector repository with:
+
+```bash
+cmake -B build -S . -D LECTOR_TEST=ON
+cmake --build .
+ctest
+```
+
+[(Back to Configuration)](#configuration)
 
 ## License
 
