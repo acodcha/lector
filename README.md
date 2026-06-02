@@ -5,7 +5,7 @@
 Lector is a C++ library for parsing command line arguments. Lector is hosted at <https://github.com/acodcha/lector>.
 
 - [**Requirements**](#requirements)
-- [**Configuration**](#configuration)
+- [**Configuration**](#configuration): [Bazel](#configuration-bazel), [CMake](#configuration-cmake)
 - [**License**](#license)
 
 ## Requirements
@@ -22,8 +22,8 @@ Lector requires the following software to be installed on your system:
 
 ## Configuration
 
-- [**Bazel**](#configuration-bazel)
-- [**CMake**](#configuration-cmake)
+- [Bazel](#configuration-bazel)
+- [CMake](#configuration-cmake)
 
 [(Back to Top)](#lector)
 
