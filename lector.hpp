@@ -1033,21 +1033,38 @@ private:
   lector::Importance importance_{lector::Importance::Required};
 };
 
-/// @brief Type trait used to extract the exact lector::Argument<Label, Type> from a variadic pack
-/// of lector::Arguments, using only the Label.
-/// @tparam Label The label of the command line argument.
-/// @tparam Types The list of types of the command line arguments.
-template <auto Label, typename... Types>
+/// @brief Type trait used to extract a command line argument from a collection of command line
+/// arguments, using only its Label.
+/// @tparam Label The label of the command line argument to extract.
+/// @tparam ...ArgumentTypes The variadic list of argument types in the collection of command line
+/// arguments.
+template <auto Label, typename... ArgumentTypes>
 struct FindArgumentByLabel;
 
-template <auto Label, typename Type, typename... Rest>
-struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, Rest...> {
+/// @brief Type trait specialization used to extract a command line argument from a collection of
+/// command line arguments, using its Label, its type, and the types of the remaining command line
+/// arguments in the collection.
+/// @tparam Label The label of the command line argument to extract.
+/// @tparam Type The type of the command line argument to extract.
+/// @tparam ...OtherArgumentTypes The variadic list of argument types in the collection of command
+/// line arguments, excluding the command line argument to extract.
+template <auto Label, typename Type, typename... OtherArgumentTypes>
+struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTypes...> {
   using type = lector::Argument<Label, Type>;
 };
 
-template <auto Label, auto OtherLabel, typename OtherType, typename... Rest>
-struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>, Rest...> {
-  using type = typename lector::FindArgumentByLabel<Label, Rest...>::type;
+/// @brief Type trait specialization used to extract a command line argument from a collection of
+/// command line arguments, using its Label and the types of the remaining command line arguments in
+/// the collection.
+/// @tparam Label The label of the command line argument to extract.
+/// @tparam OtherLabel The label of the command line argument to compare against.
+/// @tparam OtherType The type of the command line argument to compare against.
+/// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
+/// command line arguments, excluding the command line argument to extract.
+template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
+struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
+                           RemainingArgumentTypes...> {
+  using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
 /// @brief A collection of command line arguments that can be parsed from argc and argv.
