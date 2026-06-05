@@ -43,7 +43,7 @@ lector = declare_dependency(
   include_directories : include_directories('.')
 )
 
-lector_test = test(
+test(
   'lector_test',
   executable(
     'lector_test',
