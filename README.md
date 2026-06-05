@@ -71,7 +71,7 @@ Optionally run all Lector library tests from the base directory of the Lector re
 
 ```bash
 cmake -S . -B build -D LECTOR_TEST=ON
-cmake --build build --parallel 4
+cmake --build build --parallel
 ctest --test-dir build
 ```
 
