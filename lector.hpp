@@ -792,8 +792,8 @@ public:
   /// @throws std::invalid_argument if any of the parameters are invalid.
   Argument(const std::initializer_list<std::string>& keys, const std::string& description,
            const Type& default_value)
-    : keys_{keys}, description_{description}, importance_{lector::Importance::Optional},
-      default_value_{default_value} {
+    : keys_{keys}, description_{description}, default_value_{default_value},
+      importance_{lector::Importance::Optional} {
     validate_keys();
     validate_description();
     validate_default_value();
