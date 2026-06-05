@@ -42,7 +42,7 @@ jobs:
             echo "    find . -iname '*.hpp' -or -iname '*.cpp' | xargs clang-format --style=file -i"
             exit 1
           fi
-  build_and_test:
+  build_and_test_bazel:
     name: Build and test Bazel targets
     runs-on: ubuntu-latest
     steps:
@@ -54,7 +54,21 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
-      - name: Print the version of the Bazel package
+      - name: Print the version of Bazel
         run: bazel --version
-      - name: Run all Bazel tests
+      - name: Build all Bazel targets and run all Bazel tests
         run: bazel test //...
+  build_and_test_cmake:
+    name: Build and test CMake targets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Print the version of CMake
+        run: cmake --version
+      - name: Configure the CMake project
+        run: cmake -S . -B build -D LECTOR_TEST=ON
+      - name: Build all CMake targets
+        run: cmake --build build --parallel
+      - name: Run all CMake tests
+        run: ctest --test-dir build
