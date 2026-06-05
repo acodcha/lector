@@ -78,8 +78,14 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
+      - name: Install Meson and Ninja
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes meson ninja-build
       - name: Print the version of Meson
         run: meson --version
+      - name: Print the version of Ninja
+        run: ninja --version
       - name: Create the Meson subprojects directory
         run: mkdir --parents subprojects
       - name: Download the Meson wrap for GoogleTest
