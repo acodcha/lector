@@ -23,15 +23,6 @@ project(
   default_options : ['cpp_std=c++17']
 )
 
-# Find Google Test, or download it via wrap if not available locally.
-gtest_dep = dependency(
-  'gtest',
-  main : true,
-  fallback : ['gtest', 'gtest_main_dep'],
-  required : true
-)
-
-# Compiler options.
 add_global_arguments(
   '-O3',
   '-Wall',
@@ -41,15 +32,24 @@ add_global_arguments(
   language : 'cpp'
 )
 
-# Define the header-only library.
+gtest = dependency(
+  'gtest',
+  main : true,
+  fallback : ['gtest', 'gtest_main_dep'],
+  required : true
+)
+
 lector = declare_dependency(
   include_directories : include_directories('.')
 )
 
-# Define the test.
-test('lector_test',
-  executable('lector_test',
+lector_test = test(
+  'lector_test',
+  executable(
+    'lector_test',
     'lector.test.cpp',
-    dependencies : [gtest_dep, lector]
+    dependencies : [gtest, lector]
   )
 )
+
+meson.override_dependency('lector', lector)
