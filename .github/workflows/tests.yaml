@@ -72,3 +72,21 @@ jobs:
         run: cmake --build build --parallel
       - name: Run all CMake tests
         run: ctest --test-dir build
+  build_and_test_meson:
+    name: Build and test Meson targets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Print the version of Meson
+        run: meson --version
+      - name: Create the Meson subprojects directory
+        run: mkdir --parents subprojects
+      - name: Download the Meson wrap for GoogleTest
+        run: meson wrap install gtest
+      - name: Configure the Meson project
+        run: meson setup build
+      - name: Build all Meson targets
+        run: meson compile -C build
+      - name: Run all Meson tests
+        run: meson test -C build
