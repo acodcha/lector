@@ -63,16 +63,16 @@ cd lector
 Build the Lector library from the base directory of the Lector repository with:
 
 ```bash
-cmake -B build -S .
-cmake --build
+cmake -S . -B build
+cmake --build build --parallel 4
 ```
 
 Optionally run all Lector library tests from the base directory of the Lector repository with:
 
 ```bash
-cmake -B build -S . -D LECTOR_TEST=ON
-cmake --build .
-ctest
+cmake -S . -B build -D LECTOR_TEST=ON
+cmake --build build --parallel 4
+ctest --test-dir build
 ```
 
 [(Back to Configuration)](#configuration)
