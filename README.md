@@ -91,6 +91,7 @@ cd lector
 Build the Lector library from the base directory of the Lector repository with:
 
 ```bash
+mkdir --parents subprojects
 meson wrap install gtest
 meson setup build
 meson compile -C build
