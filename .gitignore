@@ -1,4 +1,5 @@
 .vscode/
 bazel-*
+build/*
 coverage/*
 MODULE.bazel.lock
