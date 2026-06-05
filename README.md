@@ -153,6 +153,7 @@ cc_library(
     srcs = ["my_library_file.cpp"],
     deps = [
         "@lector//:lector",
+        ":my_other_dependency",
     ],
 )
 ```
@@ -184,7 +185,7 @@ endif()
 
 # [...]
 
-target_link_libraries(my_target_name PRIVATE lector::lector)
+target_link_libraries(my_target_name PRIVATE lector::lector my_other_dependency)
 ```
 
 Note: You can specify a release tag such as `GIT_TAG v1.0.0` instead of `GIT_TAG main`.
@@ -212,9 +213,9 @@ The above code automatically downloads the Lector library from GitHub and makes 
 Next, add the following code to your project's `meson.build` files:
 
 ```text
-lector_dependency = dependency(
+lector = dependency(
   'lector',
-  fallback : ['lector', 'lector_lib'],
+  fallback : ['lector', 'lector'],
   required : true
 )
 
@@ -222,7 +223,7 @@ my_library_name = library(
   'my_library_name',
   'src/my_library_file.cpp',
   include_directories : include_directories('src'),
-  dependencies : [lector_dependency],
+  dependencies : [lector, my_other_dependency],
   install : true
 )
 ```
