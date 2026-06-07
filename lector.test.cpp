@@ -173,6 +173,14 @@ create_argument_iterations_required() {
   };
 }
 
+/// @brief Helper function that creates an invalid lector::Argument with all empty keys.
+void create_invalid_argument_with_all_empty_keys() {
+  const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> argument{
+    {"", ""},
+    "Number of iterations."
+  };
+}
+
 /// @brief Helper function that creates an invalid lector::Argument with an empty key.
 void create_invalid_argument_with_an_empty_key() {
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> argument{
@@ -910,6 +918,7 @@ TEST(Lector, ArgumentSetParsedValueString) {
 }
 
 TEST(Lector, ArgumentValidate) {
+  EXPECT_ANY_THROW(::test::create_invalid_argument_with_all_empty_keys());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_an_empty_key());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_duplicate_keys());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_empty_description());

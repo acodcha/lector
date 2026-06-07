@@ -945,15 +945,19 @@ private:
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
-        throw std::invalid_argument("Arguments cannot have empty keys.");
+        if (longest_key().empty()) {
+          throw std::invalid_argument("Arguments cannot have empty keys.");
+        }
+        throw std::invalid_argument("Empty key in argument '" + print_longest_key_and_value_type()
+                                    + "'. Arguments cannot have empty keys.");
       }
     }
     for (std::size_t first{0}; first < keys_.size(); ++first) {
       for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
         if (keys_[first] == keys_[second]) {
           throw std::invalid_argument(
-              "The key '" + keys_[first] + "' is duplicated in argument '"
-              + print_longest_key_and_value_type() + "'. Arguments cannot have duplicate keys. ");
+              "Duplicated key '" + keys_[first] + "' in argument '"
+              + print_longest_key_and_value_type() + "'. Arguments cannot have duplicate keys.");
         }
       }
     }
@@ -964,7 +968,7 @@ private:
   void validate_description() const {
     if (description_.empty()) {
       throw std::invalid_argument(
-          "The argument '" + print_longest_key_and_value_type()
+          "Argument '" + print_longest_key_and_value_type()
           + "' has an empty description. All arguments must have descriptions.");
     }
   };
@@ -976,9 +980,9 @@ private:
   constexpr void validate_default_value() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument(
-          "The boolean argument '" + print_longest_key_and_value_type()
-          + "' has a specified default value." + " Boolean arguments are always false by default"
-          + " and cannot have a specified default value.");
+          "Boolean argument '" + print_longest_key_and_value_type() + "' specifies a default value."
+          + " Boolean arguments are always false by default"
+          + " and cannot specify default values.");
     }
   }
 
