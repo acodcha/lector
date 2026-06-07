@@ -4,25 +4,29 @@
 
 Lector is a C++ library for parsing command line arguments. Lector is hosted at <https://github.com/acodcha/lector>.
 
-- [**Requirements**](#requirements)
+Contents:
+
+- [**Introduction**](#introduction)
 - [**Configuration**](#configuration): [Bazel](#configuration-bazel), [CMake](#configuration-cmake), [Meson](#configuration-meson)
-- [**Usage**](#usage): [Bazel](#usage-bazel), [CMake](#usage-cmake), [Meson](#usage-meson)
+- [**User Guide**](#user-guide)
+- [**Developer Guide**](#developer-guide): [Bazel](#developer-guide-bazel), [CMake](#developer-guide-cmake), [Meson](#developer-guide-meson)
 - [**License**](#license)
 
-## Requirements
+## Introduction
 
-Lector requires the following software to be installed on your system:
-
-- **Git:** The Git source control system must be installed on your system. On Ubuntu, install Git with `sudo apt install git` or visit <https://git-scm.com> for alternate means of installation.
-- **C++:** A C++ compiler with support for the C++17 standard or any more recent standard must be installed on your system. Any reasonably recent compiler for the C++ programming language should do, such as GCC. On Ubuntu, install GCC with `sudo apt install g++` or visit <https://gcc.gnu.org> for alternate means of installation.
-- **Build System:** One of either the Bazel, CMake, or Meson build systems must be installed on your system.
-  - **Bazel:** Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
-  - **CMake:** On Ubuntu, install the CMake build system with `sudo apt install cmake` or visit <https://cmake.org> for alternate means of installation.
-  - **Meson:** On Ubuntu, install the Meson build system with `sudo apt install meson ninja-build` or visit <https://mesonbuild.com> for alternate means of installation.
+To-do.
 
 [(Back to Top)](#lector)
 
 ## Configuration
+
+This section describes how to use the Lector library in one of your C++ projects.
+
+First, make sure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git` or visit <https://git-scm.com> for alternate means of installation.
+
+Second, make sure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++` or visit <https://gcc.gnu.org> for alternate means of installation.
+
+Third, make sure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
 - [Bazel](#configuration-bazel)
 - [CMake](#configuration-cmake)
@@ -32,90 +36,9 @@ Lector requires the following software to be installed on your system:
 
 ### Configuration: Bazel
 
-Clone the Lector library's repository with:
+To use the Lector library in one of your Bazel C++ projects, first make sure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
 
-```bash
-git clone git@github.com:acodcha/lector.git lector
-cd lector
-```
-
-Build the Lector library from the base directory of the Lector repository with:
-
-```bash
-bazel build //...
-```
-
-Optionally build and run all Lector library tests from the base directory of the Lector repository with:
-
-```bash
-bazel test //...
-```
-
-[(Back to Configuration)](#configuration)
-
-### Configuration: CMake
-
-Clone the Lector library's repository with:
-
-```bash
-git clone git@github.com:acodcha/lector.git lector
-cd lector
-```
-
-Build the Lector library from the base directory of the Lector repository with:
-
-```bash
-cmake -S . -B build
-cmake --build build --parallel 4
-```
-
-Optionally build and run all Lector library tests from the base directory of the Lector repository with:
-
-```bash
-cmake -S . -B build -D LECTOR_TEST=ON
-cmake --build build --parallel
-ctest --test-dir build
-```
-
-[(Back to Configuration)](#configuration)
-
-### Configuration: Meson
-
-Clone the Lector library's repository with:
-
-```bash
-git clone git@github.com:acodcha/lector.git lector
-cd lector
-```
-
-Build the Lector library from the base directory of the Lector repository with:
-
-```bash
-mkdir --parents subprojects
-meson wrap install gtest
-meson setup build
-meson compile -C build
-```
-
-Optionally run all Lector library tests from the base directory of the Lector repository with:
-
-```bash
-meson test -C build
-```
-
-[(Back to Configuration)](#configuration)
-
-## Usage
-
-- [Bazel](#usage-bazel)
-- [CMake](#usage-cmake)
-- [Meson](#usage-meson)
-
-[(Back to Top)](#lector)
-
-### Usage: Bazel
-
-To use the Lector library in one of your Bazel C++ projects, first add the following code to your project's `MODULE.bazel` file:
+Then, add the following code to your project's `MODULE.bazel` file:
 
 ```starlark
 bazel_dep(name = "lector", version = "1.0.0")
@@ -143,7 +66,7 @@ git_repository(
 
 Note: You can specify a release tag such as `tag = "v1.0.0"` instead of `branch = "main"`.
 
-The above code automatically downloads the Lector library from GitHub and makes it available to your Bazel project.
+The above code automatically downloads the Lector library from its GitHub repository and makes it available to your Bazel project.
 
 Next, link the Lector library to the C++ targets in your project's `BUILD.bazel` files:
 
@@ -159,13 +82,15 @@ cc_library(
 )
 ```
 
-Once configured, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Usage)](#usage)
+[(Back to Configuration)](#configuration)
 
-### Usage: CMake
+### Configuration: CMake
 
-To use the Lector library in one of your CMake C++ projects, add the following code to your project's `CMakeLists.txt` file:
+To use the Lector library in one of your CMake C++ projects, first make sure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
+
+Then, add the following code to your project's `CMakeLists.txt` file:
 
 ```cmake
 find_package(lector CONFIG QUIET)
@@ -193,13 +118,15 @@ Note: You can specify a release tag such as `GIT_TAG v1.0.0` instead of `GIT_TAG
 
 The above CMake code checks whether the Lector library is already installed on your system; if not, it automatically downloads it from its GitHub repository and makes it available to your CMake project.
 
-Once configured, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Usage)](#usage)
+[(Back to Configuration)](#configuration)
 
-### Usage: Meson
+### Configuration: Meson
 
-To use the Lector library in one of your Meson C++ projects, first create an empty `subprojects/lector.wrap` file and give it the following contents:
+To use the Lector library in one of your Meson C++ projects, first make sure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
+
+Then, create a `subprojects/lector.wrap` file in your project and give it the following contents:
 
 ```text
 [wrap-git]
@@ -209,7 +136,7 @@ revision = main
 
 Note: You can specify a release tag such as `revision = v1.0.0` instead of `revision = main`.
 
-The above code automatically downloads the Lector library from GitHub and makes it available to your Meson project.
+The above code automatically downloads the Lector library from its GitHub repository and makes it available to your Meson project.
 
 Next, add the following code to your project's `meson.build` files:
 
@@ -229,9 +156,86 @@ my_library_name = library(
 )
 ```
 
-Once configured, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Usage)](#usage)
+[(Back to Configuration)](#configuration)
+
+## User Guide
+
+To-do.
+
+[(Back to Top)](#lector)
+
+## Developer Guide
+
+To check out, build, and test Lector for yourself, first clone the Lector repository with:
+
+```bash
+git clone git@github.com:acodcha/lector.git lector
+cd lector
+```
+
+Next, refer to the section for your preferred build system:
+
+- [Bazel](#developer-guide-bazel)
+- [CMake](#developer-guide-cmake)
+- [Meson](#developer-guide-meson)
+
+[(Back to Top)](#lector)
+
+### Developer Guide: Bazel
+
+If using the Bazel build system, build the Lector library from the base directory of the Lector repository with:
+
+```bash
+bazel build //...
+```
+
+Optionally build and run all Lector library tests from the base directory of the Lector repository with:
+
+```bash
+bazel test //...
+```
+
+[(Back to Developer Guide)](#developer-guide)
+
+### Developer Guide: CMake
+
+If using the CMake build system, build the Lector library from the base directory of the Lector repository with:
+
+```bash
+cmake -S . -B build
+cmake --build build --parallel
+```
+
+Optionally build and run all Lector library tests from the base directory of the Lector repository with:
+
+```bash
+cmake -S . -B build -D LECTOR_TEST=ON
+cmake --build build --parallel
+ctest --test-dir build
+```
+
+[(Back to Developer Guide)](#developer-guide)
+
+### Developer Guide: Meson
+
+If using the Meson build system, build the Lector library from the base directory of the Lector repository with:
+
+```bash
+mkdir --parents subprojects
+meson wrap install gtest
+meson setup build
+meson compile -C build
+```
+
+Optionally run all Lector library tests from the base directory of the Lector repository with:
+
+```bash
+meson test -C build
+```
+
+[(Back to Developer Guide)](#developer-guide)
 
 ## License
 
