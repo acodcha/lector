@@ -8,7 +8,7 @@ Contents:
 
 - [**Introduction**](#1-introduction)
 - [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**User Guide**](#3-user-guide)
+- [**User Guide**](#3-user-guide): [Labels and Types](#31-user-guide-labels-and-types), [Information Display](#32-user-guide-information-display), [Custom Enumerations](#33-user-guide-custom-enumerations), [Custom Classes](#34-user-guide-custom-classes), [Error Checking](#35-user-guide-error-checking)
 - [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
 - [**License**](#5-license)
 
@@ -64,45 +64,7 @@ int main(int argc, char* argv[])
 
 The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, then prints the execution information, and finally passes the parsed arguments to `my_main_function`.
 
-In the Lector library, command line arguments are strongly-typed and support arbitrary types. Arguments can be declared as either required or optional.
-
-For example, passing `--help` with the above code snippet would result in the following console output:
-
-```text
-path/to/my_project_main --help
-
-Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
-Options:
--o <path>, --output_directory <path>  Output directory. Required.
-[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100.
-[-h, --help]  Display usage information and exit. Optional.
-```
-
-On the other hand, passing `--output_directory /some/path --iterations 200` would result in the following console output:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations 200
-
-Execution: path/to/my_project_main --output_directory /some/path --iterations 200
-```
-
-The Lector library also features strict error checking. For example:
-
-```text
-path/to/my_project_main --iterations 200
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what():  Missing required argument '--output_directory <path>'.
-```
-
-And also:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations not_a_number
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what():  Invalid value 'not_a_number' for argument '--iterations <number>'.
-```
+In the Lector library, command line arguments are strongly-typed and support arbitrary types. Arguments can be declared as either required or optional. The Lector library performs strict error checking to ensure that parsed command line arguments are valid.
 
 [(Back to Top)](#lector)
 
@@ -250,13 +212,181 @@ Finally, simply include the Lector library's header in your C++ source files wit
 
 ## 3. User Guide
 
-To-do.
+This section contains a comprehensive guide for using the Lector library in your C++ projects.
+
+- [Labels and Types](#31-user-guide-labels-and-types)
+- [Information Display](#32-user-guide-information-display)
+- [Custom Enumerations](#33-user-guide-custom-enumerations)
+- [Custom Classes](#34-user-guide-custom-classes)
+- [Error Checking](#35-user-guide-error-checking)
 
 [(Back to Top)](#lector)
 
+### 3.1. User Guide: Labels and Types
+
+To-do.
+
+[(Back to User Guide)](#3-user-guide)
+
+### 3.2. User Guide: Information Display
+
+For example, passing `--help` with the above code snippet would result in the following console output:
+
+```text
+path/to/my_project_main --help
+
+Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
+Options:
+-o <path>, --output_directory <path>  Output directory. Required.
+[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100.
+[-h, --help]  Display usage information and exit. Optional.
+```
+
+On the other hand, passing `--output_directory /some/path --iterations 200` would result in the following console output:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations 200
+
+Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+```
+
+[(Back to User Guide)](#3-user-guide)
+
+### 3.3. User Guide: Custom Enumerations
+
+To-do.
+
+[(Back to User Guide)](#3-user-guide)
+
+### 3.4. User Guide: Custom Classes
+
+To-do.
+
+[(Back to User Guide)](#3-user-guide)
+
+### 3.5. User Guide: Error Checking
+
+The Lector library performs strict error checking. The following examples use the code from the [**Introduction**](#1-introduction) section.
+
+Missing a required argument:
+
+```text
+path/to/my_project_main --iterations 200
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Missing required argument '--output_directory <path>'.
+```
+
+Duplicated argument:
+
+```text
+path/to/my_project_main --output_directory /some/path --output_directory /some/other/path
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Duplicated argument '--output_directory <path>'.
+```
+
+Invalid value for an argument:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations invalid_value
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Invalid value 'invalid_value' for argument '--iterations <number>'.
+```
+
+Missing the value of an argument:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Missing value for argument '--iterations <number>'.
+```
+
+Unknown argument:
+
+```text
+path/to/my_project_main --output_directory /some/path --unknown_argument
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Unknown argument '--unknown_argument'.
+```
+
+Strict error checking is also performed when defining the Lector library's arguments.
+
+All arguments must have at least one key. The following code produces a compilation error:
+
+```cpp
+lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  {}, "Output directory. Required."
+}
+```
+
+```text
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): All arguments must each have at least one key.
+```
+
+Arguments cannot have empty keys. The following code produces a compilation error:
+
+```cpp
+lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  {{"-o"}, {}}, "Output directory. Required."
+}
+```
+
+```text
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Arguments cannot have empty keys.
+```
+
+An argument's keys cannot be duplicated. The following code produces a compilation error:
+
+```cpp
+lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  {{"-o"}, {"-o"}}, "Output directory. Required."
+}
+```
+
+```text
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Key '-o' is duplicated in argument '-o <path>'. Arguments cannot have duplicate keys.
+```
+
+All arguments must have descriptions. The following code produces a compilation error:
+
+```cpp
+lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  {{"-o"}, {"--output_directory"}}, ""
+}
+```
+
+```text
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Argument '--output_directory <path>' has an empty description.
+          All arguments must have descriptions.
+```
+
+Boolean arguments must be optional. The following code produces a compilation error:
+
+```cpp
+lector::Argument<Label::OutputDirectory, bool>{
+  {{"-v"}, {"--verbose"}}, "Enable verbose mode.", true
+}
+```
+
+```text
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Boolean argument '--verbose' specifies a default value.
+          Boolean arguments are always false by default and cannot specify default values.
+```
+
+[(Back to User Guide)](#3-user-guide)
+
 ## 4. Developer Guide
 
-To check out, build, and test Lector for yourself, first clone the Lector repository with:
+To check out, build, and test the Lector library for yourself, first clone the Lector repository with:
 
 ```bash
 git clone git@github.com:acodcha/lector.git lector
@@ -329,7 +459,7 @@ meson test -C build
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
-Lector is licensed under the MIT License (<https://mit-license.org>).
+Lector is licensed under the MIT License. See the [LICENSE](LICENSE) file or <https://mit-license.org>.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
