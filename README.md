@@ -8,7 +8,7 @@ Contents:
 
 - [**Introduction**](#1-introduction)
 - [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**User Guide**](#3-user-guide): [Labels and Types](#31-user-guide-labels-and-types), [Information Display](#32-user-guide-information-display), [Custom Enumerations](#33-user-guide-custom-enumerations), [Custom Classes](#34-user-guide-custom-classes), [Error Checking](#35-user-guide-error-checking)
+- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Information Display](#32-user-guide-information-display), [Custom Enumerations](#33-user-guide-custom-enumerations), [Custom Classes](#34-user-guide-custom-classes), [Error Checking](#35-user-guide-error-checking)
 - [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
 - [**License**](#5-license)
 
@@ -23,7 +23,7 @@ The following example illustrates the use of the Lector library.
 #include <lector/lector.hpp>
 #include <my_project/my_main_function.hpp>
 
-enum class Label : std::int8_t { OutputDirectory, Iterations, Help };
+enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
 int main(int argc, char* argv[])
 {
@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
     return EXIT_SUCCESS;
   }
 
+  std::cout << "Start." << std::endl;
   std::cout << "Execution: " << arguments.print_execution() << std::endl;
 
   const std::filesystem::path& output_directory{
@@ -56,8 +57,10 @@ int main(int argc, char* argv[])
   const std::int32_t iterations{
     arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
 
+  std::cout << "Running my project's main function..." << std::endl;
   my_project::my_main_function(output_directory, iterations);
 
+  std::cout << "End." << std::endl;
   return EXIT_SUCCESS;
 }
 ```
@@ -214,7 +217,7 @@ Finally, simply include the Lector library's header in your C++ source files wit
 
 This section contains a comprehensive guide for using the Lector library in your C++ projects.
 
-- [Labels and Types](#31-user-guide-labels-and-types)
+- [Arguments](#31-user-guide-arguments)
 - [Information Display](#32-user-guide-information-display)
 - [Custom Enumerations](#33-user-guide-custom-enumerations)
 - [Custom Classes](#34-user-guide-custom-classes)
@@ -222,7 +225,7 @@ This section contains a comprehensive guide for using the Lector library in your
 
 [(Back to Top)](#lector)
 
-### 3.1. User Guide: Labels and Types
+### 3.1. User Guide: Arguments
 
 To-do.
 
@@ -230,7 +233,9 @@ To-do.
 
 ### 3.2. User Guide: Information Display
 
-For example, passing `--help` with the above code snippet would result in the following console output:
+The Lector library allows you to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
+
+Display usage information:
 
 ```text
 path/to/my_project_main --help
@@ -242,12 +247,15 @@ Options:
 [-h, --help]  Display usage information and exit. Optional.
 ```
 
-On the other hand, passing `--output_directory /some/path --iterations 200` would result in the following console output:
+Display execution information:
 
 ```text
 path/to/my_project_main --output_directory /some/path --iterations 200
 
+Start.
 Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+Running my project's main function...
+End.
 ```
 
 [(Back to User Guide)](#3-user-guide)
@@ -315,7 +323,7 @@ terminate called after throwing an instance of 'std::invalid_argument'
 
 Strict error checking is also performed when defining the Lector library's arguments.
 
-All arguments must have at least one key. The following code produces a compilation error:
+All arguments must each have at least one key. The following code produces a compilation error:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -324,7 +332,7 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 ```
 
 ```text
-terminate called after throwing an instance of 'std::invalid_argument'
+terminate called after throwing an instance of 'std::logic_error'
   what(): All arguments must each have at least one key.
 ```
 
@@ -337,11 +345,11 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 ```
 
 ```text
-terminate called after throwing an instance of 'std::invalid_argument'
+terminate called after throwing an instance of 'std::logic_error'
   what(): Empty key in argument '-o <path>'. Arguments cannot have empty keys.
 ```
 
-An argument's keys cannot be duplicated. The following code produces a compilation error:
+An argument cannot have duplicated keys. The following code produces a compilation error:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -350,8 +358,8 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 ```
 
 ```text
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Key '-o' is duplicated in argument '-o <path>'. Arguments cannot have duplicate keys.
+terminate called after throwing an instance of 'std::logic_error'
+  what(): Duplicated key '-o' in argument '-o <path>'. Arguments cannot have duplicate keys.
 ```
 
 All arguments must have descriptions. The following code produces a compilation error:
@@ -363,9 +371,9 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 ```
 
 ```text
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Empty description in argument '--output_directory <path>'.
-          All arguments must have descriptions.
+terminate called after throwing an instance of 'std::logic_error'
+  what(): Empty description in argument '--output_directory <path>'. All arguments must have
+          descriptions.
 ```
 
 Boolean arguments must be optional. The following code produces a compilation error:
@@ -377,9 +385,9 @@ lector::Argument<Label::OutputDirectory, bool>{
 ```
 
 ```text
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Boolean argument '--verbose' specifies a default value.
-          Boolean arguments are always false by default and cannot specify default values.
+terminate called after throwing an instance of 'std::logic_error'
+  what(): Specified default value for boolean argument '--verbose'. Boolean arguments are always
+          false by default and cannot specify default values.
 ```
 
 [(Back to User Guide)](#3-user-guide)
