@@ -6,19 +6,19 @@ Lector is a C++ library for parsing command line arguments. Lector is hosted at 
 
 Contents:
 
-- [**Introduction**](#introduction)
-- [**Configuration**](#configuration): [Bazel](#configuration-bazel), [CMake](#configuration-cmake), [Meson](#configuration-meson)
-- [**User Guide**](#user-guide)
-- [**Developer Guide**](#developer-guide): [Bazel](#developer-guide-bazel), [CMake](#developer-guide-cmake), [Meson](#developer-guide-meson)
-- [**License**](#license)
+- [**Introduction**](#1-introduction)
+- [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
+- [**User Guide**](#3-user-guide)
+- [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
+- [**License**](#5-license)
 
-## Introduction
+## 1. Introduction
 
 To-do.
 
 [(Back to Top)](#lector)
 
-## Configuration
+## 2. Configuration
 
 This section describes how to use the Lector library in one of your C++ projects.
 
@@ -28,13 +28,13 @@ Second, make sure that a C++ compiler with support for the C++17 standard or any
 
 Third, make sure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
-- [Bazel](#configuration-bazel)
-- [CMake](#configuration-cmake)
-- [Meson](#configuration-meson)
+- [Bazel](#21-configuration-bazel)
+- [CMake](#22-configuration-cmake)
+- [Meson](#23-configuration-meson)
 
 [(Back to Top)](#lector)
 
-### Configuration: Bazel
+### 2.1. Configuration: Bazel
 
 To use the Lector library in one of your Bazel C++ projects, first make sure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
 
@@ -84,9 +84,9 @@ cc_library(
 
 Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Configuration)](#configuration)
+[(Back to Configuration)](#2-configuration)
 
-### Configuration: CMake
+### 2.2. Configuration: CMake
 
 To use the Lector library in one of your CMake C++ projects, first make sure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
 
@@ -120,9 +120,9 @@ The above CMake code checks whether the Lector library is already installed on y
 
 Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Configuration)](#configuration)
+[(Back to Configuration)](#2-configuration)
 
-### Configuration: Meson
+### 2.3. Configuration: Meson
 
 To use the Lector library in one of your Meson C++ projects, first make sure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
 
@@ -158,15 +158,15 @@ my_library_name = library(
 
 Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
-[(Back to Configuration)](#configuration)
+[(Back to Configuration)](#2-configuration)
 
-## User Guide
+## 3. User Guide
 
 To-do.
 
 [(Back to Top)](#lector)
 
-## Developer Guide
+## 4. Developer Guide
 
 To check out, build, and test Lector for yourself, first clone the Lector repository with:
 
@@ -177,13 +177,13 @@ cd lector
 
 Next, refer to the section for your preferred build system:
 
-- [Bazel](#developer-guide-bazel)
-- [CMake](#developer-guide-cmake)
-- [Meson](#developer-guide-meson)
+- [Bazel](#41-developer-guide-bazel)
+- [CMake](#42-developer-guide-cmake)
+- [Meson](#43-developer-guide-meson)
 
 [(Back to Top)](#lector)
 
-### Developer Guide: Bazel
+### 4.1. Developer Guide: Bazel
 
 If using the Bazel build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -197,9 +197,9 @@ Optionally build and run all Lector library tests from the base directory of the
 bazel test //...
 ```
 
-[(Back to Developer Guide)](#developer-guide)
+[(Back to Developer Guide)](#4-developer-guide)
 
-### Developer Guide: CMake
+### 4.2. Developer Guide: CMake
 
 If using the CMake build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -216,9 +216,9 @@ cmake --build build --parallel
 ctest --test-dir build
 ```
 
-[(Back to Developer Guide)](#developer-guide)
+[(Back to Developer Guide)](#4-developer-guide)
 
-### Developer Guide: Meson
+### 4.3. Developer Guide: Meson
 
 If using the Meson build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -235,9 +235,9 @@ Optionally run all Lector library tests from the base directory of the Lector re
 meson test -C build
 ```
 
-[(Back to Developer Guide)](#developer-guide)
+[(Back to Developer Guide)](#4-developer-guide)
 
-## License
+## 5. License
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
