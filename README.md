@@ -14,7 +14,95 @@ Contents:
 
 ## 1. Introduction
 
-To-do.
+The following example illustrates the use of the Lector library.
+
+```cpp
+#include <cstdint>
+#include <iostream>
+#include <filesystem>
+#include <lector/lector.hpp>
+#include <my_project/my_main_function.hpp>
+
+enum class Label : std::int8_t { OutputDirectory, Iterations, Help };
+
+int main(int argc, char* argv[])
+{
+  lector::Arguments arguments{
+    lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+      {"-o", "--output_directory"}, "Output directory. Required."
+    },
+    lector::Argument<Label::Iterations, std::int32_t>{
+      {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+    },
+    lector::Argument<Label::Help, bool>{
+      {"-h", "--help"}, "Display usage information and exit. Optional."
+    }
+  };
+
+  arguments.parse(argc, argv);
+
+  if (arguments.get<::test::Label::Help>().parsed_value()) {
+    std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
+    std::cout << "Options: " << std::endl;
+    std::cout << arguments.print_usage_options() << std::endl;
+    return EXIT_SUCCESS;
+  }
+
+  std::cout << "Execution: " << arguments.print_execution() << std::endl;
+
+  const std::filesystem::path& output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value().value()};
+
+  const std::int32_t iterations{
+    arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
+
+  my_project::my_main_function(output_directory, iterations);
+
+  return EXIT_SUCCESS;
+}
+```
+
+The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, then prints the execution information, and finally passes the parsed arguments to `my_main_function`.
+
+In the Lector library, command line arguments are strongly-typed and support arbitrary types. Arguments can be declared as either required or optional.
+
+For example, passing `--help` with the above code snippet would result in the following console output:
+
+```text
+path/to/my_project_main --help
+
+Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
+Options:
+-o <path>, --output_directory <path>  Output directory. Required.
+[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100.
+[-h, --help]  Display usage information and exit. Optional.
+```
+
+On the other hand, passing `--output_directory /some/path --iterations 200` would result in the following console output:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations 200
+
+Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+```
+
+The Lector library also features strict error checking. For example:
+
+```text
+path/to/my_project_main --iterations 200
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  Missing required argument '--output_directory <path>'.
+```
+
+And also:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations not_a_number
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  Invalid value 'not_a_number' for argument '--iterations <number>'.
+```
 
 [(Back to Top)](#lector)
 
