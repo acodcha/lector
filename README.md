@@ -328,7 +328,7 @@ All arguments must each have at least one key. The following code produces a com
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
   {}, "Output directory. Required."
-}
+};
 ```
 
 ```text
@@ -340,8 +340,8 @@ Arguments cannot have empty keys. The following code produces a compilation erro
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {{"-o"}, {}}, "Output directory. Required."
-}
+  {"-o", ""}, "Output directory. Required."
+};
 ```
 
 ```text
@@ -353,8 +353,8 @@ An argument cannot have duplicated keys. The following code produces a compilati
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {{"-o"}, {"-o"}}, "Output directory. Required."
-}
+  {"-o", "-o"}, "Output directory. Required."
+};
 ```
 
 ```text
@@ -366,8 +366,8 @@ All arguments must have descriptions. The following code produces a compilation 
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {{"-o"}, {"--output_directory"}}, ""
-}
+  {"-o", "--output_directory"}, ""
+};
 ```
 
 ```text
@@ -380,8 +380,8 @@ Boolean arguments must be optional. The following code produces a compilation er
 
 ```cpp
 lector::Argument<Label::OutputDirectory, bool>{
-  {{"-v"}, {"--verbose"}}, "Enable verbose mode.", true
-}
+  {"-v", "--verbose"}, "Enable verbose mode.", true
+};
 ```
 
 ```text
