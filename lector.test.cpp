@@ -439,8 +439,8 @@ TEST(Lector, ArgumentConstructorBooleanDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorBooleanOptional) {
@@ -453,8 +453,8 @@ TEST(Lector, ArgumentConstructorBooleanOptional) {
   EXPECT_EQ(argument.default_value(), false);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_FALSE(argument.parsed_or_default_value());
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-h, --help");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-h, --help");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorEnumerationDefault) {
@@ -465,8 +465,8 @@ TEST(Lector, ArgumentConstructorEnumerationDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorEnumerationOptional) {
@@ -480,8 +480,8 @@ TEST(Lector, ArgumentConstructorEnumerationOptional) {
   EXPECT_EQ(argument.default_value(), ::test::Color::Red);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorEnumerationRequired) {
@@ -494,8 +494,8 @@ TEST(Lector, ArgumentConstructorEnumerationRequired) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorFilesystemPathDefault) {
@@ -506,8 +506,8 @@ TEST(Lector, ArgumentConstructorFilesystemPathDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorFilesystemPathOptional) {
@@ -521,8 +521,8 @@ TEST(Lector, ArgumentConstructorFilesystemPathOptional) {
   EXPECT_EQ(argument.default_value(), ::std::filesystem::path("/some/path"));
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path("/some/path"));
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-o <path>, --output <path>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorFilesystemPathRequired) {
@@ -535,8 +535,8 @@ TEST(Lector, ArgumentConstructorFilesystemPathRequired) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-o <path>, --output <path>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberFloatingPointDefault) {
@@ -547,8 +547,8 @@ TEST(Lector, ArgumentConstructorNumberFloatingPointDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberFloatingPointOptional) {
@@ -562,8 +562,8 @@ TEST(Lector, ArgumentConstructorNumberFloatingPointOptional) {
   EXPECT_EQ(argument.default_value(), 0.03125);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 0.03125);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <value>, --tolerance <value>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberFloatingPointRequired) {
@@ -576,8 +576,8 @@ TEST(Lector, ArgumentConstructorNumberFloatingPointRequired) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <value>, --tolerance <value>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberIntegerDefault) {
@@ -588,8 +588,8 @@ TEST(Lector, ArgumentConstructorNumberIntegerDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberIntegerOptional) {
@@ -603,8 +603,8 @@ TEST(Lector, ArgumentConstructorNumberIntegerOptional) {
   EXPECT_EQ(argument.default_value(), 100);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 100);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorNumberIntegerRequired) {
@@ -617,8 +617,8 @@ TEST(Lector, ArgumentConstructorNumberIntegerRequired) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorStringDefault) {
@@ -629,8 +629,8 @@ TEST(Lector, ArgumentConstructorStringDefault) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(argument.print_keys_and_value_types().empty());
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorStringOptional) {
@@ -644,8 +644,8 @@ TEST(Lector, ArgumentConstructorStringOptional) {
   EXPECT_EQ(argument.default_value(), "My Report");
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorStringRequired) {
@@ -658,8 +658,8 @@ TEST(Lector, ArgumentConstructorStringRequired) {
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
+  EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentCopyConstructor) {
@@ -673,7 +673,7 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(first.default_value(), 100);
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
   EXPECT_EQ(first.parsed_or_default_value(), 100);
-  EXPECT_TRUE(first.print_execution().empty());
+  EXPECT_TRUE(first.execution().empty());
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{first};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
@@ -682,8 +682,8 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
-  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(second.execution().empty());
 }
 
 TEST(Lector, ArgumentCopyAssignmentOperator) {
@@ -697,7 +697,7 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.default_value(), 100);
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
   EXPECT_EQ(first.parsed_or_default_value(), 100);
-  EXPECT_TRUE(first.print_execution().empty());
+  EXPECT_TRUE(first.execution().empty());
   ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_TRUE(second.keys().empty());
@@ -705,7 +705,7 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), ::lector::Importance::Required);
   EXPECT_EQ(second.default_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_TRUE(second.execution().empty());
   second = first;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
@@ -714,8 +714,8 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
-  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(second.execution().empty());
 }
 
 TEST(Lector, ArgumentMoveConstructor) {
@@ -729,7 +729,7 @@ TEST(Lector, ArgumentMoveConstructor) {
   EXPECT_EQ(first.default_value(), 100);
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
   EXPECT_EQ(first.parsed_or_default_value(), 100);
-  EXPECT_TRUE(first.print_execution().empty());
+  EXPECT_TRUE(first.execution().empty());
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{std::move(first)};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
@@ -738,8 +738,8 @@ TEST(Lector, ArgumentMoveConstructor) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
-  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(second.execution().empty());
 }
 
 TEST(Lector, ArgumentMoveAssignmentOperator) {
@@ -753,7 +753,7 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.default_value(), 100);
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
   EXPECT_EQ(first.parsed_or_default_value(), 100);
-  EXPECT_TRUE(first.print_execution().empty());
+  EXPECT_TRUE(first.execution().empty());
   ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_TRUE(second.keys().empty());
@@ -761,7 +761,7 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), ::lector::Importance::Required);
   EXPECT_EQ(second.default_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_TRUE(second.execution().empty());
   second = ::std::move(first);
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
@@ -770,8 +770,8 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.default_value(), 100);
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
   EXPECT_EQ(second.parsed_or_default_value(), 100);
-  EXPECT_EQ(second.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_TRUE(second.print_execution().empty());
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_TRUE(second.execution().empty());
 }
 
 TEST(Lector, ArgumentSetParsedValueBoolean) {
@@ -784,7 +784,7 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.default_value(), false);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), false);
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(true);
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -793,8 +793,8 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.default_value(), false);
   EXPECT_EQ(argument.parsed_value(), true);
   EXPECT_EQ(argument.parsed_or_default_value(), true);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-h, --help");
-  EXPECT_EQ(argument.print_execution(), "--help");
+  EXPECT_EQ(argument.keys_with_value_types(), "-h, --help");
+  EXPECT_EQ(argument.execution(), "--help");
 }
 
 TEST(Lector, ArgumentSetParsedValueEnumeration) {
@@ -808,7 +808,7 @@ TEST(Lector, ArgumentSetParsedValueEnumeration) {
   EXPECT_EQ(argument.default_value(), ::test::Color::Red);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(::test::Color::Blue);
   EXPECT_EQ(argument.label(), ::test::Label::Color);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -817,8 +817,8 @@ TEST(Lector, ArgumentSetParsedValueEnumeration) {
   EXPECT_EQ(argument.default_value(), ::test::Color::Red);
   EXPECT_EQ(argument.parsed_value(), ::test::Color::Blue);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Blue);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-c <value>, --color <value>");
-  EXPECT_EQ(argument.print_execution(), "--color Blue");
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
+  EXPECT_EQ(argument.execution(), "--color Blue");
 }
 
 TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
@@ -832,7 +832,7 @@ TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
   EXPECT_EQ(argument.default_value(), "/some/path");
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "/some/path");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("/another/path");
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -841,8 +841,8 @@ TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
   EXPECT_EQ(argument.default_value(), "/some/path");
   EXPECT_EQ(argument.parsed_value(), "/another/path");
   EXPECT_EQ(argument.parsed_or_default_value(), "/another/path");
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-o <path>, --output <path>");
-  EXPECT_EQ(argument.print_execution(), "--output /another/path");
+  EXPECT_EQ(argument.keys_with_value_types(), "-o <path>, --output <path>");
+  EXPECT_EQ(argument.execution(), "--output /another/path");
 }
 
 TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
@@ -856,7 +856,7 @@ TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   EXPECT_EQ(argument.default_value(), 0.03125);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 0.03125);
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(0.015625);
   EXPECT_EQ(argument.label(), ::test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -865,8 +865,8 @@ TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   EXPECT_EQ(argument.default_value(), 0.03125);
   EXPECT_EQ(argument.parsed_value(), 0.015625);
   EXPECT_EQ(argument.parsed_or_default_value(), 0.015625);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.print_execution(), "--tolerance 0.0156250000000000000");
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <value>, --tolerance <value>");
+  EXPECT_EQ(argument.execution(), "--tolerance 0.0156250000000000000");
 }
 
 TEST(Lector, ArgumentSetParsedValueNumberInteger) {
@@ -880,7 +880,7 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.default_value(), 100);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), 100);
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(200);
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -889,8 +889,8 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.default_value(), 100);
   EXPECT_EQ(argument.parsed_value(), 200);
   EXPECT_EQ(argument.parsed_or_default_value(), 200);
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.print_execution(), "--iterations 200");
+  EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(argument.execution(), "--iterations 200");
 }
 
 TEST(Lector, ArgumentSetParsedValueString) {
@@ -904,7 +904,7 @@ TEST(Lector, ArgumentSetParsedValueString) {
   EXPECT_EQ(argument.default_value(), "My Report");
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
-  EXPECT_TRUE(argument.print_execution().empty());
+  EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("Some Other Report");
   EXPECT_EQ(argument.label(), ::test::Label::Title);
   EXPECT_EQ(argument.keys(), expected_keys);
@@ -913,8 +913,8 @@ TEST(Lector, ArgumentSetParsedValueString) {
   EXPECT_EQ(argument.default_value(), "My Report");
   EXPECT_EQ(argument.parsed_value(), "Some Other Report");
   EXPECT_EQ(argument.parsed_or_default_value(), "Some Other Report");
-  EXPECT_EQ(argument.print_keys_and_value_types(), "-t <text>, --title <text>");
-  EXPECT_EQ(argument.print_execution(), "--title Some Other Report");
+  EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
+  EXPECT_EQ(argument.execution(), "--title Some Other Report");
 }
 
 TEST(Lector, ArgumentValidate) {

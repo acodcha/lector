@@ -872,7 +872,7 @@ public:
       return default_value_.value();
     }
     throw std::logic_error(
-        "No parsed or default value for argument '" + print_longest_key_and_value_type() + "'.");
+        "No parsed or default value for argument '" + longest_key_with_value_type() + "'.");
   }
 
   /// @brief Sets the parsed value of this command line argument.
@@ -881,22 +881,22 @@ public:
     parsed_value_ = value;
   }
 
-  /// @brief Prints the longest key and its associated value type of this command line argument as a
-  /// string.
+  /// @brief Prints the longest key of this command line argument with its associated value type as
+  /// a string.
   /// @return The string that contains the longest key and its associated value type.
-  std::string print_longest_key_and_value_type() const {
-    std::string result;
+  std::string longest_key_with_value_type() const {
+    std::string result{longest_key()};
     const std::string value_type{print_value_type()};
-    result += longest_key();
     if (!value_type.empty()) {
       result += " " + value_type;
     }
     return result;
   }
 
-  /// @brief Prints the keys and value types of this command line argument as a string.
+  /// @brief Prints the keys of this command line argument with their associated value types as a
+  /// string.
   /// @return The string that contains the keys and value types.
-  std::string print_keys_and_value_types() const {
+  std::string keys_with_value_types() const {
     std::string result;
     for (std::size_t index{0}; index < keys_.size(); ++index) {
       const std::string value_type{print_value_type()};
@@ -913,7 +913,7 @@ public:
 
   /// @brief Prints the execution of this command line argument as a string.
   /// @return The string that contains the execution of this command line argument.
-  std::string print_execution() const {
+  std::string execution() const {
     if constexpr (std::is_same_v<Type, bool>) {
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
@@ -941,23 +941,23 @@ private:
   /// @throws std::invalid_argument if any of this command line argument's keys are invalid.
   void validate_keys() const {
     if (keys_.empty()) {
-      throw std::invalid_argument("All arguments must each have at least one key.");
+      throw std::logic_error("All arguments must each have at least one key.");
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
         if (longest_key().empty()) {
-          throw std::invalid_argument("Arguments cannot have empty keys.");
+          throw std::logic_error("Arguments cannot have empty keys.");
         }
-        throw std::invalid_argument("Empty key in argument '" + print_longest_key_and_value_type()
-                                    + "'. Arguments cannot have empty keys.");
+        throw std::logic_error("Empty key in argument '" + longest_key_with_value_type()
+                               + "'. Arguments cannot have empty keys.");
       }
     }
     for (std::size_t first{0}; first < keys_.size(); ++first) {
       for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
         if (keys_[first] == keys_[second]) {
-          throw std::invalid_argument(
-              "Duplicated key '" + keys_[first] + "' in argument '"
-              + print_longest_key_and_value_type() + "'. Arguments cannot have duplicate keys.");
+          throw std::logic_error(
+              "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
+              + "'. Arguments cannot have duplicate keys.");
         }
       }
     }
@@ -967,9 +967,8 @@ private:
   /// @throws std::invalid_argument if this command line argument's description is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw std::invalid_argument(
-          "Argument '" + print_longest_key_and_value_type()
-          + "' has an empty description. All arguments must have descriptions.");
+      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+                             + "'. All arguments must have descriptions.");
     }
   };
 
@@ -979,16 +978,15 @@ private:
   /// value.
   constexpr void validate_default_value() const {
     if constexpr (std::is_same_v<Type, bool>) {
-      throw std::invalid_argument(
-          "Boolean argument '" + print_longest_key_and_value_type() + "' specifies a default value."
-          + " Boolean arguments are always false by default"
-          + " and cannot specify default values.");
+      throw std::logic_error(
+          "Specified default value for boolean argument '" + longest_key_with_value_type()
+          + "'. Boolean arguments are always false by default and cannot specify default values.");
     }
   }
 
   /// @brief Prints the value type of this command line argument as a string.
   /// @return The string that contains the value type.
-  std::string print_value_type() const {
+  std::string_view print_value_type() const {
     if (std::is_same_v<Type, bool>) {
       return "";
     } else if constexpr (std::numeric_limits<Type>::is_integer) {
@@ -1144,7 +1142,7 @@ public:
             if (!printed_execution_arguments.empty()) {
               printed_execution_arguments += " ";
             }
-            printed_execution_arguments += argument.print_execution();
+            printed_execution_arguments += argument.execution();
           }());
         },
         arguments_);
@@ -1164,7 +1162,7 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == lector::Importance::Required) {
-              result += " " + argument.print_longest_key_and_value_type();
+              result += " " + argument.longest_key_with_value_type();
             }
           }());
         },
@@ -1173,7 +1171,7 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == lector::Importance::Optional) {
-              result += " [" + argument.print_longest_key_and_value_type() + "]";
+              result += " [" + argument.longest_key_with_value_type() + "]";
             }
           }());
         },
@@ -1190,7 +1188,7 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == lector::Importance::Required) {
-              stream << argument.print_keys_and_value_types() << "  " << argument.description()
+              stream << argument.keys_with_value_types() << "  " << argument.description()
                      << std::endl;
             }
           }());
@@ -1200,8 +1198,8 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == lector::Importance::Optional) {
-              stream << "[" << argument.print_keys_and_value_types() << "]  "
-                     << argument.description() << std::endl;
+              stream << "[" << argument.keys_with_value_types() << "]  " << argument.description()
+                     << std::endl;
             }
           }());
         },
@@ -1243,7 +1241,7 @@ private:
                   != argument.keys().cend()) {
                 if (argument.parsed_value().has_value()) {
                   throw std::invalid_argument(
-                      "Duplicated argument '" + argument.print_longest_key_and_value_type() + "'.");
+                      "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
                 }
                 matched = true;
                 using Type = typename std::decay_t<decltype(argument)>::ValueType;
@@ -1258,14 +1256,12 @@ private:
                     if (parsed_value.has_value()) {
                       argument.set_parsed_value(parsed_value.value());
                     } else {
-                      throw std::invalid_argument(
-                          "Invalid value '" + raw_value + "' for argument '"
-                          + argument.print_longest_key_and_value_type() + "'.");
+                      throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                                  + argument.longest_key_with_value_type() + "'.");
                     }
                   } else {
-                    throw std::invalid_argument(
-                        "Missing value for argument '" + argument.print_longest_key_and_value_type()
-                        + "'.");
+                    throw std::invalid_argument("Missing value for argument '"
+                                                + argument.longest_key_with_value_type() + "'.");
                   }
                 }
               }
@@ -1287,8 +1283,8 @@ private:
           (..., [&]() {
             if (argument.importance() == lector::Importance::Required
                 && !argument.parsed_value().has_value()) {
-              throw std::invalid_argument("Missing required argument '"
-                                          + argument.print_longest_key_and_value_type() + "'.");
+              throw std::invalid_argument(
+                  "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }
           }());
         },
