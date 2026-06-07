@@ -338,7 +338,7 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 
 ```text
 terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Arguments cannot have empty keys.
+  what(): Empty key in argument '-o <path>'. Arguments cannot have empty keys.
 ```
 
 An argument's keys cannot be duplicated. The following code produces a compilation error:
@@ -364,7 +364,7 @@ lector::Argument<Label::OutputDirectory, std::filesystem::path>{
 
 ```text
 terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Argument '--output_directory <path>' has an empty description.
+  what(): Empty description in argument '--output_directory <path>'.
           All arguments must have descriptions.
 ```
 
