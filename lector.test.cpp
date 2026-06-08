@@ -63,10 +63,10 @@ public:
 };
 
 /// @brief Default point in three-dimensional space.
-inline constexpr ::test::Point DefaultPoint{.x = 1.0F, .y = 2.0F, .z = 3.0F};
+inline constexpr ::test::Point FirstPoint{.x = 1.0F, .y = 2.0F, .z = 3.0F};
 
 /// @brief Another point in three-dimensional space. Different from the default point.
-inline constexpr ::test::Point OtherPoint{.x = 4.0F, .y = 5.0F, .z = 6.0F};
+inline constexpr ::test::Point SecondPoint{.x = 4.0F, .y = 5.0F, .z = 6.0F};
 
 /// @brief Equality operator for the test::Point data structure.
 /// @param[in] first The first point to compare.
@@ -74,14 +74,6 @@ inline constexpr ::test::Point OtherPoint{.x = 4.0F, .y = 5.0F, .z = 6.0F};
 /// @return Returns true if both points are equal, and false otherwise.
 inline constexpr bool operator==(const Point& first, const Point& second) {
   return first.x == second.x && first.y == second.y && first.z == second.z;
-}
-
-/// @brief Inequality operator for the test::Point data structure.
-/// @param[in] first The first point to compare.
-/// @param[in] second The second point to compare.
-/// @return Returns true if the points are not equal, and false otherwise.
-inline constexpr bool operator!=(const Point& first, const Point& second) {
-  return !(first == second);
 }
 
 /// @brief Input stream operator for the test::Point data structure. Populates a test::Point data
@@ -212,8 +204,7 @@ create_argument_iterations_required() {
 ::lector::Argument<::test::Label::Point, ::test::Point> create_argument_point_optional() {
   return ::lector::Argument<::test::Label::Point, ::test::Point>{
     ::std::initializer_list<::std::string>{"-p", "--point"},
-    "Starting point.",
-    ::test::DefaultPoint
+    "Starting point.", ::test::FirstPoint
   };
 }
 
@@ -295,7 +286,7 @@ void create_invalid_boolean_argument_with_a_default_value() {
 
 /// @brief Helper class to construct argc and argv for testing the parsing of command line
 /// arguments.
-class Command {
+class Command final {
 public:
   /// @brief Default constructor. Initializes argc to 0 and argv to nullptr. Represents a completely
   /// empty command line.
@@ -549,9 +540,9 @@ TEST(Lector, ArgumentConstructorDataStructureOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.default_value(), ::test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::FirstPoint);
   EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
   EXPECT_TRUE(argument.execution().empty());
 }
@@ -918,18 +909,18 @@ TEST(Lector, ArgumentSetParsedValueDataStructure) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.default_value(), ::test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::FirstPoint);
   EXPECT_TRUE(argument.execution().empty());
-  argument.set_parsed_value(::test::OtherPoint);
+  argument.set_parsed_value(::test::SecondPoint);
   EXPECT_EQ(argument.label(), ::test::Label::Point);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
-  EXPECT_EQ(argument.parsed_value(), ::test::OtherPoint);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::OtherPoint);
+  EXPECT_EQ(argument.default_value(), ::test::FirstPoint);
+  EXPECT_EQ(argument.parsed_value(), ::test::SecondPoint);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::SecondPoint);
   EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
   EXPECT_EQ(argument.execution(), "--point 4 5 6");
 }
@@ -1081,12 +1072,12 @@ TEST(Lector, ParseDataStructure) {
   EXPECT_EQ(::lector::parse<::test::Point>("0.0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::test::Point>("0 0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::test::Point>("0.0 0.0"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Point>("1 2 3"), ::test::DefaultPoint);
-  EXPECT_EQ(::lector::parse<::test::Point>("1.0 2.0 3.0"), ::test::DefaultPoint);
-  EXPECT_EQ(::lector::parse<::test::Point>("1.0E+0 2.0E+0 3.0E+0"), ::test::DefaultPoint);
-  EXPECT_EQ(::lector::parse<::test::Point>("4 5 6"), ::test::OtherPoint);
-  EXPECT_EQ(::lector::parse<::test::Point>("4.0 5.0 6.0"), ::test::OtherPoint);
-  EXPECT_EQ(::lector::parse<::test::Point>("4.0E+0 5.0E+0 6.0E+0"), ::test::OtherPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("1 2 3"), ::test::FirstPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("1.0 2.0 3.0"), ::test::FirstPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("1.0E+0 2.0E+0 3.0E+0"), ::test::FirstPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4 5 6"), ::test::SecondPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4.0 5.0 6.0"), ::test::SecondPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4.0E+0 5.0E+0 6.0E+0"), ::test::SecondPoint);
 }
 
 TEST(Lector, ParseEnumeration) {
@@ -1539,8 +1530,8 @@ TEST(Lector, PrintBoolean) {
 }
 
 TEST(Lector, PrintDataStructure) {
-  EXPECT_EQ(::lector::print<::test::Point>(::test::DefaultPoint), "1 2 3");
-  EXPECT_EQ(::lector::print<::test::Point>(::test::OtherPoint), "4 5 6");
+  EXPECT_EQ(::lector::print<::test::Point>(::test::FirstPoint), "1 2 3");
+  EXPECT_EQ(::lector::print<::test::Point>(::test::SecondPoint), "4 5 6");
 }
 
 TEST(Lector, PrintEnumeration) {

@@ -759,7 +759,7 @@ template <typename Type>
 /// identify the command line argument.
 /// @tparam Type The type of the command line argument.
 template <auto LabelValue, typename Type>
-class Argument {
+class Argument final {
 public:
   using ValueType = Type;
 
@@ -1073,7 +1073,7 @@ struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
 /// @tparam ...ArgumentTypes Variadic list of the types of the command line arguments in this
 /// collection.
 template <typename... ArgumentTypes>
-class Arguments {
+class Arguments final {
 public:
   /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
   /// list of command line arguments.
