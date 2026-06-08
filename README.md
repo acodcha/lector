@@ -64,9 +64,9 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, then prints the execution information, and finally passes the parsed arguments to `my_main_function`.
+The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, prints the execution information, and passes the parsed arguments to `my_project::my_main_function()`.
 
-In the Lector library, command line arguments are strongly-typed and support arbitrary types. Arguments can be declared as either required or optional. The Lector library performs strict error checking to ensure that parsed command line arguments are valid.
+In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as either required or optional, and feature strict error checking.
 
 [(Back to Top)](#lector)
 
@@ -74,9 +74,9 @@ In the Lector library, command line arguments are strongly-typed and support arb
 
 This section describes how to use the Lector library in one of your C++ projects.
 
-First, make sure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git` or visit <https://git-scm.com> for alternate means of installation.
+First, make sure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git`, or visit <https://git-scm.com> for alternate means of installation.
 
-Second, make sure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++` or visit <https://gcc.gnu.org> for alternate means of installation.
+Second, make sure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++`, or visit <https://gcc.gnu.org> for alternate means of installation.
 
 Third, make sure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
@@ -148,17 +148,17 @@ Then, add the following code to your project's `CMakeLists.txt` file:
 find_package(lector CONFIG QUIET)
 
 if(lector_FOUND)
-  message(STATUS "The Lector library was found at: ${lector_CONFIG}")
+    message(STATUS "The Lector library was found at: ${lector_CONFIG}")
 else()
-  include(FetchContent)
-  FetchContent_Declare(
-    lector
-    GIT_REPOSITORY [https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)
-    GIT_TAG main
-  )
-  FetchContent_MakeAvailable(lector)
-  add_library(lector::lector ALIAS lector)
-  message(STATUS "The Lector library was fetched from: https://github.com/acodcha/lector")
+    include(FetchContent)
+    FetchContent_Declare(
+        lector
+        GIT_REPOSITORY [https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)
+        GIT_TAG main
+    )
+    FetchContent_MakeAvailable(lector)
+    add_library(lector::lector ALIAS lector)
+    message(STATUS "The Lector library was fetched from: https://github.com/acodcha/lector")
 endif()
 
 # [...]
@@ -194,17 +194,17 @@ Next, add the following code to your project's `meson.build` files:
 
 ```text
 lector = dependency(
-  'lector',
-  fallback : ['lector', 'lector'],
-  required : true
+    'lector',
+    fallback : ['lector', 'lector'],
+    required : true
 )
 
 my_library_name = library(
-  'my_library_name',
-  'src/my_library_file.cpp',
-  include_directories : include_directories('src'),
-  dependencies : [lector, my_other_dependency],
-  install : true
+    'my_library_name',
+    'src/my_library_file.cpp',
+    include_directories : include_directories('src'),
+    dependencies : [lector, my_other_dependency],
+    install : true
 )
 ```
 
