@@ -248,7 +248,7 @@ lector::Arguments arguments{
 };
 ```
 
-Any type can be used. Supported types include:
+Supported argument types include:
 
 - Boolean flags: `bool`.
 - Natural numbers: `std::uint8_t`, `std::uint16_t`, `std::uint32_t`, `std::uint64_t`.
@@ -257,7 +257,7 @@ Any type can be used. Supported types include:
 - Strings: `std::string`. If the string contains whitespace, make sure to enclose it in double quotes (`"`).
 - Paths: `std::filesystem::path`.
 - Enumerations: see the [Enumerations](#33-user-guide-enumerations) section.
-- Classes: see the [Classes and Structures](#34-user-guide-classes-and-structures) section.
+- Classes and Structures: see the [Classes and Structures](#34-user-guide-classes-and-structures) section.
 
 Once all arguments have been defined, the `lector::Arguments::parse()` method can be used to parse `argc` and `argv`. For example:
 
@@ -341,56 +341,9 @@ To-do.
 
 ### 3.5. User Guide: Error Checking
 
-The Lector library performs strict error checking. The following examples use the code from the [**Introduction**](#1-introduction) section.
+The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
-Missing a required argument:
-
-```text
-path/to/my_project_main --iterations 200
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Missing required argument '--output_directory <path>'.
-```
-
-Duplicated argument:
-
-```text
-path/to/my_project_main --output_directory /some/path --output_directory /some/other/path
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Duplicated argument '--output_directory <path>'.
-```
-
-Invalid value for an argument:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations invalid_value
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Invalid value 'invalid_value' for argument '--iterations <number>'.
-```
-
-Missing the value of an argument:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Missing value for argument '--iterations <number>'.
-```
-
-Unknown argument:
-
-```text
-path/to/my_project_main --output_directory /some/path --unknown_argument
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Unknown argument '--unknown_argument'.
-```
-
-Strict error checking is also performed when defining the Lector library's arguments.
-
-All arguments must each have at least one key. The following code produces a compilation error:
+When defining arguments, all arguments must each have at least one key:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -403,7 +356,7 @@ terminate called after throwing an instance of 'std::logic_error'
   what(): All arguments must each have at least one key.
 ```
 
-Arguments cannot have empty keys. The following code produces a compilation error:
+When defining arguments, arguments cannot have empty keys:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -416,7 +369,7 @@ terminate called after throwing an instance of 'std::logic_error'
   what(): Empty key in argument '-o <path>'. Arguments cannot have empty keys.
 ```
 
-An argument cannot have duplicated keys. The following code produces a compilation error:
+When defining arguments, an argument cannot have duplicated keys:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -429,7 +382,7 @@ terminate called after throwing an instance of 'std::logic_error'
   what(): Duplicated key '-o' in argument '-o <path>'. Arguments cannot have duplicate keys.
 ```
 
-All arguments must have descriptions. The following code produces a compilation error:
+When defining arguments, all arguments must have descriptions:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, std::filesystem::path>{
@@ -443,7 +396,7 @@ terminate called after throwing an instance of 'std::logic_error'
           descriptions.
 ```
 
-Boolean arguments must be optional. The following code produces a compilation error:
+When defining arguments, boolean arguments must be optional:
 
 ```cpp
 lector::Argument<Label::OutputDirectory, bool>{
@@ -455,6 +408,51 @@ lector::Argument<Label::OutputDirectory, bool>{
 terminate called after throwing an instance of 'std::logic_error'
   what(): Specified default value for boolean argument '--verbose'. Boolean arguments are always
           false by default and cannot specify default values.
+```
+
+When parsing arguments, the Lector library checks for missing required arguments:
+
+```text
+path/to/my_project_main --iterations 200
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Missing required argument '--output_directory <path>'.
+```
+
+When parsing arguments, the Lector library checks for duplicated arguments:
+
+```text
+path/to/my_project_main --output_directory /some/path --output_directory /some/other/path
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Duplicated argument '--output_directory <path>'.
+```
+
+When parsing arguments, the Lector library checks for invalid argument values:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations invalid_value
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Invalid value 'invalid_value' for argument '--iterations <number>'.
+```
+
+When parsing arguments, the Lector library checks for arguments missing values:
+
+```text
+path/to/my_project_main --output_directory /some/path --iterations
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Missing value for argument '--iterations <number>'.
+```
+
+When parsing arguments, the Lector library checks for unknown arguments:
+
+```text
+path/to/my_project_main --output_directory /some/path --unknown_argument
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what(): Unknown argument '--unknown_argument'.
 ```
 
 [(Back to User Guide)](#3-user-guide)
