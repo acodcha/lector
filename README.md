@@ -329,53 +329,61 @@ End.
 Enumerations can be used as argument types, but require specializing the `lector::Printings` and `lector::Parsings` compile-time constant expression fixed-size arrays for their values. For example:
 
 ```cpp
-#ifndef SHAPE_HPP
-#define SHAPE_HPP
+#ifndef MY_PROJECT_SHAPE_HPP
+#define MY_PROJECT_SHAPE_HPP
 
 #include <array>
 #include <cstdint>
 #include <lector/lector.hpp>
 
+namespace my_project {
+
 enum class Shape : std::int8_t {Circle, Triangle, Square};
 
+}  // namespace my_project
+
+namespace lector {
+
 template <>
-inline constexpr std::array<lector::Printing<Shape>, 3> Printings<Shape>{
+inline constexpr std::array<Printing<my_project::Shape>, 3> Printings<my_project::Shape>{
   {
-    {Shape::Circle, "Circle"},
-    {Shape::Triangle, "Triangle"},
-    {Shape::Square, "Square"},
+    {my_project::Shape::Circle,   "Circle"},
+    {my_project::Shape::Triangle, "Triangle"},
+    {my_project::Shape::Square,   "Square"},
   }
 };
 
 template <>
-inline constexpr std::array<lector::Spelling<Shape>, 9> Spellings<Shape>{
+inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project::Shape>{
   {
-    {"Circle", Shape::Circle},
-    {"Triangle", Shape::Triangle},
-    {"Square", Shape::Square},
-    {"circle", Shape::Circle},
-    {"triangle", Shape::Triangle},
-    {"square", Shape::Square},
-    {"CIRCLE", Shape::Circle},
-    {"TRIANGLE", Shape::Triangle},
-    {"SQUARE", Shape::Square},
+    {"Circle",   my_project::Shape::Circle},
+    {"Triangle", my_project::Shape::Triangle},
+    {"Square",   my_project::Shape::Square},
+    {"circle",   my_project::Shape::Circle},
+    {"triangle", my_project::Shape::Triangle},
+    {"square",   my_project::Shape::Square},
+    {"CIRCLE",   my_project::Shape::Circle},
+    {"TRIANGLE", my_project::Shape::Triangle},
+    {"SQUARE",   my_project::Shape::Square},
   }
 };
 
-#endif  // SHAPE_HPP
+}  // namespace lector
+
+#endif  // MY_PROJECT_SHAPE_HPP
 ```
 
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this enumeration. For example:
 
 ```cpp
-const std::string printed_triangle{lector::print(Shape::Triangle)};
+const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
 assert(printed_triangle == "Triangle");
 
-const std::optional<Shape> parsed_triangle{lector::parse("TRIANGLE")};
+const std::optional<my_project::Shape> parsed_triangle{lector::parse("TRIANGLE")};
 assert(parsed_triangle.has_value());
-assert(parsed_triangle.value() == Shape::Triangle);
+assert(parsed_triangle.value() == my_project::Shape::Triangle);
 
-const std::optional<Shape> invalid_shape{lector::parse("Invalid Shape")};
+const std::optional<my_project::Shape> invalid_shape{lector::parse("Invalid Shape")};
 assert(!invalid_shape.has_value());
 ```
 
@@ -385,20 +393,20 @@ The enumeration can also be used as a command line argument. For example:
 #include <cstdint>
 #include <iostream>
 #include <lector/lector.hpp>
-#include <my_project/shape.hpp>  // Defines Shape, Printings<Shape>, and Spellings<Shape>.
+#include <my_project/shape.hpp>
 
 enum class Label : std::int8_t {FavoriteShape};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
-    lector::Argument<Label::FavoriteShape, Shape>{
-      {"-s", "--shape"}, "Your favorite shape. Optional.", Shape::Circle
+    lector::Argument<Label::FavoriteShape, my_project::Shape>{
+      {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle
     }
   };
 
   arguments.parse(argc, argv);
 
-  const Shape shape{
+  const my_project::Shape shape{
     arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
 
   std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
@@ -414,13 +422,14 @@ int main(int argc, char* argv[]) {
 Classes and structures can be used as argument types, but require specializing the input and output stream operators (`<<` and `>>`). For example:
 
 ```cpp
-#ifndef POINT_HPP
-#define POINT_HPP
+#ifndef MY_PROJECT_POINT_HPP
+#define MY_PROJECT_POINT_HPP
 
 #include <iostream>
 
+namespace my_project {
+
 struct Point {
-public:
   double x{0.0};
   double y{0.0};
   double z{0.0};
@@ -436,18 +445,20 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
   return output_stream;
 }
 
-#endif  // POINT_HPP
+}  // namespace my_project
+
+#endif  // MY_PROJECT_POINT_HPP
 ```
 
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this data structure. For example:
 
 ```cpp
-const std::string printed_point{lector::print(Point{.x = 1.0, .y = 2.0, .z = 3.0})};
+const std::string printed_point{lector::print(my_project::Point{.x = 1.0, .y = 2.0, .z = 3.0})};
 assert(printed_point == "1 2 3");
 
-const std::optional<Point> parsed_point{lector::parse("4.0 5.0 6.0")};
+const std::optional<my_project::Point> parsed_point{lector::parse("4.0 5.0 6.0")};
 assert(parsed_point.has_value());
-assert(parsed_point.value() == Point{.x = 4.0, .y = 5.0, .z = 6.0});
+assert(parsed_point.value() == my_project::Point{.x = 4.0, .y = 5.0, .z = 6.0});
 ```
 
 The data structure can also be used as a command line argument. For example:
@@ -456,20 +467,20 @@ The data structure can also be used as a command line argument. For example:
 #include <cstdint>
 #include <iostream>
 #include <lector/lector.hpp>
-#include <my_project/point.hpp>  // Defines Point and its input and output stream operators.
+#include <my_project/point.hpp>
 
 enum class Label : std::int8_t {FavoritePoint};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
-    lector::Argument<Label::FavoritePoint, Point>{
-      {"-p", "--point"}, "Your favorite point. Optional.", Point{}
+    lector::Argument<Label::FavoritePoint, my_project::Point>{
+      {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{}
     }
   };
 
   arguments.parse(argc, argv);
 
-  const Point point{
+  const my_project::Point point{
     arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
 
   std::cout << "Your favorite point is: " << lector::print(point) << std::endl;
