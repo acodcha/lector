@@ -21,7 +21,7 @@ The following example illustrates the use of the Lector library.
 #include <iostream>
 #include <filesystem>
 #include <lector/lector.hpp>
-#include <my_project/my_main_function.hpp>
+#include <my_project/my_main_function.hpp>  // Defines my_project::my_main_function().
 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
@@ -302,7 +302,7 @@ const std::int32_t iterations{
 
 The Lector library allows you to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
-Display usage information:
+Display usage information via the `lector::Arguments::print_usage_command()` and `lector::Arguments::print_usage_options()` methods:
 
 ```text
 path/to/my_project_main --help
@@ -314,7 +314,7 @@ Options:
 [-h, --help]  Display usage information and exit. Optional.
 ```
 
-Display execution information:
+Display execution information via the  `lector::Arguments::print_execution()` method:
 
 ```text
 path/to/my_project_main --output_directory /some/path --iterations 200
@@ -329,7 +329,82 @@ End.
 
 ### 3.3. User Guide: Enumerations
 
-To-do.
+Enumerations can be used as argument types, but require specializing the `lector::Printings` and `lector::Parsings` constants for their values. For example:
+
+```cpp
+#include <cstdint>
+#include <lector/lector.hpp>
+
+enum class Shape : std::int8_t {Circle, Triangle, Square};
+
+/// @brief Specialization of the lector::Printings constant for the Shape enumeration.
+template <>
+inline constexpr ::std::array<::lector::Printing<Shape>, 3> Printings<Shape>{
+  {
+    {Shape::Circle, "Circle"},
+    {Shape::Triangle, "Triangle"},
+    {Shape::Square, "Square"},
+  }
+};
+
+/// @brief Specialization of the lector::Spellings constant for the Shape enumeration.
+template <>
+inline constexpr ::std::array<::lector::Spelling<Shape>, 9> Spellings<Shape>{
+  {
+    {"Circle", Shape::Circle},
+    {"Triangle", Shape::Triangle},
+    {"Square", Shape::Square},
+    {"circle", Shape::Circle},
+    {"triangle", Shape::Triangle},
+    {"square", Shape::Square},
+    {"CIRCLE", Shape::Circle},
+    {"TRIANGLE", Shape::Triangle},
+    {"SQUARE", Shape::Square},
+  }
+};
+```
+
+With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this enumeration. For example:
+
+```cpp
+const std::string printed_triangle{lector::print(Shape::Triangle)};
+assert(printed_triangle == "Triangle");
+
+const std::optional<Shape> parsed_triangle{lector::parse("TRIANGLE")};
+assert(parsed_triangle.has_value());
+assert(parsed_triangle.value() == Shape::Triangle);
+
+const std::optional<Shape> invalid_shape{lector::parse("Invalid Shape")};
+assert(!invalid_shape.has_value());
+```
+
+The enumeration can also be used as a command line argument. For example:
+
+```cpp
+#include <cstdint>
+#include <iostream>
+#include <lector/lector.hpp>
+#include <my_project/shape.hpp>  // Defines Shape, Printings<Shape>, and Spellings<Shape>.
+
+enum class Label : std::int8_t {FavoriteShape};
+
+int main(int argc, char* argv[]) {
+  lector::Arguments arguments{
+    lector::Argument<Label::FavoriteShape, Shape>{
+      {"-s", "--shape"}, "Your favorite shape. Optional.", Shape::Circle
+    }
+  };
+
+  arguments.parse(argc, argv);
+
+  const Shape shape{
+    arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
+
+  std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
+
+  return EXIT_SUCCESS;
+}
+```
 
 [(Back to User Guide)](#3-user-guide)
 
