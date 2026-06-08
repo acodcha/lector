@@ -8,7 +8,7 @@ Contents:
 
 - [**Introduction**](#1-introduction)
 - [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Information Display](#32-user-guide-information-display), [Custom Enumerations](#33-user-guide-custom-enumerations), [Custom Classes](#34-user-guide-custom-classes), [Error Checking](#35-user-guide-error-checking)
+- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Information Display](#32-user-guide-information-display), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
 - [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
 - [**License**](#5-license)
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 
   arguments.parse(argc, argv);
 
-  if (arguments.get<::test::Label::Help>().parsed_or_default_value()) {
+  if (arguments.get<Label::Help>().parsed_or_default_value()) {
     std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
     std::cout << "Options: " << std::endl;
     std::cout << arguments.print_usage_options() << std::endl;
@@ -51,10 +51,10 @@ int main(int argc, char* argv[]) {
   std::cout << "Execution: " << arguments.print_execution() << std::endl;
 
   const std::filesystem::path& output_directory{
-    arguments.get<::test::Label::OutputDirectory>().parsed_value().value()};
+    arguments.get<Label::OutputDirectory>().parsed_value().value()};
 
   const std::int32_t iterations{
-    arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
+    arguments.get<Label::Iterations>().parsed_or_default_value()};
 
   std::cout << "Running my project's main function..." << std::endl;
   my_project::my_main_function(output_directory, iterations);
@@ -218,15 +218,83 @@ This section contains a comprehensive guide for using the Lector library in your
 
 - [Arguments](#31-user-guide-arguments)
 - [Information Display](#32-user-guide-information-display)
-- [Custom Enumerations](#33-user-guide-custom-enumerations)
-- [Custom Classes](#34-user-guide-custom-classes)
+- [Enumerations](#33-user-guide-enumerations)
+- [Classes and Structures](#34-user-guide-classes-and-structures)
 - [Error Checking](#35-user-guide-error-checking)
 
 [(Back to Top)](#lector)
 
 ### 3.1. User Guide: Arguments
 
-To-do.
+The Lector library uses enumeration values to label arguments. For example, the code from the [**Introduction**](#1-introduction) section defines the following enumeration:
+
+```cpp
+enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
+```
+
+Defining an argument requires an enumeration value used as a label, a type, one or more keys, a description, and an optional default value. For example, the code from the [**Introduction**](#1-introduction) section defines the following arguments:
+
+```cpp
+lector::Arguments arguments{
+  lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+    {"-o", "--output_directory"}, "Output directory. Required."
+  },
+  lector::Argument<Label::Iterations, std::int32_t>{
+    {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+  },
+  lector::Argument<Label::Help, bool>{
+    {"-h", "--help"}, "Display usage information and exit. Optional."
+  }
+};
+```
+
+Any type can be used. Supported types include:
+
+- Boolean flags: `bool`.
+- Natural numbers: `std::uint8_t`, `std::uint16_t`, `std::uint32_t`, `std::uint64_t`.
+- Integer numbers: `std::int8_t`, `std::int16_t`, `std::int32_t`, `std::int64_t`.
+- Floating-point numbers: `float`, `double`, `long double`.
+- Strings: `std::string`. If the string contains whitespace, make sure to enclose it in double quotes (`"`).
+- Paths: `std::filesystem::path`.
+- Enumerations: see the [Enumerations](#33-user-guide-enumerations) section.
+- Classes: see the [Classes and Structures](#34-user-guide-classes-and-structures) section.
+
+Once all arguments have been defined, the `lector::Arguments::parse()` method can be used to parse `argc` and `argv`. For example:
+
+```cpp
+arguments.parse(argc, argv);
+```
+
+This populates all arguments with their parsed values and performs strict error checking. See the [Error Checking](#35-user-guide-error-checking) section for details.
+
+Usage information can be obtained via the `lector::Arguments::print_usage_command()` and `lector::Arguments::print_usage_options()` methods. For example:
+
+```cpp
+if (arguments.get<Label::Help>().parsed_or_default_value()) {
+  std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
+  std::cout << "Options: " << std::endl;
+  std::cout << arguments.print_usage_options() << std::endl;
+  return EXIT_SUCCESS;
+}
+```
+
+Execution information can be obtained via the  `lector::Arguments::print_execution()` method. For example:
+
+```cpp
+std::cout << "Execution: " << arguments.print_execution() << std::endl;
+```
+
+See the [Information Display](#32-user-guide-information-display) section for details.
+
+Individual arguments can be fetched via the `lector::Arguments::get()` method using the argument's enumeration value as a template. For example:
+
+```cpp
+const std::filesystem::path& output_directory{
+  arguments.get<Label::OutputDirectory>().parsed_value().value()};
+
+const std::int32_t iterations{
+  arguments.get<Label::Iterations>().parsed_or_default_value()};
+```
 
 [(Back to User Guide)](#3-user-guide)
 
@@ -259,13 +327,13 @@ End.
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.3. User Guide: Custom Enumerations
+### 3.3. User Guide: Enumerations
 
 To-do.
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.4. User Guide: Custom Classes
+### 3.4. User Guide: Classes and Structures
 
 To-do.
 
