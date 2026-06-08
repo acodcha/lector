@@ -35,12 +35,68 @@ namespace test {
 
 namespace {
 
-/// @brief Enumeration type used for testing the parsing of enumeration command line arguments.
+/// @brief Color. Enumeration type used for testing the parsing of enumeration command line
+/// arguments.
 enum class Color : ::std::int8_t {
+  /// @brief Red color.
   Red,
+
+  /// @brief Green color.
   Green,
+
+  /// @brief Blue color.
   Blue,
 };
+
+/// @brief Point in three-dimensional space. Data structure type used for testing the parsing of
+/// data structure command line arguments.
+struct Point final {
+public:
+  /// @brief Cartesian x-coordinate of this point.
+  float x{0.0F};
+
+  /// @brief Cartesian y-coordinate of this point.
+  float y{0.0F};
+
+  /// @brief Cartesian z-coordinate of this point.
+  float z{0.0F};
+};
+
+/// @brief Default point in three-dimensional space.
+inline constexpr ::test::Point DefaultPoint{.x = 1.0F, .y = 2.0F, .z = 3.0F};
+
+/// @brief Another point in three-dimensional space. Different from the default point.
+inline constexpr ::test::Point OtherPoint{.x = 4.0F, .y = 5.0F, .z = 6.0F};
+
+/// @brief Equality operator for the test::Point data structure.
+/// @param[in] first The first point to compare.
+/// @param[in] second The second point to compare.
+/// @return Returns true if both points are equal, and false otherwise.
+inline constexpr bool operator==(const Point& first, const Point& second) {
+  return first.x == second.x && first.y == second.y && first.z == second.z;
+}
+
+/// @brief Inequality operator for the test::Point data structure.
+/// @param[in] first The first point to compare.
+/// @param[in] second The second point to compare.
+/// @return Returns true if the points are not equal, and false otherwise.
+inline constexpr bool operator!=(const Point& first, const Point& second) {
+  return !(first == second);
+}
+
+/// @brief Input stream operator for the test::Point data structure. Populates a test::Point data
+/// structure from an input stream.
+inline ::std::istream& operator>>(::std::istream& input_stream, ::test::Point& point) {
+  input_stream >> point.x >> point.y >> point.z;
+  return input_stream;
+}
+
+/// @brief Output stream operator for the test::Point data structure. Prints a test::Point data
+/// structure to an output stream.
+inline ::std::ostream& operator<<(::std::ostream& output_stream, const ::test::Point& point) {
+  output_stream << point.x << " " << point.y << " " << point.z;
+  return output_stream;
+}
 
 }  // namespace
 
@@ -85,6 +141,7 @@ enum class Label : ::std::int8_t {
   Title,
   OutputDirectory,
   Color,
+  Point,
   Iterations,
   Tolerance,
   Help,
@@ -149,6 +206,21 @@ create_argument_iterations_required() {
   return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"-i", "--iterations"},
     "Number of iterations."
+  };
+}
+
+::lector::Argument<::test::Label::Point, ::test::Point> create_argument_point_optional() {
+  return ::lector::Argument<::test::Label::Point, ::test::Point>{
+    ::std::initializer_list<::std::string>{"-p", "--point"},
+    "Starting point.",
+    ::test::DefaultPoint
+  };
+}
+
+::lector::Argument<::test::Label::Point, ::test::Point> create_argument_point_required() {
+  return ::lector::Argument<::test::Label::Point, ::test::Point>{
+    ::std::initializer_list<::std::string>{"-p", "--point"},
+    "Starting point."
   };
 }
 
@@ -454,6 +526,47 @@ TEST(Lector, ArgumentConstructorBooleanOptional) {
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_FALSE(argument.parsed_or_default_value());
   EXPECT_EQ(argument.keys_with_value_types(), "-h, --help");
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorDataStructureDefault) {
+  const ::lector::Argument<::test::Label::Point, ::test::Point> argument;
+  EXPECT_EQ(argument.label(), ::test::Label::Point);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_TRUE(argument.description().empty());
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorDataStructureOptional) {
+  const ::lector::Argument<::test::Label::Point, ::test::Point> argument{
+    ::test::create_argument_point_optional()};
+  EXPECT_EQ(argument.label(), ::test::Label::Point);
+  const ::std::vector<::std::string> expected_keys{"-p", "--point"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Starting point.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorDataStructureRequired) {
+  const ::lector::Argument<::test::Label::Point, ::test::Point> argument{
+    ::test::create_argument_point_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::Point);
+  const ::std::vector<::std::string> expected_keys{"-p", "--point"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Starting point.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
   EXPECT_TRUE(argument.execution().empty());
 }
 
@@ -797,6 +910,30 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.execution(), "--help");
 }
 
+TEST(Lector, ArgumentSetParsedValueDataStructure) {
+  ::lector::Argument<::test::Label::Point, ::test::Point> argument{
+    ::test::create_argument_point_optional()};
+  EXPECT_EQ(argument.label(), ::test::Label::Point);
+  const ::std::vector<::std::string> expected_keys{"-p", "--point"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Starting point.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::DefaultPoint);
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(::test::OtherPoint);
+  EXPECT_EQ(argument.label(), ::test::Label::Point);
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Starting point.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), ::test::DefaultPoint);
+  EXPECT_EQ(argument.parsed_value(), ::test::OtherPoint);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::OtherPoint);
+  EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
+  EXPECT_EQ(argument.execution(), "--point 4 5 6");
+}
+
 TEST(Lector, ArgumentSetParsedValueEnumeration) {
   ::lector::Argument<::test::Label::Color, ::test::Color> argument{
     ::test::create_argument_color_optional()};
@@ -935,6 +1072,21 @@ TEST(Lector, ParseBoolean) {
   EXPECT_EQ(::lector::parse<bool>("FALSE"), false);
   EXPECT_EQ(::lector::parse<bool>("False"), false);
   EXPECT_EQ(::lector::parse<bool>("false"), false);
+}
+
+TEST(Lector, ParseDataStructure) {
+  EXPECT_EQ(::lector::parse<::test::Point>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("0"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("0.0"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("0 0"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("0.0 0.0"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Point>("1 2 3"), ::test::DefaultPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("1.0 2.0 3.0"), ::test::DefaultPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("1.0E+0 2.0E+0 3.0E+0"), ::test::DefaultPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4 5 6"), ::test::OtherPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4.0 5.0 6.0"), ::test::OtherPoint);
+  EXPECT_EQ(::lector::parse<::test::Point>("4.0E+0 5.0E+0 6.0E+0"), ::test::OtherPoint);
 }
 
 TEST(Lector, ParseEnumeration) {
@@ -1384,6 +1536,11 @@ TEST(Lector, ParseStringView) {
 TEST(Lector, PrintBoolean) {
   EXPECT_EQ(::lector::print(true), "true");
   EXPECT_EQ(::lector::print(false), "false");
+}
+
+TEST(Lector, PrintDataStructure) {
+  EXPECT_EQ(::lector::print<::test::Point>(::test::DefaultPoint), "1 2 3");
+  EXPECT_EQ(::lector::print<::test::Point>(::test::OtherPoint), "4 5 6");
 }
 
 TEST(Lector, PrintEnumeration) {
