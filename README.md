@@ -338,7 +338,6 @@ Enumerations can be used as argument types, but require specializing the `lector
 
 enum class Shape : std::int8_t {Circle, Triangle, Square};
 
-/// @brief Specialization of the lector::Printings constant for the Shape enumeration.
 template <>
 inline constexpr std::array<lector::Printing<Shape>, 3> Printings<Shape>{
   {
@@ -348,7 +347,6 @@ inline constexpr std::array<lector::Printing<Shape>, 3> Printings<Shape>{
   }
 };
 
-/// @brief Specialization of the lector::Spellings constant for the Shape enumeration.
 template <>
 inline constexpr std::array<lector::Spelling<Shape>, 9> Spellings<Shape>{
   {
@@ -428,13 +426,11 @@ public:
   double z{0.0};
 };
 
-/// @brief Input stream operator for a point struct. Populates a point struct from an input stream.
 inline std::istream& operator>>(std::istream& input_stream, Point& point) {
-  input_stream >> point.x >> point.y << point.z;
+  input_stream >> point.x >> point.y >> point.z;
   return input_stream;
 }
 
-/// @brief Output stream operator for a point struct. Prints a point struct to an output stream.
 inline std::ostream& operator<<(std::ostream& output_stream, const Point& point) {
   output_stream << point.x << " " << point.y << " " << point.z;
   return output_stream;
