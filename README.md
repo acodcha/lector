@@ -25,8 +25,7 @@ The following example illustrates the use of the Lector library.
 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
   lector::Arguments arguments{
     lector::Argument<Label::OutputDirectory, std::filesystem::path>{
       {"-o", "--output_directory"}, "Output directory. Required."
@@ -41,7 +40,7 @@ int main(int argc, char* argv[])
 
   arguments.parse(argc, argv);
 
-  if (arguments.get<::test::Label::Help>().parsed_value()) {
+  if (arguments.get<::test::Label::Help>().parsed_or_default_value()) {
     std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
     std::cout << "Options: " << std::endl;
     std::cout << arguments.print_usage_options() << std::endl;
