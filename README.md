@@ -14,14 +14,14 @@ Contents:
 
 ## 1. Introduction
 
-The following example illustrates the use of the Lector library.
+The following example illustrates the use of the Lector library:
 
 ```cpp
 #include <cstdint>
 #include <iostream>
 #include <filesystem>
 #include <lector/lector.hpp>
-#include <my_project/my_main_function.hpp>  // Defines my_project::my_main_function().
+#include <my_project/my_main_function.hpp>
 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
