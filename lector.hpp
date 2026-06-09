@@ -1228,7 +1228,7 @@ private:
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
     for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
-      std::string key{argv[index]};
+      const std::string_view key{argv[index]};
       bool matched{false};
       std::apply(
           [&](auto&... argument) {
@@ -1269,7 +1269,7 @@ private:
           },
           arguments_);
       if (!matched) {
-        throw std::invalid_argument("Unknown argument '" + key + "'.");
+        throw std::invalid_argument("Unknown argument '" + std::string{key} + "'.");
       }
     }
   }
