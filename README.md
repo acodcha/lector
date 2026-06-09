@@ -8,7 +8,7 @@ Contents:
 
 - [**Introduction**](#1-introduction)
 - [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Information Display](#32-user-guide-information-display), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
+- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
 - [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
 - [**License**](#5-license)
 
@@ -219,7 +219,7 @@ Finally, simply include the Lector library's header in your C++ source files wit
 This section contains a comprehensive guide for using the Lector library in your C++ projects.
 
 - [Arguments](#31-user-guide-arguments)
-- [Information Display](#32-user-guide-information-display)
+- [Command Line](#32-user-guide-command-line)
 - [Enumerations](#33-user-guide-enumerations)
 - [Classes and Structures](#34-user-guide-classes-and-structures)
 - [Error Checking](#35-user-guide-error-checking)
@@ -283,7 +283,7 @@ Execution information can be obtained via the  `lector::Arguments::print_executi
 std::cout << "Execution: " << arguments.print_execution() << std::endl;
 ```
 
-See the [Information Display](#32-user-guide-information-display) section for details.
+See the [Command Line](#32-user-guide-command-line) section for details.
 
 Individual arguments can be fetched via the `lector::Arguments::get()` method using the argument's enumeration value as a template. For example:
 
@@ -297,9 +297,9 @@ const std::int32_t iterations{
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.2. User Guide: Information Display
+### 3.2. User Guide: Command Line
 
-The Lector library allows you to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
+The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
 Display usage information via the `lector::Arguments::print_usage_command()` and `lector::Arguments::print_usage_options()` methods:
 
@@ -320,6 +320,45 @@ path/to/my_project_main --output_directory /some/path --iterations 200
 
 Start.
 Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+Running my project's main function...
+End.
+```
+
+Inline key-value pairs of the form `key=value` are also supported:
+
+```text
+path/to/my_project_main --output_directory=/some/path --iterations=200
+
+Start.
+Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+Running my project's main function...
+End.
+```
+
+Arguments can be defined with multiple keys. For example:
+
+```text
+path/to/my_project_main -o /some/path -i=200
+
+Start.
+Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+Running my project's main function...
+End.
+```
+
+Keys do not need to start with a hyphen (`-`); keys can be composed of any characters, including equal signs (`=`). For example, the following definition is unusual but perfectly valid:
+
+```cpp
+lector::Argument<Label::Iterations, std::int32_t>{
+  {"=i=", "=_==it==_=", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100
+},
+```
+
+```text
+path/to/my_project_main =i= 200
+
+Start.
+Execution: path/to/my_project_main ==iterations== 200
 Running my project's main function...
 End.
 ```
