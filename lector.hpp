@@ -1016,19 +1016,19 @@ private:
   }
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
-  std::vector<std::string> keys_;
+  std::vector<std::string> keys_{};
 
   /// @brief Description of this command line argument. Used when printing usage information. Set at
   /// construction.
-  std::string description_;
+  std::string description_{};
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
-  std::optional<Type> default_value_;
+  std::optional<Type> default_value_{};
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
-  std::optional<Type> parsed_value_;
+  std::optional<Type> parsed_value_{};
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
@@ -1065,7 +1065,8 @@ struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTy
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
 struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
-                           RemainingArgumentTypes...> {
+                           RemainingArgumentTypes...>
+    final {
   using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
@@ -1208,6 +1209,33 @@ public:
   }
 
 private:
+  /// @brief The best matching argument for a command line argument token during parsing. The best
+  /// matching argument is the argument with the longest matching key, and if there are multiple
+  /// arguments with keys of the same length that match, then the best matching argument is the one
+  /// that is matched by a non-inline key rather than an inline key. Used to avoid shadowing when
+  /// multiple arguments have keys that are prefixes of each other, and to prefer non-inline matches
+  /// over inline matches when the key lengths are equal.
+  struct BestArgument final {
+    /// @brief Index of this argument in the tuple of arguments. Used to identify this argument
+    /// during parsing.
+    std::size_t index{0};
+
+    /// @brief Length of the longest matching key for this argument. Used to avoid shadowing when
+    /// multiple arguments have keys that are prefixes of each other. For example, if one argument
+    /// has the key "--key" and another argument has the key "--key-long", then the argument with
+    /// the key "--key-long" should be matched for the command line argument "--key-long=value", not
+    /// the argument with the key "--key".
+    std::size_t key_length{0};
+
+    /// @brief Whether this argument was matched by an inline key of the form "--key=value" rather
+    /// than a whitespace-separated key-value pair of the form "--key value". Used to prefer
+    /// non-inline matches over inline matches when the key lengths are equal. For example, if one
+    /// argument has the key "--key" and another argument has the key "--key-long", then the
+    /// argument with the key "--key" should be matched for the command line argument "--key=value",
+    /// not the argument with the key "--key-long".
+    bool is_inline{false};
+  };
+
   /// @brief Parses the executable path from argc and argv. Called by the lector::Arguments::parse
   /// method.
   /// @param[in] argc The number of command line arguments, including the executable path.
@@ -1228,50 +1256,101 @@ private:
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
     for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
-      const std::string_view key{argv[index]};
-      bool matched{false};
+      const std::string_view token{argv[index]};
+      const BestArgument best_argument{find_best_argument(token)};
+      // Parse and populate the value for the best matching argument.
+      std::size_t argument_index{0};
       std::apply(
           [&](auto&... argument) {
             (..., [&]() {
-              if (matched) {
-                // This key has already been matched to an argument. Skip all remaining arguments.
-                return;
-              }
-              if (std::find(argument.keys().begin(), argument.keys().end(), key)
-                  != argument.keys().cend()) {
+              if (argument_index == best_argument.index) {
                 if (argument.parsed_value().has_value()) {
                   throw std::invalid_argument(
                       "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
                 }
-                matched = true;
                 using Type = typename std::decay_t<decltype(argument)>::ValueType;
                 if constexpr (std::is_same_v<Type, bool>) {
-                  // A boolean argument's value is indicated by its presence.
+                  // Boolean arguments are flags; their presence implies true.
                   argument.set_parsed_value(true);
                 } else {
-                  if (index + 1 < static_cast<std::size_t>(argc)) {
-                    ++index;
-                    const std::string raw_value{argv[index]};
-                    const auto parsed_value{lector::parse<Type>(raw_value)};
-                    if (parsed_value.has_value()) {
-                      argument.set_parsed_value(parsed_value.value());
+                  // For non-boolean arguments, extract the raw value either from the inline portion
+                  // of the token or from the next standalone element in argv.
+                  std::string raw_value;
+                  if (best_argument.is_inline) {
+                    // Extract everything after the first '=' directly following the key.
+                    raw_value = std::string{token.substr(best_argument.key_length + 1)};
+                  } else {
+                    // Extract the next standalone element from argv.
+                    if (index + 1 < static_cast<std::size_t>(argc)) {
+                      ++index;
+                      raw_value = argv[index];
                     } else {
-                      throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                      throw std::invalid_argument("Missing value for argument '"
                                                   + argument.longest_key_with_value_type() + "'.");
                     }
+                  }
+                  // Parse the raw value and use it to populate the argument's value.
+                  const auto parsed_value{lector::parse<Type>(raw_value)};
+                  if (parsed_value.has_value()) {
+                    argument.set_parsed_value(parsed_value.value());
                   } else {
-                    throw std::invalid_argument("Missing value for argument '"
+                    throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
                                                 + argument.longest_key_with_value_type() + "'.");
                   }
                 }
               }
+              ++argument_index;
             }());
           },
           arguments_);
-      if (!matched) {
-        throw std::invalid_argument("Unknown argument '" + std::string{key} + "'.");
-      }
     }
+  }
+
+  /// @brief Finds the best matching argument for a command line argument token.
+  /// @param[in] token The command line argument token to match.
+  /// @return The best matching argument.
+  /// @throws std::invalid_argument if an unknown argument is encountered.
+  BestArgument find_best_argument(const std::string_view token) const {
+    BestArgument best_argument{};
+    bool found_match{false};
+    std::size_t argument_index{0};
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            for (const std::string& key : argument.keys()) {
+              // First, check for an exact match of the form "--key".
+              if (token == key) {
+                if (!found_match || key.size() > best_argument.key_length
+                    || (key.size() == best_argument.key_length && best_argument.is_inline)) {
+                  best_argument.key_length = key.size();
+                  best_argument.index = argument_index;
+                  best_argument.is_inline = false;
+                  found_match = true;
+                }
+              }
+              // Second, check for an inline match of the form "--key=value". This is strictly
+              // disabled for boolean arguments because they are flags that do not have values.
+              using ArgumentType = typename std::decay_t<decltype(argument)>::ValueType;
+              if constexpr (!std::is_same_v<ArgumentType, bool>) {
+                if (token.size() > key.size() && token.compare(0, key.size(), key) == 0
+                    && token[key.size()] == '=') {
+                  if (!found_match || key.size() > best_argument.key_length) {
+                    best_argument.key_length = key.size();
+                    best_argument.index = argument_index;
+                    best_argument.is_inline = true;
+                    found_match = true;
+                  }
+                }
+              }
+            }
+            ++argument_index;
+          }());
+        },
+        arguments_);
+    if (!found_match) {
+      throw std::invalid_argument("Unknown argument '" + std::string{token} + "'.");
+    }
+    return best_argument;
   }
 
   /// @brief Validates that all required arguments have each successfully parsed a value from argc
@@ -1292,11 +1371,11 @@ private:
   }
 
   /// @brief Variadic collection of command line arguments.
-  std::tuple<ArgumentTypes...> arguments_;
+  std::tuple<ArgumentTypes...> arguments_{};
 
   /// @brief Executable path of this collection of command line arguments. If the command line
   /// arguments have not yet been parsed from argc and argv, this path is empty.
-  std::filesystem::path executable_path_;
+  std::filesystem::path executable_path_{};
 };
 
 }  // namespace lector
