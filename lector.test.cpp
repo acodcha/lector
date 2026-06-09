@@ -136,20 +136,45 @@ enum class Label : ::std::int8_t {
   Point,
   Iterations,
   Tolerance,
+  Weird,
   Help,
 };
 
-::lector::Argument<::test::Label::Title, ::std::string> create_argument_title_optional() {
-  return ::lector::Argument<::test::Label::Title, ::std::string>{
-    ::std::initializer_list<::std::string>{"-t", "--title"},
-    "Title of the report.", "My Report"
+::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_optional() {
+  return ::lector::Argument<::test::Label::Color, ::test::Color>{
+    ::std::initializer_list<::std::string>{"-c", "--color"},
+    "Main output color.",
+    ::test::Color::Red
   };
 }
 
-::lector::Argument<::test::Label::Title, ::std::string> create_argument_title_required() {
-  return ::lector::Argument<::test::Label::Title, ::std::string>{
-    ::std::initializer_list<::std::string>{"-t", "--title"},
-    "Title of the report."
+::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_required() {
+  return ::lector::Argument<::test::Label::Color, ::test::Color>{
+    ::std::initializer_list<::std::string>{"-c", "--color"},
+    "Main output color."
+  };
+}
+
+::lector::Argument<::test::Label::Help, bool> create_argument_help() {
+  return ::lector::Argument<::test::Label::Help, bool>{
+    ::std::initializer_list<::std::string>{"-h", "--help"},
+    "Print usage information."
+  };
+}
+
+::lector::Argument<::test::Label::Iterations, ::std::int32_t>
+create_argument_iterations_optional() {
+  return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
+    ::std::initializer_list<::std::string>{"-i", "--iterations"},
+    "Number of iterations.", 100
+  };
+}
+
+::lector::Argument<::test::Label::Iterations, ::std::int32_t>
+create_argument_iterations_required() {
+  return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
+    ::std::initializer_list<::std::string>{"-i", "--iterations"},
+    "Number of iterations."
   };
 }
 
@@ -170,37 +195,6 @@ create_argument_output_directory_required() {
   };
 }
 
-::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_optional() {
-  return ::lector::Argument<::test::Label::Color, ::test::Color>{
-    ::std::initializer_list<::std::string>{"-c", "--color"},
-    "Main output color.",
-    ::test::Color::Red
-  };
-}
-
-::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_required() {
-  return ::lector::Argument<::test::Label::Color, ::test::Color>{
-    ::std::initializer_list<::std::string>{"-c", "--color"},
-    "Main output color."
-  };
-}
-
-::lector::Argument<::test::Label::Iterations, ::std::int32_t>
-create_argument_iterations_optional() {
-  return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
-    ::std::initializer_list<::std::string>{"-i", "--iterations"},
-    "Number of iterations.", 100
-  };
-}
-
-::lector::Argument<::test::Label::Iterations, ::std::int32_t>
-create_argument_iterations_required() {
-  return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
-    ::std::initializer_list<::std::string>{"-i", "--iterations"},
-    "Number of iterations."
-  };
-}
-
 ::lector::Argument<::test::Label::Point, ::test::Point> create_argument_point_optional() {
   return ::lector::Argument<::test::Label::Point, ::test::Point>{
     ::std::initializer_list<::std::string>{"-p", "--point"},
@@ -212,6 +206,20 @@ create_argument_iterations_required() {
   return ::lector::Argument<::test::Label::Point, ::test::Point>{
     ::std::initializer_list<::std::string>{"-p", "--point"},
     "Starting point."
+  };
+}
+
+::lector::Argument<::test::Label::Title, ::std::string> create_argument_title_optional() {
+  return ::lector::Argument<::test::Label::Title, ::std::string>{
+    ::std::initializer_list<::std::string>{"-t", "--title"},
+    "Title of the report.", "My Report"
+  };
+}
+
+::lector::Argument<::test::Label::Title, ::std::string> create_argument_title_required() {
+  return ::lector::Argument<::test::Label::Title, ::std::string>{
+    ::std::initializer_list<::std::string>{"-t", "--title"},
+    "Title of the report."
   };
 }
 
@@ -229,10 +237,17 @@ create_argument_iterations_required() {
   };
 }
 
-::lector::Argument<::test::Label::Help, bool> create_argument_help() {
-  return ::lector::Argument<::test::Label::Help, bool>{
-    ::std::initializer_list<::std::string>{"-h", "--help"},
-    "Print usage information."
+::lector::Argument<::test::Label::Weird, ::std::int32_t> create_argument_weird_optional() {
+  return ::lector::Argument<::test::Label::Weird, ::std::int32_t>{
+    ::std::initializer_list<::std::string>{"=w=k", "==weird=key"},
+    "Weird argument.", 100
+  };
+}
+
+::lector::Argument<::test::Label::Weird, ::std::int32_t> create_argument_weird_required() {
+  return ::lector::Argument<::test::Label::Weird, ::std::int32_t>{
+    ::std::initializer_list<::std::string>{"=w=k", "==weird=key"},
+    "Weird argument."
   };
 }
 
@@ -385,11 +400,27 @@ private:
 
 namespace {
 
-TEST(Lector, ArgumentsDuplicatedArgument) {
+TEST(Lector, ArgumentsDuplicatedArgumentInline) {
   ::lector::Arguments arguments{
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
   const ::test::Command command{
-    "/path/to/executable", "--output", "--iterations", "200", "--iterations", "300", "--help"};
+    "/path/to/executable", "--iterations=200", "--iterations=300", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsDuplicatedArgumentMixed) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--iterations", "200", "--iterations=300", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsDuplicatedArgumentWhitespace) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--iterations", "200", "--iterations", "300", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
@@ -403,11 +434,17 @@ TEST(Lector, ArgumentsExecutableOnlyNoArguments) {
   EXPECT_TRUE(arguments.print_usage_options().empty());
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgument) {
+TEST(Lector, ArgumentsInvalidValueForArgumentInline) {
   ::lector::Arguments arguments{
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
-  const ::test::Command command{
-    "/path/to/executable", "--output", "--iterations", "Hello, world!", "--help"};
+  const ::test::Command command{"/path/to/executable", "--iterations=Hello", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsInvalidValueForArgumentWhitespace) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "--iterations", "Hello", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
@@ -418,7 +455,19 @@ TEST(Lector, ArgumentsMissingArgumentRequired) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingArgumentOptional) {
+TEST(Lector, ArgumentsMissingArgumentOptionalInline) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_output_directory_required(), ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "--output=/path/to/output"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
+            ::std::filesystem::path("/path/to/output"));
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+}
+
+TEST(Lector, ArgumentsMissingArgumentOptionalWhitespace) {
   ::lector::Arguments arguments{
     ::test::create_argument_output_directory_required(), ::test::create_argument_help()};
   const ::test::Command command{"/path/to/executable", "--output", "/path/to/output"};
@@ -427,7 +476,7 @@ TEST(Lector, ArgumentsMissingArgumentOptional) {
   ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
-  ASSERT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
 TEST(Lector, ArgumentsMissingValueArgumentFirst) {
@@ -443,7 +492,16 @@ TEST(Lector, ArgumentsMissingValueArgumentLast) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentMiddle) {
+TEST(Lector, ArgumentsMissingValueArgumentMiddleInline) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_output_directory_required(),
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "--output=/path/to/output", "--iterations", "--help"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespace) {
   ::lector::Arguments arguments{
     ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
@@ -462,13 +520,71 @@ TEST(Lector, ArgumentsNoExecutableNoArguments) {
   EXPECT_TRUE(arguments.print_usage_options().empty());
 }
 
-TEST(Lector, ArgumentsUnknownArgument) {
-  ::lector::Arguments arguments{::test::create_argument_iterations_optional()};
+TEST(Lector, ArgumentsUnknownArgumentInline) {
+  ::lector::Arguments arguments{::test::create_argument_iterations_required()};
+  const ::test::Command command{"/path/to/executable", "--iterations=200", "--unknown"};
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsUnknownArgumentWhitespace) {
+  ::lector::Arguments arguments{::test::create_argument_iterations_required()};
   const ::test::Command command{"/path/to/executable", "--iterations", "200", "--unknown"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsValid) {
+TEST(Lector, ArgumentsValidInline) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "-c=Red", "-o=/path/to/output", "-i=200", "-h"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
+            ::std::filesystem::path("/path/to/output"));
+  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
+  EXPECT_EQ(arguments.print_execution(),
+            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+  EXPECT_EQ(arguments.print_usage_command(),
+            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+  std::ostringstream expected_usage_details;
+  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
+  expected_usage_details
+      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
+  expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
+  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+}
+
+TEST(Lector, ArgumentsValidMixed) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
+    ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
+  const ::test::Command command{
+    "/path/to/executable", "-c=Red", "-o", "/path/to/output", "-i=200", "-h"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
+            ::std::filesystem::path("/path/to/output"));
+  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
+  EXPECT_EQ(arguments.print_execution(),
+            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+  EXPECT_EQ(arguments.print_usage_command(),
+            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+  std::ostringstream expected_usage_details;
+  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
+  expected_usage_details
+      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
+  expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
+  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+}
+
+TEST(Lector, ArgumentsValidWhitespace) {
   ::lector::Arguments arguments{
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
@@ -492,6 +608,58 @@ TEST(Lector, ArgumentsValid) {
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
   EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+}
+
+TEST(Lector, ArgumentsWeirdLongInline) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_optional(), ::test::create_argument_weird_optional(),
+    ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "==weird=key=200"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+}
+
+TEST(Lector, ArgumentsWeirdLongWhitespace) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_optional(), ::test::create_argument_weird_optional(),
+    ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "==weird=key", "200"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+}
+
+TEST(Lector, ArgumentsWeirdShortInline) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_optional(), ::test::create_argument_weird_required(),
+    ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "=w=k=200"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
+}
+
+TEST(Lector, ArgumentsWeirdShortWhitespace) {
+  ::lector::Arguments arguments{
+    ::test::create_argument_color_optional(), ::test::create_argument_weird_required(),
+    ::test::create_argument_help()};
+  const ::test::Command command{"/path/to/executable", "=w=k", "200"};
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
+  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
 TEST(Lector, ArgumentConstructorBooleanDefault) {
@@ -763,6 +931,47 @@ TEST(Lector, ArgumentConstructorStringRequired) {
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
   EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorWeirdDefault) {
+  const ::lector::Argument<::test::Label::Weird, ::std::int32_t> argument;
+  EXPECT_EQ(argument.label(), ::test::Label::Weird);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_TRUE(argument.description().empty());
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_TRUE(argument.keys_with_value_types().empty());
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorWeirdOptional) {
+  const ::lector::Argument<::test::Label::Weird, ::std::int32_t> argument{
+    ::test::create_argument_weird_optional()};
+  EXPECT_EQ(argument.label(), ::test::Label::Weird);
+  const ::std::vector<::std::string> expected_keys{"=w=k", "==weird=key"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Weird argument.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
+  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  EXPECT_EQ(argument.keys_with_value_types(), "=w=k <number>, ==weird=key <number>");
+  EXPECT_TRUE(argument.execution().empty());
+}
+
+TEST(Lector, ArgumentConstructorWeirdRequired) {
+  const ::lector::Argument<::test::Label::Weird, ::std::int32_t> argument{
+    ::test::create_argument_weird_required()};
+  EXPECT_EQ(argument.label(), ::test::Label::Weird);
+  const ::std::vector<::std::string> expected_keys{"=w=k", "==weird=key"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Weird argument.");
+  EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
+  EXPECT_EQ(argument.default_value(), ::std::nullopt);
+  EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
+  EXPECT_EQ(argument.keys_with_value_types(), "=w=k <number>, ==weird=key <number>");
   EXPECT_TRUE(argument.execution().empty());
 }
 

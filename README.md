@@ -68,6 +68,8 @@ The above example imports the Lector library, defines an enumeration of argument
 
 In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as either required or optional, and feature strict error checking.
 
+The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form `key value` and as inline key-value pairs of the form `key=value`; it can even handle keys that contain arbitrary characters, including equal signs (`=`)!
+
 [(Back to Top)](#lector)
 
 ## 2. Configuration
