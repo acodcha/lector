@@ -63,10 +63,10 @@ public:
 };
 
 /// @brief Default point in three-dimensional space.
-inline constexpr ::test::Point FirstPoint{.x = 1.0F, .y = 2.0F, .z = 3.0F};
+inline constexpr ::test::Point FirstPoint{1.0F, 2.0F, 3.0F};
 
 /// @brief Another point in three-dimensional space. Different from the default point.
-inline constexpr ::test::Point SecondPoint{.x = 4.0F, .y = 5.0F, .z = 6.0F};
+inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 /// @brief Equality operator for the test::Point data structure.
 /// @param[in] first The first point to compare.
