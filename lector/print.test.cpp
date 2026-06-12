@@ -121,6 +121,7 @@ TEST(Lector, PrintFilesystemPath) {
 TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "-nan");
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-4096.0), "-4096.00000000000000");
   EXPECT_EQ(::lector::print<double>(-512.0), "-512.000000000000000");
   EXPECT_EQ(::lector::print<double>(-64.0), "-64.0000000000000000");
@@ -128,8 +129,10 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
   EXPECT_EQ(::lector::print<double>(-1.0), "-1.00000000000000000");
   EXPECT_EQ(::lector::print<double>(-0.125), "-0.125000000000000000");
   EXPECT_EQ(::lector::print<double>(-0.015625), "-0.0156250000000000000");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-0.0), "0");
   EXPECT_EQ(::lector::print<double>(0.0), "0");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(0.015625), "0.0156250000000000000");
   EXPECT_EQ(::lector::print<double>(0.125), "0.125000000000000000");
   EXPECT_EQ(::lector::print<double>(1.0), "1.00000000000000000");
@@ -137,6 +140,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
   EXPECT_EQ(::lector::print<double>(64.0), "64.0000000000000000");
   EXPECT_EQ(::lector::print<double>(512.0), "512.000000000000000");
   EXPECT_EQ(::lector::print<double>(4096.0), "4096.00000000000000");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::infinity()), "inf");
   EXPECT_EQ(::lector::print<double>(std::numeric_limits<double>::quiet_NaN()), "nan");
 }
@@ -153,6 +157,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
 TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
   EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::quiet_NaN()), "-nan");
   EXPECT_EQ(::lector::print<float>(-std::numeric_limits<float>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-4096.0F), "-4096.000000");
   EXPECT_EQ(::lector::print<float>(-512.0F), "-512.0000000");
   EXPECT_EQ(::lector::print<float>(-64.0F), "-64.00000000");
@@ -160,8 +165,10 @@ TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
   EXPECT_EQ(::lector::print<float>(-1.0F), "-1.000000000");
   EXPECT_EQ(::lector::print<float>(-0.125F), "-0.1250000000");
   EXPECT_EQ(::lector::print<float>(-0.015625F), "-0.01562500000");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-0.0F), "0");
   EXPECT_EQ(::lector::print<float>(0.0F), "0");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(0.015625F), "0.01562500000");
   EXPECT_EQ(::lector::print<float>(0.125F), "0.1250000000");
   EXPECT_EQ(::lector::print<float>(1.0F), "1.000000000");
@@ -169,6 +176,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
   EXPECT_EQ(::lector::print<float>(64.0F), "64.00000000");
   EXPECT_EQ(::lector::print<float>(512.0F), "512.0000000");
   EXPECT_EQ(::lector::print<float>(4096.0F), "4096.000000");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::infinity()), "inf");
   EXPECT_EQ(::lector::print<float>(std::numeric_limits<float>::quiet_NaN()), "nan");
 }

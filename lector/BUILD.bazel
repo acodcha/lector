@@ -21,7 +21,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 package(default_visibility = ["//visibility:public"])
 
 CPP_COMPILER_OPTIONS = select({
-    "@bazel_tools//tools/cpp:msvc": [
+    "@bazel_tools//src/conditions:windows": [
         "/O2",  # High optimization for MSVC.
         "/W4",  # Strong warnings for MSVC.
         "/std:c++17",  # C++17 standard for MSVC.

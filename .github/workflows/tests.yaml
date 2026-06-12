@@ -174,7 +174,7 @@ jobs:
       - name: Print the Ninja version
         run: ninja --version
       - name: Create the Meson subprojects directory
-        run: mkdir --parents subprojects
+        run: mkdir subprojects
       - name: Download the Meson wrap for GoogleTest
         run: meson wrap install gtest
       - name: Configure with Meson
