@@ -42,8 +42,8 @@ jobs:
             echo "    find . -iname '*.hpp' -or -iname '*.cpp' | xargs clang-format --style=file -i"
             exit 1
           fi
-  build_and_test_bazel:
-    name: Build and test Bazel targets
+  build_and_test_bazel_linux:
+    name: Build and test with Bazel on Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -54,28 +54,92 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
-      - name: Print the version of Bazel
+      - name: Print the Bazel version
         run: bazel --version
-      - name: Build all Bazel targets
+      - name: Build with Bazel
         run: bazel build //...
-      - name: Run all Bazel tests
+      - name: Test with Bazel
         run: bazel test //...
-  build_and_test_cmake:
-    name: Build and test CMake targets
+  build_and_test_bazel_macos:
+    name: Build and test with Bazel on macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: Print the Bazel version
+        run: bazel --version
+      - name: Build with Bazel
+        run: bazel build //...
+      - name: Test with Bazel
+        run: bazel test //...
+  build_and_test_bazel_windows:
+    name: Build and test with Bazel on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Setup Bazel
+        uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: Print the Bazel version
+        run: bazel --version
+      - name: Build with Bazel
+        run: bazel build //...
+      - name: Test with Bazel
+        run: bazel test //...
+  build_and_test_cmake_linux:
+    name: Build and test with CMake on Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
-      - name: Print the version of CMake
+      - name: Print the CMake version
         run: cmake --version
-      - name: Configure the CMake project
+      - name: Configure with CMake
         run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
-      - name: Build all CMake targets
+      - name: Build with CMake
         run: cmake --build build --config Release --parallel
-      - name: Run all CMake tests
+      - name: Test with CMake
         run: ctest --test-dir build -C Release
-  build_and_test_meson:
-    name: Build and test Meson targets
+  build_and_test_cmake_macos:
+    name: Build and test with CMake on macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Print the CMake version
+        run: cmake --version
+      - name: Configure with CMake
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
+      - name: Build with CMake
+        run: cmake --build build --config Release --parallel
+      - name: Test with CMake
+        run: ctest --test-dir build -C Release
+  build_and_test_cmake_windows:
+    name: Build and test with CMake on Windows
+    runs-on: windows-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Print the CMake version
+        run: cmake --version
+      - name: Configure with CMake
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
+      - name: Build with CMake
+        run: cmake --build build --config Release --parallel
+      - name: Test with CMake
+        run: ctest --test-dir build -C Release
+  build_and_test_meson_linux:
+    name: Build and test with Meson on Linux
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -84,17 +148,61 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes meson ninja-build
-      - name: Print the version of Meson
+      - name: Print the Meson version
         run: meson --version
-      - name: Print the version of Ninja
+      - name: Print the Ninja version
         run: ninja --version
       - name: Create the Meson subprojects directory
         run: mkdir --parents subprojects
       - name: Download the Meson wrap for GoogleTest
         run: meson wrap install gtest
-      - name: Configure the Meson project
+      - name: Configure with Meson
         run: meson setup build
-      - name: Build all Meson targets
+      - name: Build with Meson
         run: meson compile -C build
-      - name: Run all Meson tests
+      - name: Test with Meson
+        run: meson test -C build
+  build_and_test_meson_macos:
+    name: Build and test with Meson on macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Meson and Ninja
+        run: brew install meson ninja
+      - name: Print the Meson version
+        run: meson --version
+      - name: Print the Ninja version
+        run: ninja --version
+      - name: Create the Meson subprojects directory
+        run: mkdir --parents subprojects
+      - name: Download the Meson wrap for GoogleTest
+        run: meson wrap install gtest
+      - name: Configure with Meson
+        run: meson setup build
+      - name: Build with Meson
+        run: meson compile -C build
+      - name: Test with Meson
+        run: meson test -C build
+  build_and_test_meson_windows:
+    name: Build and test with Meson on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up the MSVC compiler
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Install Meson and Ninja
+        run: pip install meson ninja
+      - name: Print the Meson version
+        run: meson --version
+      - name: Print the Ninja version
+        run: ninja --version
+      - name: Create the Meson subprojects directory
+        run: mkdir subprojects
+      - name: Download the Meson wrap for GoogleTest
+        run: meson wrap install gtest
+      - name: Configure with Meson
+        run: meson setup build
+      - name: Build with Meson
+        run: meson compile -C build
+      - name: Test with Meson
         run: meson test -C build
