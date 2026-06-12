@@ -27,6 +27,7 @@ project(
 )
 
 # Set the default build type to Release without overriding user choices.
+# This automatically handles -O3 on GCC and Clang and /O2 on MSVC.
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set(
     CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE
@@ -41,7 +42,7 @@ option(LECTOR_COVERAGE "Configure the Lector library code coverage." OFF)
 
 add_library(lector INTERFACE)
 
-# Required for standard installation paths (like CMAKE_INSTALL_INCLUDEDIR)
+# Required for standard installation paths like CMAKE_INSTALL_INCLUDEDIR.
 include(GNUInstallDirs)
 
 target_include_directories(
@@ -63,7 +64,7 @@ install(
 
 # Install the actual header files.
 install(
-  FILES ${PROJECT_SOURCE_DIR}/lector.hpp
+  DIRECTORY ${PROJECT_SOURCE_DIR}/lector
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
@@ -116,25 +117,33 @@ if(LECTOR_TEST)
     message(STATUS "The GoogleTest library was fetched from: https://github.com/google/googletest")
   endif()
 
-  add_executable(lector_test ${PROJECT_SOURCE_DIR}/lector.test.cpp)
-
-  # Apply strict warnings ONLY to the tests, checking the compiler type first.
-  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(lector_test PRIVATE -Wall -Wextra -Wno-return-type -Wpedantic)
-  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(lector_test PRIVATE /W4)
-  endif()
-
-  # Basic compiler hook-up for the code coverage option.
-  if(LECTOR_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(lector_test PRIVATE --coverage -O0)
-    target_link_options(lector_test PRIVATE --coverage)
-  endif()
-
-  target_link_libraries(lector_test PRIVATE lector GTest::gtest_main)
-
   include(GoogleTest)
-  gtest_discover_tests(lector_test)
+
+  set(LECTOR_TEST_MODULES arguments parse print)
+
+  foreach(module ${LECTOR_TEST_MODULES})
+    set(LECTOR_TEST_TARGET lector_${module}_test)
+
+    add_executable(${LECTOR_TEST_TARGET} ${PROJECT_SOURCE_DIR}/lector/${module}.test.cpp)
+
+    # Apply strict warnings only to the tests, checking the compiler type first.
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+      target_compile_options(${LECTOR_TEST_TARGET} PRIVATE -Wall -Wextra -Wno-return-type -Wpedantic)
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      target_compile_options(${LECTOR_TEST_TARGET} PRIVATE /W4 /permissive-)
+    endif()
+
+    # Basic compiler hook-up for the code coverage option.
+    if(LECTOR_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+      target_compile_options(${LECTOR_TEST_TARGET} PRIVATE --coverage -O0)
+      target_link_options(${LECTOR_TEST_TARGET} PRIVATE --coverage)
+    endif()
+
+    target_link_libraries(${LECTOR_TEST_TARGET} PRIVATE lector GTest::gtest_main)
+
+    # Automatically register tests with ctest.
+    gtest_discover_tests(${LECTOR_TEST_TARGET})
+  endforeach()
 
   message(STATUS "The Lector library tests were configured. Build and run with: \"cmake --build . && ctest\"")
 else()

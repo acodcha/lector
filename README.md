@@ -20,7 +20,7 @@ The following example illustrates the use of the Lector library:
 #include <cstdint>
 #include <iostream>
 #include <filesystem>
-#include <lector/lector.hpp>
+#include <lector/arguments.hpp>
 #include <my_project/my_main_function.hpp>
 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
@@ -99,7 +99,7 @@ bazel_dep(name = "lector", version = "1.0.0")
 
 git_override(
     module_name = "lector",
-    remote = "[https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)",
+    remote = "https://github.com/acodcha/lector.git",
     branch = "main",
 )
 ```
@@ -113,7 +113,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "lector",
-    remote = "[https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)",
+    remote = "https://github.com/acodcha/lector.git",
     branch = "main",
 )
 ```
@@ -122,7 +122,7 @@ Note: You can specify a release tag such as `tag = "v1.0.0"` instead of `branch 
 
 The above code automatically downloads the Lector library from its GitHub repository and makes it available to your Bazel project.
 
-Next, link the Lector library to the C++ targets in your project's `BUILD.bazel` files:
+Next, link the Lector library to the C++ targets in your project's `BUILD.bazel` files. Because the Lector library is modular, you only need to depend on the specific parts of the library you actually use:
 
 ```starlark
 cc_library(
@@ -130,13 +130,23 @@ cc_library(
     hdrs = ["my_library_file.hpp"],
     srcs = ["my_library_file.cpp"],
     deps = [
-        "@lector//:lector",
+        "@lector//lector:arguments",
+        "@lector//lector:parse",
+        "@lector//lector:print",
         ":my_other_dependency",
     ],
 )
 ```
 
-Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's headers in your C++ source files with:
+
+```cpp
+#include <lector/arguments.hpp>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+```
+
+All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -155,7 +165,7 @@ else()
     include(FetchContent)
     FetchContent_Declare(
         lector
-        GIT_REPOSITORY [https://github.com/acodcha/lector.git](https://github.com/acodcha/lector.git)
+        GIT_REPOSITORY https://github.com/acodcha/lector.git
         GIT_TAG main
     )
     FetchContent_MakeAvailable(lector)
@@ -172,7 +182,15 @@ Note: You can specify a release tag such as `GIT_TAG v1.0.0` instead of `GIT_TAG
 
 The above CMake code checks whether the Lector library is already installed on your system; if not, it automatically downloads it from its GitHub repository and makes it available to your CMake project.
 
-Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's headers in your C++ source files with:
+
+```cpp
+#include <lector/arguments.hpp>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+```
+
+All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -210,7 +228,15 @@ my_library_name = library(
 )
 ```
 
-Finally, simply include the Lector library's header in your C++ source files with `#include <lector/lector.hpp>`. All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+Finally, simply include the Lector library's headers in your C++ source files with:
+
+```cpp
+#include <lector/arguments.hpp>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+```
+
+All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -375,7 +401,8 @@ Enumerations can be used as argument types, but require specializing the `lector
 
 #include <array>
 #include <cstdint>
-#include <lector/lector.hpp>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
 
 namespace my_project {
 
@@ -433,7 +460,8 @@ The enumeration can also be used as a command line argument. For example:
 ```cpp
 #include <cstdint>
 #include <iostream>
-#include <lector/lector.hpp>
+#include <lector/arguments.hpp>
+#include <lector/print.hpp>
 #include <my_project/shape.hpp>
 
 enum class Label : std::int8_t {FavoriteShape};
@@ -491,7 +519,7 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
 #endif  // MY_PROJECT_POINT_HPP
 ```
 
-With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this data structure. For example:
+With the above definitions, the `lector::print()` and `lector::parse()` methods from `#include <lector/print.hpp>` and `#include <lector/parse.hpp>` can now be used with this data structure. For example:
 
 ```cpp
 const std::string printed_point{lector::print(my_project::Point{.x = 1.0, .y = 2.0, .z = 3.0})};
@@ -507,7 +535,8 @@ The data structure can also be used as a command line argument. For example:
 ```cpp
 #include <cstdint>
 #include <iostream>
-#include <lector/lector.hpp>
+#include <lector/arguments.hpp>
+#include <lector/print.hpp>
 #include <my_project/point.hpp>
 
 enum class Label : std::int8_t {FavoritePoint};
