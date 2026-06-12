@@ -717,16 +717,16 @@ bazel test //...
 If using the CMake build system, build the Lector library from the base directory of the Lector repository with:
 
 ```bash
-cmake -S . -B build
-cmake --build build --parallel
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+cmake --build build --config Release --parallel
 ```
 
 Optionally build and run all Lector library tests from the base directory of the Lector repository with:
 
 ```bash
-cmake -S . -B build -D LECTOR_TEST=ON
-cmake --build build --parallel
-ctest --test-dir build
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
+cmake --build build --config Release --parallel
+ctest --test-dir build -C Release
 ```
 
 [(Back to Developer Guide)](#4-developer-guide)

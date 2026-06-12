@@ -56,7 +56,9 @@ jobs:
           repository-cache: true
       - name: Print the version of Bazel
         run: bazel --version
-      - name: Build all Bazel targets and run all Bazel tests
+      - name: Build all Bazel targets
+        run: bazel build //...
+      - name: Run all Bazel tests
         run: bazel test //...
   build_and_test_cmake:
     name: Build and test CMake targets
@@ -67,11 +69,11 @@ jobs:
       - name: Print the version of CMake
         run: cmake --version
       - name: Configure the CMake project
-        run: cmake -S . -B build -D LECTOR_TEST=ON
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
       - name: Build all CMake targets
-        run: cmake --build build --parallel
+        run: cmake --build build --config Release --parallel
       - name: Run all CMake tests
-        run: ctest --test-dir build
+        run: ctest --test-dir build -C Release
   build_and_test_meson:
     name: Build and test Meson targets
     runs-on: ubuntu-latest
