@@ -20,18 +20,29 @@ project(
   'lector',
   'cpp',
   version : '1.0.0',
-  default_options : ['cpp_std=c++17']
+  default_options : [
+    'cpp_std=c++17',
+    'warning_level=3',  # Sets -Wall -Wextra on GCC and Clang, and /W4 on MSVC.
+    'optimization=3'  # Sets -O3 on GCC and Clang, and /O2 on MSVC.
+  ]
 )
 
-add_global_arguments(
-  '-O3',
-  '-Wall',
-  '-Wextra',
-  '-Wno-return-type',
-  '-Wpedantic',
-  language : 'cpp'
-)
+# Handle compiler-specific flags cleanly without breaking other platforms.
+cpp_compiler = meson.get_compiler('cpp')
+if cpp_compiler.get_id() in ['gcc', 'clang']
+  add_project_arguments(
+    '-Wpedantic',
+    '-Wno-return-type',
+    language : 'cpp'
+  )
+elif cpp_compiler.get_id() == 'msvc'
+  add_project_arguments(
+    '/permissive-',  # Enforces strict C++ standards compliance in MSVC.
+    language : 'cpp'
+  )
+endif
 
+# Define the GoogleTest dependency.
 gtest = dependency(
   'gtest',
   main : true,
@@ -39,17 +50,22 @@ gtest = dependency(
   required : true
 )
 
+# Header-only library dependency configuration.
+# Leaving '.' allows users to do #include <lector/print.hpp>.
 lector = declare_dependency(
   include_directories : include_directories('.')
 )
 
-test(
-  'lector_test',
-  executable(
-    'lector_test',
-    'lector.test.cpp',
+# Expose the dependency externally.
+meson.override_dependency('lector', lector)
+
+# Dynamically generate targets for the test files.
+test_modules = ['arguments', 'parse', 'print']
+foreach module : test_modules
+  test_exe = executable(
+    module + '_test',
+    'lector/' + module + '.test.cpp',
     dependencies : [gtest, lector]
   )
-)
-
-meson.override_dependency('lector', lector)
+  test('lector_' + module + '_test', test_exe)
+endforeach
