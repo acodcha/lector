@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/acodcha/lector/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/tests.yaml)
 
-Lector is a C++ library for parsing command line arguments. Lector is hosted at <https://github.com/acodcha/lector>.
+Lector is a C++ library for parsing command line arguments. Lector is supported on Linux, macOS, and Windows, and can be built with Bazel, CMake, or Meson. Lector is hosted at <https://github.com/acodcha/lector>.
 
 Contents:
 
