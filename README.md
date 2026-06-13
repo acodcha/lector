@@ -1,6 +1,6 @@
 # Lector
 
-[![tests](https://github.com/acodcha/lector/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/tests.yaml)
+[![Linux](https://github.com/acodcha/lector/actions/workflows/Linux.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/Linux.yaml) [![macOS](https://github.com/acodcha/lector/actions/workflows/macOS.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/macOS.yaml) [![Windows](https://github.com/acodcha/lector/actions/workflows/Windows.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/Windows.yaml)
 
 Lector is a C++ library for parsing command line arguments. Lector is supported on Linux, macOS, and Windows, and can be built with Bazel, CMake, or Meson. Lector is hosted at <https://github.com/acodcha/lector>.
 
