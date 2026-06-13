@@ -31,6 +31,10 @@
 #include <string_view>
 #include <utility>
 
+#ifdef _MSC_VER
+  #include <string.h>
+#endif
+
 namespace test {
 
 namespace {
@@ -323,7 +327,7 @@ public:
       ::std::size_t length{argument.length() + 1};
       argv_[index] = new char[length];
 #ifdef _MSC_VER
-      ::std::strcpy_s(argv_[index], length, argument.c_str());
+      ::strcpy_s(argv_[index], length, argument.c_str());
 #else
       ::std::strcpy(argv_[index], argument.c_str());
 #endif
