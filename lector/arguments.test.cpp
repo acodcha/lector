@@ -31,6 +31,10 @@
 #include <string_view>
 #include <utility>
 
+#ifdef _MSC_VER
+  #include <string.h>
+#endif
+
 namespace test {
 
 namespace {
@@ -166,7 +170,8 @@ enum class Label : ::std::int8_t {
 create_argument_iterations_optional() {
   return ::lector::Argument<::test::Label::Iterations, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"-i", "--iterations"},
-    "Number of iterations.", 100
+    "Number of iterations.",
+    static_cast<::std::int32_t>(100)
   };
 }
 
@@ -240,7 +245,8 @@ create_argument_output_directory_required() {
 ::lector::Argument<::test::Label::Weird, ::std::int32_t> create_argument_weird_optional() {
   return ::lector::Argument<::test::Label::Weird, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"=w=k", "==weird=key"},
-    "Weird argument.", 100
+    "Weird argument.",
+    static_cast<::std::int32_t>(100)
   };
 }
 
@@ -315,12 +321,16 @@ public:
     // the +1 is for the null terminator at the end of the argv array.
     argv_ = new char*[argc_ + 1];
     argv_[argc_] = nullptr;
-
     // Populate the argv array with C-strings from the specified arguments.
     ::std::size_t index{0};
     for (const ::std::string& argument : arguments) {
-      argv_[index] = new char[argument.length() + 1];
+      ::std::size_t length{argument.length() + 1};
+      argv_[index] = new char[length];
+#ifdef _MSC_VER
+      ::strcpy_s(argv_[index], length, argument.c_str());
+#else
       ::std::strcpy(argv_[index], argument.c_str());
+#endif
       ++index;
     }
   }
@@ -543,7 +553,8 @@ TEST(Lector, ArgumentsValidInline) {
   EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_EQ(
+      arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
             "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
@@ -569,7 +580,8 @@ TEST(Lector, ArgumentsValidMixed) {
   EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_EQ(
+      arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
             "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
@@ -595,7 +607,8 @@ TEST(Lector, ArgumentsValidWhitespace) {
   EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value(), 200);
+  EXPECT_EQ(
+      arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
             "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
@@ -619,7 +632,7 @@ TEST(Lector, ArgumentsWeirdLongInline) {
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -632,7 +645,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespace) {
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -645,7 +658,7 @@ TEST(Lector, ArgumentsWeirdShortInline) {
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -658,7 +671,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespace) {
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), 200);
+  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -872,9 +885,9 @@ TEST(Lector, ArgumentConstructorNumberIntegerOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  EXPECT_EQ(argument.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(argument.execution().empty());
 }
@@ -954,9 +967,9 @@ TEST(Lector, ArgumentConstructorWeirdOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  EXPECT_EQ(argument.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(argument.keys_with_value_types(), "=w=k <number>, ==weird=key <number>");
   EXPECT_TRUE(argument.execution().empty());
 }
@@ -983,18 +996,18 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  EXPECT_EQ(first.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_TRUE(first.execution().empty());
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{first};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
 }
@@ -1007,9 +1020,9 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  EXPECT_EQ(first.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_TRUE(first.execution().empty());
   ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
@@ -1024,9 +1037,9 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
 }
@@ -1039,18 +1052,18 @@ TEST(Lector, ArgumentMoveConstructor) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  EXPECT_EQ(first.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_TRUE(first.execution().empty());
   const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{std::move(first)};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
 }
@@ -1063,9 +1076,9 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(first.default_value(), 100);
+  EXPECT_EQ(first.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), 100);
+  EXPECT_EQ(first.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_TRUE(first.execution().empty());
   ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second;
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
@@ -1080,9 +1093,9 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(second.default_value(), 100);
+  EXPECT_EQ(second.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), 100);
+  EXPECT_EQ(second.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
 }
@@ -1214,18 +1227,18 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 100);
+  EXPECT_EQ(argument.default_value(), static_cast<::std::int32_t>(100));
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), 100);
+  EXPECT_EQ(argument.parsed_or_default_value(), static_cast<::std::int32_t>(100));
   EXPECT_TRUE(argument.execution().empty());
-  argument.set_parsed_value(200);
+  argument.set_parsed_value(static_cast<::std::int32_t>(200));
   EXPECT_EQ(argument.label(), ::test::Label::Iterations);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), 100);
-  EXPECT_EQ(argument.parsed_value(), 200);
-  EXPECT_EQ(argument.parsed_or_default_value(), 200);
+  EXPECT_EQ(argument.default_value(), static_cast<::std::int32_t>(100));
+  EXPECT_EQ(argument.parsed_value(), static_cast<::std::int32_t>(200));
+  EXPECT_EQ(argument.parsed_or_default_value(), static_cast<::std::int32_t>(200));
   EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_EQ(argument.execution(), "--iterations 200");
 }

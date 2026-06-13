@@ -514,10 +514,10 @@ TEST(Lector, ParseNumberIntegerBits08) {
   EXPECT_EQ(::lector::parse<::std::int8_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int8_t>("1000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int8_t>("-1000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("-123"), -123);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("0"), static_cast<::std::int8_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int8_t>("-0"), static_cast<::std::int8_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123"), static_cast<::std::int8_t>(123));
+  EXPECT_EQ(::lector::parse<::std::int8_t>("-123"), static_cast<::std::int8_t>(-123));
 }
 
 TEST(Lector, ParseNumberIntegerBits16) {
@@ -525,10 +525,10 @@ TEST(Lector, ParseNumberIntegerBits16) {
   EXPECT_EQ(::lector::parse<::std::int16_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int16_t>("1000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int16_t>("-1000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-123"), -123);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("0"), static_cast<::std::int16_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-0"), static_cast<::std::int16_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123"), static_cast<::std::int16_t>(123));
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-123"), static_cast<::std::int16_t>(-123));
 }
 
 TEST(Lector, ParseNumberIntegerBits32) {
@@ -536,10 +536,10 @@ TEST(Lector, ParseNumberIntegerBits32) {
   EXPECT_EQ(::lector::parse<::std::int32_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int32_t>("10000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int32_t>("-10000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("-123"), -123);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("0"), static_cast<::std::int32_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int32_t>("-0"), static_cast<::std::int32_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123"), static_cast<::std::int32_t>(123));
+  EXPECT_EQ(::lector::parse<::std::int32_t>("-123"), static_cast<::std::int32_t>(-123));
 }
 
 TEST(Lector, ParseNumberIntegerBits64) {
@@ -547,10 +547,10 @@ TEST(Lector, ParseNumberIntegerBits64) {
   EXPECT_EQ(::lector::parse<::std::int64_t>("Hello, world!"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int64_t>("1000000000000000000000000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int64_t>("-1000000000000000000000000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("-0"), 0);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("123"), 123);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("-123"), -123);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("0"), static_cast<::std::int64_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int64_t>("-0"), static_cast<::std::int64_t>(0));
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123"), static_cast<::std::int64_t>(123));
+  EXPECT_EQ(::lector::parse<::std::int64_t>("-123"), static_cast<::std::int64_t>(-123));
 }
 
 TEST(Lector, ParseNumberNaturalBits08) {
@@ -559,8 +559,8 @@ TEST(Lector, ParseNumberNaturalBits08) {
   EXPECT_EQ(::lector::parse<::std::uint8_t>("-0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("1000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint8_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::uint8_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("0"), static_cast<::std::uint8_t>(0));
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("123"), static_cast<::std::uint8_t>(123));
 }
 
 TEST(Lector, ParseNumberNaturalBits16) {
@@ -569,8 +569,8 @@ TEST(Lector, ParseNumberNaturalBits16) {
   EXPECT_EQ(::lector::parse<::std::uint16_t>("-0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("1000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint16_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::uint16_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("0"), static_cast<::std::uint16_t>(0));
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("123"), static_cast<::std::uint16_t>(123));
 }
 
 TEST(Lector, ParseNumberNaturalBits32) {
@@ -579,8 +579,8 @@ TEST(Lector, ParseNumberNaturalBits32) {
   EXPECT_EQ(::lector::parse<::std::uint32_t>("-0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("10000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint32_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::uint32_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("0"), static_cast<::std::uint32_t>(0));
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("123"), static_cast<::std::uint32_t>(123));
 }
 
 TEST(Lector, ParseNumberNaturalBits64) {
@@ -589,8 +589,8 @@ TEST(Lector, ParseNumberNaturalBits64) {
   EXPECT_EQ(::lector::parse<::std::uint64_t>("-0"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("1000000000000000000000000000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint64_t>("0"), 0);
-  EXPECT_EQ(::lector::parse<::std::uint64_t>("123"), 123);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("0"), static_cast<::std::uint64_t>(0));
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("123"), static_cast<::std::uint64_t>(123));
 }
 
 TEST(Lector, ParseString) {
