@@ -39,17 +39,17 @@ namespace test {
 
 namespace {
 
-/// @brief Color. Enumeration type used for testing the parsing of enumeration command line
+/// @brief Shape. Enumeration type used for testing the parsing of enumeration command line
 /// arguments.
-enum class Color : ::std::int8_t {
-  /// @brief Red color.
-  Red,
+enum class Shape : ::std::int8_t {
+  /// @brief Circle shape.
+  Circle,
 
-  /// @brief Green color.
-  Green,
+  /// @brief Triangle shape.
+  Triangle,
 
-  /// @brief Blue color.
-  Blue,
+  /// @brief Square shape.
+  Square,
 };
 
 /// @brief Point in three-dimensional space. Data structure type used for testing the parsing of
@@ -100,29 +100,29 @@ inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 namespace lector {
 
-/// @brief Specialization of the lector::Printings constant for the test::Color enumeration.
+/// @brief Specialization of the lector::Printings constant for the test::Shape enumeration.
 template <>
-inline constexpr ::std::array<::lector::Printing<::test::Color>, 3> Printings<::test::Color>{
+inline constexpr ::std::array<::lector::Printing<::test::Shape>, 3> Printings<::test::Shape>{
   {
-   {::test::Color::Red, "Red"},
-   {::test::Color::Green, "Green"},
-   {::test::Color::Blue, "Blue"},
+   {::test::Shape::Circle, "Circle"},
+   {::test::Shape::Triangle, "Triangle"},
+   {::test::Shape::Square, "Square"},
    }
 };
 
-/// @brief Specialization of the lector::Spellings constant for the test::Color enumeration.
+/// @brief Specialization of the lector::Spellings constant for the test::Shape enumeration.
 template <>
-inline constexpr ::std::array<::lector::Spelling<::test::Color>, 9> Spellings<::test::Color>{
+inline constexpr ::std::array<::lector::Spelling<::test::Shape>, 9> Spellings<::test::Shape>{
   {
-   {"Red", ::test::Color::Red},
-   {"Green", ::test::Color::Green},
-   {"Blue", ::test::Color::Blue},
-   {"red", ::test::Color::Red},
-   {"green", ::test::Color::Green},
-   {"blue", ::test::Color::Blue},
-   {"RED", ::test::Color::Red},
-   {"GREEN", ::test::Color::Green},
-   {"BLUE", ::test::Color::Blue},
+   {"Circle", ::test::Shape::Circle},
+   {"Triangle", ::test::Shape::Triangle},
+   {"Square", ::test::Shape::Square},
+   {"circle", ::test::Shape::Circle},
+   {"triangle", ::test::Shape::Triangle},
+   {"square", ::test::Shape::Square},
+   {"CIRCLE", ::test::Shape::Circle},
+   {"TRIANGLE", ::test::Shape::Triangle},
+   {"SQUARE", ::test::Shape::Square},
    }
 };
 
@@ -136,7 +136,7 @@ namespace {
 enum class Label : ::std::int8_t {
   Title,
   OutputDirectory,
-  Color,
+  Shape,
   Point,
   Iterations,
   Tolerance,
@@ -144,18 +144,18 @@ enum class Label : ::std::int8_t {
   Help,
 };
 
-::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_optional() {
-  return ::lector::Argument<::test::Label::Color, ::test::Color>{
-    ::std::initializer_list<::std::string>{"-c", "--color"},
-    "Main output color.",
-    ::test::Color::Red
+::lector::Argument<::test::Label::Shape, ::test::Shape> create_argument_color_optional() {
+  return ::lector::Argument<::test::Label::Shape, ::test::Shape>{
+    ::std::initializer_list<::std::string>{"-c", "--shape"},
+    "Main output shape.",
+    ::test::Shape::Circle
   };
 }
 
-::lector::Argument<::test::Label::Color, ::test::Color> create_argument_color_required() {
-  return ::lector::Argument<::test::Label::Color, ::test::Color>{
-    ::std::initializer_list<::std::string>{"-c", "--color"},
-    "Main output color."
+::lector::Argument<::test::Label::Shape, ::test::Shape> create_argument_color_required() {
+  return ::lector::Argument<::test::Label::Shape, ::test::Shape>{
+    ::std::initializer_list<::std::string>{"-c", "--shape"},
+    "Main output shape."
   };
 }
 
@@ -547,21 +547,21 @@ TEST(Lector, ArgumentsValidInline) {
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
   const ::test::Command command{
-    "/path/to/executable", "-c=Red", "-o=/path/to/output", "-i=200", "-h"};
+    "/path/to/executable", "-c=Circle", "-o=/path/to/output", "-i=200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value(), ::test::Shape::Circle);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
   EXPECT_EQ(
       arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
-            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+            "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.print_usage_command(),
-            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+            "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
-  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-c <value>, --shape <value>  Main output shape." << std::endl;
   expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
@@ -574,21 +574,21 @@ TEST(Lector, ArgumentsValidMixed) {
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
   const ::test::Command command{
-    "/path/to/executable", "-c=Red", "-o", "/path/to/output", "-i=200", "-h"};
+    "/path/to/executable", "-c=Circle", "-o", "/path/to/output", "-i=200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value(), ::test::Shape::Circle);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
   EXPECT_EQ(
       arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
-            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+            "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.print_usage_command(),
-            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+            "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
-  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-c <value>, --shape <value>  Main output shape." << std::endl;
   expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
@@ -601,21 +601,21 @@ TEST(Lector, ArgumentsValidWhitespace) {
     ::test::create_argument_color_required(), ::test::create_argument_output_directory_required(),
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
   const ::test::Command command{
-    "/path/to/executable", "-c", "Red", "-o", "/path/to/output", "-i", "200", "-h"};
+    "/path/to/executable", "-c", "Circle", "-o", "/path/to/output", "-i", "200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_EQ(arguments.get<::test::Label::Color>().parsed_value(), ::test::Color::Red);
+  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value(), ::test::Shape::Circle);
   EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value(),
             ::std::filesystem::path("/path/to/output"));
   EXPECT_EQ(
       arguments.get<::test::Label::Iterations>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value());
   EXPECT_EQ(arguments.print_execution(),
-            "/path/to/executable --color Red --output /path/to/output --iterations 200 --help");
+            "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.print_usage_command(),
-            "executable --color <value> --output <path> [--iterations <number>] [--help]");
+            "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
-  expected_usage_details << "-c <value>, --color <value>  Main output color." << std::endl;
+  expected_usage_details << "-c <value>, --shape <value>  Main output shape." << std::endl;
   expected_usage_details << "-o <path>, --output <path>  Output directory." << std::endl;
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
@@ -630,7 +630,7 @@ TEST(Lector, ArgumentsWeirdLongInline) {
   const ::test::Command command{"/path/to/executable", "==weird=key=200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
@@ -643,7 +643,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespace) {
   const ::test::Command command{"/path/to/executable", "==weird=key", "200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
@@ -656,7 +656,7 @@ TEST(Lector, ArgumentsWeirdShortInline) {
   const ::test::Command command{"/path/to/executable", "=w=k=200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
@@ -669,7 +669,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespace) {
   const ::test::Command command{"/path/to/executable", "=w=k", "200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<::test::Label::Color>().parsed_value().has_value());
+  EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
   ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value(), static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
@@ -743,8 +743,8 @@ TEST(Lector, ArgumentConstructorDataStructureRequired) {
 }
 
 TEST(Lector, ArgumentConstructorEnumerationDefault) {
-  const ::lector::Argument<::test::Label::Color, ::test::Color> argument;
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
+  const ::lector::Argument<::test::Label::Shape, ::test::Shape> argument;
+  EXPECT_EQ(argument.label(), ::test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
@@ -755,31 +755,31 @@ TEST(Lector, ArgumentConstructorEnumerationDefault) {
 }
 
 TEST(Lector, ArgumentConstructorEnumerationOptional) {
-  const ::lector::Argument<::test::Label::Color, ::test::Color> argument{
+  const ::lector::Argument<::test::Label::Shape, ::test::Shape> argument{
     ::test::create_argument_color_optional()};
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
-  const ::std::vector<::std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.label(), ::test::Label::Shape);
+  const ::std::vector<::std::string> expected_keys{"-c", "--shape"};
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::Color::Red);
+  EXPECT_EQ(argument.default_value(), ::test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
-  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Circle);
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --shape <value>");
   EXPECT_TRUE(argument.execution().empty());
 }
 
 TEST(Lector, ArgumentConstructorEnumerationRequired) {
-  const ::lector::Argument<::test::Label::Color, ::test::Color> argument{
+  const ::lector::Argument<::test::Label::Shape, ::test::Shape> argument{
     ::test::create_argument_color_required()};
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
-  const ::std::vector<::std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.label(), ::test::Label::Shape);
+  const ::std::vector<::std::string> expected_keys{"-c", "--shape"};
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Required);
   EXPECT_EQ(argument.default_value(), ::std::nullopt);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --shape <value>");
   EXPECT_TRUE(argument.execution().empty());
 }
 
@@ -1148,27 +1148,27 @@ TEST(Lector, ArgumentSetParsedValueDataStructure) {
 }
 
 TEST(Lector, ArgumentSetParsedValueEnumeration) {
-  ::lector::Argument<::test::Label::Color, ::test::Color> argument{
+  ::lector::Argument<::test::Label::Shape, ::test::Shape> argument{
     ::test::create_argument_color_optional()};
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
-  const ::std::vector<::std::string> expected_keys{"-c", "--color"};
+  EXPECT_EQ(argument.label(), ::test::Label::Shape);
+  const ::std::vector<::std::string> expected_keys{"-c", "--shape"};
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::Color::Red);
+  EXPECT_EQ(argument.default_value(), ::test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), ::std::nullopt);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Red);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Circle);
   EXPECT_TRUE(argument.execution().empty());
-  argument.set_parsed_value(::test::Color::Blue);
-  EXPECT_EQ(argument.label(), ::test::Label::Color);
+  argument.set_parsed_value(::test::Shape::Square);
+  EXPECT_EQ(argument.label(), ::test::Label::Shape);
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Main output color.");
+  EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_EQ(argument.default_value(), ::test::Color::Red);
-  EXPECT_EQ(argument.parsed_value(), ::test::Color::Blue);
-  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Color::Blue);
-  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --color <value>");
-  EXPECT_EQ(argument.execution(), "--color Blue");
+  EXPECT_EQ(argument.default_value(), ::test::Shape::Circle);
+  EXPECT_EQ(argument.parsed_value(), ::test::Shape::Square);
+  EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Square);
+  EXPECT_EQ(argument.keys_with_value_types(), "-c <value>, --shape <value>");
+  EXPECT_EQ(argument.execution(), "--shape Square");
 }
 
 TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
