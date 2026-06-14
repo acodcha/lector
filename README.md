@@ -2,7 +2,7 @@
 
 [![Linux](https://github.com/acodcha/lector/actions/workflows/Linux.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/Linux.yaml) [![macOS](https://github.com/acodcha/lector/actions/workflows/macOS.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/macOS.yaml) [![Windows](https://github.com/acodcha/lector/actions/workflows/Windows.yaml/badge.svg?branch=main)](https://github.com/acodcha/lector/actions/workflows/Windows.yaml)
 
-Lector is a C++ library for parsing command line arguments. Lector is supported on Linux, macOS, and Windows, and can be built with Bazel, CMake, or Meson. Lector is hosted at <https://github.com/acodcha/lector>.
+Lector is a C++ library for parsing command line arguments. Lector is supported on Linux, macOS, and Windows, and can be built with Bazel, CMake, or Meson. The Lector library's repository is hosted at <https://github.com/acodcha/lector> and its documentation is hosted at <https://acodcha.github.io/lector>.
 
 Contents:
 
@@ -770,7 +770,7 @@ meson test -C build
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
-Lector is licensed under the MIT License. See the [LICENSE](LICENSE) file or <https://mit-license.org>.
+Lector is licensed under the MIT License. See the [LICENSE](<https://github.com/acodcha/lector/blob/main/LICENSE>) file or <https://mit-license.org>.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
