@@ -42,7 +42,7 @@
 namespace lector {
 
 /// @brief Importance of a command line argument.
-enum class Importance : std::int8_t {
+enum class Importance : ::std::int8_t {
   /// @brief The command line argument is optional; it may or may not be provided by the user.
   Optional = 0,
 
@@ -50,26 +50,27 @@ enum class Importance : std::int8_t {
   Required = 1,
 };
 
-/// @brief Specialization of the lector::Printings constant for the lector::Importance enumeration.
+/// @brief Specialization of the lector::Names constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<lector::Printing<lector::Importance>, 2> Printings<lector::Importance>{
+inline constexpr ::std::array<::lector::Name<::lector::Importance>, 2> Names<::lector::Importance>{
   {
-   {lector::Importance::Optional, "Optional"},
-   {lector::Importance::Required, "Required"},
+   {::lector::Importance::Optional, "Optional"},
+   {::lector::Importance::Required, "Required"},
    }
 };
 
 /// @brief Specialization of the lector::Spellings constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<lector::Spelling<lector::Importance>, 6> Spellings<lector::Importance>{
-  {
-   {"Optional", lector::Importance::Optional},
-   {"Required", lector::Importance::Required},
-   {"optional", lector::Importance::Optional},
-   {"required", lector::Importance::Required},
-   {"OPTIONAL", lector::Importance::Optional},
-   {"REQUIRED", lector::Importance::Required},
-   }
+inline constexpr ::std::array<::lector::Spelling<::lector::Importance>, 6>
+    Spellings<::lector::Importance>{
+      {
+       {"Optional", ::lector::Importance::Optional},
+       {"Required", ::lector::Importance::Required},
+       {"optional", ::lector::Importance::Optional},
+       {"required", ::lector::Importance::Required},
+       {"OPTIONAL", ::lector::Importance::Optional},
+       {"REQUIRED", ::lector::Importance::Required},
+       }
 };
 
 /// @brief A command line argument, including its label, keys, description, importance, default
@@ -93,10 +94,10 @@ public:
   /// @param[in] description The description of the command line argument. Used when printing usage
   /// information. Set at construction.
   /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description)
+  Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description)
     : keys_{keys}, description_{description},
-      importance_{
-        std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
+      importance_{::std::is_same_v<Type, bool> ? ::lector::Importance::Optional :
+                                                 ::lector::Importance::Required} {
     set_boolean_default();
     validate_keys();
     validate_description();
@@ -109,10 +110,10 @@ public:
   /// information. Set at construction.
   /// @param[in] default_value The default value of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+  Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description,
            const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
-      importance_{lector::Importance::Optional} {
+      importance_{::lector::Importance::Optional} {
     validate_keys();
     validate_description();
     validate_default_value();
@@ -122,20 +123,20 @@ public:
   ~Argument() noexcept = default;
 
   /// @brief Copy constructor. Constructs a command line argument by copying another one.
-  Argument(const lector::Argument<LabelValue, Type>&) = default;
+  Argument(const ::lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
   /// @return This command line argument after the assignment.
-  lector::Argument<LabelValue, Type>& operator=(
-      const lector::Argument<LabelValue, Type>&) = default;
+  ::lector::Argument<LabelValue, Type>& operator=(
+      const ::lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Move constructor. Constructs a command line argument by moving another one.
-  Argument(lector::Argument<LabelValue, Type>&&) noexcept = default;
+  Argument(::lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this command line argument by moving another one.
   /// @return This command line argument after the assignment.
-  lector::Argument<LabelValue, Type>& operator=(
-      lector::Argument<LabelValue, Type>&&) noexcept = default;
+  ::lector::Argument<LabelValue, Type>& operator=(
+      ::lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Label of this command line argument. Used to uniquely identify this command line
   /// argument. Set at construction.
@@ -146,35 +147,35 @@ public:
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
   /// @return The keys that can be used to specify this command line argument.
-  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
+  [[nodiscard]] const ::std::vector<::std::string>& keys() const noexcept {
     return keys_;
   }
 
   /// @brief Description of this command line argument. Used when printing usage information. Set at
   /// construction.
   /// @return The description of this command line argument.
-  [[nodiscard]] std::string_view description() const noexcept {
+  [[nodiscard]] ::std::string_view description() const noexcept {
     return description_;
   }
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
   /// @return The default value of this command line argument.
-  [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
+  [[nodiscard]] const ::std::optional<Type>& default_value() const noexcept {
     return default_value_;
   }
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
   /// @return The parsed value of this command line argument.
-  [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
+  [[nodiscard]] const ::std::optional<Type>& parsed_value() const noexcept {
     return parsed_value_;
   }
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
   /// @return The importance of this command line argument.
-  [[nodiscard]] lector::Importance importance() const noexcept {
+  [[nodiscard]] ::lector::Importance importance() const noexcept {
     return importance_;
   }
 
@@ -190,7 +191,7 @@ public:
     if (default_value_.has_value()) {
       return default_value_.value();
     }
-    throw std::logic_error(
+    throw ::std::logic_error(
         "No parsed or default value for argument '" + longest_key_with_value_type() + "'.");
   }
 
@@ -203,9 +204,9 @@ public:
   /// @brief Prints the longest key of this command line argument with its associated value type as
   /// a string.
   /// @return The string that contains the longest key and its associated value type.
-  std::string longest_key_with_value_type() const {
-    std::string result{longest_key()};
-    const std::string value_type{print_value_type()};
+  ::std::string longest_key_with_value_type() const {
+    ::std::string result{longest_key()};
+    const ::std::string value_type{print_value_type()};
     if (!value_type.empty()) {
       result += " " + value_type;
     }
@@ -215,10 +216,10 @@ public:
   /// @brief Prints the keys of this command line argument with their associated value types as a
   /// string.
   /// @return The string that contains the keys and value types.
-  std::string keys_with_value_types() const {
-    std::string result;
-    for (std::size_t index{0}; index < keys_.size(); ++index) {
-      const std::string value_type{print_value_type()};
+  ::std::string keys_with_value_types() const {
+    ::std::string result;
+    for (::std::size_t index{0}; index < keys_.size(); ++index) {
+      const ::std::string value_type{print_value_type()};
       result += keys_[index];
       if (!value_type.empty()) {
         result += " " + value_type;
@@ -232,15 +233,15 @@ public:
 
   /// @brief Prints the execution of this command line argument as a string.
   /// @return The string that contains the execution of this command line argument.
-  std::string execution() const {
-    if constexpr (std::is_same_v<Type, bool>) {
+  ::std::string execution() const {
+    if constexpr (::std::is_same_v<Type, bool>) {
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
       }
       return "";
     } else {
       if (parsed_value_.has_value()) {
-        return longest_key() + " " + lector::print<Type>(parsed_value_.value());
+        return longest_key() + " " + ::lector::print<Type>(parsed_value_.value());
       }
       return "";
     }
@@ -251,30 +252,30 @@ private:
   /// Called by the constructor that does not specify a default value. Boolean arguments are always
   /// optional and always default to false.
   void set_boolean_default() {
-    if constexpr (std::is_same_v<Type, bool>) {
+    if constexpr (::std::is_same_v<Type, bool>) {
       default_value_ = false;
     }
   }
 
   /// @brief Validates the keys of this command line argument. Called by both constructors.
-  /// @throws std::invalid_argument if any of this command line argument's keys are invalid.
+  /// @throws std::logic_error if any of this command line argument's keys are invalid.
   void validate_keys() const {
     if (keys_.empty()) {
-      throw std::logic_error("All arguments must each have at least one key.");
+      throw ::std::logic_error("All arguments must each have at least one key.");
     }
-    for (const std::string& key : keys_) {
+    for (const ::std::string& key : keys_) {
       if (key.empty()) {
         if (longest_key().empty()) {
-          throw std::logic_error("Arguments cannot have empty keys.");
+          throw ::std::logic_error("Arguments cannot have empty keys.");
         }
-        throw std::logic_error("Empty key in argument '" + longest_key_with_value_type()
-                               + "'. Arguments cannot have empty keys.");
+        throw ::std::logic_error("Empty key in argument '" + longest_key_with_value_type()
+                                 + "'. Arguments cannot have empty keys.");
       }
     }
-    for (std::size_t first{0}; first < keys_.size(); ++first) {
-      for (std::size_t second{first + 1}; second < keys_.size(); ++second) {
+    for (::std::size_t first{0}; first < keys_.size(); ++first) {
+      for (::std::size_t second{first + 1}; second < keys_.size(); ++second) {
         if (keys_[first] == keys_[second]) {
-          throw std::logic_error(
+          throw ::std::logic_error(
               "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
               + "'. Arguments cannot have duplicate keys.");
         }
@@ -283,21 +284,21 @@ private:
   };
 
   /// @brief Validates the description of this command line argument. Called by both constructors.
-  /// @throws std::invalid_argument if this command line argument's description is empty.
+  /// @throws std::logic_error if this command line argument's description is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
-                             + "'. All arguments must have descriptions.");
+      throw ::std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+                               + "'. All arguments must have descriptions.");
     }
   };
 
   /// @brief Validates the default value of this command line argument. Called by the constructor
   /// that specifies a default value.
-  /// @throws std::invalid_argument if this command line argument is boolean but has a default
+  /// @throws std::logic_error if this command line argument is boolean but has a default
   /// value.
   constexpr void validate_default_value() const {
-    if constexpr (std::is_same_v<Type, bool>) {
-      throw std::logic_error(
+    if constexpr (::std::is_same_v<Type, bool>) {
+      throw ::std::logic_error(
           "Specified default value for boolean argument '" + longest_key_with_value_type()
           + "'. Boolean arguments are always false by default and cannot specify default values.");
     }
@@ -305,17 +306,17 @@ private:
 
   /// @brief Prints the value type of this command line argument as a string.
   /// @return The string that contains the value type.
-  std::string_view print_value_type() const {
-    if (std::is_same_v<Type, bool>) {
+  ::std::string_view print_value_type() const {
+    if (::std::is_same_v<Type, bool>) {
       return "";
-    } else if constexpr (std::numeric_limits<Type>::is_integer) {
+    } else if constexpr (::std::numeric_limits<Type>::is_integer) {
       return "<number>";
-    } else if constexpr (std::is_floating_point_v<Type>) {
+    } else if constexpr (::std::is_floating_point_v<Type>) {
       return "<value>";
     } else if constexpr (
-        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
+        ::std::is_same_v<Type, ::std::string> || ::std::is_same_v<Type, ::std::string_view>) {
       return "<text>";
-    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
+    } else if constexpr (::std::is_same_v<Type, ::std::filesystem::path>) {
       return "<path>";
     } else {
       return "<value>";
@@ -324,9 +325,9 @@ private:
 
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
-  const std::string& longest_key() const {
-    std::size_t longest_key_index{0};
-    for (std::size_t index{1}; index < keys_.size(); ++index) {
+  const ::std::string& longest_key() const {
+    ::std::size_t longest_key_index{0};
+    for (::std::size_t index{1}; index < keys_.size(); ++index) {
       if (keys_[index].size() > keys_[longest_key_index].size()) {
         longest_key_index = index;
       }
@@ -335,23 +336,23 @@ private:
   }
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
-  std::vector<std::string> keys_{};
+  ::std::vector<::std::string> keys_{};
 
   /// @brief Description of this command line argument. Used when printing usage information. Set at
   /// construction.
-  std::string description_{};
+  ::std::string description_{};
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
-  std::optional<Type> default_value_{};
+  ::std::optional<Type> default_value_{};
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
-  std::optional<Type> parsed_value_{};
+  ::std::optional<Type> parsed_value_{};
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
-  lector::Importance importance_{lector::Importance::Required};
+  ::lector::Importance importance_{::lector::Importance::Required};
 };
 
 /// @brief Type trait used to extract a command line argument from a collection of command line
@@ -370,8 +371,8 @@ struct FindArgumentByLabel;
 /// @tparam ...OtherArgumentTypes The variadic list of argument types in the collection of command
 /// line arguments, excluding the command line argument to extract.
 template <auto Label, typename Type, typename... OtherArgumentTypes>
-struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTypes...> {
-  using type = lector::Argument<Label, Type>;
+struct FindArgumentByLabel<Label, ::lector::Argument<Label, Type>, OtherArgumentTypes...> {
+  using type = ::lector::Argument<Label, Type>;
 };
 
 /// @brief Type trait specialization used to extract a command line argument from a collection of
@@ -383,10 +384,10 @@ struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTy
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
-struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
+struct FindArgumentByLabel<Label, ::lector::Argument<OtherLabel, OtherType>,
                            RemainingArgumentTypes...>
     final {
-  using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
+  using type = typename ::lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
 /// @brief A collection of command line arguments that can be parsed from argc and argv.
@@ -398,30 +399,30 @@ public:
   /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
   /// list of command line arguments.
   /// @param ...arguments The variadic list of command line arguments.
-  explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {}
+  explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {}
 
   /// @brief Destructor. Destroys this collection of command line arguments.
   ~Arguments() noexcept = default;
 
   /// @brief Copy constructor. Constructs a collection of command line argument by copying another
   /// one.
-  Arguments(const lector::Arguments<ArgumentTypes...>&) = default;
+  Arguments(const ::lector::Arguments<ArgumentTypes...>&) = default;
 
   /// @brief Copy assignment operator. Assigns this collection of command line argument by copying
   /// another one.
   /// @return This collection of command line argument after the assignment.
-  lector::Arguments<ArgumentTypes...>& operator=(
-      const lector::Arguments<ArgumentTypes...>&) = default;
+  ::lector::Arguments<ArgumentTypes...>& operator=(
+      const ::lector::Arguments<ArgumentTypes...>&) = default;
 
   /// @brief Move constructor. Constructs a collection of command line argument by moving another
   /// one.
-  Arguments(lector::Arguments<ArgumentTypes...>&&) noexcept = default;
+  Arguments(::lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this collection of command line argument by moving
   /// another one.
   /// @return This collection of command line argument after the assignment.
-  lector::Arguments<ArgumentTypes...>& operator=(
-      lector::Arguments<ArgumentTypes...>&&) noexcept = default;
+  ::lector::Arguments<ArgumentTypes...>& operator=(
+      ::lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   /// @brief Parses argc and argv to populate the parsed values of the command line arguments in
   /// this collection.
@@ -439,7 +440,7 @@ public:
   /// @brief Returns the executable path of this collection of command line arguments. If the
   /// command line arguments have not yet been parsed from argc and argv, this path is empty.
   /// @return The executable path of this collection of command line arguments.
-  [[nodiscard]] const std::filesystem::path& executable_path() const {
+  [[nodiscard]] const ::std::filesystem::path& executable_path() const {
     return executable_path_;
   }
 
@@ -448,15 +449,15 @@ public:
   /// @return The specified command line argument.
   template <auto Label>
   [[nodiscard]] const auto& get() const {
-    using Type = typename lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
-    return std::get<Type>(arguments_);
+    using Type = typename ::lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
+    return ::std::get<Type>(arguments_);
   }
 
   /// @brief Prints the execution of this collection of command line argument as a string.
   /// @return The string that contains the execution of this collection of command line argument.
-  std::string print_execution() const {
-    std::string printed_execution_arguments;
-    std::apply(
+  ::std::string print_execution() const {
+    ::std::string printed_execution_arguments;
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
             if (!printed_execution_arguments.empty()) {
@@ -475,22 +476,22 @@ public:
   /// @brief Prints the usage command of this collection of command line argument as a string.
   /// @return The string that contains the usage command of this collection of command line
   /// argument.
-  [[nodiscard]] std::string print_usage_command() const {
-    std::string result;
+  [[nodiscard]] ::std::string print_usage_command() const {
+    ::std::string result;
     result += executable_path_.filename().string();
-    std::apply(
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Required) {
+            if (argument.importance() == ::lector::Importance::Required) {
               result += " " + argument.longest_key_with_value_type();
             }
           }());
         },
         arguments_);
-    std::apply(
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Optional) {
+            if (argument.importance() == ::lector::Importance::Optional) {
               result += " [" + argument.longest_key_with_value_type() + "]";
             }
           }());
@@ -502,24 +503,24 @@ public:
   /// @brief Prints the usage options of this collection of command line argument as a string.
   /// @return The string that contains the usage options of this collection of command line
   /// argument.
-  [[nodiscard]] std::string print_usage_options() const {
-    std::ostringstream stream;
-    std::apply(
+  [[nodiscard]] ::std::string print_usage_options() const {
+    ::std::ostringstream stream;
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Required) {
+            if (argument.importance() == ::lector::Importance::Required) {
               stream << argument.keys_with_value_types() << "  " << argument.description()
-                     << std::endl;
+                     << ::std::endl;
             }
           }());
         },
         arguments_);
-    std::apply(
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Optional) {
+            if (argument.importance() == ::lector::Importance::Optional) {
               stream << "[" << argument.keys_with_value_types() << "]  " << argument.description()
-                     << std::endl;
+                     << ::std::endl;
             }
           }());
         },
@@ -537,14 +538,14 @@ private:
   struct BestArgument final {
     /// @brief Index of this argument in the tuple of arguments. Used to identify this argument
     /// during parsing.
-    std::size_t index{0};
+    ::std::size_t index{0};
 
     /// @brief Length of the longest matching key for this argument. Used to avoid shadowing when
     /// multiple arguments have keys that are prefixes of each other. For example, if one argument
     /// has the key "--key" and another argument has the key "--key-long", then the argument with
     /// the key "--key-long" should be matched for the command line argument "--key-long=value", not
     /// the argument with the key "--key".
-    std::size_t key_length{0};
+    ::std::size_t key_length{0};
 
     /// @brief Whether this argument was matched by an inline key of the form "--key=value" rather
     /// than a whitespace-separated key-value pair of the form "--key value". Used to prefer
@@ -574,47 +575,48 @@ private:
   /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
-    for (std::size_t index{1}; index < static_cast<std::size_t>(argc); ++index) {
-      const std::string_view token{argv[index]};
+    for (::std::size_t index{1}; index < static_cast<::std::size_t>(argc); ++index) {
+      const ::std::string_view token{argv[index]};
       const BestArgument best_argument{find_best_argument(token)};
       // Parse and populate the value for the best matching argument.
-      std::size_t argument_index{0};
-      std::apply(
+      ::std::size_t argument_index{0};
+      ::std::apply(
           [&](auto&... argument) {
             (..., [&]() {
               if (argument_index == best_argument.index) {
                 if (argument.parsed_value().has_value()) {
-                  throw std::invalid_argument(
+                  throw ::std::invalid_argument(
                       "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
                 }
-                using Type = typename std::decay_t<decltype(argument)>::ValueType;
-                if constexpr (std::is_same_v<Type, bool>) {
+                using Type = typename ::std::decay_t<decltype(argument)>::ValueType;
+                if constexpr (::std::is_same_v<Type, bool>) {
                   // Boolean arguments are flags; their presence implies true.
                   argument.set_parsed_value(true);
                 } else {
                   // For non-boolean arguments, extract the raw value either from the inline portion
                   // of the token or from the next standalone element in argv.
-                  std::string raw_value;
+                  ::std::string raw_value;
                   if (best_argument.is_inline) {
                     // Extract everything after the first '=' directly following the key.
-                    raw_value = std::string{token.substr(best_argument.key_length + 1)};
+                    raw_value = ::std::string{token.substr(best_argument.key_length + 1)};
                   } else {
                     // Extract the next standalone element from argv.
-                    if (index + 1 < static_cast<std::size_t>(argc)) {
+                    if (index + 1 < static_cast<::std::size_t>(argc)) {
                       ++index;
                       raw_value = argv[index];
                     } else {
-                      throw std::invalid_argument("Missing value for argument '"
-                                                  + argument.longest_key_with_value_type() + "'.");
+                      throw ::std::invalid_argument(
+                          "Missing value for argument '" + argument.longest_key_with_value_type()
+                          + "'.");
                     }
                   }
                   // Parse the raw value and use it to populate the argument's value.
-                  const auto parsed_value{lector::parse<Type>(raw_value)};
+                  const auto parsed_value{::lector::parse<Type>(raw_value)};
                   if (parsed_value.has_value()) {
                     argument.set_parsed_value(parsed_value.value());
                   } else {
-                    throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                                + argument.longest_key_with_value_type() + "'.");
+                    throw ::std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                                  + argument.longest_key_with_value_type() + "'.");
                   }
                 }
               }
@@ -629,14 +631,14 @@ private:
   /// @param[in] token The command line argument token to match.
   /// @return The best matching argument.
   /// @throws std::invalid_argument if an unknown argument is encountered.
-  BestArgument find_best_argument(const std::string_view token) const {
+  BestArgument find_best_argument(const ::std::string_view token) const {
     BestArgument best_argument{};
     bool found_match{false};
-    std::size_t argument_index{0};
-    std::apply(
+    ::std::size_t argument_index{0};
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            for (const std::string& key : argument.keys()) {
+            for (const ::std::string& key : argument.keys()) {
               // First, check for an exact match of the form "--key".
               if (token == key) {
                 if (!found_match || key.size() > best_argument.key_length
@@ -649,8 +651,8 @@ private:
               }
               // Second, check for an inline match of the form "--key=value". This is strictly
               // disabled for boolean arguments because they are flags that do not have values.
-              using ArgumentType = typename std::decay_t<decltype(argument)>::ValueType;
-              if constexpr (!std::is_same_v<ArgumentType, bool>) {
+              using ArgumentType = typename ::std::decay_t<decltype(argument)>::ValueType;
+              if constexpr (!::std::is_same_v<ArgumentType, bool>) {
                 if (token.size() > key.size() && token.compare(0, key.size(), key) == 0
                     && token[key.size()] == '=') {
                   if (!found_match || key.size() > best_argument.key_length) {
@@ -667,7 +669,7 @@ private:
         },
         arguments_);
     if (!found_match) {
-      throw std::invalid_argument("Unknown argument '" + std::string{token} + "'.");
+      throw ::std::invalid_argument("Unknown argument '" + ::std::string{token} + "'.");
     }
     return best_argument;
   }
@@ -676,12 +678,12 @@ private:
   /// and argv. Called by the lector::Arguments::parse method.
   /// @throws std::invalid_argument if one or more required arguments are missing a parsed value.
   void validate_all_required_arguments_have_parsed_values() const {
-    std::apply(
+    ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Required
+            if (argument.importance() == ::lector::Importance::Required
                 && !argument.parsed_value().has_value()) {
-              throw std::invalid_argument(
+              throw ::std::invalid_argument(
                   "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }
           }());
@@ -690,11 +692,11 @@ private:
   }
 
   /// @brief Variadic collection of command line arguments.
-  std::tuple<ArgumentTypes...> arguments_{};
+  ::std::tuple<ArgumentTypes...> arguments_{};
 
   /// @brief Executable path of this collection of command line arguments. If the command line
   /// arguments have not yet been parsed from argc and argv, this path is empty.
-  std::filesystem::path executable_path_{};
+  ::std::filesystem::path executable_path_{};
 };
 
 }  // namespace lector
