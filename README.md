@@ -6,13 +6,13 @@ Lector is a C++ library for parsing command line arguments. Lector is supported 
 
 Contents:
 
-- [**Introduction**](#1-introduction)
-- [**Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
-- [**Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
-- [**License**](#5-license)
+- [**§1. Introduction**](#1-introduction)
+- [**§2. Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
+- [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
+- [**§4. Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
+- [**§5. License**](#5-license)
 
-## 1. Introduction
+## §1. Introduction
 
 The following example illustrates the use of the Lector library:
 
@@ -21,7 +21,6 @@ The following example illustrates the use of the Lector library:
 #include <iostream>
 #include <filesystem>
 #include <lector/arguments.hpp>
-#include <my_project/my_main_function.hpp>
 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
@@ -42,37 +41,35 @@ int main(int argc, char* argv[]) {
 
   if (arguments.get<Label::Help>().parsed_or_default_value()) {
     std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
-    std::cout << "Options: " << std::endl;
-    std::cout << arguments.print_usage_options() << std::endl;
+    std::cout << "Options: " << std::endl << arguments.print_usage_options() << std::endl;
     return EXIT_SUCCESS;
   }
 
-  std::cout << "Start." << std::endl;
   std::cout << "Execution: " << arguments.print_execution() << std::endl;
 
   const std::filesystem::path& output_directory{
     arguments.get<Label::OutputDirectory>().parsed_value().value()};
 
+  std::cout << "The output directory is: " << output_directory << std::endl;
+
   const std::int32_t iterations{
     arguments.get<Label::Iterations>().parsed_or_default_value()};
 
-  std::cout << "Running my project's main function..." << std::endl;
-  my_project::my_main_function(output_directory, iterations);
+  std::cout << "The number of iterations is: " << iterations << std::endl;
 
-  std::cout << "End." << std::endl;
   return EXIT_SUCCESS;
 }
 ```
 
-The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, prints the execution information, and passes the parsed arguments to `my_project::my_main_function()`.
+The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, prints the execution information, and obtains and prints the parsed arguments.
 
-In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as either required or optional, and feature strict error checking.
+In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.
 
 The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form `key value` and as inline key-value pairs of the form `key=value`; it can even handle keys that contain arbitrary characters, including equal signs (`=`)!
 
 [(Back to Top)](#lector)
 
-## 2. Configuration
+## §2. Configuration
 
 This section describes how to use the Lector library in one of your C++ projects.
 
@@ -82,13 +79,13 @@ Second, make sure that a C++ compiler with support for the C++17 standard or any
 
 Third, make sure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
-- [Bazel](#21-configuration-bazel)
-- [CMake](#22-configuration-cmake)
-- [Meson](#23-configuration-meson)
+- [§2.1. Bazel](#21-configuration-bazel)
+- [§2.2. CMake](#22-configuration-cmake)
+- [§2.3. Meson](#23-configuration-meson)
 
 [(Back to Top)](#lector)
 
-### 2.1. Configuration: Bazel
+### §2.1. Configuration: Bazel
 
 To use the Lector library in one of your Bazel C++ projects, first make sure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
 
@@ -150,7 +147,7 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 [(Back to Configuration)](#2-configuration)
 
-### 2.2. Configuration: CMake
+### §2.2. Configuration: CMake
 
 To use the Lector library in one of your CMake C++ projects, first make sure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
 
@@ -194,7 +191,7 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 [(Back to Configuration)](#2-configuration)
 
-### 2.3. Configuration: Meson
+### §2.3. Configuration: Meson
 
 To use the Lector library in one of your Meson C++ projects, first make sure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
 
@@ -240,19 +237,19 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 [(Back to Configuration)](#2-configuration)
 
-## 3. User Guide
+## §3. User Guide
 
 This section contains a comprehensive guide for using the Lector library in your C++ projects.
 
-- [Arguments](#31-user-guide-arguments)
-- [Command Line](#32-user-guide-command-line)
-- [Enumerations](#33-user-guide-enumerations)
-- [Classes and Structures](#34-user-guide-classes-and-structures)
-- [Error Checking](#35-user-guide-error-checking)
+- [§3.1. Arguments](#31-user-guide-arguments)
+- [§3.2. Command Line](#32-user-guide-command-line)
+- [§3.3. Enumerations](#33-user-guide-enumerations)
+- [§3.4. Classes and Structures](#34-user-guide-classes-and-structures)
+- [§3.5. Error Checking](#35-user-guide-error-checking)
 
 [(Back to Top)](#lector)
 
-### 3.1. User Guide: Arguments
+### §3.1. User Guide: Arguments
 
 The Lector library uses enumeration values to label arguments. For example, the code from the [**Introduction**](#1-introduction) section defines the following enumeration:
 
@@ -323,7 +320,7 @@ const std::int32_t iterations{
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.2. User Guide: Command Line
+### §3.2. User Guide: Command Line
 
 The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
@@ -344,10 +341,9 @@ Display execution information via the  `lector::Arguments::print_execution()` me
 ```text
 path/to/my_project_main --output_directory /some/path --iterations 200
 
-Start.
 Execution: path/to/my_project_main --output_directory /some/path --iterations 200
-Running my project's main function...
-End.
+The output directory is: /some/path
+The number of iterations is: 200
 ```
 
 Inline key-value pairs of the form `key=value` are also supported:
@@ -355,10 +351,9 @@ Inline key-value pairs of the form `key=value` are also supported:
 ```text
 path/to/my_project_main --output_directory=/some/path --iterations=200
 
-Start.
 Execution: path/to/my_project_main --output_directory /some/path --iterations 200
-Running my project's main function...
-End.
+The output directory is: /some/path
+The number of iterations is: 200
 ```
 
 Arguments can be defined with multiple keys. For example:
@@ -366,32 +361,35 @@ Arguments can be defined with multiple keys. For example:
 ```text
 path/to/my_project_main -o /some/path -i=200
 
-Start.
 Execution: path/to/my_project_main --output_directory /some/path --iterations 200
-Running my project's main function...
-End.
+The output directory is: /some/path
+The number of iterations is: 200
 ```
 
-Keys do not need to start with a hyphen (`-`); keys can be composed of any characters, including equal signs (`=`). For example, the following definition is unusual but perfectly valid:
+Keys do not need to start with a hyphen (`-`); keys can be composed of any characters, including equal signs (`=`). For example, the following definitions are unusual but perfectly valid:
 
 ```cpp
-lector::Argument<Label::Iterations, std::int32_t>{
-  {"=i=", "=_==it==_=", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100
-},
+lector::Arguments arguments{
+  lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+    {"o", "=o", "__out_dir__"}, "Output directory. Required."
+  },
+  lector::Argument<Label::Iterations, std::int32_t>{
+    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100
+  }
+};
 ```
 
 ```text
-path/to/my_project_main =i= 200
+path/to/my_project_main __out_dir__ /some/path =i= 200
 
-Start.
-Execution: path/to/my_project_main ==iterations== 200
-Running my project's main function...
-End.
+Execution: path/to/my_project_main __out_dir__ /some/path ==iterations== 200
+The output directory is: /some/path
+The number of iterations is: 200
 ```
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.3. User Guide: Enumerations
+### §3.3. User Guide: Enumerations
 
 Enumerations can be used as argument types, but require specializing the `lector::Printings` and `lector::Parsings` compile-time constant expression fixed-size arrays for their values. For example:
 
@@ -444,15 +442,24 @@ inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this enumeration. For example:
 
 ```cpp
-const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
-assert(printed_triangle == "Triangle");
+#include <iostream>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+#include <my_project/shape.hpp>
 
-const std::optional<my_project::Shape> parsed_triangle{lector::parse("TRIANGLE")};
-assert(parsed_triangle.has_value());
-assert(parsed_triangle.value() == my_project::Shape::Triangle);
+int main() {
+  const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
+  assert(printed_triangle == "Triangle");
 
-const std::optional<my_project::Shape> invalid_shape{lector::parse("Invalid Shape")};
-assert(!invalid_shape.has_value());
+  const std::optional<my_project::Shape> parsed_triangle{lector::parse("TRIANGLE")};
+  assert(parsed_triangle.has_value());
+  assert(parsed_triangle.value() == my_project::Shape::Triangle);
+
+  const std::optional<my_project::Shape> invalid_shape{lector::parse("Invalid Shape")};
+  assert(!invalid_shape.has_value());
+
+  return EXIT_SUCCESS;
+}
 ```
 
 The enumeration can also be used as a command line argument. For example:
@@ -486,7 +493,7 @@ int main(int argc, char* argv[]) {
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.4. User Guide: Classes and Structures
+### §3.4. User Guide: Classes and Structures
 
 Classes and structures can be used as argument types, but require specializing the input and output stream operators (`<<` and `>>`). For example:
 
@@ -519,15 +526,24 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
 #endif  // MY_PROJECT_POINT_HPP
 ```
 
-With the above definitions, the `lector::print()` and `lector::parse()` methods from `#include <lector/print.hpp>` and `#include <lector/parse.hpp>` can now be used with this data structure. For example:
+With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this data structure. For example:
 
 ```cpp
-const std::string printed_point{lector::print(my_project::Point{.x = 1.0, .y = 2.0, .z = 3.0})};
-assert(printed_point == "1 2 3");
+#include <iostream>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+#include <my_project/point.hpp>
 
-const std::optional<my_project::Point> parsed_point{lector::parse("4.0 5.0 6.0")};
-assert(parsed_point.has_value());
-assert(parsed_point.value() == my_project::Point{.x = 4.0, .y = 5.0, .z = 6.0});
+int main() {
+  const std::string printed_point{lector::print(my_project::Point{1.0, 2.0, 3.0})};
+  assert(printed_point == "1 2 3");
+
+  const std::optional<my_project::Point> parsed_point{lector::parse("4.0 5.0 6.0")};
+  assert(parsed_point.has_value());
+  assert(parsed_point.value() == my_project::Point{4.0, 5.0, 6.0});
+
+  return EXIT_SUCCESS;
+}
 ```
 
 The data structure can also be used as a command line argument. For example:
@@ -561,7 +577,7 @@ int main(int argc, char* argv[]) {
 
 [(Back to User Guide)](#3-user-guide)
 
-### 3.5. User Guide: Error Checking
+### §3.5. User Guide: Error Checking
 
 The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
@@ -679,7 +695,7 @@ terminate called after throwing an instance of 'std::invalid_argument'
 
 [(Back to User Guide)](#3-user-guide)
 
-## 4. Developer Guide
+## §4. Developer Guide
 
 To check out, build, and test the Lector library for yourself, first clone the Lector repository with:
 
@@ -690,13 +706,13 @@ cd lector
 
 Next, refer to the section for your preferred build system:
 
-- [Bazel](#41-developer-guide-bazel)
-- [CMake](#42-developer-guide-cmake)
-- [Meson](#43-developer-guide-meson)
+- [§4.1. Bazel](#41-developer-guide-bazel)
+- [§4.2. CMake](#42-developer-guide-cmake)
+- [§4.3. Meson](#43-developer-guide-meson)
 
 [(Back to Top)](#lector)
 
-### 4.1. Developer Guide: Bazel
+### §4.1. Developer Guide: Bazel
 
 If using the Bazel build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -712,7 +728,7 @@ bazel test //...
 
 [(Back to Developer Guide)](#4-developer-guide)
 
-### 4.2. Developer Guide: CMake
+### §4.2. Developer Guide: CMake
 
 If using the CMake build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -731,7 +747,7 @@ ctest --test-dir build -C Release
 
 [(Back to Developer Guide)](#4-developer-guide)
 
-### 4.3. Developer Guide: Meson
+### §4.3. Developer Guide: Meson
 
 If using the Meson build system, build the Lector library from the base directory of the Lector repository with:
 
@@ -750,7 +766,7 @@ meson test -C build
 
 [(Back to Developer Guide)](#4-developer-guide)
 
-## 5. License
+## §5. License
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
