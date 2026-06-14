@@ -73,11 +73,11 @@ The Lector library can parse command line arguments as whitespace-separated key-
 
 This section describes how to use the Lector library in one of your C++ projects.
 
-First, make sure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git`, or visit <https://git-scm.com> for alternate means of installation.
+First, ensure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git`, or visit <https://git-scm.com> for alternate means of installation.
 
-Second, make sure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++`, or visit <https://gcc.gnu.org> for alternate means of installation.
+Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++`, or visit <https://gcc.gnu.org> for alternate means of installation.
 
-Third, make sure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
+Third, ensure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
 - [§2.1. Bazel](#21-configuration-bazel)
 - [§2.2. CMake](#22-configuration-cmake)
@@ -87,7 +87,7 @@ Third, make sure that your C++ project uses a supported build system; the Lector
 
 ### §2.1. Configuration: Bazel
 
-To use the Lector library in one of your Bazel C++ projects, first make sure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
+To use the Lector library in one of your Bazel C++ projects, first ensure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
 
 Then, add the following code to your project's `MODULE.bazel` file:
 
@@ -149,7 +149,7 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 ### §2.2. Configuration: CMake
 
-To use the Lector library in one of your CMake C++ projects, first make sure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
+To use the Lector library in one of your CMake C++ projects, first ensure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
 
 Then, add the following code to your project's `CMakeLists.txt` file:
 
@@ -193,7 +193,7 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 ### §2.3. Configuration: Meson
 
-To use the Lector library in one of your Meson C++ projects, first make sure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
+To use the Lector library in one of your Meson C++ projects, first ensure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
 
 Then, create a `subprojects/lector.wrap` file in your project and give it the following contents:
 
@@ -279,7 +279,7 @@ Supported argument types include:
 - Natural numbers: `std::uint8_t`, `std::uint16_t`, `std::uint32_t`, `std::uint64_t`.
 - Integer numbers: `std::int8_t`, `std::int16_t`, `std::int32_t`, `std::int64_t`.
 - Floating-point numbers: `float`, `double`, `long double`.
-- Strings: `std::string`. If the string contains whitespace, make sure to enclose it in double quotes (`"`).
+- Strings: `std::string`. If the string contains whitespace, enclose it in double quotes (`""`).
 - Paths: `std::filesystem::path`.
 - Enumerations: see the [Enumerations](#33-user-guide-enumerations) section.
 - Classes and Structures: see the [Classes and Structures](#34-user-guide-classes-and-structures) section.
@@ -697,12 +697,14 @@ terminate called after throwing an instance of 'std::invalid_argument'
 
 ## §4. Developer Guide
 
-To check out, build, and test the Lector library for yourself, first clone the Lector repository with:
+To check out, build, and test the Lector library for yourself, first clone the Lector repository:
 
 ```bash
 git clone git@github.com:acodcha/lector.git lector
 cd lector
 ```
+
+If you intend to compute the Lector library's code coverage, ensure that the LCOV package is installed on your system. For example, on Ubuntu, install LCOV with `sudo apt install lcov`, or visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
 
 Next, refer to the section for your preferred build system:
 
@@ -714,30 +716,39 @@ Next, refer to the section for your preferred build system:
 
 ### §4.1. Developer Guide: Bazel
 
-If using the Bazel build system, build the Lector library from the base directory of the Lector repository with:
+If using the Bazel build system, build the Lector library with:
 
 ```bash
 bazel build //...
 ```
 
-Optionally build and run all Lector library tests from the base directory of the Lector repository with:
+Optionally build and run all Lector library tests with:
 
 ```bash
 bazel test //...
 ```
 
+Optionally compute the Lector library's code coverage with:
+
+```bash
+bazel coverage //...
+genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+```
+
+This generates a code coverage report at `//coverage/index.html`. Open this file in any web browser to view the report.
+
 [(Back to Developer Guide)](#4-developer-guide)
 
 ### §4.2. Developer Guide: CMake
 
-If using the CMake build system, build the Lector library from the base directory of the Lector repository with:
+If using the CMake build system, build the Lector library with:
 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 cmake --build build --config Release --parallel
 ```
 
-Optionally build and run all Lector library tests from the base directory of the Lector repository with:
+Optionally build and run all Lector library tests with:
 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
@@ -745,11 +756,22 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release
 ```
 
+Optionally compute the Lector library's code coverage with:
+
+```bash
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
+cmake --build build --config Debug --parallel
+ctest --test-dir build -C Debug
+cmake --build build --target coverage
+```
+
+This generates a code coverage report at `//coverage/index.html`. Open this file in any web browser to view the report.
+
 [(Back to Developer Guide)](#4-developer-guide)
 
 ### §4.3. Developer Guide: Meson
 
-If using the Meson build system, build the Lector library from the base directory of the Lector repository with:
+If using the Meson build system, build the Lector library with:
 
 ```bash
 mkdir --parents subprojects
@@ -758,7 +780,7 @@ meson setup build
 meson compile -C build
 ```
 
-Optionally run all Lector library tests from the base directory of the Lector repository with:
+Optionally run all Lector library tests with:
 
 ```bash
 meson test -C build
