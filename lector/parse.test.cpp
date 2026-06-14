@@ -31,17 +31,17 @@ namespace test {
 
 namespace {
 
-/// @brief Color. Enumeration type used for testing the parsing of enumeration command line
+/// @brief Shape. Enumeration type used for testing the parsing of enumeration command line
 /// arguments.
-enum class Color : ::std::int8_t {
-  /// @brief Red color.
-  Red,
+enum class Shape : ::std::int8_t {
+  /// @brief Circle shape.
+  Circle,
 
-  /// @brief Green color.
-  Green,
+  /// @brief Triangle shape.
+  Triangle,
 
-  /// @brief Blue color.
-  Blue,
+  /// @brief Square shape.
+  Square,
 };
 
 /// @brief Point in three-dimensional space. Data structure type used for testing the parsing of
@@ -85,19 +85,19 @@ inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 namespace lector {
 
-/// @brief Specialization of the lector::Spellings constant for the test::Color enumeration.
+/// @brief Specialization of the lector::Spellings constant for the test::Shape enumeration.
 template <>
-inline constexpr ::std::array<::lector::Spelling<::test::Color>, 9> Spellings<::test::Color>{
+inline constexpr ::std::array<::lector::Spelling<::test::Shape>, 9> Spellings<::test::Shape>{
   {
-   {"Red", ::test::Color::Red},
-   {"Green", ::test::Color::Green},
-   {"Blue", ::test::Color::Blue},
-   {"red", ::test::Color::Red},
-   {"green", ::test::Color::Green},
-   {"blue", ::test::Color::Blue},
-   {"RED", ::test::Color::Red},
-   {"GREEN", ::test::Color::Green},
-   {"BLUE", ::test::Color::Blue},
+   {"Circle", ::test::Shape::Circle},
+   {"Triangle", ::test::Shape::Triangle},
+   {"Square", ::test::Shape::Square},
+   {"circle", ::test::Shape::Circle},
+   {"triangle", ::test::Shape::Triangle},
+   {"square", ::test::Shape::Square},
+   {"CIRCLE", ::test::Shape::Circle},
+   {"TRIANGLE", ::test::Shape::Triangle},
+   {"SQUARE", ::test::Shape::Square},
    }
 };
 
@@ -132,60 +132,75 @@ TEST(Lector, ParseDataStructure) {
 }
 
 TEST(Lector, ParseEnumeration) {
-  static_assert(!::lector::parse_enumeration<::test::Color>("").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>("Hello, world!").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>(" Red").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>("Red ").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>(" Green").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>("Green ").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>(" Blue").has_value());
-  static_assert(!::lector::parse_enumeration<::test::Color>("Blue ").has_value());
-  static_assert(::lector::parse_enumeration<::test::Color>("RED").value() == ::test::Color::Red);
-  static_assert(::lector::parse_enumeration<::test::Color>("Red").value() == ::test::Color::Red);
-  static_assert(::lector::parse_enumeration<::test::Color>("red").value() == ::test::Color::Red);
+  static_assert(!::lector::parse_enumeration<::test::Shape>("").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("Hello, world!").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("CiRcLe").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>(" Circle").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("Circle ").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("TrIaNgLe").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>(" Triangle").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("Triangle ").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("SqUaRe").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>(" Square").has_value());
+  static_assert(!::lector::parse_enumeration<::test::Shape>("Square ").has_value());
   static_assert(
-      ::lector::parse_enumeration<::test::Color>("GREEN").value() == ::test::Color::Green);
+      ::lector::parse_enumeration<::test::Shape>("CIRCLE").value() == ::test::Shape::Circle);
   static_assert(
-      ::lector::parse_enumeration<::test::Color>("Green").value() == ::test::Color::Green);
+      ::lector::parse_enumeration<::test::Shape>("Circle").value() == ::test::Shape::Circle);
   static_assert(
-      ::lector::parse_enumeration<::test::Color>("green").value() == ::test::Color::Green);
-  static_assert(::lector::parse_enumeration<::test::Color>("BLUE").value() == ::test::Color::Blue);
-  static_assert(::lector::parse_enumeration<::test::Color>("Blue").value() == ::test::Color::Blue);
-  static_assert(::lector::parse_enumeration<::test::Color>("blue").value() == ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>(" Red"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Red "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>(" Green"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Green "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>(" Blue"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Blue "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("RED"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Red"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("red"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("GREEN"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Green"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("green"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("BLUE"), ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("Blue"), ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse_enumeration<::test::Color>("blue"), ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse<::test::Color>(""), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>(" Red"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>("Red "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>(" Green"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>("Green "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>(" Blue"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>("Blue "), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::test::Color>("RED"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse<::test::Color>("Red"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse<::test::Color>("red"), ::test::Color::Red);
-  EXPECT_EQ(::lector::parse<::test::Color>("GREEN"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse<::test::Color>("Green"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse<::test::Color>("green"), ::test::Color::Green);
-  EXPECT_EQ(::lector::parse<::test::Color>("BLUE"), ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse<::test::Color>("Blue"), ::test::Color::Blue);
-  EXPECT_EQ(::lector::parse<::test::Color>("blue"), ::test::Color::Blue);
+      ::lector::parse_enumeration<::test::Shape>("circle").value() == ::test::Shape::Circle);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("TRIANGLE").value() == ::test::Shape::Triangle);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("Triangle").value() == ::test::Shape::Triangle);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("triangle").value() == ::test::Shape::Triangle);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("SQUARE").value() == ::test::Shape::Square);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("Square").value() == ::test::Shape::Square);
+  static_assert(
+      ::lector::parse_enumeration<::test::Shape>("square").value() == ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("CiRcLe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>(" Circle"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Circle "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("TrIaNgLe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>(" Triangle"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Triangle "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("SqUaRe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>(" Square"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Square "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("CIRCLE"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Circle"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("circle"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("TRIANGLE"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Triangle"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("triangle"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("SQUARE"), ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("Square"), ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse_enumeration<::test::Shape>("square"), ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse<::test::Shape>(""), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Hello, world!"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("CiRcLe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>(" Circle"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Circle "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("TrIaNgLe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>(" Triangle"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Triangle "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("SqUaRe"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>(" Square"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Square "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::test::Shape>("CIRCLE"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Circle"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("circle"), ::test::Shape::Circle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("TRIANGLE"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Triangle"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("triangle"), ::test::Shape::Triangle);
+  EXPECT_EQ(::lector::parse<::test::Shape>("SQUARE"), ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse<::test::Shape>("Square"), ::test::Shape::Square);
+  EXPECT_EQ(::lector::parse<::test::Shape>("square"), ::test::Shape::Square);
 }
 
 TEST(Lector, ParseFilesystemPath) {

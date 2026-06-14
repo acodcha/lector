@@ -30,17 +30,17 @@ namespace test {
 
 namespace {
 
-/// @brief Color. Enumeration type used for testing the parsing of enumeration command line
+/// @brief Shape. Enumeration type used for testing the parsing of enumeration command line
 /// arguments.
-enum class Color : ::std::int8_t {
-  /// @brief Red color.
-  Red,
+enum class Shape : ::std::int8_t {
+  /// @brief Circle shape.
+  Circle,
 
-  /// @brief Green color.
-  Green,
+  /// @brief Triangle shape.
+  Triangle,
 
-  /// @brief Blue color.
-  Blue,
+  /// @brief Square shape.
+  Square,
 };
 
 /// @brief Point in three-dimensional space. Data structure type used for testing the parsing of
@@ -76,13 +76,13 @@ inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 namespace lector {
 
-/// @brief Specialization of the lector::Printings constant for the test::Color enumeration.
+/// @brief Specialization of the lector::Printings constant for the test::Shape enumeration.
 template <>
-inline constexpr ::std::array<::lector::Printing<::test::Color>, 3> Printings<::test::Color>{
+inline constexpr ::std::array<::lector::Printing<::test::Shape>, 3> Printings<::test::Shape>{
   {
-   {::test::Color::Red, "Red"},
-   {::test::Color::Green, "Green"},
-   {::test::Color::Blue, "Blue"},
+   {::test::Shape::Circle, "Circle"},
+   {::test::Shape::Triangle, "Triangle"},
+   {::test::Shape::Square, "Square"},
    }
 };
 
@@ -101,14 +101,14 @@ TEST(Lector, PrintDataStructure) {
 }
 
 TEST(Lector, PrintEnumeration) {
-  EXPECT_EQ(::lector::print_enumeration<::test::Color>(::test::Color::Red), "Red");
-  EXPECT_EQ(::lector::print_enumeration<::test::Color>(::test::Color::Green), "Green");
-  EXPECT_EQ(::lector::print_enumeration<::test::Color>(::test::Color::Blue), "Blue");
-  EXPECT_EQ(::lector::print_enumeration<::test::Color>(static_cast<::test::Color>(123)), "");
-  EXPECT_EQ(::lector::print<::test::Color>(::test::Color::Red), "Red");
-  EXPECT_EQ(::lector::print<::test::Color>(::test::Color::Green), "Green");
-  EXPECT_EQ(::lector::print<::test::Color>(::test::Color::Blue), "Blue");
-  EXPECT_EQ(::lector::print<::test::Color>(static_cast<::test::Color>(123)), "");
+  EXPECT_EQ(::lector::print_enumeration<::test::Shape>(::test::Shape::Circle), "Circle");
+  EXPECT_EQ(::lector::print_enumeration<::test::Shape>(::test::Shape::Triangle), "Triangle");
+  EXPECT_EQ(::lector::print_enumeration<::test::Shape>(::test::Shape::Square), "Square");
+  EXPECT_EQ(::lector::print_enumeration<::test::Shape>(static_cast<::test::Shape>(123)), "");
+  EXPECT_EQ(::lector::print<::test::Shape>(::test::Shape::Circle), "Circle");
+  EXPECT_EQ(::lector::print<::test::Shape>(::test::Shape::Triangle), "Triangle");
+  EXPECT_EQ(::lector::print<::test::Shape>(::test::Shape::Square), "Square");
+  EXPECT_EQ(::lector::print<::test::Shape>(static_cast<::test::Shape>(123)), "");
 }
 
 TEST(Lector, PrintFilesystemPath) {
