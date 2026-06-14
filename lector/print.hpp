@@ -30,29 +30,29 @@
 
 namespace lector {
 
-/// @brief The official printing for a value of a specified type.
+/// @brief The canonical printed name for a value of a specified type.
 /// @tparam Type The type of the value.
 template <typename Type>
-using Printing = std::pair<Type, std::string_view>;
+using Name = ::std::pair<Type, ::std::string_view>;
 
-/// @brief Map of printings to their corresponding values of a specified type.
+/// @brief Map of canonical printed names to their corresponding values of a specified type.
 /// @tparam Type The type of the values.
 template <typename Type>
-inline constexpr std::array<lector::Printing<Type>, 0> Printings{};
+inline constexpr ::std::array<::lector::Name<Type>, 0UL> Names{};
 
 /// @brief Prints a value of a specified enumeration type. The enumeration type must define a
-/// specialization of the lector::Printings constant for its type.
+/// specialization of the lector::Names constant for its type.
 /// @tparam EnumerationType The enumeration type.
 /// @param[in] value The enumeration value to print.
 /// @return The string view representing the printed value.
 template <typename EnumerationType>
-[[nodiscard]] constexpr std::string_view print_enumeration(const EnumerationType value) {
-  for (const auto& [enumeration_value, printing] : lector::Printings<EnumerationType>) {
+[[nodiscard]] constexpr ::std::string_view print_enumeration(const EnumerationType value) {
+  for (const auto& [enumeration_value, name] : ::lector::Names<EnumerationType>) {
     if (enumeration_value == value) {
-      return printing;
+      return name;
     }
   }
-  return std::string_view{};
+  return ::std::string_view{};
 }
 
 /// @brief Prints a value of a specific type as a string.
@@ -60,13 +60,13 @@ template <typename EnumerationType>
 /// @param[in] value The value to print.
 /// @return The string that contains the printed value.
 template <typename Type>
-[[nodiscard]] std::string print(const Type& value);
+[[nodiscard]] ::std::string print(const Type& value);
 
 /// @brief Prints a boolean value as a string.
 /// @param[in] value The boolean value to print.
 /// @return The string that contains the printed boolean value.
 template <>
-[[nodiscard]] std::string print(const bool& value) {
+[[nodiscard]] ::std::string print(const bool& value) {
   if (value) {
     return "true";
   }
@@ -77,73 +77,73 @@ template <>
 /// @param[in] value The 8-bit natural number to print.
 /// @return The string that contains the printed 8-bit natural number.
 template <>
-[[nodiscard]] std::string print(const std::uint8_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::uint8_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 16-bit natural number as a string.
 /// @param[in] value The 16-bit natural number to print.
 /// @return The string that contains the printed 16-bit natural number.
 template <>
-[[nodiscard]] std::string print(const std::uint16_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::uint16_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 32-bit natural number as a string.
 /// @param[in] value The 32-bit natural number to print.
 /// @return The string that contains the printed 32-bit natural number.
 template <>
-[[nodiscard]] std::string print(const std::uint32_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::uint32_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 64-bit natural number as a string.
 /// @param[in] value The 64-bit natural number to print.
 /// @return The string that contains the printed 64-bit natural number.
 template <>
-[[nodiscard]] std::string print(const std::uint64_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::uint64_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints an 8-bit integer number as a string.
 /// @param[in] value The 8-bit integer number to print.
 /// @return The string that contains the printed 8-bit integer number.
 template <>
-[[nodiscard]] std::string print(const std::int8_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::int8_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 16-bit integer number as a string.
 /// @param[in] value The 16-bit integer number to print.
 /// @return The string that contains the printed 16-bit integer number.
 template <>
-[[nodiscard]] std::string print(const std::int16_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::int16_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 32-bit integer number as a string.
 /// @param[in] value The 32-bit integer number to print.
 /// @return The string that contains the printed 32-bit integer number.
 template <>
-[[nodiscard]] std::string print(const std::int32_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::int32_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a 64-bit integer number as a string.
 /// @param[in] value The 64-bit integer number to print.
 /// @return The string that contains the printed 64-bit integer number.
 template <>
-[[nodiscard]] std::string print(const std::int64_t& value) {
-  return std::to_string(value);
+[[nodiscard]] ::std::string print(const ::std::int64_t& value) {
+  return ::std::to_string(value);
 }
 
 /// @brief Prints a single-precision floating-point number as a string.
 /// @param[in] value The single-precision floating-point number to print.
 /// @return The string that contains the printed single-precision floating-point number.
 template <>
-[[nodiscard]] std::string print(const float& value) {
-  const float absolute{std::abs(value)};
-  std::ostringstream stream;
+[[nodiscard]] ::std::string print(const float& value) {
+  const float absolute{::std::abs(value)};
+  ::std::ostringstream stream;
   if (absolute < 1.0F) {
     // Interval: [0, 1[
     if (absolute < 0.001F) {
@@ -153,8 +153,8 @@ template <>
         stream << 0;
       } else {
         // Interval: ]0, 0.001[
-        stream << std::scientific << std::setprecision(std::numeric_limits<float>::max_digits10)
-               << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<float>::max_digits10) << value;
       }
     } else {
       // Interval: [0.001, 1[
@@ -162,17 +162,17 @@ template <>
         // Interval: [0.001, 0.1[
         if (absolute < 0.01F) {
           // Interval: [0.001, 0.01[
-          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 3)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 3) << value;
         } else {
           // Interval: [0.01, 0.1[
-          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 2)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 2) << value;
         }
       } else {
         // Interval: [0.1, 1[
-        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 + 1)
-               << value;
+        stream << ::std::fixed
+               << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 1) << value;
       }
     }
   } else {
@@ -181,30 +181,30 @@ template <>
       // Interval: [1, 1000[
       if (absolute < 10.0F) {
         // Interval: [1, 10[
-        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10)
+        stream << ::std::fixed << ::std::setprecision(::std::numeric_limits<float>::max_digits10)
                << value;
       } else {
         // Interval: [10, 1000[
         if (absolute < 100.0F) {
           // Interval: [10, 100[
-          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 1)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 1) << value;
         } else {
           // Interval: [100, 1000[
-          stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 2)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 2) << value;
         }
       }
     } else {
       // Interval: [1000, +inf[
       if (absolute < 10000.0F) {
         // Interval: [1000, 10000[
-        stream << std::fixed << std::setprecision(std::numeric_limits<float>::max_digits10 - 3)
-               << value;
+        stream << ::std::fixed
+               << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 3) << value;
       } else {
         // Interval: [10000, +inf[
-        stream << std::scientific << std::setprecision(std::numeric_limits<float>::max_digits10)
-               << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<float>::max_digits10) << value;
       }
     }
   }
@@ -215,9 +215,9 @@ template <>
 /// @param[in] value The double-precision floating-point number to print.
 /// @return The string that contains the printed double-precision floating-point number.
 template <>
-[[nodiscard]] std::string print(const double& value) {
-  const double absolute{std::abs(value)};
-  std::ostringstream stream;
+[[nodiscard]] ::std::string print(const double& value) {
+  const double absolute{::std::abs(value)};
+  ::std::ostringstream stream;
   if (absolute < 1.0) {
     // Interval: [0, 1[
     if (absolute < 0.001) {
@@ -227,8 +227,8 @@ template <>
         stream << 0;
       } else {
         // Interval: ]0, 0.001[
-        stream << std::scientific << std::setprecision(std::numeric_limits<double>::max_digits10)
-               << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<double>::max_digits10) << value;
       }
     } else {
       // Interval: [0.001, 1[
@@ -236,17 +236,17 @@ template <>
         // Interval: [0.001, 0.1[
         if (absolute < 0.01) {
           // Interval: [0.001, 0.01[
-          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 3)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 3) << value;
         } else {
           // Interval: [0.01, 0.1[
-          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 2)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 2) << value;
         }
       } else {
         // Interval: [0.1, 1[
-        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 + 1)
-               << value;
+        stream << ::std::fixed
+               << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 1) << value;
       }
     }
   } else {
@@ -255,30 +255,30 @@ template <>
       // Interval: [1, 1000[
       if (absolute < 10.0) {
         // Interval: [1, 10[
-        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10)
+        stream << ::std::fixed << ::std::setprecision(::std::numeric_limits<double>::max_digits10)
                << value;
       } else {
         // Interval: [10, 1000[
         if (absolute < 100.0) {
           // Interval: [10, 100[
-          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 1)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 1) << value;
         } else {
           // Interval: [100, 1000[
-          stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 2)
-                 << value;
+          stream << ::std::fixed
+                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 2) << value;
         }
       }
     } else {
       // Interval: [1000, +inf[
       if (absolute < 10000.0) {
         // Interval: [1000, 10000[
-        stream << std::fixed << std::setprecision(std::numeric_limits<double>::max_digits10 - 3)
-               << value;
+        stream << ::std::fixed
+               << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 3) << value;
       } else {
         // Interval: [10000, +inf[
-        stream << std::scientific << std::setprecision(std::numeric_limits<double>::max_digits10)
-               << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<double>::max_digits10) << value;
       }
     }
   }
@@ -289,9 +289,9 @@ template <>
 /// @param[in] value The extended-precision floating-point number to print.
 /// @return The string that contains the printed extended-precision floating-point number.
 template <>
-[[nodiscard]] std::string print(const long double& value) {
-  const long double absolute{std::abs(value)};
-  std::ostringstream stream;
+[[nodiscard]] ::std::string print(const long double& value) {
+  const long double absolute{::std::abs(value)};
+  ::std::ostringstream stream;
   if (absolute < 1.0L) {
     // Interval: [0, 1[
     if (absolute < 0.001L) {
@@ -301,8 +301,8 @@ template <>
         stream << 0;
       } else {
         // Interval: ]0, 0.001[
-        stream << std::scientific
-               << std::setprecision(std::numeric_limits<long double>::max_digits10) << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
       }
     } else {
       // Interval: [0.001, 1[
@@ -310,17 +310,20 @@ template <>
         // Interval: [0.001, 0.1[
         if (absolute < 0.01L) {
           // Interval: [0.001, 0.01[
-          stream << std::fixed
-                 << std::setprecision(std::numeric_limits<long double>::max_digits10 + 3) << value;
+          stream
+              << ::std::fixed
+              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 3) << value;
         } else {
           // Interval: [0.01, 0.1[
-          stream << std::fixed
-                 << std::setprecision(std::numeric_limits<long double>::max_digits10 + 2) << value;
+          stream
+              << ::std::fixed
+              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 2) << value;
         }
       } else {
         // Interval: [0.1, 1[
-        stream << std::fixed
-               << std::setprecision(std::numeric_limits<long double>::max_digits10 + 1) << value;
+        stream
+            << ::std::fixed
+            << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 1) << value;
       }
     }
   } else {
@@ -329,30 +332,33 @@ template <>
       // Interval: [1, 1000[
       if (absolute < 10.0L) {
         // Interval: [1, 10[
-        stream << std::fixed << std::setprecision(std::numeric_limits<long double>::max_digits10)
-               << value;
+        stream << ::std::fixed
+               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
       } else {
         // Interval: [10, 1000[
         if (absolute < 100.0L) {
           // Interval: [10, 100[
-          stream << std::fixed
-                 << std::setprecision(std::numeric_limits<long double>::max_digits10 - 1) << value;
+          stream
+              << ::std::fixed
+              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 1) << value;
         } else {
           // Interval: [100, 1000[
-          stream << std::fixed
-                 << std::setprecision(std::numeric_limits<long double>::max_digits10 - 2) << value;
+          stream
+              << ::std::fixed
+              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 2) << value;
         }
       }
     } else {
       // Interval: [1000, +inf[
       if (absolute < 10000.0L) {
         // Interval: [1000, 10000[
-        stream << std::fixed
-               << std::setprecision(std::numeric_limits<long double>::max_digits10 - 3) << value;
+        stream
+            << ::std::fixed
+            << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 3) << value;
       } else {
         // Interval: [10000, +inf[
-        stream << std::scientific
-               << std::setprecision(std::numeric_limits<long double>::max_digits10) << value;
+        stream << ::std::scientific
+               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
       }
     }
   }
@@ -363,7 +369,7 @@ template <>
 /// @param[in] value The string to print.
 /// @return The string that contains the printed string.
 template <>
-[[nodiscard]] std::string print(const std::string& value) {
+[[nodiscard]] ::std::string print(const ::std::string& value) {
   return value;
 }
 
@@ -371,29 +377,29 @@ template <>
 /// @param[in] value The string view to print.
 /// @return The string that contains the printed string view.
 template <>
-[[nodiscard]] std::string print(const std::string_view& value) {
-  return std::string(value);
+[[nodiscard]] ::std::string print(const ::std::string_view& value) {
+  return ::std::string(value);
 }
 
 /// @brief Prints a filesystem path as a string.
 /// @param[in] value The filesystem path to print.
 /// @return The string that contains the printed filesystem path.
 template <>
-[[nodiscard]] std::string print(const std::filesystem::path& value) {
+[[nodiscard]] ::std::string print(const ::std::filesystem::path& value) {
   return value.string();
 }
 
 /// @brief Prints a value of a specific type as a string. If the type is an enumeration type, it
-/// must define a specialization of the lector::Printings constant for its type.
+/// must define a specialization of the lector::Names constant for its type.
 /// @tparam Type The type of the value to print.
 /// @param[in] value The value to print.
 /// @return The string that contains the printed value.
 template <typename Type>
-[[nodiscard]] std::string print(const Type& value) {
-  if constexpr (std::is_enum_v<Type>) {
-    return std::string{lector::print_enumeration(value)};
+[[nodiscard]] ::std::string print(const Type& value) {
+  if constexpr (::std::is_enum_v<Type>) {
+    return ::std::string{::lector::print_enumeration(value)};
   } else {
-    std::ostringstream stream;
+    ::std::ostringstream stream;
     stream << value;
     return stream.str();
   }

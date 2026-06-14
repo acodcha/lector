@@ -391,7 +391,7 @@ The number of iterations is: 200
 
 ### §3.3. User Guide: Enumerations
 
-Enumerations can be used as argument types, but require specializing the `lector::Printings` and `lector::Parsings` compile-time constant expression fixed-size arrays for their values. For example:
+Enumerations can be used as argument types, but require specializing the `lector::Names` and `lector::Spellings` constants for their values. For example:
 
 ```cpp
 #ifndef MY_PROJECT_SHAPE_HPP
@@ -411,7 +411,7 @@ enum class Shape : std::int8_t {Circle, Triangle, Square};
 namespace lector {
 
 template <>
-inline constexpr std::array<Printing<my_project::Shape>, 3> Printings<my_project::Shape>{
+inline constexpr std::array<Name<my_project::Shape>, 3> Names<my_project::Shape>{
   {
     {my_project::Shape::Circle,   "Circle"},
     {my_project::Shape::Triangle, "Triangle"},

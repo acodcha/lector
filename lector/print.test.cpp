@@ -76,9 +76,9 @@ inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 namespace lector {
 
-/// @brief Specialization of the lector::Printings constant for the test::Shape enumeration.
+/// @brief Specialization of the lector::Names constant for the test::Shape enumeration.
 template <>
-inline constexpr ::std::array<::lector::Printing<::test::Shape>, 3> Printings<::test::Shape>{
+inline constexpr ::std::array<::lector::Name<::test::Shape>, 3> Names<::test::Shape>{
   {
    {::test::Shape::Circle, "Circle"},
    {::test::Shape::Triangle, "Triangle"},
