@@ -55,6 +55,12 @@ target_include_directories(
 # Force consumers to use at least C++17, replacing global variables.
 target_compile_features(lector INTERFACE cxx_std_17)
 
+# Instrument the library headers for code coverage.
+if(LECTOR_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  target_compile_options(lector INTERFACE --coverage -O0)
+  target_link_options(lector INTERFACE --coverage)
+endif()
+
 # Install the target and link it to an export set.
 install(
   TARGETS lector
@@ -145,7 +151,41 @@ if(LECTOR_TEST)
     gtest_discover_tests(${LECTOR_TEST_TARGET})
   endforeach()
 
-  message(STATUS "The Lector library tests were configured. Build and run with: \"cmake --build . && ctest\"")
+  message(STATUS "The Lector library tests were configured. Build and run with: \"cmake --build build --config Release --parallel . && ctest --test-dir build -C Release\"")
 else()
-  message(STATUS "The Lector library tests were not configured. Run \"cmake -B build -S . -D LECTOR_TEST=ON\" to configure.")
+  message(STATUS "The Lector library tests were not configured. Configure with: \"cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON\"")
+endif()
+
+# Configure code coverage.
+if(LECTOR_COVERAGE)
+  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    message(FATAL_ERROR "Code coverage requires either the GCC or Clang C++ compilers.")
+  endif()
+
+  # Find required tools for code coverage.
+  find_program(LCOV_EXECUTABLE lcov)
+  find_program(GENHTML_EXECUTABLE genhtml)
+
+  if(LCOV_EXECUTABLE AND GENHTML_EXECUTABLE)
+    message(STATUS "The LCOV package was found at: ${LCOV_EXECUTABLE}")
+    message(STATUS "The GENHTML package was found at: ${GENHTML_EXECUTABLE}")
+
+    # Create a custom target for generating code coverage reports.
+    add_custom_target(
+      coverage
+      COMMAND ${LCOV_EXECUTABLE} --directory . --base-directory ${CMAKE_CURRENT_SOURCE_DIR} --capture --output-file coverage.info --ignore-errors empty,mismatch
+      COMMAND ${LCOV_EXECUTABLE} --extract coverage.info ${CMAKE_CURRENT_SOURCE_DIR}/lector/* --output-file coverage.info.cleaned --ignore-errors empty,unused
+      COMMAND ${GENHTML_EXECUTABLE} coverage.info.cleaned --output-directory ${CMAKE_CURRENT_SOURCE_DIR}/coverage --ignore-errors empty
+      COMMAND ${CMAKE_COMMAND} -E echo "Generated code coverage report in: ${CMAKE_CURRENT_SOURCE_DIR}/coverage/index.html"
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      COMMENT "Generating code coverage report with lcov."
+      VERBATIM
+    )
+  else()
+    message(WARNING "The LCOV package was not found. Install LCOV with: \"sudo apt install lcov\"")
+  endif()
+
+  message(STATUS "The Lector library code coverage was configured. Compute code coverage with: \"cmake --build build --config Debug --parallel && ctest --test-dir build -C Debug && cmake --build build --target coverage\"")
+else()
+  message(STATUS "The Lector library code coverage was not configured. Configure with: \"cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON\"")
 endif()
