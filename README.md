@@ -73,9 +73,19 @@ The Lector library can parse command line arguments as whitespace-separated key-
 
 This section describes how to use the Lector library in one of your C++ projects.
 
-First, ensure that the Git source control system is installed on your system. For example, on Ubuntu, install Git with `sudo apt install git`, or visit <https://git-scm.com> for alternate means of installation.
+First, ensure that the Git source control system is installed on your system.
 
-Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system. For example, on Ubuntu, install the GCC C++ compiler with `sudo apt install g++`, or visit <https://gcc.gnu.org> for alternate means of installation.
+- On Ubuntu or other Debian-based Linux systems, install Git with `sudo apt install git`.
+- On macOS, install Git using the [Homebrew](<https://brew.sh>) package manager with `brew install git`.
+- On Windows, install Git using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install git`.
+- On other systems, visit <https://git-scm.com> for alternate means of installation.
+
+Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system.
+
+- On Ubuntu or other Debian-based Linux systems, the GNU GCC and LLVM Clang C++ compilers are most commonly used. Install the GNU GCC C++ compiler with `sudo apt install g++` or the LLVM library C++ compiler with `sudo apt install llvm`.
+- On macOS, the LLVM Clang C++ compiler is most commonly used. Install the LLVM library using the [Homebrew](<https://brew.sh>) package manager with `brew install llvm`.
+- On Windows, the MSVC C++ compiler is most commonly used. Visit <https://learn.microsoft.com/en-us/cpp/windows> to install the Windows MSVC C++ compiler.
+- On other systems, visit <https://gcc.gnu.org> or <https://llvm.org> for alternate means of installation for the GNU GCC and LLVM Clang C++ compilers, respectively.
 
 Third, ensure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
 
@@ -149,7 +159,12 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 ### §2.2. Configuration: CMake
 
-To use the Lector library in one of your CMake C++ projects, first ensure that the CMake build system is installed on your system. For example, on Ubuntu, install CMake with `sudo apt install cmake`, or visit <https://cmake.org> for alternate means of installation.
+To use the Lector library in one of your CMake C++ projects, first ensure that the CMake build system is installed on your system.
+
+- On Ubuntu or other Debian-based Linux systems, install CMake with `sudo apt install cmake`.
+- On macOS, install CMake using the [Homebrew](<https://brew.sh>) package manager with `brew install cmake`.
+- On Windows, install CMake using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install cmake`.
+- On other systems, visit <https://cmake.org> for alternate means of installation.
 
 Then, add the following code to your project's `CMakeLists.txt` file:
 
@@ -193,7 +208,12 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 ### §2.3. Configuration: Meson
 
-To use the Lector library in one of your Meson C++ projects, first ensure that the Meson build system is installed on your system. For example, on Ubuntu, install Meson with `sudo apt install meson ninja-build`, or visit <https://mesonbuild.com> for alternate means of installation.
+To use the Lector library in one of your Meson C++ projects, first ensure that the Meson build system is installed on your system.
+
+- On Ubuntu or other Debian-based Linux systems, install Meson with `sudo apt install meson ninja-build`.
+- On macOS, install Meson using the [Homebrew](<https://brew.sh>) package manager with `brew install meson ninja`.
+- On Windows, install Meson using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install meson ninja`.
+- On other systems, visit <https://mesonbuild.com> for alternate means of installation.
 
 Then, create a `subprojects/lector.wrap` file in your project and give it the following contents:
 
@@ -704,7 +724,12 @@ git clone git@github.com:acodcha/lector.git lector
 cd lector
 ```
 
-If you intend to compute the Lector library's code coverage, ensure that the LCOV package is installed on your system. For example, on Ubuntu, install LCOV with `sudo apt install lcov`, or visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
+If you intend to compute the Lector library's code coverage, ensure that the LCOV package is installed on your system.
+
+- On Ubuntu or other Debian-based Linux systems, install LCOV with `sudo apt install lcov`.
+- On macOS, install LCOV using the [Homebrew](<https://brew.sh>) package manager with `brew install lcov`.
+- On Windows, install LCOV using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install lcov`.
+- On other systems, visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
 
 Next, refer to the section for your preferred build system:
 
@@ -722,20 +747,29 @@ If using the Bazel build system, build the Lector library with:
 bazel build //...
 ```
 
-Optionally build and run all Lector library tests with:
+Run all Lector library tests using the Bazel build system with:
 
 ```bash
 bazel test //...
 ```
 
-Optionally compute the Lector library's code coverage with:
+On Linux or macOS, compute the Lector library's code coverage using the Bazel build system with:
 
 ```bash
 bazel coverage //...
 genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
 ```
 
-This generates a code coverage report at `//coverage/index.html`. Open this file in any web browser to view the report.
+This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
+
+On Windows, to compute the Lector library's code coverage using the Bazel build system, the Windows MSVC compiler will not work, and the LLVM Clang compiler should be used instead. Ensure that the LLVM library is installed on your system; you can install it using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`. Then, compute the Lector library's code coverage using the Bazel build system with:
+
+```bash
+bazel coverage --compiler=clang-cl //...
+genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+```
+
+This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
 
 [(Back to Developer Guide)](#4-developer-guide)
 
@@ -748,7 +782,7 @@ cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 cmake --build build --config Release --parallel
 ```
 
-Optionally build and run all Lector library tests with:
+Run all Lector library tests using the CMake build system with:
 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
@@ -756,7 +790,9 @@ cmake --build build --config Release --parallel
 ctest --test-dir build -C Release
 ```
 
-Optionally compute the Lector library's code coverage with:
+On Windows, in order to compute code coverage using the CMake build system, ensure that the OpenCppCoverage utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>.
+
+Compute the Lector library's code coverage using the CMake build system with:
 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
@@ -765,7 +801,7 @@ ctest --test-dir build -C Debug
 cmake --build build --target coverage
 ```
 
-This generates a code coverage report at `//coverage/index.html`. Open this file in any web browser to view the report.
+This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
 
 [(Back to Developer Guide)](#4-developer-guide)
 
@@ -774,17 +810,44 @@ This generates a code coverage report at `//coverage/index.html`. Open this file
 If using the Meson build system, build the Lector library with:
 
 ```bash
-mkdir --parents subprojects
 meson wrap install gtest
 meson setup build
 meson compile -C build
 ```
 
-Optionally run all Lector library tests with:
+Run all Lector library tests using the Meson build system with:
 
 ```bash
+meson wrap install gtest
+meson setup build
+meson compile -C build
 meson test -C build
 ```
+
+On Linux or macOS, compute the Lector library's code coverage using the Meson build system with:
+
+```bash
+meson wrap install gtest
+meson setup build -Db_coverage=true -Db_coverage_dir=../coverage
+meson compile -C build
+meson test -C build
+meson compile -C build coverage-html
+```
+
+This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
+
+On Windows, in order to compute code coverage using the Meson build system, ensure that the OpenCppCoverage utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>.
+
+On Windows, compute the Lector library's code coverage using the Meson build system with:
+
+```bash
+meson wrap install gtest
+meson setup build
+meson compile -C build
+meson compile -C build coverage
+```
+
+This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
 
 [(Back to Developer Guide)](#4-developer-guide)
 

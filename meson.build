@@ -69,3 +69,24 @@ foreach module : test_modules
   )
   test('lector_' + module + '_test', test_exe)
 endforeach
+
+# Windows MSVC coverage configuration with OpenCppCoverage.
+if cpp_compiler.get_id() == 'msvc'
+  opencppcoverage = find_program('OpenCppCoverage', required: false)
+  if opencppcoverage.found()
+    # Create a custom 'coverage' target that outputs directly to the project root.
+    run_target('coverage',
+      command: [
+        opencppcoverage,
+        '--sources', meson.project_source_root() + '\\lector',
+        # Change output from meson.project_build_root() to meson.project_source_root().
+        '--export_type', 'html:' + meson.project_source_root() + '\\coverage',
+        '--', 'meson', 'test', '-C', meson.project_build_root()
+      ]
+    )
+    message('The OpenCppCoverage utility was found at: ' + opencppcoverage.full_path())
+    message('Run "meson compile -C build coverage" to compute code coverage with the OpenCppCoverage utility.')
+  else
+    warning('The OpenCppCoverage utility was not found. Download it from: https://github.com/OpenCppCoverage/OpenCppCoverage')
+  endif
+endif
