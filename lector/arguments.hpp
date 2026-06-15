@@ -258,7 +258,8 @@ private:
   }
 
   /// @brief Validates the keys of this command line argument. Called by both constructors.
-  /// @throws std::logic_error if any of this command line argument's keys are invalid.
+  /// @throws std::logic_error if this command line argument has no keys or if any of its keys are
+  /// invalid.
   void validate_keys() const {
     if (keys_.empty()) {
       throw ::std::logic_error("All arguments must each have at least one key.");
@@ -325,7 +326,11 @@ private:
 
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
+  /// @throws std::logic_error if this command line argument has no keys.
   const ::std::string& longest_key() const {
+    if (keys_.empty()) {
+      throw ::std::logic_error("All arguments must each have at least one key.");
+    }
     ::std::size_t longest_key_index{0};
     for (::std::size_t index{1}; index < keys_.size(); ++index) {
       if (keys_[index].size() > keys_[longest_key_index].size()) {
@@ -460,10 +465,11 @@ public:
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (!printed_execution_arguments.empty()) {
+            const std::string argument_execution{argument.execution()};
+            if (!printed_execution_arguments.empty() && !argument_execution.empty()) {
               printed_execution_arguments += " ";
             }
-            printed_execution_arguments += argument.execution();
+            printed_execution_arguments += argument_execution;
           }());
         },
         arguments_);
@@ -542,17 +548,17 @@ private:
 
     /// @brief Length of the longest matching key for this argument. Used to avoid shadowing when
     /// multiple arguments have keys that are prefixes of each other. For example, if one argument
-    /// has the key "--key" and another argument has the key "--key-long", then the argument with
-    /// the key "--key-long" should be matched for the command line argument "--key-long=value", not
-    /// the argument with the key "--key".
+    /// has the key "key" and another argument has the key "key_long", then the argument with the
+    /// key "key_long" should be matched for the command line argument "key_long=value", not the
+    /// argument with the key "key".
     ::std::size_t key_length{0};
 
-    /// @brief Whether this argument was matched by an inline key of the form "--key=value" rather
-    /// than a whitespace-separated key-value pair of the form "--key value". Used to prefer
+    /// @brief Whether this argument was matched by an inline key of the form "key=value" rather
+    /// than a whitespace-separated key-value pair of the form "key value". Used to prefer
     /// non-inline matches over inline matches when the key lengths are equal. For example, if one
-    /// argument has the key "--key" and another argument has the key "--key-long", then the
-    /// argument with the key "--key" should be matched for the command line argument "--key=value",
-    /// not the argument with the key "--key-long".
+    /// argument has the key "key" and another argument has the key "key_long", then the argument
+    /// with the key "key" should be matched for the command line argument "key=value", not the
+    /// argument with the key "key_long".
     bool is_inline{false};
   };
 
@@ -639,7 +645,7 @@ private:
         [&](const auto&... argument) {
           (..., [&]() {
             for (const ::std::string& key : argument.keys()) {
-              // First, check for an exact match of the form "--key".
+              // First, check for an exact match of the form "key".
               if (token == key) {
                 if (!found_match || key.size() > best_argument.key_length
                     || (key.size() == best_argument.key_length && best_argument.is_inline)) {
@@ -649,7 +655,7 @@ private:
                   found_match = true;
                 }
               }
-              // Second, check for an inline match of the form "--key=value". This is strictly
+              // Second, check for an inline match of the form "key=value". This is strictly
               // disabled for boolean arguments because they are flags that do not have values.
               using ArgumentType = typename ::std::decay_t<decltype(argument)>::ValueType;
               if constexpr (!::std::is_same_v<ArgumentType, bool>) {
