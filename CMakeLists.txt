@@ -55,12 +55,6 @@ target_include_directories(
 # Force consumers to use at least C++17, replacing global variables.
 target_compile_features(lector INTERFACE cxx_std_17)
 
-# Instrument the library headers for code coverage.
-if(LECTOR_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  target_compile_options(lector INTERFACE --coverage -O0)
-  target_link_options(lector INTERFACE --coverage)
-endif()
-
 # Install the target and link it to an export set.
 install(
   TARGETS lector
@@ -106,7 +100,6 @@ install(
 # Configure tests.
 if(LECTOR_TEST)
   enable_testing()
-
   # Find or fetch GoogleTest.
   find_package(GTest QUIET)
   if(GTest_FOUND)
@@ -122,35 +115,28 @@ if(LECTOR_TEST)
     FetchContent_MakeAvailable(GoogleTest)
     message(STATUS "The GoogleTest library was fetched from: https://github.com/google/googletest")
   endif()
-
   include(GoogleTest)
-
+  # Define the unit test modules.
   set(LECTOR_TEST_MODULES arguments parse print)
-
+  # Configure each test module.
   foreach(module ${LECTOR_TEST_MODULES})
     set(LECTOR_TEST_TARGET lector_${module}_test)
-
     add_executable(${LECTOR_TEST_TARGET} ${PROJECT_SOURCE_DIR}/lector/${module}.test.cpp)
-
-    # Apply strict warnings only to the tests, checking the compiler type first.
+    # Apply strict compilation warnings to the tests.
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
       target_compile_options(${LECTOR_TEST_TARGET} PRIVATE -Wall -Wextra -Wno-return-type -Wpedantic)
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
       target_compile_options(${LECTOR_TEST_TARGET} PRIVATE /W4 /permissive-)
     endif()
-
-    # Basic compiler hook-up for the code coverage option.
+    # Add code coverage compilation flags if needed.
     if(LECTOR_COVERAGE AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
       target_compile_options(${LECTOR_TEST_TARGET} PRIVATE --coverage -O0)
       target_link_options(${LECTOR_TEST_TARGET} PRIVATE --coverage)
     endif()
-
     target_link_libraries(${LECTOR_TEST_TARGET} PRIVATE lector GTest::gtest_main)
-
     # Automatically register tests with ctest.
     gtest_discover_tests(${LECTOR_TEST_TARGET})
   endforeach()
-
   message(STATUS "The Lector library tests were configured. Build and run with: \"cmake --build build --config Release --parallel . && ctest --test-dir build -C Release\"")
 else()
   message(STATUS "The Lector library tests were not configured. Configure with: \"cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON\"")
@@ -158,33 +144,67 @@ endif()
 
 # Configure code coverage.
 if(LECTOR_COVERAGE)
-  if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    message(FATAL_ERROR "Code coverage requires either the GCC or Clang C++ compilers.")
-  endif()
-
-  # Find required tools for code coverage.
-  find_program(LCOV_EXECUTABLE lcov)
-  find_program(GENHTML_EXECUTABLE genhtml)
-
-  if(LCOV_EXECUTABLE AND GENHTML_EXECUTABLE)
-    message(STATUS "The LCOV package was found at: ${LCOV_EXECUTABLE}")
-    message(STATUS "The GENHTML package was found at: ${GENHTML_EXECUTABLE}")
-
-    # Create a custom target for generating code coverage reports.
-    add_custom_target(
-      coverage
-      COMMAND ${LCOV_EXECUTABLE} --directory . --base-directory ${CMAKE_CURRENT_SOURCE_DIR} --capture --output-file coverage.info --ignore-errors empty,mismatch
-      COMMAND ${LCOV_EXECUTABLE} --extract coverage.info ${CMAKE_CURRENT_SOURCE_DIR}/lector/* --output-file coverage.info.cleaned --ignore-errors empty,unused
-      COMMAND ${GENHTML_EXECUTABLE} coverage.info.cleaned --output-directory ${CMAKE_CURRENT_SOURCE_DIR}/coverage --ignore-errors empty
-      COMMAND ${CMAKE_COMMAND} -E echo "Generated code coverage report in: ${CMAKE_CURRENT_SOURCE_DIR}/coverage/index.html"
-      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-      COMMENT "Generating code coverage report with lcov."
-      VERBATIM
-    )
+  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    # Configure code coverage with the GNU GCC or Clang C++ compilers.
+    find_program(LCOV_EXECUTABLE lcov)
+    find_program(GENHTML_EXECUTABLE genhtml)
+    if(LCOV_EXECUTABLE AND GENHTML_EXECUTABLE)
+      message(STATUS "The LCOV package was found at: ${LCOV_EXECUTABLE}")
+      message(STATUS "The GENHTML package was found at: ${GENHTML_EXECUTABLE}")
+      # Default to the standard GNU gcov utility.
+      set(GCOV_TOOL_PATH "gcov")
+      # If using Clang, use the llvm-cov utility instead of the GNU gcov utility.
+      if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        find_program(LLVM_COV_EXECUTABLE llvm-cov)
+        if(LLVM_COV_EXECUTABLE)
+          # The lcov utility expects the --gcov-tool to be a single executable.
+          # Since we need to pass `llvm-cov gcov`, we generate a tiny wrapper script to do so.
+          set(GCOV_TOOL_PATH "${CMAKE_CURRENT_BINARY_DIR}/llvm-gcov.sh")
+          file(WRITE ${GCOV_TOOL_PATH} "#!/bin/bash\nexec \"${LLVM_COV_EXECUTABLE}\" gcov \"$@\"")
+          execute_process(COMMAND chmod +x ${GCOV_TOOL_PATH})
+          message(STATUS "The llvm-cov utility was found at: ${LLVM_COV_EXECUTABLE}")
+          message(STATUS "Generated the LLVM gcov wrapper script at: ${GCOV_TOOL_PATH}")
+        else()
+          message(WARNING "The llvm-cov utility was not found. Install llvm-cov with: \"sudo apt install llvm\"")
+        endif()
+      endif()
+      # Create a custom target for generating code coverage reports.
+      add_custom_target(
+        coverage
+        COMMAND ${LCOV_EXECUTABLE} --gcov-tool ${GCOV_TOOL_PATH} --directory . --base-directory ${CMAKE_CURRENT_SOURCE_DIR} --capture --output-file coverage.info --ignore-errors empty,mismatch
+        COMMAND ${LCOV_EXECUTABLE} --extract coverage.info ${CMAKE_CURRENT_SOURCE_DIR}/lector/* --output-file coverage.info.cleaned --ignore-errors empty,unused
+        COMMAND ${GENHTML_EXECUTABLE} coverage.info.cleaned --output-directory ${CMAKE_CURRENT_SOURCE_DIR}/coverage --ignore-errors empty
+        COMMAND ${CMAKE_COMMAND} -E echo "Generated code coverage report in: ${CMAKE_CURRENT_SOURCE_DIR}/coverage/index.html"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating code coverage report with lcov."
+        VERBATIM
+      )
+    else()
+      message(WARNING "The LCOV package was not found. Install LCOV with: \"sudo apt install lcov\"")
+    endif()
+  elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # Configure code coverage with the Windows MSVC C++ compiler.
+    find_program(OPENCPPCOVERAGE_EXECUTABLE OpenCppCoverage)
+    if(OPENCPPCOVERAGE_EXECUTABLE)
+      message(STATUS "The OpenCppCoverage utility was found at: ${OPENCPPCOVERAGE_EXECUTABLE}")
+      message(STATUS "Compute code coverage with: \"cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON && cmake --build build --config Debug --parallel && ctest --test-dir build -C Debug && cmake --build build --target coverage\"")
+      # OpenCppCoverage wraps ctest and generates the HTML report in one step.
+      add_custom_target(
+        coverage
+        COMMAND ${OPENCPPCOVERAGE_EXECUTABLE}
+          --sources "${CMAKE_CURRENT_SOURCE_DIR}\\lector"
+          --export_type html:"${CMAKE_CURRENT_SOURCE_DIR}\\coverage"
+          -- ctest -C Debug
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating code coverage report with OpenCppCoverage."
+        VERBATIM
+      )
+    else()
+      message(WARNING "The OpenCppCoverage utility was not found. Download it from: https://github.com/OpenCppCoverage/OpenCppCoverage")
+    endif()
   else()
-    message(WARNING "The LCOV package was not found. Install LCOV with: \"sudo apt install lcov\"")
+    message(FATAL_ERROR "Code coverage requires either the GCC, Clang, or MSVC C++ compiler.")
   endif()
-
   message(STATUS "The Lector library code coverage was configured. Compute code coverage with: \"cmake --build build --config Debug --parallel && ctest --test-dir build -C Debug && cmake --build build --target coverage\"")
 else()
   message(STATUS "The Lector library code coverage was not configured. Configure with: \"cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON\"")
