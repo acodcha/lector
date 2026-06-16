@@ -20,6 +20,7 @@
 #define LECTOR_PRINT_HPP
 
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <filesystem>
 #include <limits>
@@ -142,6 +143,15 @@ template <>
 /// @return The string that contains the printed single-precision floating-point number.
 template <>
 [[nodiscard]] ::std::string print(const float& value) {
+  if (!::std::isfinite(value)) {
+    if (::std::isnan(value)) {
+      return "nan";
+    }
+    if (value < 0.0F) {
+      return "-inf";
+    }
+    return "inf";
+  }
   const float absolute{::std::abs(value)};
   ::std::ostringstream stream;
   if (absolute < 1.0F) {
@@ -216,6 +226,15 @@ template <>
 /// @return The string that contains the printed double-precision floating-point number.
 template <>
 [[nodiscard]] ::std::string print(const double& value) {
+  if (!::std::isfinite(value)) {
+    if (::std::isnan(value)) {
+      return "nan";
+    }
+    if (value < 0.0) {
+      return "-inf";
+    }
+    return "inf";
+  }
   const double absolute{::std::abs(value)};
   ::std::ostringstream stream;
   if (absolute < 1.0) {
@@ -290,6 +309,15 @@ template <>
 /// @return The string that contains the printed extended-precision floating-point number.
 template <>
 [[nodiscard]] ::std::string print(const long double& value) {
+  if (!::std::isfinite(value)) {
+    if (::std::isnan(value)) {
+      return "nan";
+    }
+    if (value < 0.0L) {
+      return "-inf";
+    }
+    return "inf";
+  }
   const long double absolute{::std::abs(value)};
   ::std::ostringstream stream;
   if (absolute < 1.0L) {
