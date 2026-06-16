@@ -147,7 +147,7 @@ TEST(Lector, PrintFilesystemPath) {
   EXPECT_EQ(::lector::print<::std::filesystem::path>("/some/file.txt"), "/some/file.txt");
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
+TEST(Lector, PrintNumberFloatingPointPrecisionDoubleExactMatch) {
 #if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
@@ -210,7 +210,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
 #endif  // defined(__linux__)
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionDoubleB) {
+TEST(Lector, PrintNumberFloatingPointPrecisionDoubleRoundTrip) {
   ::test::print_floating<double>(11111.111111111111111111111111111111);
   ::test::print_floating<double>(1111.111111111111111111111111111111);
   ::test::print_floating<double>(111.111111111111111111111111111111);
@@ -287,7 +287,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDoubleB) {
   ::test::print_floating<double>(11111.111111111111111111111111111111);
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
+TEST(Lector, PrintNumberFloatingPointPrecisionExtendedExactMatch) {
 #if defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(-::std::numeric_limits<long double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::infinity()), "-inf");
@@ -350,7 +350,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
 #endif  // defined(__linux__)
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionExtendedB) {
+TEST(Lector, PrintNumberFloatingPointPrecisionExtendedRoundTrip) {
   ::test::print_floating<long double>(11111.111111111111111111111111111111L);
   ::test::print_floating<long double>(1111.111111111111111111111111111111L);
   ::test::print_floating<long double>(111.111111111111111111111111111111L);
@@ -427,7 +427,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtendedB) {
   ::test::print_floating<long double>(11111.111111111111111111111111111111L);
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
+TEST(Lector, PrintNumberFloatingPointPrecisionSingleExactMatch) {
 #if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::infinity()), "-inf");
@@ -490,7 +490,7 @@ TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
 #endif  // defined(__linux__)
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionSingleB) {
+TEST(Lector, PrintNumberFloatingPointPrecisionSingleRoundTrip) {
   ::test::print_floating<float>(11111.111111111111111111111111111111F);
   ::test::print_floating<float>(1111.111111111111111111111111111111F);
   ::test::print_floating<float>(111.111111111111111111111111111111F);
