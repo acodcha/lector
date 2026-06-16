@@ -593,13 +593,13 @@ The Lector library performs strict error checking when defining command line arg
 
 The following checks are performed when defining command line arguments:
 
-- All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Help, bool>{{"-h"}, "Help."}` and `lector::Argument<Label::Help, bool>{{"--help"}, "Help."}` throws an exception because both arguments use the same label `Label::Help`.
-- All arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{{}, "Iterations."}` throws an exception because no keys are defined.
-- Arguments cannot have empty keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"", "-i"}, "Iterations."}` throws an exception because the first key is empty.
-- Arguments cannot have duplicate keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"-i", "-i"}, "Iterations."}` throws an exception because the key `-i` is duplicated.
-- Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Iterations, std::int32_t>{{"-i"}, "Iterations."}` and `lector::Argument<Label::Help, bool>{{"-i"}, "Help."}` throws an exception because the two arguments use the same key `-i`.
-- All arguments must have descriptions. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"-i"}, ""}` throws an exception because the description is empty.
-- Boolean arguments are always false by default and cannot specify default values. For example, `lector::Argument<Label::Help, bool>{{"-h"}, "Help.", true}` throws an exception because `true` was specified as a default value.
+- All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Help, bool>{ {"-h"}, "Help." }` and `lector::Argument<Label::Help, bool>{ {"--help"}, "Help." }` throws an exception because both arguments use the same label `Label::Help`.
+- All arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because no keys are defined.
+- Arguments cannot have empty keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"", "-i"}, "Iterations." }` throws an exception because the first key is empty.
+- Arguments cannot have duplicate keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i", "-i"}, "Iterations." }` throws an exception because the key `-i` is duplicated.
+- Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::Argument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
+- All arguments must have descriptions. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
+- Boolean arguments are always false by default and cannot specify default values. For example, `lector::Argument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
 
 The following checks are performed when parsing command line arguments. These examples use the code from the [**Introduction**](#1-introduction) section:
 
