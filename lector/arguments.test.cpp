@@ -56,13 +56,13 @@ enum class Shape : ::std::int8_t {
 /// data structure command line arguments.
 struct Point final {
 public:
-  /// @brief Cartesian x-soordinate of this point.
+  /// @brief Cartesian x-coordinate of this point.
   float x{0.0F};
 
-  /// @brief Cartesian y-soordinate of this point.
+  /// @brief Cartesian y-coordinate of this point.
   float y{0.0F};
 
-  /// @brief Cartesian z-soordinate of this point.
+  /// @brief Cartesian z-coordinate of this point.
   float z{0.0F};
 };
 
@@ -142,6 +142,7 @@ enum class Label : ::std::int8_t {
   Tolerance,
   ConfusingShort,
   ConfusingLong,
+  DuplicateKey,
   Weird,
   Help,
 };
@@ -157,6 +158,13 @@ create_argument_confusing_short() {
   return ::lector::Argument<::test::Label::ConfusingShort, ::std::int32_t>{
     ::std::initializer_list<::std::string>{"--key"}, "Short confusing argument.",
     static_cast<::std::int32_t>(100)};
+}
+
+::lector::Argument<::test::Label::DuplicateKey, ::std::int32_t> create_argument_duplicate_key() {
+  return ::lector::Argument<::test::Label::DuplicateKey, ::std::int32_t>{
+    ::std::initializer_list<::std::string>{"-it", "--iterations"},
+    "Duplicate number of iterations.", static_cast<::std::int32_t>(100)
+  };
 }
 
 ::lector::Argument<::test::Label::Help, bool> create_argument_help() {
@@ -425,6 +433,23 @@ private:
 
 namespace {
 
+/// @brief Validate that an empty list of types is unique.
+static_assert(::lector::AreUnique<>::value);
+
+/// @brief Validate that a list of only one type is unique.
+static_assert(::lector::AreUnique<::test::Label::Shape>::value);
+
+/// @brief Validate that a list of unique types are unique.
+static_assert(::lector::AreUnique<::test::Label::Shape, ::test::Label::Iterations,
+                                  ::test::Label::Help>::value);
+
+/// @brief Validate that a list of duplicated types is not unique.
+static_assert(!::lector::AreUnique<::test::Label::Shape, ::test::Label::Shape>::value);
+
+/// @brief Validate that a list of duplicated and unique types is not unique.
+static_assert(!::lector::AreUnique<::test::Label::Shape, ::test::Label::Iterations,
+                                   ::test::Label::Shape>::value);
+
 TEST(Lector, ArgumentsDuplicatedArgumentInline) {
   ::lector::Arguments arguments{
     ::test::create_argument_iterations_optional(), ::test::create_argument_help()};
@@ -447,6 +472,11 @@ TEST(Lector, ArgumentsDuplicatedArgumentWhitespace) {
   const ::test::Command command{
     "/path/to/executable", "--iterations", "200", "--iterations", "300", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsDuplicateKeys) {
+  EXPECT_ANY_THROW(::lector::Arguments(
+      ::test::create_argument_iterations_optional(), ::test::create_argument_duplicate_key()));
 }
 
 TEST(Lector, ArgumentsExecutableOnlyNoArguments) {

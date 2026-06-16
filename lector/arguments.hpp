@@ -33,6 +33,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -395,16 +396,37 @@ struct FindArgumentByLabel<Label, ::lector::Argument<OtherLabel, OtherType>,
   using type = typename ::lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
+/// @brief Data structure that validates at compilation time that a specified variadic list of types
+/// are unique. Base data structure that contains an empty list of types and returns true.
+/// @tparam ...Types Variadic list of types to check for uniqueness.
+template <auto... Types>
+struct AreUnique : std::true_type {};
+
+/// @brief Data structure that validates at compilation time that a specified variadic list of types
+/// are unique. Recursively compares a first type against the remaining variadic list of types.
+/// @tparam FirstType The first type to compare.
+/// @tparam ...RemainingTypes The remaining types in the variadic list of types to compare.
+template <auto FirstType, auto... RemainingTypes>
+struct AreUnique<FirstType, RemainingTypes...>
+  : std::bool_constant<((FirstType != RemainingTypes) && ...)
+                       && AreUnique<RemainingTypes...>::value> {};
+
 /// @brief A collection of command line arguments that can be parsed from argc and argv.
 /// @tparam ...ArgumentTypes Variadic list of the types of the command line arguments in this
 /// collection.
 template <typename... ArgumentTypes>
 class Arguments final {
 public:
+  /// @brief Compile-time check that all arguments have unique labels.
+  static_assert(AreUnique<ArgumentTypes::label()...>::value,
+                "Duplicate argument labels detected. Each argument must have a unique label.");
+
   /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
   /// list of command line arguments.
   /// @param ...arguments The variadic list of command line arguments.
-  explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {}
+  explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {
+    validate_keys();
+  }
 
   /// @brief Destructor. Destroys this collection of command line arguments.
   ~Arguments() noexcept = default;
@@ -678,6 +700,26 @@ private:
       throw ::std::invalid_argument("Unknown argument '" + ::std::string{token} + "'.");
     }
     return best_argument;
+  }
+
+  /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
+  /// the constructor.
+  /// @throws std::logic_error if the same key is duplicated across two or more arguments.
+  void validate_keys() const {
+    ::std::unordered_set<::std::string> unique_keys;
+    ::std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            for (const ::std::string& key : argument.keys()) {
+              const ::std::pair<::std::unordered_set<::std::string>::const_iterator, bool> result{
+                unique_keys.insert(key)};
+              if (!result.second) {
+                throw std::logic_error("Duplicate key '" + key + "' across two arguments.");
+              }
+            }
+          }());
+        },
+        arguments_);
   }
 
   /// @brief Validates that all required arguments have each successfully parsed a value from argc
