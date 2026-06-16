@@ -35,6 +35,8 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the Bazel version
         run: bazel --version
       - name: Build with Bazel
@@ -47,6 +49,8 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the CMake version
         run: cmake --version
       - name: Configure with CMake
@@ -62,6 +66,8 @@ jobs:
       - uses: actions/checkout@v6
       - name: Install Meson and Ninja
         run: brew install meson ninja
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the Meson version
         run: meson --version
       - name: Print the Ninja version

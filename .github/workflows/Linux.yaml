@@ -29,11 +29,11 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
-      - name: Print the version of the FindUtils package
+      - name: Print the FindUtils version
         run: find --version
-      - name: Print the version of the Clang-Format package
+      - name: Print the Clang-Format version
         run: clang-format --version
-      - name: Check that all source code files are correctly formatted
+      - name: Check source code formatting
         run: |
           find . -iname "*.hpp" -or -iname "*.cpp" | xargs clang-format --style=file -i
           CHANGES=$(git diff --name-only)
@@ -54,6 +54,8 @@ jobs:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the Bazel version
         run: bazel --version
       - name: Build with Bazel
@@ -66,6 +68,8 @@ jobs:
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the CMake version
         run: cmake --version
       - name: Configure with CMake
@@ -84,6 +88,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes meson ninja-build
+      - name: Print the C++ version
+        run: c++ --version
       - name: Print the Meson version
         run: meson --version
       - name: Print the Ninja version
