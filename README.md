@@ -93,6 +93,22 @@ Third, ensure that your C++ project uses a supported build system; the Lector li
 - [§2.2. CMake](#22-configuration-cmake)
 - [§2.3. Meson](#23-configuration-meson)
 
+Once your build system has been configured, simply include the Lector library's headers in your C++ source files with:
+
+```cpp
+#include <lector/arguments.hpp>
+#include <lector/parse.hpp>
+#include <lector/print.hpp>
+```
+
+The Lector library is modular:
+
+- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes.
+- The file `<lector/parse.hpp>` defines the `lector::Spellings` and `lector::parse()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
+- The file `<lector/print.hpp>` defines the `lector::Names` and `lector::print()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
+
+All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+
 [(Back to Top)](#lector)
 
 ### §2.1. Configuration: Bazel
@@ -145,15 +161,7 @@ cc_library(
 )
 ```
 
-Finally, simply include the Lector library's headers in your C++ source files with:
-
-```cpp
-#include <lector/arguments.hpp>
-#include <lector/parse.hpp>
-#include <lector/print.hpp>
-```
-
-All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+The above Bazel code defines your C++ Bazel library to depend on the Lector library modules.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -193,16 +201,6 @@ target_link_libraries(my_target_name PRIVATE lector::lector my_other_dependency)
 Note: You can specify a release tag such as `GIT_TAG v1.0.0` instead of `GIT_TAG main`.
 
 The above CMake code checks whether the Lector library is already installed on your system; if not, it automatically downloads it from its GitHub repository and makes it available to your CMake project.
-
-Finally, simply include the Lector library's headers in your C++ source files with:
-
-```cpp
-#include <lector/arguments.hpp>
-#include <lector/parse.hpp>
-#include <lector/print.hpp>
-```
-
-All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -245,15 +243,7 @@ my_library_name = library(
 )
 ```
 
-Finally, simply include the Lector library's headers in your C++ source files with:
-
-```cpp
-#include <lector/arguments.hpp>
-#include <lector/parse.hpp>
-#include <lector/print.hpp>
-```
-
-All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+The above Meson code imports the Lector library in your project, defines your library, and adds the Lector library as a dependency to your library.
 
 [(Back to Configuration)](#2-configuration)
 
@@ -301,8 +291,8 @@ Supported argument types include:
 - Floating-point numbers: `float`, `double`, `long double`.
 - Strings: `std::string`. If the string contains whitespace, enclose it in double quotes (`""`).
 - Paths: `std::filesystem::path`.
-- Enumerations: see the [Enumerations](#33-user-guide-enumerations) section.
-- Classes and Structures: see the [Classes and Structures](#34-user-guide-classes-and-structures) section.
+- Enumerations: See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
+- Classes and Structures: See the [User Guide: Classes and Structures](#34-user-guide-classes-and-structures) section.
 
 Once all arguments have been defined, the `lector::Arguments::parse()` method can be used to parse `argc` and `argv`. For example:
 
@@ -599,119 +589,25 @@ int main(int argc, char* argv[]) {
 
 ### §3.5. User Guide: Error Checking
 
-The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line. The following examples use the code from the [**Introduction**](#1-introduction) section.
+The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line.
 
-When defining arguments, all arguments must each have at least one key:
+The following checks are performed when defining command line arguments:
 
-```cpp
-lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {}, "Output directory. Required."
-};
-```
+- All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Help, bool>{{"-h"}, "Help."}` and `lector::Argument<Label::Help, bool>{{"--help"}, "Help."}` throws an exception because both arguments use the same label `Label::Help`.
+- All arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{{}, "Iterations."}` throws an exception because no keys are defined.
+- Arguments cannot have empty keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"", "-i"}, "Iterations."}` throws an exception because the first key is empty.
+- Arguments cannot have duplicate keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"-i", "-i"}, "Iterations."}` throws an exception because the key `-i` is duplicated.
+- Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Iterations, std::int32_t>{{"-i"}, "Iterations."}` and `lector::Argument<Label::Help, bool>{{"-i"}, "Help."}` throws an exception because the two arguments use the same key `-i`.
+- All arguments must have descriptions. For example, `lector::Argument<Label::Iterations, std::int32_t>{{"-i"}, ""}` throws an exception because the description is empty.
+- Boolean arguments are always false by default and cannot specify default values. For example, `lector::Argument<Label::Help, bool>{{"-h"}, "Help.", true}` throws an exception because `true` was specified as a default value.
 
-```text
-terminate called after throwing an instance of 'std::logic_error'
-  what(): All arguments must each have at least one key.
-```
+The following checks are performed when parsing command line arguments. These examples use the code from the [**Introduction**](#1-introduction) section:
 
-When defining arguments, arguments cannot have empty keys:
-
-```cpp
-lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {"-o", ""}, "Output directory. Required."
-};
-```
-
-```text
-terminate called after throwing an instance of 'std::logic_error'
-  what(): Empty key in argument '-o <path>'. Arguments cannot have empty keys.
-```
-
-When defining arguments, an argument cannot have duplicated keys:
-
-```cpp
-lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {"-o", "-o"}, "Output directory. Required."
-};
-```
-
-```text
-terminate called after throwing an instance of 'std::logic_error'
-  what(): Duplicated key '-o' in argument '-o <path>'. Arguments cannot have duplicate keys.
-```
-
-When defining arguments, all arguments must have descriptions:
-
-```cpp
-lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-  {"-o", "--output_directory"}, ""
-};
-```
-
-```text
-terminate called after throwing an instance of 'std::logic_error'
-  what(): Empty description in argument '--output_directory <path>'. All arguments must have
-          descriptions.
-```
-
-When defining arguments, boolean arguments must be optional:
-
-```cpp
-lector::Argument<Label::OutputDirectory, bool>{
-  {"-v", "--verbose"}, "Enable verbose mode.", true
-};
-```
-
-```text
-terminate called after throwing an instance of 'std::logic_error'
-  what(): Specified default value for boolean argument '--verbose'. Boolean arguments are always
-          false by default and cannot specify default values.
-```
-
-When parsing arguments, the Lector library checks for missing required arguments:
-
-```text
-path/to/my_project_main --iterations 200
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Missing required argument '--output_directory <path>'.
-```
-
-When parsing arguments, the Lector library checks for duplicated arguments:
-
-```text
-path/to/my_project_main --output_directory /some/path --output_directory /some/other/path
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Duplicated argument '--output_directory <path>'.
-```
-
-When parsing arguments, the Lector library checks for invalid argument values:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations invalid_value
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Invalid value 'invalid_value' for argument '--iterations <number>'.
-```
-
-When parsing arguments, the Lector library checks for arguments missing values:
-
-```text
-path/to/my_project_main --output_directory /some/path --iterations
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Missing value for argument '--iterations <number>'.
-```
-
-When parsing arguments, the Lector library checks for unknown arguments:
-
-```text
-path/to/my_project_main --output_directory /some/path --unknown_argument
-
-terminate called after throwing an instance of 'std::invalid_argument'
-  what(): Unknown argument '--unknown_argument'.
-```
+- Missing required arguments. For example, `path/to/my_project_main --iterations 200` throws an exception because the required argument `--output_directory <path>` is missing.
+- Duplicated arguments. For example, `path/to/my_project_main --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
+- Invalid argument values. For example, `path/to/my_project_main --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
+- Arguments missing values. For example, `path/to/my_project_main --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
+- Unknown arguments. For example, `path/to/my_project_main --output_directory /tmp --unknown` throws an exception because the argument `--unknown` is unknown.
 
 [(Back to User Guide)](#3-user-guide)
 
