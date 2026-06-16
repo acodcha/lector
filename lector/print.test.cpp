@@ -19,12 +19,15 @@
 #include "lector/print.hpp"
 
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
 #include <limits>
+#include <sstream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 
 namespace test {
 
@@ -72,6 +75,32 @@ inline constexpr ::test::Point SecondPoint{4.0F, 5.0F, 6.0F};
 
 }  // namespace
 
+/// @brief Performs a round-trip test of printing a floating-point number, parsing the printed
+/// value, and checking that the parsed value exactly matches the original floating-point number.
+/// @tparam FloatingPointType A floating-point number type: float, double, or long double.
+/// @param[in] value The floating-point number to test.
+template <typename FloatingPointType>
+void print_floating(const FloatingPointType value) {
+  static_assert(std::is_floating_point_v<FloatingPointType>, "Must be a floating-point type.");
+  const std::string printed_value{::lector::print<FloatingPointType>(value)};
+  if (!::std::isfinite(value)) {
+    if (::std::isnan(value)) {
+      EXPECT_EQ(printed_value, "nan");
+      return;
+    }
+    if (value < 0.0F) {
+      EXPECT_EQ(printed_value, "-inf");
+      return;
+    }
+    EXPECT_EQ(printed_value, "inf");
+    return;
+  }
+  std::istringstream input_stream{printed_value};
+  FloatingPointType parsed_value;
+  input_stream >> parsed_value;
+  EXPECT_EQ(value, parsed_value);
+}
+
 }  // namespace test
 
 namespace lector {
@@ -118,10 +147,10 @@ TEST(Lector, PrintFilesystemPath) {
   EXPECT_EQ(::lector::print<::std::filesystem::path>("/some/file.txt"), "/some/file.txt");
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
-#if defined(__linux__)
-  EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "-nan");
+TEST(Lector, PrintNumberFloatingPointPrecisionDoubleExactMatch) {
+  EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-16384.0), "-1.63840000000000000e+04");
   EXPECT_EQ(::lector::print<double>(-8192.0), "-8192.00000000000000");
   EXPECT_EQ(::lector::print<double>(-4096.0), "-4096.00000000000000");
@@ -176,15 +205,92 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDouble) {
   EXPECT_EQ(::lector::print<double>(4096.0), "4096.00000000000000");
   EXPECT_EQ(::lector::print<double>(8192.0), "8192.00000000000000");
   EXPECT_EQ(::lector::print<double>(16384.0), "1.63840000000000000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<double>(::std::numeric_limits<double>::infinity()), "inf");
   EXPECT_EQ(::lector::print<double>(::std::numeric_limits<double>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
-#if defined(__linux__)
-  EXPECT_EQ(::lector::print<long double>(-::std::numeric_limits<long double>::quiet_NaN()), "-nan");
+TEST(Lector, PrintNumberFloatingPointPrecisionDoubleRoundTrip) {
+  ::test::print_floating<double>(11111.111111111111111111111111111111);
+  ::test::print_floating<double>(1111.111111111111111111111111111111);
+  ::test::print_floating<double>(111.111111111111111111111111111111);
+  ::test::print_floating<double>(11.111111111111111111111111111111);
+  ::test::print_floating<double>(1.111111111111111111111111111111);
+  ::test::print_floating<double>(0.111111111111111111111111111111);
+  ::test::print_floating<double>(0.0111111111111111111111111111111);
+  ::test::print_floating<double>(0.00111111111111111111111111111111);
+  ::test::print_floating<double>(0.000111111111111111111111111111111);
+  ::test::print_floating<double>(-::std::numeric_limits<double>::quiet_NaN());
+  ::test::print_floating<double>(-::std::numeric_limits<double>::infinity());
+  ::test::print_floating<double>(-16384.0);
+  ::test::print_floating<double>(-8192.0);
+  ::test::print_floating<double>(-4096.0);
+  ::test::print_floating<double>(-2048.0);
+  ::test::print_floating<double>(-1024.0);
+  ::test::print_floating<double>(-512.0);
+  ::test::print_floating<double>(-256.0);
+  ::test::print_floating<double>(-128.0);
+  ::test::print_floating<double>(-64.0);
+  ::test::print_floating<double>(-32.0);
+  ::test::print_floating<double>(-16.0);
+  ::test::print_floating<double>(-8.0);
+  ::test::print_floating<double>(-4.0);
+  ::test::print_floating<double>(-2.0);
+  ::test::print_floating<double>(-1.0);
+  ::test::print_floating<double>(-0.5);
+  ::test::print_floating<double>(-0.25);
+  ::test::print_floating<double>(-0.125);
+  ::test::print_floating<double>(-0.0625);
+  ::test::print_floating<double>(-0.03125);
+  ::test::print_floating<double>(-0.015625);
+  ::test::print_floating<double>(-0.0078125);
+  ::test::print_floating<double>(-0.00390625);
+  ::test::print_floating<double>(-0.001953125);
+  ::test::print_floating<double>(-0.0009765625);
+  ::test::print_floating<double>(-0.0);
+  ::test::print_floating<double>(0.0);
+  ::test::print_floating<double>(0.0009765625);
+  ::test::print_floating<double>(0.001953125);
+  ::test::print_floating<double>(0.00390625);
+  ::test::print_floating<double>(0.0078125);
+  ::test::print_floating<double>(0.015625);
+  ::test::print_floating<double>(0.03125);
+  ::test::print_floating<double>(0.0625);
+  ::test::print_floating<double>(0.125);
+  ::test::print_floating<double>(0.25);
+  ::test::print_floating<double>(0.5);
+  ::test::print_floating<double>(1.0);
+  ::test::print_floating<double>(2.0);
+  ::test::print_floating<double>(4.0);
+  ::test::print_floating<double>(8.0);
+  ::test::print_floating<double>(16.0);
+  ::test::print_floating<double>(32.0);
+  ::test::print_floating<double>(64.0);
+  ::test::print_floating<double>(128.0);
+  ::test::print_floating<double>(256.0);
+  ::test::print_floating<double>(512.0);
+  ::test::print_floating<double>(1024.0);
+  ::test::print_floating<double>(2048.0);
+  ::test::print_floating<double>(4096.0);
+  ::test::print_floating<double>(8192.0);
+  ::test::print_floating<double>(16384.0);
+  ::test::print_floating<double>(::std::numeric_limits<double>::infinity());
+  ::test::print_floating<double>(::std::numeric_limits<double>::quiet_NaN());
+  ::test::print_floating<double>(0.000111111111111111111111111111111);
+  ::test::print_floating<double>(0.00111111111111111111111111111111);
+  ::test::print_floating<double>(0.0111111111111111111111111111111);
+  ::test::print_floating<double>(0.111111111111111111111111111111);
+  ::test::print_floating<double>(1.111111111111111111111111111111);
+  ::test::print_floating<double>(11.111111111111111111111111111111);
+  ::test::print_floating<double>(111.111111111111111111111111111111);
+  ::test::print_floating<double>(1111.111111111111111111111111111111);
+  ::test::print_floating<double>(11111.111111111111111111111111111111);
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionExtendedExactMatch) {
+  EXPECT_EQ(::lector::print<long double>(-::std::numeric_limits<long double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(-16384.0L), "-1.638400000000000000000e+04");
   EXPECT_EQ(::lector::print<long double>(-8192.0L), "-8192.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(-4096.0L), "-4096.000000000000000000");
@@ -239,15 +345,92 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtended) {
   EXPECT_EQ(::lector::print<long double>(4096.0L), "4096.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(8192.0L), "8192.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(16384.0L), "1.638400000000000000000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(::std::numeric_limits<long double>::infinity()), "inf");
   EXPECT_EQ(::lector::print<long double>(::std::numeric_limits<long double>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
 }
 
-TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
-#if defined(__linux__)
-  EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::quiet_NaN()), "-nan");
+TEST(Lector, PrintNumberFloatingPointPrecisionExtendedRoundTrip) {
+  ::test::print_floating<long double>(11111.111111111111111111111111111111L);
+  ::test::print_floating<long double>(1111.111111111111111111111111111111L);
+  ::test::print_floating<long double>(111.111111111111111111111111111111L);
+  ::test::print_floating<long double>(11.111111111111111111111111111111L);
+  ::test::print_floating<long double>(1.111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.0111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.00111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.000111111111111111111111111111111L);
+  ::test::print_floating<long double>(-::std::numeric_limits<long double>::quiet_NaN());
+  ::test::print_floating<long double>(-::std::numeric_limits<long double>::infinity());
+  ::test::print_floating<long double>(-16384.0L);
+  ::test::print_floating<long double>(-8192.0L);
+  ::test::print_floating<long double>(-4096.0L);
+  ::test::print_floating<long double>(-2048.0L);
+  ::test::print_floating<long double>(-1024.0L);
+  ::test::print_floating<long double>(-512.0L);
+  ::test::print_floating<long double>(-256.0L);
+  ::test::print_floating<long double>(-128.0L);
+  ::test::print_floating<long double>(-64.0L);
+  ::test::print_floating<long double>(-32.0L);
+  ::test::print_floating<long double>(-16.0L);
+  ::test::print_floating<long double>(-8.0L);
+  ::test::print_floating<long double>(-4.0L);
+  ::test::print_floating<long double>(-2.0L);
+  ::test::print_floating<long double>(-1.0L);
+  ::test::print_floating<long double>(-0.5L);
+  ::test::print_floating<long double>(-0.25L);
+  ::test::print_floating<long double>(-0.125L);
+  ::test::print_floating<long double>(-0.0625L);
+  ::test::print_floating<long double>(-0.03125L);
+  ::test::print_floating<long double>(-0.015625L);
+  ::test::print_floating<long double>(-0.0078125L);
+  ::test::print_floating<long double>(-0.00390625L);
+  ::test::print_floating<long double>(-0.001953125L);
+  ::test::print_floating<long double>(-0.0009765625L);
+  ::test::print_floating<long double>(-0.0L);
+  ::test::print_floating<long double>(0.0L);
+  ::test::print_floating<long double>(0.0009765625L);
+  ::test::print_floating<long double>(0.001953125L);
+  ::test::print_floating<long double>(0.00390625L);
+  ::test::print_floating<long double>(0.0078125L);
+  ::test::print_floating<long double>(0.015625L);
+  ::test::print_floating<long double>(0.03125L);
+  ::test::print_floating<long double>(0.0625L);
+  ::test::print_floating<long double>(0.125L);
+  ::test::print_floating<long double>(0.25L);
+  ::test::print_floating<long double>(0.5L);
+  ::test::print_floating<long double>(1.0L);
+  ::test::print_floating<long double>(2.0L);
+  ::test::print_floating<long double>(4.0L);
+  ::test::print_floating<long double>(8.0L);
+  ::test::print_floating<long double>(16.0L);
+  ::test::print_floating<long double>(32.0L);
+  ::test::print_floating<long double>(64.0L);
+  ::test::print_floating<long double>(128.0L);
+  ::test::print_floating<long double>(256.0L);
+  ::test::print_floating<long double>(512.0L);
+  ::test::print_floating<long double>(1024.0L);
+  ::test::print_floating<long double>(2048.0L);
+  ::test::print_floating<long double>(4096.0L);
+  ::test::print_floating<long double>(8192.0L);
+  ::test::print_floating<long double>(16384.0L);
+  ::test::print_floating<long double>(::std::numeric_limits<long double>::infinity());
+  ::test::print_floating<long double>(::std::numeric_limits<long double>::quiet_NaN());
+  ::test::print_floating<long double>(0.000111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.00111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.0111111111111111111111111111111L);
+  ::test::print_floating<long double>(0.111111111111111111111111111111L);
+  ::test::print_floating<long double>(1.111111111111111111111111111111L);
+  ::test::print_floating<long double>(11.111111111111111111111111111111L);
+  ::test::print_floating<long double>(111.111111111111111111111111111111L);
+  ::test::print_floating<long double>(1111.111111111111111111111111111111L);
+  ::test::print_floating<long double>(11111.111111111111111111111111111111L);
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionSingleExactMatch) {
+  EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-16384.0F), "-1.638400000e+04");
   EXPECT_EQ(::lector::print<float>(-8192.0F), "-8192.000000");
   EXPECT_EQ(::lector::print<float>(-4096.0F), "-4096.000000");
@@ -302,9 +485,86 @@ TEST(Lector, PrintNumberFloatingPointPrecisionSingle) {
   EXPECT_EQ(::lector::print<float>(4096.0F), "4096.000000");
   EXPECT_EQ(::lector::print<float>(8192.0F), "8192.000000");
   EXPECT_EQ(::lector::print<float>(16384.0F), "1.638400000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<float>(::std::numeric_limits<float>::infinity()), "inf");
   EXPECT_EQ(::lector::print<float>(::std::numeric_limits<float>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
+}
+
+TEST(Lector, PrintNumberFloatingPointPrecisionSingleRoundTrip) {
+  ::test::print_floating<float>(11111.111111111111111111111111111111F);
+  ::test::print_floating<float>(1111.111111111111111111111111111111F);
+  ::test::print_floating<float>(111.111111111111111111111111111111F);
+  ::test::print_floating<float>(11.111111111111111111111111111111F);
+  ::test::print_floating<float>(1.111111111111111111111111111111F);
+  ::test::print_floating<float>(0.111111111111111111111111111111F);
+  ::test::print_floating<float>(0.0111111111111111111111111111111F);
+  ::test::print_floating<float>(0.00111111111111111111111111111111F);
+  ::test::print_floating<float>(0.000111111111111111111111111111111F);
+  ::test::print_floating<float>(-::std::numeric_limits<float>::quiet_NaN());
+  ::test::print_floating<float>(-::std::numeric_limits<float>::infinity());
+  ::test::print_floating<float>(-16384.0F);
+  ::test::print_floating<float>(-8192.0F);
+  ::test::print_floating<float>(-4096.0F);
+  ::test::print_floating<float>(-2048.0F);
+  ::test::print_floating<float>(-1024.0F);
+  ::test::print_floating<float>(-512.0F);
+  ::test::print_floating<float>(-256.0F);
+  ::test::print_floating<float>(-128.0F);
+  ::test::print_floating<float>(-64.0F);
+  ::test::print_floating<float>(-32.0F);
+  ::test::print_floating<float>(-16.0F);
+  ::test::print_floating<float>(-8.0F);
+  ::test::print_floating<float>(-4.0F);
+  ::test::print_floating<float>(-2.0F);
+  ::test::print_floating<float>(-1.0F);
+  ::test::print_floating<float>(-0.5F);
+  ::test::print_floating<float>(-0.25F);
+  ::test::print_floating<float>(-0.125F);
+  ::test::print_floating<float>(-0.0625F);
+  ::test::print_floating<float>(-0.03125F);
+  ::test::print_floating<float>(-0.015625F);
+  ::test::print_floating<float>(-0.0078125F);
+  ::test::print_floating<float>(-0.00390625F);
+  ::test::print_floating<float>(-0.001953125F);
+  ::test::print_floating<float>(-0.0009765625F);
+  ::test::print_floating<float>(-0.0F);
+  ::test::print_floating<float>(0.0F);
+  ::test::print_floating<float>(0.0009765625F);
+  ::test::print_floating<float>(0.001953125F);
+  ::test::print_floating<float>(0.00390625F);
+  ::test::print_floating<float>(0.0078125F);
+  ::test::print_floating<float>(0.015625F);
+  ::test::print_floating<float>(0.03125F);
+  ::test::print_floating<float>(0.0625F);
+  ::test::print_floating<float>(0.125F);
+  ::test::print_floating<float>(0.25F);
+  ::test::print_floating<float>(0.5F);
+  ::test::print_floating<float>(1.0F);
+  ::test::print_floating<float>(2.0F);
+  ::test::print_floating<float>(4.0F);
+  ::test::print_floating<float>(8.0F);
+  ::test::print_floating<float>(16.0F);
+  ::test::print_floating<float>(32.0F);
+  ::test::print_floating<float>(64.0F);
+  ::test::print_floating<float>(128.0F);
+  ::test::print_floating<float>(256.0F);
+  ::test::print_floating<float>(512.0F);
+  ::test::print_floating<float>(1024.0F);
+  ::test::print_floating<float>(2048.0F);
+  ::test::print_floating<float>(4096.0F);
+  ::test::print_floating<float>(8192.0F);
+  ::test::print_floating<float>(16384.0F);
+  ::test::print_floating<float>(::std::numeric_limits<float>::infinity());
+  ::test::print_floating<float>(::std::numeric_limits<float>::quiet_NaN());
+  ::test::print_floating<float>(0.000111111111111111111111111111111F);
+  ::test::print_floating<float>(0.00111111111111111111111111111111F);
+  ::test::print_floating<float>(0.0111111111111111111111111111111F);
+  ::test::print_floating<float>(0.111111111111111111111111111111F);
+  ::test::print_floating<float>(1.111111111111111111111111111111F);
+  ::test::print_floating<float>(11.111111111111111111111111111111F);
+  ::test::print_floating<float>(111.111111111111111111111111111111F);
+  ::test::print_floating<float>(1111.111111111111111111111111111111F);
+  ::test::print_floating<float>(11111.111111111111111111111111111111F);
 }
 
 TEST(Lector, PrintNumberIntegerBits08) {
