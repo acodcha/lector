@@ -627,6 +627,8 @@ If you intend to compute the Lector library's code coverage, ensure that the LCO
 - On Windows, install LCOV using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install lcov`.
 - On other systems, visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
 
+The Lector library currently has 100% code coverage.
+
 Next, refer to the section for your preferred build system:
 
 - [§4.1. Bazel](#41-developer-guide-bazel)

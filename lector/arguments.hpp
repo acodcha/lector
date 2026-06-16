@@ -423,7 +423,7 @@ public:
 
   /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
   /// list of command line arguments.
-  /// @param ...arguments The variadic list of command line arguments.
+  /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {
     validate_keys();
   }
