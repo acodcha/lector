@@ -148,9 +148,9 @@ TEST(Lector, PrintFilesystemPath) {
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionDoubleExactMatch) {
-#if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<double>(-std::numeric_limits<double>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<double>(-16384.0), "-1.63840000000000000e+04");
   EXPECT_EQ(::lector::print<double>(-8192.0), "-8192.00000000000000");
   EXPECT_EQ(::lector::print<double>(-4096.0), "-4096.00000000000000");
@@ -205,9 +205,9 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDoubleExactMatch) {
   EXPECT_EQ(::lector::print<double>(4096.0), "4096.00000000000000");
   EXPECT_EQ(::lector::print<double>(8192.0), "8192.00000000000000");
   EXPECT_EQ(::lector::print<double>(16384.0), "1.63840000000000000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<double>(::std::numeric_limits<double>::infinity()), "inf");
   EXPECT_EQ(::lector::print<double>(::std::numeric_limits<double>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionDoubleRoundTrip) {
@@ -288,9 +288,9 @@ TEST(Lector, PrintNumberFloatingPointPrecisionDoubleRoundTrip) {
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionExtendedExactMatch) {
-#if defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(-::std::numeric_limits<long double>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<long double>(-std::numeric_limits<long double>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(-16384.0L), "-1.638400000000000000000e+04");
   EXPECT_EQ(::lector::print<long double>(-8192.0L), "-8192.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(-4096.0L), "-4096.000000000000000000");
@@ -345,9 +345,9 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtendedExactMatch) {
   EXPECT_EQ(::lector::print<long double>(4096.0L), "4096.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(8192.0L), "8192.000000000000000000");
   EXPECT_EQ(::lector::print<long double>(16384.0L), "1.638400000000000000000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<long double>(::std::numeric_limits<long double>::infinity()), "inf");
   EXPECT_EQ(::lector::print<long double>(::std::numeric_limits<long double>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionExtendedRoundTrip) {
@@ -428,9 +428,9 @@ TEST(Lector, PrintNumberFloatingPointPrecisionExtendedRoundTrip) {
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionSingleExactMatch) {
-#if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::quiet_NaN()), "nan");
   EXPECT_EQ(::lector::print<float>(-::std::numeric_limits<float>::infinity()), "-inf");
+#if defined(__linux__)
   EXPECT_EQ(::lector::print<float>(-16384.0F), "-1.638400000e+04");
   EXPECT_EQ(::lector::print<float>(-8192.0F), "-8192.000000");
   EXPECT_EQ(::lector::print<float>(-4096.0F), "-4096.000000");
@@ -485,9 +485,9 @@ TEST(Lector, PrintNumberFloatingPointPrecisionSingleExactMatch) {
   EXPECT_EQ(::lector::print<float>(4096.0F), "4096.000000");
   EXPECT_EQ(::lector::print<float>(8192.0F), "8192.000000");
   EXPECT_EQ(::lector::print<float>(16384.0F), "1.638400000e+04");
+#endif  // defined(__linux__)
   EXPECT_EQ(::lector::print<float>(::std::numeric_limits<float>::infinity()), "inf");
   EXPECT_EQ(::lector::print<float>(::std::numeric_limits<float>::quiet_NaN()), "nan");
-#endif  // defined(__linux__)
 }
 
 TEST(Lector, PrintNumberFloatingPointPrecisionSingleRoundTrip) {
