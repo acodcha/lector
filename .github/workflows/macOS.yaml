@@ -24,7 +24,7 @@ on:
     branches: [main]
 jobs:
   build_and_test_bazel_macos:
-    name: Build and test with Bazel on macOS
+    name: Bazel
     runs-on: macos-latest
     steps:
       - name: Checkout the repository
@@ -44,7 +44,7 @@ jobs:
       - name: Test with Bazel
         run: bazel test //...
   build_and_test_cmake_macos:
-    name: Build and test with CMake on macOS
+    name: CMake
     runs-on: macos-latest
     steps:
       - name: Checkout the repository
@@ -60,7 +60,7 @@ jobs:
       - name: Test with CMake
         run: ctest --test-dir build -C Release
   build_and_test_meson_macos:
-    name: Build and test with Meson on macOS
+    name: Meson
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6

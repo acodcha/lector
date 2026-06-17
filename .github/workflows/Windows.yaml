@@ -24,7 +24,7 @@ on:
     branches: [main]
 jobs:
   build_and_test_bazel_windows:
-    name: Build and test with Bazel on Windows
+    name: Bazel
     runs-on: windows-latest
     steps:
       - name: Checkout the repository
@@ -44,7 +44,7 @@ jobs:
       - name: Test with Bazel
         run: bazel test //...
   build_and_test_cmake_windows:
-    name: Build and test with CMake on Windows
+    name: CMake
     runs-on: windows-latest
     steps:
       - name: Checkout the repository
@@ -60,7 +60,7 @@ jobs:
       - name: Test with CMake
         run: ctest --test-dir build -C Release
   build_and_test_meson_windows:
-    name: Build and test with Meson on Windows
+    name: Meson
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
