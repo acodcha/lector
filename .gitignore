@@ -2,5 +2,6 @@
 bazel-*
 build/
 coverage/
+docs/
 MODULE.bazel.lock
 subprojects/
