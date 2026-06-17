@@ -10,7 +10,8 @@ Contents:
 - [**§2. Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
 - [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
 - [**§4. Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
-- [**§5. License**](#5-license)
+- [**§5. Documentation**](#5-documentation)
+- [**§6. License**](#6-license)
 
 ## §1. Introduction
 
@@ -614,7 +615,7 @@ The following checks are performed when parsing command line arguments. These ex
 
 ## §4. Developer Guide
 
-To check out, build, and test the Lector library for yourself, first clone the Lector repository:
+To check out, build, and test the Lector library for yourself, first clone the Lector library's repository:
 
 ```bash
 git clone git@github.com:acodcha/lector.git lector
@@ -750,7 +751,26 @@ This generates a code coverage report at `coverage/index.html`. Open this file i
 
 [(Back to Developer Guide)](#4-developer-guide)
 
-## §5. License
+## §5. Documentation
+
+The Lector library's documentation can be built locally on your system with the Doxygen automatic source code documentation generator, which must be installed on your system.
+
+- On Ubuntu or other Debian-based Linux systems, install Doxygen with `sudo apt install doxygen`.
+- On macOS, install Doxygen using the [Homebrew](<https://brew.sh>) package manager with `brew install doxygen`.
+- On Windows, install Doxygen using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install doxygen.install`.
+- On other systems, visit <https://www.doxygen.org> for alternate means of installation.
+
+See the [**Developer Guide**](#4-developer-guide) section for cloning the Lector library's repository. Then, build the Lector library's documentation with:
+
+```bash
+doxygen Doxyfile.txt
+```
+
+This builds HTML documentation pages in the `docs/html/` directory. Browse the documentation by opening the `docs/html/index.html` file in any web browser.
+
+[(Back to Top)](#lector)
+
+## §6. License
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
