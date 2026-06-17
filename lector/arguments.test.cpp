@@ -484,9 +484,9 @@ TEST(Lector, ArgumentsExecutableOnlyNoArguments) {
   const ::test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable");
-  EXPECT_EQ(arguments.print_usage_command(), "executable");
-  EXPECT_TRUE(arguments.print_usage_options().empty());
+  EXPECT_EQ(arguments.execution(), "/path/to/executable");
+  EXPECT_EQ(arguments.usage_command(), "executable");
+  EXPECT_TRUE(arguments.usage_options().empty());
 }
 
 TEST(Lector, ArgumentsInvalidValueForArgumentInline) {
@@ -570,9 +570,9 @@ TEST(Lector, ArgumentsNoExecutableNoArguments) {
   const ::test::Command command;
   arguments.parse(command.argc(), command.argv());
   EXPECT_TRUE(arguments.executable_path().empty());
-  EXPECT_TRUE(arguments.print_execution().empty());
-  EXPECT_TRUE(arguments.print_usage_command().empty());
-  EXPECT_TRUE(arguments.print_usage_options().empty());
+  EXPECT_TRUE(arguments.execution().empty());
+  EXPECT_TRUE(arguments.usage_command().empty());
+  EXPECT_TRUE(arguments.usage_options().empty());
 }
 
 TEST(Lector, ArgumentsUnknownArgumentInline) {
@@ -597,12 +597,12 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLong) {
   ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key=200 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key <number>] [--key=200 <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key <number>]  Short confusing argument." << std::endl
                          << "[--key=200 <number>]  Long confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidConfusingInlineLongShortLong) {
@@ -615,12 +615,12 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLong) {
   ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key=200 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key=200 <number>] [--key <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key=200 <number>]  Long confusing argument." << std::endl
                          << "[--key <number>]  Short confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLong) {
@@ -633,12 +633,12 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLong) {
   ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key=200 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key <number>] [--key=200 <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key <number>]  Short confusing argument." << std::endl
                          << "[--key=200 <number>]  Long confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShort) {
@@ -651,12 +651,12 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShort) {
   EXPECT_EQ(arguments.get<::test::Label::ConfusingShort>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key <number>] [--key=200 <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key <number>]  Short confusing argument." << std::endl
                          << "[--key=200 <number>]  Long confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLong) {
@@ -669,12 +669,12 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLong) {
   ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key=200 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key=200 <number>] [--key <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key=200 <number>]  Long confusing argument." << std::endl
                          << "[--key <number>]  Short confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShort) {
@@ -687,12 +687,12 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShort) {
   EXPECT_EQ(arguments.get<::test::Label::ConfusingShort>().parsed_value().value(),
             static_cast<::std::int32_t>(200));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(arguments.print_execution(), "/path/to/executable --key 200");
-  EXPECT_EQ(arguments.print_usage_command(), "executable [--key=200 <number>] [--key <number>]");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
+  EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "[--key=200 <number>]  Long confusing argument." << std::endl
                          << "[--key <number>]  Short confusing argument." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyInlineLongKeys) {
@@ -713,9 +713,9 @@ TEST(Lector, ArgumentsValidManyInlineLongKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -723,7 +723,7 @@ TEST(Lector, ArgumentsValidManyInlineLongKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyInlineShortKeys) {
@@ -744,9 +744,9 @@ TEST(Lector, ArgumentsValidManyInlineShortKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -754,7 +754,7 @@ TEST(Lector, ArgumentsValidManyInlineShortKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyMixedLongKeys) {
@@ -775,9 +775,9 @@ TEST(Lector, ArgumentsValidManyMixedLongKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -785,7 +785,7 @@ TEST(Lector, ArgumentsValidManyMixedLongKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyMixedShortKeys) {
@@ -806,9 +806,9 @@ TEST(Lector, ArgumentsValidManyMixedShortKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -816,7 +816,7 @@ TEST(Lector, ArgumentsValidManyMixedShortKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceLongKeys) {
@@ -837,9 +837,9 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -847,7 +847,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceShortKeys) {
@@ -868,9 +868,9 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeys) {
             static_cast<::std::int32_t>(200));
   ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
-  EXPECT_EQ(arguments.print_execution(),
+  EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
-  EXPECT_EQ(arguments.print_usage_command(),
+  EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
   std::ostringstream expected_usage_details;
   expected_usage_details << "-s <value>, --shape <value>  Main output shape." << std::endl;
@@ -878,7 +878,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeys) {
   expected_usage_details
       << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
   expected_usage_details << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.print_usage_options(), expected_usage_details.str());
+  EXPECT_EQ(arguments.usage_options(), expected_usage_details.str());
 }
 
 TEST(Lector, ArgumentsWeirdLongInline) {

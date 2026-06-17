@@ -40,12 +40,12 @@ int main(int argc, char* argv[]) {
   arguments.parse(argc, argv);
 
   if (arguments.get<Label::Help>().parsed_or_default_value()) {
-    std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
-    std::cout << "Options: " << std::endl << arguments.print_usage_options() << std::endl;
+    std::cout << "Usage: " << arguments.usage_command() << std::endl;
+    std::cout << "Options: " << std::endl << arguments.usage_options() << std::endl;
     return EXIT_SUCCESS;
   }
 
-  std::cout << "Execution: " << arguments.print_execution() << std::endl;
+  std::cout << "Execution: " << arguments.execution() << std::endl;
 
   const std::filesystem::path& output_directory{
     arguments.get<Label::OutputDirectory>().parsed_value().value()};
@@ -65,7 +65,7 @@ The above example imports the Lector library, defines an enumeration of argument
 
 In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.
 
-The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form `key value` and as inline key-value pairs of the form `key=value`; it can even handle keys that contain arbitrary characters, including equal signs (`=`)!
+The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form `key value` or as inline key-value pairs of the form `key=value`. It can also handle keys that contain arbitrary characters.
 
 [(Back to Top)](#lector)
 
@@ -103,9 +103,9 @@ Once your build system has been configured, simply include the Lector library's 
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes.
-- The file `<lector/parse.hpp>` defines the `lector::Spellings` and `lector::parse()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
-- The file `<lector/print.hpp>` defines the `lector::Names` and `lector::print()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
+- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the [Introduction](#1-introduction) section.
+- The file `<lector/parse.hpp>` defines the `lector::Spellings` and `lector::parse()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
+- The file `<lector/print.hpp>` defines the `lector::Names` and `lector::print()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 
 All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
@@ -302,18 +302,17 @@ arguments.parse(argc, argv);
 
 This populates all arguments with their parsed values and performs strict error checking. See the [Error Checking](#35-user-guide-error-checking) section for details.
 
-Usage information can be obtained via the `lector::Arguments::print_usage_command()` and `lector::Arguments::print_usage_options()` methods. For example:
+Usage information can be obtained via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods. For example:
 
 ```cpp
-std::cout << "Usage: " << arguments.print_usage_command() << std::endl;
-std::cout << "Options: " << std::endl;
-std::cout << arguments.print_usage_options() << std::endl;
+std::cout << "Usage: " << arguments.usage_command() << std::endl;
+std::cout << "Options: " << std::endl << arguments.usage_options() << std::endl;
 ```
 
-Execution information can be obtained via the  `lector::Arguments::print_execution()` method. For example:
+Execution information can be obtained via the  `lector::Arguments::execution()` method. For example:
 
 ```cpp
-std::cout << "Execution: " << arguments.print_execution() << std::endl;
+std::cout << "Execution: " << arguments.execution() << std::endl;
 ```
 
 See the [Command Line](#32-user-guide-command-line) section for details.
@@ -334,7 +333,7 @@ const std::int32_t iterations{
 
 The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
 
-Display usage information via the `lector::Arguments::print_usage_command()` and `lector::Arguments::print_usage_options()` methods:
+Display usage information via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods:
 
 ```text
 path/to/my_project_main --help
@@ -346,7 +345,7 @@ Options:
 [-h, --help]  Display usage information and exit. Optional.
 ```
 
-Display execution information via the  `lector::Arguments::print_execution()` method:
+Display execution information via the  `lector::Arguments::execution()` method:
 
 ```text
 path/to/my_project_main --output_directory /some/path --iterations 200
@@ -455,17 +454,19 @@ With the above definitions, the `lector::print()` and `lector::parse()` methods 
 #include <iostream>
 #include <lector/parse.hpp>
 #include <lector/print.hpp>
-#include <my_project/shape.hpp>
+#include "my_project/shape.hpp"
 
 int main() {
   const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
   assert(printed_triangle == "Triangle");
 
-  const std::optional<my_project::Shape> parsed_triangle{lector::parse("TRIANGLE")};
+  const std::optional<my_project::Shape> parsed_triangle{
+    lector::parse<my_project::Shape>("TRIANGLE")};
   assert(parsed_triangle.has_value());
   assert(parsed_triangle.value() == my_project::Shape::Triangle);
 
-  const std::optional<my_project::Shape> invalid_shape{lector::parse("Invalid Shape")};
+  const std::optional<my_project::Shape> invalid_shape{
+    lector::parse<my_project::Shape>("Invalid Shape")};
   assert(!invalid_shape.has_value());
 
   return EXIT_SUCCESS;
@@ -479,7 +480,7 @@ The enumeration can also be used as a command line argument. For example:
 #include <iostream>
 #include <lector/arguments.hpp>
 #include <lector/print.hpp>
-#include <my_project/shape.hpp>
+#include "my_project/shape.hpp"
 
 enum class Label : std::int8_t {FavoriteShape};
 
@@ -542,13 +543,14 @@ With the above definitions, the `lector::print()` and `lector::parse()` methods 
 #include <iostream>
 #include <lector/parse.hpp>
 #include <lector/print.hpp>
-#include <my_project/point.hpp>
+#include "my_project/point.hpp"
 
 int main() {
   const std::string printed_point{lector::print(my_project::Point{1.0, 2.0, 3.0})};
   assert(printed_point == "1 2 3");
 
-  const std::optional<my_project::Point> parsed_point{lector::parse("4.0 5.0 6.0")};
+  const std::optional<my_project::Point> parsed_point{
+    lector::parse<my_project::Point>("4.0 5.0 6.0")};
   assert(parsed_point.has_value());
   assert(parsed_point.value() == my_project::Point{4.0, 5.0, 6.0});
 
@@ -562,8 +564,7 @@ The data structure can also be used as a command line argument. For example:
 #include <cstdint>
 #include <iostream>
 #include <lector/arguments.hpp>
-#include <lector/print.hpp>
-#include <my_project/point.hpp>
+#include "my_project/point.hpp"
 
 enum class Label : std::int8_t {FavoritePoint};
 
@@ -579,7 +580,7 @@ int main(int argc, char* argv[]) {
   const my_project::Point point{
     arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
 
-  std::cout << "Your favorite point is: " << lector::print(point) << std::endl;
+  std::cout << "Your favorite point is: " << point << std::endl;
 
   return EXIT_SUCCESS;
 }
