@@ -24,14 +24,14 @@ on:
     branches: [main]
 jobs:
   formatting:
-    name: Check C++ source code formatting with Clang-Format
+    name: ClangFormat
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v6
       - name: Print the FindUtils version
         run: find --version
-      - name: Print the Clang-Format version
+      - name: Print the ClangFormat version
         run: clang-format --version
       - name: Check source code formatting
         run: |
@@ -43,7 +43,7 @@ jobs:
             exit 1
           fi
   build_and_test_bazel_linux:
-    name: Build and test with Bazel on Linux
+    name: Bazel
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -63,7 +63,7 @@ jobs:
       - name: Test with Bazel
         run: bazel test //...
   build_and_test_cmake_linux:
-    name: Build and test with CMake on Linux
+    name: CMake
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -79,7 +79,7 @@ jobs:
       - name: Test with CMake
         run: ctest --test-dir build -C Release
   build_and_test_meson_linux:
-    name: Build and test with Meson on Linux
+    name: Meson
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository

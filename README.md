@@ -82,9 +82,9 @@ First, ensure that the Git source control system is installed on your system.
 
 Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system.
 
-- On Ubuntu or other Debian-based Linux systems, the GNU GCC and LLVM Clang C++ compilers are most commonly used. Install the GNU GCC C++ compiler with `sudo apt install g++` or the LLVM library C++ compiler with `sudo apt install llvm`.
+- On Ubuntu or other Debian-based Linux systems, the GNU GCC and LLVM Clang C++ compilers are most commonly used. Install the GNU GCC C++ compiler with `sudo apt install g++` or the LLVM library with `sudo apt install llvm`.
 - On macOS, the LLVM Clang C++ compiler is most commonly used. Install the LLVM library using the [Homebrew](<https://brew.sh>) package manager with `brew install llvm`.
-- On Windows, the MSVC C++ compiler is most commonly used. Visit <https://learn.microsoft.com/en-us/cpp/windows> to install the Windows MSVC C++ compiler.
+- On Windows, the MSVC C++ compiler is most commonly used. Visit <https://learn.microsoft.com/cpp/windows> to install the Windows MSVC C++ compiler.
 - On other systems, visit <https://gcc.gnu.org> or <https://llvm.org> for alternate means of installation for the GNU GCC and LLVM Clang C++ compilers, respectively.
 
 Third, ensure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
