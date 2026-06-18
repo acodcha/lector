@@ -350,9 +350,9 @@ public:
       ::std::size_t length{argument.length() + 1};
       argv_[index] = new char[length];
 #ifdef _MSC_VER
-      ::strcpy_s(argv_[index], length, argument.c_str());
+      ::strncpy_s(argv_[index], length, argument.c_str(), length);
 #else
-      ::std::strcpy(argv_[index], argument.c_str());
+      ::std::strncpy(argv_[index], argument.c_str(), length);
 #endif
       ++index;
     }
