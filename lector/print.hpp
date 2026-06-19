@@ -23,6 +23,7 @@
 #include <cmath>
 #include <cstdint>
 #include <filesystem>
+#include <iomanip>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -143,15 +144,9 @@ template <>
 /// @return The string that contains the printed single-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::string print(const float& value) {
-  static constexpr float Zero{0.0F};
-  static constexpr float OneThousandth{0.001F};
-  static constexpr float OneHundredth{0.01F};
-  static constexpr float OneTenth{0.1F};
-  static constexpr float One{1.0F};
-  static constexpr float Ten{10.0F};
-  static constexpr float OneHundred{100.0F};
-  static constexpr float OneThousand{1000.0F};
-  static constexpr float TenThousand{10000.0F};
+  if (value == 0.0F) {
+    return "0";
+  }
   if (!::std::isfinite(value)) {
     if (::std::isnan(value)) {
       return "nan";
@@ -162,70 +157,28 @@ template <>
     return "inf";
   }
   const float absolute{::std::abs(value)};
+  constexpr int digits{::std::numeric_limits<float>::max_digits10};
   ::std::ostringstream stream;
-  if (absolute < One) {
-    // Interval: [0, 1[
-    if (absolute < OneThousandth) {
-      // Interval: [0, 0.001[
-      if (absolute == Zero) {
-        // Interval: [0, 0]
-        stream << 0;
-      } else {
-        // Interval: ]0, 0.001[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<float>::max_digits10) << value;
-      }
-    } else {
-      // Interval: [0.001, 1[
-      if (absolute < OneTenth) {
-        // Interval: [0.001, 0.1[
-        if (absolute < OneHundredth) {
-          // Interval: [0.001, 0.01[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 3) << value;
-        } else {
-          // Interval: [0.01, 0.1[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 2) << value;
-        }
-      } else {
-        // Interval: [0.1, 1[
-        stream << ::std::fixed
-               << ::std::setprecision(::std::numeric_limits<float>::max_digits10 + 1) << value;
-      }
-    }
+  if (absolute < 0.001F || absolute >= 10000.0F) {
+    stream << ::std::scientific << ::std::setprecision(digits) << value;
   } else {
-    // Interval: [1, +inf[
-    if (absolute < OneThousand) {
-      // Interval: [1, 1000[
-      if (absolute < Ten) {
-        // Interval: [1, 10[
-        stream << ::std::fixed << ::std::setprecision(::std::numeric_limits<float>::max_digits10)
-               << value;
-      } else {
-        // Interval: [10, 1000[
-        if (absolute < OneHundred) {
-          // Interval: [10, 100[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 1) << value;
-        } else {
-          // Interval: [100, 1000[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 2) << value;
-        }
-      }
+    stream << ::std::fixed;
+    if (absolute < 0.01F) {
+      stream << ::std::setprecision(digits + 3);
+    } else if (absolute < 0.1F) {
+      stream << ::std::setprecision(digits + 2);
+    } else if (absolute < 1.0F) {
+      stream << ::std::setprecision(digits + 1);
+    } else if (absolute < 10.0F) {
+      stream << ::std::setprecision(digits);
+    } else if (absolute < 100.0F) {
+      stream << ::std::setprecision(digits - 1);
+    } else if (absolute < 1000.0F) {
+      stream << ::std::setprecision(digits - 2);
     } else {
-      // Interval: [1000, +inf[
-      if (absolute < TenThousand) {
-        // Interval: [1000, 10000[
-        stream << ::std::fixed
-               << ::std::setprecision(::std::numeric_limits<float>::max_digits10 - 3) << value;
-      } else {
-        // Interval: [10000, +inf[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<float>::max_digits10) << value;
-      }
+      stream << ::std::setprecision(digits - 3);
     }
+    stream << value;
   }
   return stream.str();
 }
@@ -235,15 +188,9 @@ template <>
 /// @return The string that contains the printed double-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::string print(const double& value) {
-  static constexpr double Zero{0.0};
-  static constexpr double OneThousandth{0.001};
-  static constexpr double OneHundredth{0.01};
-  static constexpr double OneTenth{0.1};
-  static constexpr double One{1.0};
-  static constexpr double Ten{10.0};
-  static constexpr double OneHundred{100.0};
-  static constexpr double OneThousand{1000.0};
-  static constexpr double TenThousand{10000.0};
+  if (value == 0.0) {
+    return "0";
+  }
   if (!::std::isfinite(value)) {
     if (::std::isnan(value)) {
       return "nan";
@@ -254,70 +201,28 @@ template <>
     return "inf";
   }
   const double absolute{::std::abs(value)};
+  constexpr int digits{::std::numeric_limits<double>::max_digits10};
   ::std::ostringstream stream;
-  if (absolute < One) {
-    // Interval: [0, 1[
-    if (absolute < OneThousandth) {
-      // Interval: [0, 0.001[
-      if (absolute == Zero) {
-        // Interval: [0, 0]
-        stream << 0;
-      } else {
-        // Interval: ]0, 0.001[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<double>::max_digits10) << value;
-      }
-    } else {
-      // Interval: [0.001, 1[
-      if (absolute < OneTenth) {
-        // Interval: [0.001, 0.1[
-        if (absolute < OneHundredth) {
-          // Interval: [0.001, 0.01[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 3) << value;
-        } else {
-          // Interval: [0.01, 0.1[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 2) << value;
-        }
-      } else {
-        // Interval: [0.1, 1[
-        stream << ::std::fixed
-               << ::std::setprecision(::std::numeric_limits<double>::max_digits10 + 1) << value;
-      }
-    }
+  if (absolute < 0.001 || absolute >= 10000.0) {
+    stream << ::std::scientific << ::std::setprecision(digits) << value;
   } else {
-    // Interval: [1, +inf[
-    if (absolute < OneThousand) {
-      // Interval: [1, 1000[
-      if (absolute < Ten) {
-        // Interval: [1, 10[
-        stream << ::std::fixed << ::std::setprecision(::std::numeric_limits<double>::max_digits10)
-               << value;
-      } else {
-        // Interval: [10, 1000[
-        if (absolute < OneHundred) {
-          // Interval: [10, 100[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 1) << value;
-        } else {
-          // Interval: [100, 1000[
-          stream << ::std::fixed
-                 << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 2) << value;
-        }
-      }
+    stream << ::std::fixed;
+    if (absolute < 0.01) {
+      stream << ::std::setprecision(digits + 3);
+    } else if (absolute < 0.1) {
+      stream << ::std::setprecision(digits + 2);
+    } else if (absolute < 1.0) {
+      stream << ::std::setprecision(digits + 1);
+    } else if (absolute < 10.0) {
+      stream << ::std::setprecision(digits);
+    } else if (absolute < 100.0) {
+      stream << ::std::setprecision(digits - 1);
+    } else if (absolute < 1000.0) {
+      stream << ::std::setprecision(digits - 2);
     } else {
-      // Interval: [1000, +inf[
-      if (absolute < TenThousand) {
-        // Interval: [1000, 10000[
-        stream << ::std::fixed
-               << ::std::setprecision(::std::numeric_limits<double>::max_digits10 - 3) << value;
-      } else {
-        // Interval: [10000, +inf[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<double>::max_digits10) << value;
-      }
+      stream << ::std::setprecision(digits - 3);
     }
+    stream << value;
   }
   return stream.str();
 }
@@ -327,15 +232,9 @@ template <>
 /// @return The string that contains the printed extended-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::string print(const long double& value) {
-  static constexpr long double Zero{0.0L};
-  static constexpr long double OneThousandth{0.001L};
-  static constexpr long double OneHundredth{0.01L};
-  static constexpr long double OneTenth{0.1L};
-  static constexpr long double One{1.0L};
-  static constexpr long double Ten{10.0L};
-  static constexpr long double OneHundred{100.0L};
-  static constexpr long double OneThousand{1000.0L};
-  static constexpr long double TenThousand{10000.0L};
+  if (value == 0.0L) {
+    return "0";
+  }
   if (!::std::isfinite(value)) {
     if (::std::isnan(value)) {
       return "nan";
@@ -346,76 +245,28 @@ template <>
     return "inf";
   }
   const long double absolute{::std::abs(value)};
+  constexpr int digits{::std::numeric_limits<long double>::max_digits10};
   ::std::ostringstream stream;
-  if (absolute < One) {
-    // Interval: [0, 1[
-    if (absolute < OneThousandth) {
-      // Interval: [0, 0.001[
-      if (absolute == Zero) {
-        // Interval: [0, 0]
-        stream << 0;
-      } else {
-        // Interval: ]0, 0.001[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
-      }
-    } else {
-      // Interval: [0.001, 1[
-      if (absolute < OneTenth) {
-        // Interval: [0.001, 0.1[
-        if (absolute < OneHundredth) {
-          // Interval: [0.001, 0.01[
-          stream
-              << ::std::fixed
-              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 3) << value;
-        } else {
-          // Interval: [0.01, 0.1[
-          stream
-              << ::std::fixed
-              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 2) << value;
-        }
-      } else {
-        // Interval: [0.1, 1[
-        stream
-            << ::std::fixed
-            << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 + 1) << value;
-      }
-    }
+  if (absolute < 0.001F || absolute >= 10000.0F) {
+    stream << ::std::scientific << ::std::setprecision(digits) << value;
   } else {
-    // Interval: [1, +inf[
-    if (absolute < OneThousand) {
-      // Interval: [1, 1000[
-      if (absolute < Ten) {
-        // Interval: [1, 10[
-        stream << ::std::fixed
-               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
-      } else {
-        // Interval: [10, 1000[
-        if (absolute < OneHundred) {
-          // Interval: [10, 100[
-          stream
-              << ::std::fixed
-              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 1) << value;
-        } else {
-          // Interval: [100, 1000[
-          stream
-              << ::std::fixed
-              << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 2) << value;
-        }
-      }
+    stream << ::std::fixed;
+    if (absolute < 0.01L) {
+      stream << ::std::setprecision(digits + 3);
+    } else if (absolute < 0.1L) {
+      stream << ::std::setprecision(digits + 2);
+    } else if (absolute < 1.0L) {
+      stream << ::std::setprecision(digits + 1);
+    } else if (absolute < 10.0L) {
+      stream << ::std::setprecision(digits);
+    } else if (absolute < 100.0L) {
+      stream << ::std::setprecision(digits - 1);
+    } else if (absolute < 1000.0L) {
+      stream << ::std::setprecision(digits - 2);
     } else {
-      // Interval: [1000, +inf[
-      if (absolute < TenThousand) {
-        // Interval: [1000, 10000[
-        stream
-            << ::std::fixed
-            << ::std::setprecision(::std::numeric_limits<long double>::max_digits10 - 3) << value;
-      } else {
-        // Interval: [10000, +inf[
-        stream << ::std::scientific
-               << ::std::setprecision(::std::numeric_limits<long double>::max_digits10) << value;
-      }
+      stream << ::std::setprecision(digits - 3);
     }
+    stream << value;
   }
   return stream.str();
 }

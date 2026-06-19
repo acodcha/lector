@@ -297,7 +297,7 @@ private:
 
   /// @brief Validates the default value of this command line argument. Called by the constructor
   /// that specifies a default value.
-  /// @throws std::logic_error if this command line argument is boolean but has a default
+  /// @throws std::logic_error if this command line argument is boolean but specifies a default
   /// value.
   constexpr void validate_default_value() const {
     if constexpr (::std::is_same_v<Type, bool>) {
@@ -605,52 +605,17 @@ private:
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
     const ::std::size_t count{static_cast<::std::size_t>(argc)};
-    for (::std::size_t index{1}; index < count; ++index) {
-      const ::std::string_view token{argv[index]};
+    for (::std::size_t argv_index{1}; argv_index < count; ++argv_index) {
+      const ::std::string_view token{argv[argv_index]};
       const BestArgument best_argument{find_best_argument(token)};
-      // Parse and populate the value for the best matching argument.
-      ::std::size_t argument_index{0};
+      ::std::size_t current_index{0};
       ::std::apply(
           [&](auto&... argument) {
             (..., [&]() {
-              if (argument_index == best_argument.index) {
-                if (argument.parsed_value().has_value()) {
-                  throw ::std::invalid_argument(
-                      "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
-                }
-                using Type = typename ::std::decay_t<decltype(argument)>::ValueType;
-                if constexpr (::std::is_same_v<Type, bool>) {
-                  // Boolean arguments are key-only flags; their presence implies true.
-                  argument.set_parsed_value(true);
-                } else {
-                  // For non-boolean arguments, extract the raw value either from the inline portion
-                  // of the token or from the next standalone element in argv.
-                  ::std::string raw_value;
-                  if (best_argument.is_inline) {
-                    // Extract everything after the first '=' directly following the key.
-                    raw_value = ::std::string{token.substr(best_argument.key_length + 1)};
-                  } else {
-                    // Extract the next standalone element from argv.
-                    if (index + 1 < static_cast<::std::size_t>(argc)) {
-                      ++index;
-                      raw_value = argv[index];
-                    } else {
-                      throw ::std::invalid_argument(
-                          "Missing value for argument '" + argument.longest_key_with_value_type()
-                          + "'.");
-                    }
-                  }
-                  // Parse the raw value and use it to populate the argument's value.
-                  const auto parsed_value{::lector::parse<Type>(raw_value)};
-                  if (parsed_value.has_value()) {
-                    argument.set_parsed_value(parsed_value.value());
-                  } else {
-                    throw ::std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                                  + argument.longest_key_with_value_type() + "'.");
-                  }
-                }
+              if (current_index == best_argument.index) {
+                populate_argument(argument, best_argument, argc, argv, argv_index);
               }
-              ++argument_index;
+              ++current_index;
             }());
           },
           arguments_);
@@ -715,9 +680,10 @@ private:
 
   /// @brief Checks whether a token contains an inline match of an argument's key of the form
   /// "key=value". Called by lector::Arguments::find_best_argument().
-  /// @tparam Argument The argument type.
+  /// @tparam Argument The type of the argument that has the key to be used in the comparison.
   /// @param[in] token The token to check.
-  /// @param[in] argument_index The index of the argument that has the key.
+  /// @param[in] argument_index The index of the argument that has the key to be used in the
+  /// comparison.
   /// @param[in] argument_key The argument key against which to compare.
   /// @return A populated lector::Arguments::BestArgument data structure if the specified token
   /// contains an inline match for the key, or std::nullopt otherwise.
@@ -736,6 +702,76 @@ private:
       }
     }
     return ::std::nullopt;
+  }
+
+  /// @brief Populates an argument with its parsed value. Called by
+  /// lector::Arguments::parse_arguments().
+  /// @tparam Argument The type of the argument to be populated.
+  /// @param[in,out] argument The argument to be populated.
+  /// @param[in] best_argument The lector::Arguments::BestArgument data structure that corresponds
+  /// to the argument to be populated.
+  /// @param[in] argc The number of command line arguments, including the executable path.
+  /// @param[in] argv The array of C-strings that represents the command line arguments, starting
+  /// with the executable path.
+  /// @param[in,out] argv_index The index of the argument in the array of C-string command line
+  /// arguments whose value is to be extracted and used to populate the argument.
+  /// @throws std::invalid_argument if the parsed value is invalid for this argument type.
+  template <typename Argument>
+  static void populate_argument(Argument& argument, const BestArgument& best_argument,
+                                const int argc, char* argv[], ::std::size_t& argv_index) {
+    if (argument.parsed_value().has_value()) {
+      throw ::std::invalid_argument(
+          "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
+    }
+    using Type = typename ::std::decay_t<Argument>::ValueType;
+    if constexpr (::std::is_same_v<Type, bool>) {
+      // Boolean arguments are key-only flags; their presence implies true.
+      argument.set_parsed_value(true);
+    } else {
+      // This is a non-boolean argument. Extract and parse its value.
+      const ::std::string raw_value{extract_raw_value(
+          best_argument, argument.longest_key_with_value_type(), argc, argv, argv_index)};
+      const ::std::optional<Type> parsed_value{::lector::parse<Type>(raw_value)};
+      if (parsed_value.has_value()) {
+        argument.set_parsed_value(parsed_value.value());
+      } else {
+        throw ::std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                      + argument.longest_key_with_value_type() + "'.");
+      }
+    }
+  }
+
+  /// @brief Extracts the raw string value from an argv token for a non-boolean best argument.
+  /// Called by lector::Arguments::populate_argument().
+  /// @param[in] best_argument The best argument.
+  /// @param[in] best_argument_longest_key_with_value_type The longest key with value type of the
+  /// best argument.
+  /// @param[in] argc The number of command line arguments, including the executable path.
+  /// @param[in] argv The array of C-strings that represents the command line arguments, starting
+  /// with the executable path.
+  /// @param[in,out] argv_index The index of the argument in the array of C-string command line
+  /// arguments whose raw string value is to be extracted.
+  /// @return The extracted raw string value.
+  /// @throws std::invalid_argument if the command line arguments are missing the value for this
+  /// best argument.
+  [[nodiscard]] static ::std::string extract_raw_value(
+      const BestArgument& best_argument,
+      const ::std::string& best_argument_longest_key_with_value_type, const int argc, char* argv[],
+      ::std::size_t& argv_index) {
+    const ::std::string_view token{argv[argv_index]};
+    if (best_argument.is_inline) {
+      // The token contains an inline value of the form "key=value". Extract the last portion of the
+      // token.
+      return ::std::string{token.substr(best_argument.key_length + 1)};
+    }
+    if (argv_index + 1 < static_cast<::std::size_t>(argc)) {
+      // The token is a standalone value of the form "key", and the next token is of the form
+      // "value". Advance the argv index to consume the next argv element that contains the value.
+      ++argv_index;
+      return ::std::string{argv[argv_index]};
+    }
+    throw ::std::invalid_argument(
+        "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
   }
 
   /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
@@ -776,11 +812,11 @@ private:
   }
 
   /// @brief Variadic collection of command line arguments.
-  ::std::tuple<ArgumentTypes...> arguments_{};
+  ::std::tuple<ArgumentTypes...> arguments_;
 
   /// @brief Executable path of this collection of command line arguments. If the command line
   /// arguments have not yet been parsed from argc and argv, this path is empty.
-  ::std::filesystem::path executable_path_{};
+  ::std::filesystem::path executable_path_;
 };
 
 }  // namespace lector
