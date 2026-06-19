@@ -396,7 +396,7 @@ Checks: '
   readability-inconsistent-declaration-parameter-name,
   readability-inconsistent-ifelse-braces,
   readability-isolate-declaration,
-  readability-magic-numbers,
+  -readability-magic-numbers,
   readability-make-member-function-const,
   readability-math-missing-parentheses,
   readability-misleading-indentation,
