@@ -55,6 +55,8 @@ cc_test(
     visibility = ["//visibility:public"],
     deps = [
         "//lector:arguments",
+        "//lector:parse",
+        "//lector:print",
         "@googletest//:gtest_main",
     ],
 )

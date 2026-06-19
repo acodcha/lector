@@ -18,10 +18,12 @@
 
 #include "lector/parse.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
+#include <iostream>
 #include <limits>
 #include <optional>
 #include <string>
@@ -62,7 +64,7 @@ public:
 /// @param[in] first The first point to compare.
 /// @param[in] second The second point to compare.
 /// @return Returns true if both points are equal, and false otherwise.
-inline constexpr bool operator==(const ::test::Point& first, const ::test::Point& second) {
+constexpr bool operator==(const ::test::Point& first, const ::test::Point& second) {
   return first.x == second.x && first.y == second.y && first.z == second.z;
 }
 
