@@ -65,7 +65,7 @@ template <typename EnumerationType>
 /// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
 /// value.
 template <typename Type>
-[[nodiscard]] ::std::optional<Type> parse(const ::std::string_view text);
+[[nodiscard]] ::std::optional<Type> parse(::std::string_view text);
 
 /// @brief Parses a string view into a boolean value. For example, the string view "true" returns
 /// the boolean value true.
@@ -73,7 +73,7 @@ template <typename Type>
 /// @return The parsed boolean value, or std::nullopt if the string view could not be parsed into a
 /// valid boolean value.
 template <>
-[[nodiscard]] ::std::optional<bool> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<bool> parse(const ::std::string_view text) {
   if (text == "true" || text == "True" || text == "TRUE") {
     return true;
   }
@@ -89,11 +89,11 @@ template <>
 /// @return The parsed 8-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 8-bit natural number.
 template <>
-[[nodiscard]] ::std::optional<::std::uint8_t> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::uint8_t> parse(const ::std::string_view text) {
   if (text.find('-') != ::std::string::npos) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number;
+  ::std::uint64_t number{0};
   try {
     number = ::std::stoull(::std::string{text});
   } catch (...) {
@@ -111,11 +111,11 @@ template <>
 /// @return The parsed 16-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 16-bit natural number.
 template <>
-[[nodiscard]] ::std::optional<::std::uint16_t> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::uint16_t> parse(const ::std::string_view text) {
   if (text.find('-') != ::std::string::npos) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number;
+  ::std::uint64_t number{0};
   try {
     number = ::std::stoull(::std::string{text});
   } catch (...) {
@@ -133,11 +133,11 @@ template <>
 /// @return The parsed 32-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 32-bit natural number.
 template <>
-[[nodiscard]] ::std::optional<::std::uint32_t> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::uint32_t> parse(const ::std::string_view text) {
   if (text.find('-') != ::std::string::npos) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number;
+  ::std::uint64_t number{0};
   try {
     number = ::std::stoull(::std::string{text});
   } catch (...) {
@@ -155,11 +155,11 @@ template <>
 /// @return The parsed 64-bit natural number, or std::nullopt if the string view could not be parsed
 /// into a valid 64-bit natural number.
 template <>
-[[nodiscard]] ::std::optional<::std::uint64_t> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::uint64_t> parse(const ::std::string_view text) {
   if (text.find('-') != ::std::string::npos) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number;
+  ::std::uint64_t number{0};
   try {
     number = ::std::stoull(::std::string{text});
   } catch (...) {
@@ -174,8 +174,8 @@ template <>
 /// @return The parsed 8-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 8-bit integer number.
 template <>
-[[nodiscard]] ::std::optional<::std::int8_t> parse(const ::std::string_view text) {
-  ::std::int64_t number;
+[[nodiscard]] inline ::std::optional<::std::int8_t> parse(const ::std::string_view text) {
+  ::std::int64_t number{0};
   try {
     number = ::std::stoll(::std::string{text});
   } catch (...) {
@@ -196,8 +196,8 @@ template <>
 /// @return The parsed 16-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 16-bit integer number.
 template <>
-[[nodiscard]] ::std::optional<::std::int16_t> parse(const ::std::string_view text) {
-  ::std::int64_t number;
+[[nodiscard]] inline ::std::optional<::std::int16_t> parse(const ::std::string_view text) {
+  ::std::int64_t number{0};
   try {
     number = ::std::stoll(::std::string{text});
   } catch (...) {
@@ -218,8 +218,8 @@ template <>
 /// @return The parsed 32-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 32-bit integer number.
 template <>
-[[nodiscard]] ::std::optional<::std::int32_t> parse(const ::std::string_view text) {
-  ::std::int64_t number;
+[[nodiscard]] inline ::std::optional<::std::int32_t> parse(const ::std::string_view text) {
+  ::std::int64_t number{0};
   try {
     number = ::std::stoll(::std::string{text});
   } catch (...) {
@@ -240,8 +240,8 @@ template <>
 /// @return The parsed 64-bit integer number, or std::nullopt if the string view could not be parsed
 /// into a valid 64-bit integer number.
 template <>
-[[nodiscard]] ::std::optional<::std::int64_t> parse(const ::std::string_view text) {
-  ::std::int64_t number;
+[[nodiscard]] inline ::std::optional<::std::int64_t> parse(const ::std::string_view text) {
+  ::std::int64_t number{0};
   try {
     number = ::std::stoll(::std::string{text});
   } catch (...) {
@@ -256,8 +256,8 @@ template <>
 /// @return The parsed single-precision floating-point number, or std::nullopt if the string view
 /// could not be parsed into a valid single-precision floating-point number.
 template <>
-[[nodiscard]] ::std::optional<float> parse(const ::std::string_view text) {
-  float number;
+[[nodiscard]] inline ::std::optional<float> parse(const ::std::string_view text) {
+  float number{0.0F};
   try {
     number = ::std::stof(::std::string{text});
   } catch (...) {
@@ -272,8 +272,8 @@ template <>
 /// @return The parsed double-precision floating-point number, or std::nullopt if the string view
 /// could not be parsed into a valid double-precision floating-point number.
 template <>
-[[nodiscard]] ::std::optional<double> parse(const ::std::string_view text) {
-  double number;
+[[nodiscard]] inline ::std::optional<double> parse(const ::std::string_view text) {
+  double number{0.0};
   try {
     number = ::std::stod(::std::string{text});
   } catch (...) {
@@ -288,8 +288,8 @@ template <>
 /// @return The parsed extended-precision floating-point number, or std::nullopt if the string view
 /// could not be parsed into a valid extended-precision floating-point number.
 template <>
-[[nodiscard]] ::std::optional<long double> parse(const ::std::string_view text) {
-  long double number;
+[[nodiscard]] inline ::std::optional<long double> parse(const ::std::string_view text) {
+  long double number{0.0L};
   try {
     number = ::std::stold(::std::string{text});
   } catch (...) {
@@ -302,7 +302,7 @@ template <>
 /// @param[in] text The string view to parse.
 /// @return The parsed string.
 template <>
-[[nodiscard]] ::std::optional<::std::string> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::string> parse(const ::std::string_view text) {
   return ::std::string{text};
 }
 
@@ -310,7 +310,7 @@ template <>
 /// @param[in] text The string view to parse.
 /// @return The parsed string view.
 template <>
-[[nodiscard]] ::std::optional<::std::string_view> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::string_view> parse(const ::std::string_view text) {
   return text;
 }
 
@@ -319,7 +319,7 @@ template <>
 /// @return The parsed filesystem path, or std::nullopt if the string view could not be parsed into
 /// a valid filesystem path.
 template <>
-[[nodiscard]] ::std::optional<::std::filesystem::path> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<::std::filesystem::path> parse(const ::std::string_view text) {
   return ::std::filesystem::path{text};
 }
 
@@ -330,7 +330,7 @@ template <>
 /// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
 /// value.
 template <typename Type>
-[[nodiscard]] ::std::optional<Type> parse(const ::std::string_view text) {
+[[nodiscard]] inline ::std::optional<Type> parse(const ::std::string_view text) {
   if constexpr (::std::is_enum_v<Type>) {
     return ::lector::parse_enumeration<Type>(text);
   } else {

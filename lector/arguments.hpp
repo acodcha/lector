@@ -86,7 +86,7 @@ public:
 
   /// @brief Default constructor. Initializes the command line argument with no keys, an empty
   /// description, required importance, and no default value.
-  Argument() noexcept {};
+  Argument() noexcept = default;
 
   /// @brief Constructor for a required command line argument or a boolean command line argument. No
   /// default value is needed. Boolean command line arguments are always optional and always default
@@ -205,7 +205,7 @@ public:
   /// @brief Prints the longest key of this command line argument with its associated value type as
   /// a string.
   /// @return The string that contains the longest key and its associated value type.
-  ::std::string longest_key_with_value_type() const {
+  [[nodiscard]] ::std::string longest_key_with_value_type() const {
     ::std::string result{longest_key()};
     const ::std::string type{value_type()};
     if (!type.empty()) {
@@ -217,7 +217,7 @@ public:
   /// @brief Prints the keys of this command line argument with their associated value types as a
   /// string.
   /// @return The string that contains the keys and value types.
-  ::std::string keys_with_value_types() const {
+  [[nodiscard]] ::std::string keys_with_value_types() const {
     ::std::string result;
     for (::std::size_t index{0}; index < keys_.size(); ++index) {
       const ::std::string type{value_type()};
@@ -234,7 +234,7 @@ public:
 
   /// @brief Prints the execution of this command line argument as a string.
   /// @return The string that contains the execution of this command line argument.
-  ::std::string execution() const {
+  [[nodiscard]] ::std::string execution() const {
     if constexpr (::std::is_same_v<Type, bool>) {
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
@@ -274,8 +274,9 @@ private:
                                  + "'. Arguments cannot have empty keys.");
       }
     }
-    for (::std::size_t first{0}; first < keys_.size(); ++first) {
-      for (::std::size_t second{first + 1}; second < keys_.size(); ++second) {
+    const ::std::size_t keys_size{keys_.size()};
+    for (::std::size_t first{0}; first < keys_size; ++first) {
+      for (::std::size_t second{first + 1}; second < keys_size; ++second) {
         if (keys_[first] == keys_[second]) {
           throw ::std::logic_error(
               "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
@@ -308,8 +309,8 @@ private:
 
   /// @brief Prints the value type of this command line argument as a string.
   /// @return The string that contains the value type.
-  constexpr ::std::string_view value_type() const {
-    if (::std::is_same_v<Type, bool>) {
+  [[nodiscard]] constexpr ::std::string_view value_type() const {
+    if constexpr (::std::is_same_v<Type, bool>) {
       return "";
     } else if constexpr (::std::numeric_limits<Type>::is_integer) {
       return "<number>";
@@ -328,7 +329,7 @@ private:
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
   /// @throws std::logic_error if this command line argument has no keys.
-  const ::std::string& longest_key() const {
+  [[nodiscard]] const ::std::string& longest_key() const {
     if (keys_.empty()) {
       throw ::std::logic_error("All arguments must each have at least one key.");
     }
@@ -342,19 +343,19 @@ private:
   }
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
-  ::std::vector<::std::string> keys_{};
+  ::std::vector<::std::string> keys_;
 
   /// @brief Description of this command line argument. Used when printing usage information. Set at
   /// construction.
-  ::std::string description_{};
+  ::std::string description_;
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
-  ::std::optional<Type> default_value_{};
+  ::std::optional<Type> default_value_;
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
-  ::std::optional<Type> parsed_value_{};
+  ::std::optional<Type> parsed_value_;
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
@@ -482,7 +483,7 @@ public:
 
   /// @brief Prints the execution of this collection of command line argument as a string.
   /// @return The string that contains the execution of this collection of command line argument.
-  ::std::string execution() const {
+  [[nodiscard]] ::std::string execution() const {
     ::std::string printed_execution_arguments;
     ::std::apply(
         [&](const auto&... argument) {
@@ -603,7 +604,8 @@ private:
   /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
-    for (::std::size_t index{1}; index < static_cast<::std::size_t>(argc); ++index) {
+    const ::std::size_t count{static_cast<::std::size_t>(argc)};
+    for (::std::size_t index{1}; index < count; ++index) {
       const ::std::string_view token{argv[index]};
       const BestArgument best_argument{find_best_argument(token)};
       // Parse and populate the value for the best matching argument.
@@ -618,7 +620,7 @@ private:
                 }
                 using Type = typename ::std::decay_t<decltype(argument)>::ValueType;
                 if constexpr (::std::is_same_v<Type, bool>) {
-                  // Boolean arguments are flags; their presence implies true.
+                  // Boolean arguments are key-only flags; their presence implies true.
                   argument.set_parsed_value(true);
                 } else {
                   // For non-boolean arguments, extract the raw value either from the inline portion
@@ -659,47 +661,81 @@ private:
   /// @param[in] token The command line argument token to match.
   /// @return The best matching argument.
   /// @throws std::invalid_argument if an unknown argument is encountered.
-  BestArgument find_best_argument(const ::std::string_view token) const {
-    BestArgument best_argument{};
-    bool found_match{false};
+  [[nodiscard]] BestArgument find_best_argument(const ::std::string_view token) const {
+    ::std::optional<BestArgument> best_argument;
     ::std::size_t argument_index{0};
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            for (const ::std::string& key : argument.keys()) {
-              // First, check for an exact match of the form "key".
-              if (token == key) {
-                if (!found_match || key.size() > best_argument.key_length
-                    || (key.size() == best_argument.key_length && best_argument.is_inline)) {
-                  best_argument.key_length = key.size();
-                  best_argument.index = argument_index;
-                  best_argument.is_inline = false;
-                  found_match = true;
+            for (const ::std::string& argument_key : argument.keys()) {
+              const ::std::optional<BestArgument> exact_match{
+                try_exact_match(token, argument_index, argument_key)};
+              if (exact_match.has_value()) {
+                if (!best_argument.has_value()
+                    || exact_match->key_length > best_argument->key_length
+                    || (exact_match->key_length == best_argument->key_length
+                        && best_argument->is_inline)) {
+                  best_argument = exact_match;
                 }
+                continue;
               }
-              // Second, check for an inline match of the form "key=value". This is strictly
-              // disabled for boolean arguments because they are flags that do not have values.
-              using ArgumentType = typename ::std::decay_t<decltype(argument)>::ValueType;
-              if constexpr (!::std::is_same_v<ArgumentType, bool>) {
-                if (token.size() > key.size() && token.compare(0, key.size(), key) == 0
-                    && token[key.size()] == '=') {
-                  if (!found_match || key.size() > best_argument.key_length) {
-                    best_argument.key_length = key.size();
-                    best_argument.index = argument_index;
-                    best_argument.is_inline = true;
-                    found_match = true;
-                  }
-                }
+              const ::std::optional<BestArgument> inline_match{
+                try_inline_match<decltype(argument)>(token, argument_index, argument_key)};
+              if (inline_match.has_value()
+                  && (!best_argument.has_value()
+                      || inline_match->key_length > best_argument->key_length)) {
+                best_argument = inline_match;
               }
             }
             ++argument_index;
           }());
         },
         arguments_);
-    if (!found_match) {
+    if (!best_argument.has_value()) {
       throw ::std::invalid_argument("Unknown argument '" + ::std::string{token} + "'.");
     }
-    return best_argument;
+    return best_argument.value();
+  }
+
+  /// @brief Checks whether a token is the exact match of an argument's key. Called by
+  /// lector::Arguments::find_best_argument().
+  /// @param[in] token The token to check.
+  /// @param[in] argument_index The index of the argument that has the key.
+  /// @param[in] argument_key The argument key against which to compare.
+  /// @return A populated lector::Arguments::BestArgument data structure if the specified token is
+  /// an exact match for the key, or std::nullopt otherwise.
+  [[nodiscard]] static ::std::optional<BestArgument> try_exact_match(
+      const ::std::string_view token, const ::std::size_t argument_index,
+      const ::std::string_view argument_key) noexcept {
+    if (token == argument_key) {
+      return BestArgument{argument_index, argument_key.size(), false};
+    }
+    return ::std::nullopt;
+  }
+
+  /// @brief Checks whether a token contains an inline match of an argument's key of the form
+  /// "key=value". Called by lector::Arguments::find_best_argument().
+  /// @tparam Argument The argument type.
+  /// @param[in] token The token to check.
+  /// @param[in] argument_index The index of the argument that has the key.
+  /// @param[in] argument_key The argument key against which to compare.
+  /// @return A populated lector::Arguments::BestArgument data structure if the specified token
+  /// contains an inline match for the key, or std::nullopt otherwise.
+  template <typename Argument>
+  [[nodiscard]] static ::std::optional<BestArgument> try_inline_match(
+      const ::std::string_view token, const ::std::size_t argument_index,
+      const ::std::string_view argument_key) noexcept {
+    using ArgumentType = typename ::std::decay_t<Argument>::ValueType;
+    // Inline matching is strictly disabled for boolean arguments because they are key-only flags
+    // that do not have values.
+    if constexpr (!::std::is_same_v<ArgumentType, bool>) {
+      if (token.size() > argument_key.size()
+          && token.compare(0, argument_key.size(), argument_key) == 0
+          && token[argument_key.size()] == '=') {
+        return BestArgument{argument_index, argument_key.size(), true};
+      }
+    }
+    return ::std::nullopt;
   }
 
   /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
