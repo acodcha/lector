@@ -536,9 +536,10 @@ TEST(Lector, ArgumentsMissingArgumentOptionalInline) {
   const ::test::Command command{"/path/to/executable", "--output=/path/to/output"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::filesystem::path>& parsed_ouput_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_ouput_directory.has_value()
+              && parsed_ouput_directory.value() == ::std::filesystem::path("/path/to/output"));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -548,9 +549,10 @@ TEST(Lector, ArgumentsMissingArgumentOptionalWhitespace) {
   const ::test::Command command{"/path/to/executable", "--output", "/path/to/output"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::filesystem::path>& parsed_ouput_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_ouput_directory.has_value()
+              && parsed_ouput_directory.value() == ::std::filesystem::path("/path/to/output"));
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -614,9 +616,10 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLong) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingLong>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_long{
+    arguments.get<::test::Label::ConfusingLong>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
   std::ostringstream expected_usage_details;
@@ -632,9 +635,10 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLong) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingLong>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_long{
+    arguments.get<::test::Label::ConfusingLong>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
   std::ostringstream expected_usage_details;
@@ -650,9 +654,10 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLong) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingLong>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_long{
+    arguments.get<::test::Label::ConfusingLong>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
   std::ostringstream expected_usage_details;
@@ -667,9 +672,10 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShort) {
   const ::test::Command command{"/path/to/executable", "--key", "200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingShort>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_short{
+    arguments.get<::test::Label::ConfusingShort>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_short.has_value() && parsed_confusing_short.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
@@ -686,9 +692,10 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLong) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingLong>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_long{
+    arguments.get<::test::Label::ConfusingLong>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
   std::ostringstream expected_usage_details;
@@ -703,9 +710,10 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShort) {
   const ::test::Command command{"/path/to/executable", "--key", "200"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::ConfusingShort>().parsed_value().has_value());
-  EXPECT_EQ(
-      arguments.get<::test::Label::ConfusingShort>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_confusing_short{
+    arguments.get<::test::Label::ConfusingShort>().parsed_value()};
+  EXPECT_TRUE(
+      parsed_confusing_short.has_value() && parsed_confusing_short.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::ConfusingLong>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
@@ -723,15 +731,18 @@ TEST(Lector, ArgumentsValidManyInlineLongKeys) {
                                 "--iterations=200", "--help"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -753,15 +764,18 @@ TEST(Lector, ArgumentsValidManyInlineShortKeys) {
     "/path/to/executable", "-s=Circle", "-o=/path/to/output", "-i=200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -783,15 +797,18 @@ TEST(Lector, ArgumentsValidManyMixedLongKeys) {
                                 "--iterations=200", "--help"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -813,15 +830,18 @@ TEST(Lector, ArgumentsValidManyMixedShortKeys) {
     "/path/to/executable", "-s=Circle", "-o", "/path/to/output", "-i=200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -843,15 +863,18 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeys) {
                                 "/path/to/output",     "--iterations", "200",    "--help"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -873,15 +896,18 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeys) {
     "/path/to/executable", "-s", "Circle", "-o", "/path/to/output", "-i", "200", "-h"};
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
-  ASSERT_TRUE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Shape>().parsed_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::OutputDirectory>().parsed_value().value(),
-            ::std::filesystem::path("/path/to/output"));
-  ASSERT_TRUE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Iterations>().parsed_value().value(), ::test::TwoHundred);
-  ASSERT_TRUE(arguments.get<::test::Label::Help>().parsed_value().has_value());
-  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_value().value());
+  const ::std::optional<::test::Shape>& parsed_shape{
+    arguments.get<::test::Label::Shape>().parsed_value()};
+  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == ::test::Shape::Circle);
+  const ::std::optional<::std::filesystem::path>& parsed_output_directory{
+    arguments.get<::test::Label::OutputDirectory>().parsed_value()};
+  EXPECT_TRUE(parsed_output_directory.has_value()
+              && parsed_output_directory.value() == ::std::filesystem::path("/path/to/output"));
+  const ::std::optional<::std::int32_t>& parsed_iterations{
+    arguments.get<::test::Label::Iterations>().parsed_value()};
+  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == ::test::TwoHundred);
+  const ::std::optional<bool>& parsed_help{arguments.get<::test::Label::Help>().parsed_value()};
+  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
@@ -903,8 +929,9 @@ TEST(Lector, ArgumentsWeirdLongInline) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_weird{
+    arguments.get<::test::Label::Weird>().parsed_value()};
+  EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -916,8 +943,9 @@ TEST(Lector, ArgumentsWeirdLongWhitespace) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_weird{
+    arguments.get<::test::Label::Weird>().parsed_value()};
+  EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -929,8 +957,9 @@ TEST(Lector, ArgumentsWeirdShortInline) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_weird{
+    arguments.get<::test::Label::Weird>().parsed_value()};
+  EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -942,8 +971,9 @@ TEST(Lector, ArgumentsWeirdShortWhitespace) {
   arguments.parse(command.argc(), command.argv());
   EXPECT_EQ(arguments.executable_path(), ::std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
-  ASSERT_TRUE(arguments.get<::test::Label::Weird>().parsed_value().has_value());
-  EXPECT_EQ(arguments.get<::test::Label::Weird>().parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& parsed_weird{
+    arguments.get<::test::Label::Weird>().parsed_value()};
+  EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == ::test::TwoHundred);
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
 }
 
@@ -967,8 +997,8 @@ TEST(Lector, ArgumentConstructorBooleanOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Print usage information.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_FALSE(argument.default_value().value());
+  const ::std::optional<bool>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_FALSE(argument.parsed_or_default_value());
   EXPECT_EQ(argument.keys_with_value_types(), "-h, --help");
@@ -996,8 +1026,8 @@ TEST(Lector, ArgumentConstructorDataStructureOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::FirstPoint);
+  const ::std::optional<::test::Point>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::FirstPoint);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::FirstPoint);
   EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
@@ -1040,8 +1070,8 @@ TEST(Lector, ArgumentConstructorEnumerationOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::Shape::Circle);
+  const ::std::optional<::test::Shape>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::Shape::Circle);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_types(), "-s <value>, --shape <value>");
@@ -1084,8 +1114,9 @@ TEST(Lector, ArgumentConstructorFilesystemPathOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::std::filesystem::path("/some/path"));
+  const ::std::optional<::std::filesystem::path>& default_value{argument.default_value()};
+  EXPECT_TRUE(
+      default_value.has_value() && default_value.value() == ::std::filesystem::path("/some/path"));
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path("/some/path"));
   EXPECT_EQ(argument.keys_with_value_types(), "-o <path>, --output <path>");
@@ -1128,8 +1159,8 @@ TEST(Lector, ArgumentConstructorNumberFloatingPointOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneOverThirtyTwo);
+  const ::std::optional<double>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::OneOverThirtyTwo);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneOverThirtyTwo);
   EXPECT_EQ(argument.keys_with_value_types(), "-t <value>, --tolerance <value>");
@@ -1172,8 +1203,8 @@ TEST(Lector, ArgumentConstructorNumberIntegerOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
@@ -1216,8 +1247,8 @@ TEST(Lector, ArgumentConstructorStringOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Title of the report.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), "My Report");
+  const ::std::optional<::std::string>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
   EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
@@ -1260,8 +1291,8 @@ TEST(Lector, ArgumentConstructorWeirdOptional) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(argument.keys_with_value_types(), "=w=k <number>, ==weird=key <number>");
@@ -1291,8 +1322,8 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(first.default_value().has_value());
-  EXPECT_EQ(first.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(first.parsed_value().has_value());
   EXPECT_EQ(first.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(first.execution().empty());
@@ -1301,8 +1332,9 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(second.default_value().has_value());
-  EXPECT_EQ(second.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(
+      second_default_value.has_value() && second_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(second.parsed_value().has_value());
   EXPECT_EQ(second.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
@@ -1312,10 +1344,11 @@ TEST(Lector, ArgumentCopyConstructor) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(second.default_value().has_value());
-  EXPECT_EQ(second.default_value().value(), ::test::OneHundred);
-  EXPECT_TRUE(second.parsed_value().has_value());
-  EXPECT_EQ(second.parsed_or_default_value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == ::test::OneHundred);
+  const ::std::optional<::std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == ::test::TwoHundred);
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
@@ -1328,8 +1361,8 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(first.default_value().has_value());
-  EXPECT_EQ(first.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(first.parsed_value().has_value());
   EXPECT_EQ(first.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(first.execution().empty());
@@ -1346,12 +1379,25 @@ TEST(Lector, ArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(second.default_value().has_value());
-  EXPECT_EQ(second.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(
+      second_default_value.has_value() && second_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(second.parsed_value().has_value());
   EXPECT_EQ(second.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(::test::TwoHundred);
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
+  const ::std::optional<::std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == ::test::OneHundred);
+  const ::std::optional<::std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == ::test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
 TEST(Lector, ArgumentMoveConstructor) {
@@ -1362,22 +1408,35 @@ TEST(Lector, ArgumentMoveConstructor) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(first.default_value().has_value());
-  EXPECT_EQ(first.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(first.parsed_value().has_value());
   EXPECT_EQ(first.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(first.execution().empty());
-  const ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{std::move(first)};
+  ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{std::move(first)};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(second.default_value().has_value());
-  EXPECT_EQ(second.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(
+      second_default_value.has_value() && second_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(second.parsed_value().has_value());
   EXPECT_EQ(second.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(::test::TwoHundred);
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
+  const ::std::optional<::std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == ::test::OneHundred);
+  const ::std::optional<::std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == ::test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
 TEST(Lector, ArgumentMoveAssignmentOperator) {
@@ -1388,8 +1447,8 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.keys(), expected_keys);
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(first.default_value().has_value());
-  EXPECT_EQ(first.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(first.parsed_value().has_value());
   EXPECT_EQ(first.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(first.execution().empty());
@@ -1406,12 +1465,25 @@ TEST(Lector, ArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(second.default_value().has_value());
-  EXPECT_EQ(second.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(
+      second_default_value.has_value() && second_default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(second.parsed_value().has_value());
   EXPECT_EQ(second.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(::test::TwoHundred);
+  EXPECT_EQ(second.label(), ::test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), ::lector::Importance::Optional);
+  const ::std::optional<::std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == ::test::OneHundred);
+  const ::std::optional<::std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == ::test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_types(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
 TEST(Lector, ArgumentSetParsedValueBoolean) {
@@ -1421,8 +1493,8 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Print usage information.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_TRUE(argument.default_value().has_value());
-  EXPECT_FALSE(argument.default_value().value());
+  const ::std::optional<bool>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), false);
   EXPECT_TRUE(argument.execution().empty());
@@ -1431,10 +1503,10 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Print usage information.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  EXPECT_TRUE(argument.default_value().has_value());
-  EXPECT_FALSE(argument.default_value().value());
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_TRUE(argument.parsed_value().value());
+  const ::std::optional<bool>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(default_value_again.has_value() && !default_value_again.value());
+  const ::std::optional<bool>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value());
   EXPECT_EQ(argument.parsed_or_default_value(), true);
   EXPECT_EQ(argument.keys_with_value_types(), "-h, --help");
   EXPECT_EQ(argument.execution(), "--help");
@@ -1448,8 +1520,8 @@ TEST(Lector, ArgumentSetParsedValueDataStructure) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::FirstPoint);
+  const ::std::optional<::test::Point>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::FirstPoint);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::FirstPoint);
   EXPECT_TRUE(argument.execution().empty());
@@ -1458,10 +1530,10 @@ TEST(Lector, ArgumentSetParsedValueDataStructure) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::FirstPoint);
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), ::test::SecondPoint);
+  const ::std::optional<::test::Point>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == ::test::FirstPoint);
+  const ::std::optional<::test::Point>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value() == ::test::SecondPoint);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::SecondPoint);
   EXPECT_EQ(argument.keys_with_value_types(), "-p <value>, --point <value>");
   EXPECT_EQ(argument.execution(), "--point 4 5 6");
@@ -1475,8 +1547,8 @@ TEST(Lector, ArgumentSetParsedValueEnumeration) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::Shape::Circle);
+  const ::std::optional<::test::Shape>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::Shape::Circle);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Circle);
   EXPECT_TRUE(argument.execution().empty());
@@ -1485,10 +1557,11 @@ TEST(Lector, ArgumentSetParsedValueEnumeration) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Main output shape.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::Shape::Circle);
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), ::test::Shape::Square);
+  const ::std::optional<::test::Shape>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(
+      default_value_again.has_value() && default_value_again.value() == ::test::Shape::Circle);
+  const ::std::optional<::test::Shape>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value() == ::test::Shape::Square);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::Shape::Square);
   EXPECT_EQ(argument.keys_with_value_types(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.execution(), "--shape Square");
@@ -1502,21 +1575,24 @@ TEST(Lector, ArgumentSetParsedValueFilesystemPath) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), "/some/path");
+  const ::std::optional<::std::filesystem::path>& default_value{argument.default_value()};
+  EXPECT_TRUE(
+      default_value.has_value() && default_value.value() == ::std::filesystem::path{"/some/path"});
   EXPECT_FALSE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_or_default_value(), "/some/path");
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path{"/some/path"});
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("/another/path");
   EXPECT_EQ(argument.label(), ::test::Label::OutputDirectory);
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), "/some/path");
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), "/another/path");
-  EXPECT_EQ(argument.parsed_or_default_value(), "/another/path");
+  const ::std::optional<::std::filesystem::path>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(default_value_again.has_value()
+              && default_value_again.value() == ::std::filesystem::path{"/some/path"});
+  const ::std::optional<::std::filesystem::path>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(
+      parsed_value.has_value() && parsed_value.value() == ::std::filesystem::path{"/another/path"});
+  EXPECT_EQ(argument.parsed_or_default_value(), ::std::filesystem::path{"/another/path"});
   EXPECT_EQ(argument.keys_with_value_types(), "-o <path>, --output <path>");
   EXPECT_EQ(argument.execution(), "--output /another/path");
 }
@@ -1529,8 +1605,8 @@ TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneOverThirtyTwo);
+  const ::std::optional<double>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::OneOverThirtyTwo);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneOverThirtyTwo);
   EXPECT_TRUE(argument.execution().empty());
@@ -1539,10 +1615,11 @@ TEST(Lector, ArgumentSetParsedValueNumberFloatingPoint) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneOverThirtyTwo);
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), ::test::OneOverSixtyFour);
+  const ::std::optional<double>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(
+      default_value_again.has_value() && default_value_again.value() == ::test::OneOverThirtyTwo);
+  const ::std::optional<double>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value() == ::test::OneOverSixtyFour);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneOverSixtyFour);
   EXPECT_EQ(argument.keys_with_value_types(), "-t <value>, --tolerance <value>");
   EXPECT_EQ(argument.execution(), "--tolerance 0.0156250000000000000");
@@ -1556,8 +1633,8 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == ::test::OneHundred);
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(argument.execution().empty());
@@ -1566,10 +1643,10 @@ TEST(Lector, ArgumentSetParsedValueNumberInteger) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), ::test::OneHundred);
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), ::test::TwoHundred);
+  const ::std::optional<::std::int32_t>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == ::test::OneHundred);
+  const ::std::optional<::std::int32_t>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value() == ::test::TwoHundred);
   EXPECT_EQ(argument.parsed_or_default_value(), ::test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_types(), "-i <number>, --iterations <number>");
   EXPECT_EQ(argument.execution(), "--iterations 200");
@@ -1583,8 +1660,8 @@ TEST(Lector, ArgumentSetParsedValueString) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Title of the report.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), "My Report");
+  const ::std::optional<::std::string>& default_value{argument.default_value()};
+  EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_FALSE(argument.parsed_value().has_value());
   EXPECT_EQ(argument.parsed_or_default_value(), "My Report");
   EXPECT_TRUE(argument.execution().empty());
@@ -1593,10 +1670,10 @@ TEST(Lector, ArgumentSetParsedValueString) {
   EXPECT_EQ(argument.keys(), expected_keys);
   EXPECT_EQ(argument.description(), "Title of the report.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
-  ASSERT_TRUE(argument.default_value().has_value());
-  EXPECT_EQ(argument.default_value().value(), "My Report");
-  ASSERT_TRUE(argument.parsed_value().has_value());
-  EXPECT_EQ(argument.parsed_value().value(), "Some Other Report");
+  const ::std::optional<::std::string>& default_value_again{argument.default_value()};
+  EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == "My Report");
+  const ::std::optional<::std::string>& parsed_value{argument.parsed_value()};
+  EXPECT_TRUE(parsed_value.has_value() && parsed_value.value() == "Some Other Report");
   EXPECT_EQ(argument.parsed_or_default_value(), "Some Other Report");
   EXPECT_EQ(argument.keys_with_value_types(), "-t <text>, --title <text>");
   EXPECT_EQ(argument.execution(), "--title Some Other Report");

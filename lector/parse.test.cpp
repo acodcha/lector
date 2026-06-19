@@ -234,18 +234,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleInvalid) {
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotANumber) {
-  ASSERT_TRUE(::lector::parse<double>("NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("NAN").value()));
-  ASSERT_TRUE(::lector::parse<double>("NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("NaN").value()));
-  ASSERT_TRUE(::lector::parse<double>("nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("nan").value()));
-  ASSERT_TRUE(::lector::parse<double>("-NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("-NAN").value()));
-  ASSERT_TRUE(::lector::parse<double>("-NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("-NaN").value()));
-  ASSERT_TRUE(::lector::parse<double>("-nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<double>("-nan").value()));
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("-NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("-NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("-nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotationDecimal) {
@@ -337,18 +349,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedInvalid) {
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotANumber) {
-  ASSERT_TRUE(::lector::parse<long double>("NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("NAN").value()));
-  ASSERT_TRUE(::lector::parse<long double>("NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("NaN").value()));
-  ASSERT_TRUE(::lector::parse<long double>("nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("nan").value()));
-  ASSERT_TRUE(::lector::parse<long double>("-NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("-NAN").value()));
-  ASSERT_TRUE(::lector::parse<long double>("-NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("-NaN").value()));
-  ASSERT_TRUE(::lector::parse<long double>("-nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<long double>("-nan").value()));
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotationInteger) {
@@ -440,18 +464,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleInvalid) {
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotANumber) {
-  ASSERT_TRUE(::lector::parse<float>("NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NAN").value()));
-  ASSERT_TRUE(::lector::parse<float>("NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("NaN").value()));
-  ASSERT_TRUE(::lector::parse<float>("nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("nan").value()));
-  ASSERT_TRUE(::lector::parse<float>("-NAN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NAN").value()));
-  ASSERT_TRUE(::lector::parse<float>("-NaN").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-NaN").value()));
-  ASSERT_TRUE(::lector::parse<float>("-nan").has_value());
-  EXPECT_TRUE(::std::isnan(::lector::parse<float>("-nan").value()));
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("-NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("-NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("-nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotationInteger) {
