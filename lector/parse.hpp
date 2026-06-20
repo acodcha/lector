@@ -407,6 +407,10 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
+  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+    return ::std::nullopt;
+  }
   // Parse the text into a number using std::stof() instead of std::from_chars(). The <charconv>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
@@ -458,6 +462,10 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
+  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+    return ::std::nullopt;
+  }
   // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
@@ -509,6 +517,10 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
+  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+    return ::std::nullopt;
+  }
   // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
