@@ -9,9 +9,8 @@ Contents:
 - [**§1. Introduction**](#1-introduction)
 - [**§2. Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
 - [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
-- [**§4. Developer Guide**](#4-developer-guide): [Bazel](#41-developer-guide-bazel), [CMake](#42-developer-guide-cmake), [Meson](#43-developer-guide-meson)
-- [**§5. Documentation**](#5-documentation)
-- [**§6. License**](#6-license)
+- [**§4. Developer Guide**](#4-developer-guide): [Formatting](#41-developer-guide-formatting), [Building](#42-developer-guide-building), [Testing](#43-developer-guide-testing), [Linting](#44-developer-guide-linting), [Coverage](#45-developer-guide-coverage), [Documentation](#46-developer-guide-documentation)
+- [**§5. License**](#5-license)
 
 ## §1. Introduction
 
@@ -19,6 +18,7 @@ The following example illustrates the use of the Lector library:
 
 ```cpp
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <filesystem>
 #include <lector/arguments.hpp>
@@ -74,18 +74,18 @@ The Lector library can parse command line arguments as whitespace-separated key-
 
 This section describes how to use the Lector library in one of your C++ projects.
 
-First, ensure that the Git source control system is installed on your system.
+First, ensure that the [Git](<https://git-scm.com>) source control system is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install Git with `sudo apt install git`.
 - On macOS, install Git using the [Homebrew](<https://brew.sh>) package manager with `brew install git`.
 - On Windows, install Git using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install git`.
 - On other systems, visit <https://git-scm.com> for alternate means of installation.
 
-Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system.
+Second, ensure that a C++ compiler with support for the C++17 standard or any more recent standard is installed on your system:
 
-- On Ubuntu or other Debian-based Linux systems, the GNU GCC and LLVM Clang C++ compilers are most commonly used. Install the GNU GCC C++ compiler with `sudo apt install g++` or the LLVM library with `sudo apt install llvm`.
-- On macOS, the LLVM Clang C++ compiler is most commonly used. Install the LLVM library using the [Homebrew](<https://brew.sh>) package manager with `brew install llvm`.
-- On Windows, the MSVC C++ compiler is most commonly used. Visit <https://learn.microsoft.com/cpp/windows> to install the Windows MSVC C++ compiler.
+- On Ubuntu or other Debian-based Linux systems, the [GNU GCC](<https://gcc.gnu.org>) and [LLVM Clang](<https://llvm.org>) C++ compilers are most commonly used. Install the GNU GCC C++ compiler with `sudo apt install g++` or the LLVM library that contains the Clang C++ compiler with `sudo apt install llvm`.
+- On macOS, the [LLVM Clang](<https://llvm.org>) C++ compiler is most commonly used. Install the LLVM library that contains the Clang C++ compiler using the [Homebrew](<https://brew.sh>) package manager with `brew install llvm`.
+- On Windows, the [MSVC](<https://learn.microsoft.com/cpp/windows>) C++ compiler is most commonly used. Visit <https://learn.microsoft.com/cpp/windows> to install the MSVC C++ compiler.
 - On other systems, visit <https://gcc.gnu.org> or <https://llvm.org> for alternate means of installation for the GNU GCC and LLVM Clang C++ compilers, respectively.
 
 Third, ensure that your C++ project uses a supported build system; the Lector library currently supports the Bazel, CMake, and Meson build systems. Refer to the section for your preferred build system:
@@ -94,7 +94,7 @@ Third, ensure that your C++ project uses a supported build system; the Lector li
 - [§2.2. CMake](#22-configuration-cmake)
 - [§2.3. Meson](#23-configuration-meson)
 
-Once your build system has been configured, simply include the Lector library's headers in your C++ source files with:
+Finally, once your project's build system has been installed and configured, simply include the Lector library's headers in your project's C++ source files with:
 
 ```cpp
 #include <lector/arguments.hpp>
@@ -105,8 +105,8 @@ Once your build system has been configured, simply include the Lector library's 
 The Lector library is modular:
 
 - The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the [Introduction](#1-introduction) section.
-- The file `<lector/parse.hpp>` defines the `lector::Spellings` and `lector::parse()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
-- The file `<lector/print.hpp>` defines the `lector::Names` and `lector::print()` utilities. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
+- The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
+- The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 
 All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
@@ -114,7 +114,7 @@ All of the Lector library's contents are cleanly encapsulated within the `lector
 
 ### §2.1. Configuration: Bazel
 
-To use the Lector library in one of your Bazel C++ projects, first ensure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
+To use the Lector library in one of your [Bazel](<https://bazel.build/install>) C++ projects, first ensure that the Bazel build system is installed on your system. Follow the instructions at <https://bazel.build/install> to install Bazel on your system.
 
 Then, add the following code to your project's `MODULE.bazel` file:
 
@@ -168,7 +168,7 @@ The above Bazel code defines your C++ Bazel library to depend on the Lector libr
 
 ### §2.2. Configuration: CMake
 
-To use the Lector library in one of your CMake C++ projects, first ensure that the CMake build system is installed on your system.
+To use the Lector library in one of your [CMake](<https://cmake.org>) C++ projects, first ensure that the CMake build system is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install CMake with `sudo apt install cmake`.
 - On macOS, install CMake using the [Homebrew](<https://brew.sh>) package manager with `brew install cmake`.
@@ -207,7 +207,7 @@ The above CMake code checks whether the Lector library is already installed on y
 
 ### §2.3. Configuration: Meson
 
-To use the Lector library in one of your Meson C++ projects, first ensure that the Meson build system is installed on your system.
+To use the Lector library in one of your [Meson](<https://mesonbuild.com>) C++ projects, first ensure that the Meson build system is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install Meson with `sudo apt install meson ninja-build`.
 - On macOS, install Meson using the [Homebrew](<https://brew.sh>) package manager with `brew install meson ninja`.
@@ -452,6 +452,7 @@ inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this enumeration. For example:
 
 ```cpp
+#include <cstdlib>
 #include <iostream>
 #include <lector/parse.hpp>
 #include <lector/print.hpp>
@@ -478,6 +479,7 @@ The enumeration can also be used as a command line argument. For example:
 
 ```cpp
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <lector/arguments.hpp>
 #include <lector/print.hpp>
@@ -541,6 +543,7 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this data structure. For example:
 
 ```cpp
+#include <cstdlib>
 #include <iostream>
 #include <lector/parse.hpp>
 #include <lector/print.hpp>
@@ -563,6 +566,7 @@ The data structure can also be used as a command line argument. For example:
 
 ```cpp
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include <lector/arguments.hpp>
 #include "my_project/point.hpp"
@@ -615,31 +619,46 @@ The following checks are performed when parsing command line arguments. These ex
 
 ## §4. Developer Guide
 
-To check out, build, and test the Lector library for yourself, first clone the Lector library's repository:
+To experiment with the Lector library for yourself, first clone the Lector library's repository:
 
 ```bash
 git clone git@github.com:acodcha/lector.git lector
 cd lector
 ```
 
-If you intend to compute the Lector library's code coverage, ensure that the LCOV package is installed on your system.
+Then, refer to the following sections:
 
-- On Ubuntu or other Debian-based Linux systems, install LCOV with `sudo apt install lcov`.
-- On macOS, install LCOV using the [Homebrew](<https://brew.sh>) package manager with `brew install lcov`.
-- On Windows, install LCOV using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install lcov`.
-- On other systems, visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
-
-The Lector library currently has 100% code coverage.
-
-Next, refer to the section for your preferred build system:
-
-- [§4.1. Bazel](#41-developer-guide-bazel)
-- [§4.2. CMake](#42-developer-guide-cmake)
-- [§4.3. Meson](#43-developer-guide-meson)
+- [§4.1. Formatting](#41-developer-guide-formatting)
+- [§4.2. Building](#42-developer-guide-building)
+- [§4.3. Testing](#43-developer-guide-testing)
+- [§4.4. Linting](#44-developer-guide-linting)
+- [§4.5. Coverage](#45-developer-guide-coverage)
+- [§4.6. Documentation](#46-developer-guide-documentation)
 
 [(Back to Top)](#lector)
 
-### §4.1. Developer Guide: Bazel
+### §4.1. Developer Guide: Formatting
+
+The Lector library uses the [ClangFormat](<https://clang.llvm.org/docs/ClangFormat.html>) automatic source code formatter by LLVM to standardize the formatting of its source code files. See the [.clang-format](<https://github.com/acodcha/lector/blob/main/.clang-format>) file for the formatting options that are used.
+
+To format the source code files of the Lector library, ensure that ClangFormat is installed on your system:
+
+- On Ubuntu or other Debian-based Linux systems, install ClangFormat with `sudo apt install clang-format`.
+- On macOS, install ClangFormat using the [Homebrew](<https://brew.sh>) package manager with `brew install clang-format`.
+- On Windows, install the LLVM library that contains ClangFormat using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`.
+- On other systems, visit <https://clang.llvm.org/docs/ClangFormat.html> for alternate means of installation.
+
+Format the Lector library's source code files with:
+
+```bash
+find . -iname '*.hpp' -or -iname '*.cpp' | xargs clang-format --style=file -i
+```
+
+All source code files must be correctly formatted before being submitted to the Lector library's repository.
+
+[(Back to Developer Guide)](#4-developer-guide)
+
+### §4.2. Developer Guide: Building
 
 If using the Bazel build system, build the Lector library with:
 
@@ -647,65 +666,12 @@ If using the Bazel build system, build the Lector library with:
 bazel build //...
 ```
 
-Run all Lector library tests using the Bazel build system with:
-
-```bash
-bazel test //...
-```
-
-On Linux or macOS, compute the Lector library's code coverage using the Bazel build system with:
-
-```bash
-bazel coverage //...
-genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
-```
-
-This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
-
-On Windows, to compute the Lector library's code coverage using the Bazel build system, the Windows MSVC compiler will not work, and the LLVM Clang compiler should be used instead. Ensure that the LLVM library is installed on your system; you can install it using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`. Then, compute the Lector library's code coverage using the Bazel build system with:
-
-```bash
-bazel coverage --compiler=clang-cl //...
-genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
-```
-
-This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
-
-[(Back to Developer Guide)](#4-developer-guide)
-
-### §4.2. Developer Guide: CMake
-
 If using the CMake build system, build the Lector library with:
 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 cmake --build build --config Release --parallel
 ```
-
-Run all Lector library tests using the CMake build system with:
-
-```bash
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
-cmake --build build --config Release --parallel
-ctest --test-dir build -C Release
-```
-
-On Windows, in order to compute code coverage using the CMake build system, ensure that the OpenCppCoverage utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>.
-
-Compute the Lector library's code coverage using the CMake build system with:
-
-```bash
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
-cmake --build build --config Debug --parallel
-ctest --test-dir build -C Debug
-cmake --build build --target coverage
-```
-
-This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
-
-[(Back to Developer Guide)](#4-developer-guide)
-
-### §4.3. Developer Guide: Meson
 
 If using the Meson build system, build the Lector library with:
 
@@ -715,7 +681,25 @@ meson setup build
 meson compile -C build
 ```
 
-Run all Lector library tests using the Meson build system with:
+[(Back to Developer Guide)](#4-developer-guide)
+
+### §4.3. Developer Guide: Testing
+
+If using the Bazel build system, run all of the Lector library's tests with:
+
+```bash
+bazel test //...
+```
+
+If using the CMake build system, run all of the Lector library's tests with:
+
+```bash
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
+cmake --build build --config Release --parallel
+ctest --test-dir build -C Release
+```
+
+If using the Meson build system, run all of the Lector library's tests with:
 
 ```bash
 meson wrap install gtest
@@ -724,7 +708,69 @@ meson compile -C build
 meson test -C build
 ```
 
-On Linux or macOS, compute the Lector library's code coverage using the Meson build system with:
+[(Back to Developer Guide)](#4-developer-guide)
+
+### §4.4. Developer Guide: Linting
+
+The Lector library uses the [ClangTidy](<https://clang.llvm.org/extra/clang-tidy>) automatic source code linter by LLVM to lint its source code files to identify and diagnose common programming issues. See the [.clang-tidy](<https://github.com/acodcha/lector/blob/main/.clang-tidy>) file for the linting options that are used.
+
+To lint the source code files of the Lector library, ensure that ClangTidy is installed on your system:
+
+- On Ubuntu or other Debian-based Linux systems, install ClangTidy with `sudo apt install clang-tidy`.
+- On macOS, install the LLVM library that contains ClangTidy using the [Homebrew](<https://brew.sh>) package manager with `brew install llvm`.
+- On Windows, install the LLVM library that contains ClangTidy using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`.
+- On other systems, visit <https://clang.llvm.org/extra/clang-tidy> for alternate means of installation.
+
+Lint the Lector library's source code files with:
+
+```bash
+find . -iname '*.cpp' -print0 | xargs -0 -I {} clang-tidy --extra-arg=-std=c++17 {} -- -I.
+```
+
+[(Back to Developer Guide)](#4-developer-guide)
+
+### §4.5. Developer Guide: Coverage
+
+The Lector library currently has 100% code coverage. To compute the Lector library's code coverage yourself, ensure that the [LCOV](<https://github.com/linux-test-project/lcov>) utility is installed on your system:
+
+- On Ubuntu or other Debian-based Linux systems, install LCOV with `sudo apt install lcov`.
+- On macOS, install LCOV using the [Homebrew](<https://brew.sh>) package manager with `brew install lcov`.
+- On Windows, install LCOV using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install lcov`.
+- On other systems, visit <https://github.com/linux-test-project/lcov> for alternate means of installation.
+
+If using the Bazel build system on Linux or macOS, compute the Lector library's code coverage with:
+
+```bash
+bazel coverage //...
+genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+```
+
+If using the Bazel build system on Windows, to compute the Lector library's code coverage, the [MSVC](<https://learn.microsoft.com/cpp/windows>) C++ compiler will not work, and the [LLVM Clang](<https://llvm.org>) C++ compiler must be used instead. Ensure that the LLVM library that contains the Clang C++ compiler is installed on your system; you can install it using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`. Then, compute the Lector library's code coverage using the Bazel build system with:
+
+```bash
+bazel coverage --compiler=clang-cl //...
+genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+```
+
+If using the CMake build system on Linux or macOS, compute the Lector library's code coverage with:
+
+```bash
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
+cmake --build build --config Debug --parallel
+ctest --test-dir build -C Debug
+cmake --build build --target coverage
+```
+
+If using the CMake build system on Windows, to compute the Lector library's code coverage, ensure that the [OpenCppCoverage](<https://github.com/OpenCppCoverage/OpenCppCoverage>) utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>. Then, compute the Lector library's code coverage with:
+
+```bash
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
+cmake --build build --config Debug --parallel
+ctest --test-dir build -C Debug
+cmake --build build --target coverage
+```
+
+If using the Meson build system on Linux or macOS, compute the Lector library's code coverage with:
 
 ```bash
 meson wrap install gtest
@@ -734,11 +780,7 @@ meson test -C build
 meson compile -C build coverage-html
 ```
 
-This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
-
-On Windows, in order to compute code coverage using the Meson build system, ensure that the OpenCppCoverage utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>.
-
-On Windows, compute the Lector library's code coverage using the Meson build system with:
+If using the Meson build system on Windows, to compute the Lector library's code coverage, ensure that the [OpenCppCoverage](<https://github.com/OpenCppCoverage/OpenCppCoverage>) utility is installed on your system. Download it from <https://github.com/OpenCppCoverage/OpenCppCoverage>. Then, compute the Lector library's code coverage with:
 
 ```bash
 meson wrap install gtest
@@ -747,20 +789,20 @@ meson compile -C build
 meson compile -C build coverage
 ```
 
-This generates a code coverage report at `coverage/index.html`. Open this file in any web browser to view the report.
+Regardless of the build system or operating system, in all cases, a code coverage report is generated at `coverage/index.html`. Open this file in any web browser to view the report.
 
 [(Back to Developer Guide)](#4-developer-guide)
 
-## §5. Documentation
+### §4.6. Developer Guide: Documentation
 
-The Lector library's documentation can be built locally on your system with the Doxygen automatic source code documentation generator, which must be installed on your system.
+The Lector library's documentation is hosted at <https://acodcha.github.io/lector>. The Lector library uses the [Doxygen](<https://www.doxygen.org>) automatic source code documentation generator to generate the documentation of its source code files. See the [Doxyfile.txt](<https://github.com/acodcha/lector/blob/main/Doxyfile.txt>) file for the documentation options that are used. To generate the Lector library's documentation yourself, ensure that Doxygen is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install Doxygen with `sudo apt install doxygen`.
 - On macOS, install Doxygen using the [Homebrew](<https://brew.sh>) package manager with `brew install doxygen`.
 - On Windows, install Doxygen using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install doxygen.install`.
 - On other systems, visit <https://www.doxygen.org> for alternate means of installation.
 
-See the [**Developer Guide**](#4-developer-guide) section for cloning the Lector library's repository. Then, build the Lector library's documentation with:
+Generate the Lector library's documentation with:
 
 ```bash
 doxygen Doxyfile.txt
@@ -768,9 +810,9 @@ doxygen Doxyfile.txt
 
 This builds HTML documentation pages in the `docs/html/` directory. Browse the documentation by opening the `docs/html/index.html` file in any web browser.
 
-[(Back to Top)](#lector)
+[(Back to Developer Guide)](#4-developer-guide)
 
-## §6. License
+## §5. License
 
 Copyright © 2026, Alexandre Coderre-Chabot.
 
