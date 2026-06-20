@@ -61,7 +61,7 @@ jobs:
       - name: Build with Bazel
         run: bazel build //...
       - name: Test with Bazel
-        run: bazel test //...
+        run: bazel test //... --test_output=all
   build_and_test_cmake_linux:
     name: CMake
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
       - name: Build with CMake
         run: cmake --build build --config Release --parallel
       - name: Test with CMake
-        run: ctest --test-dir build -C Release
+        run: ctest --test-dir build -C Release --output-on-failure
   build_and_test_meson_linux:
     name: Meson
     runs-on: ubuntu-latest
