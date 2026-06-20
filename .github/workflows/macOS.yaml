@@ -22,9 +22,6 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-# This is needed for std::from_chars on macOS.
-env:
-  MACOSX_DEPLOYMENT_TARGET: "13.3"
 jobs:
   build_and_test_bazel_macos:
     name: Bazel
@@ -43,9 +40,9 @@ jobs:
       - name: Print the Bazel version
         run: bazel --version
       - name: Build with Bazel
-        run: bazel build //... --macos_minimum_os=13.3
+        run: bazel build //...
       - name: Test with Bazel
-        run: bazel test //... --macos_minimum_os=13.3
+        run: bazel test //...
   build_and_test_cmake_macos:
     name: CMake
     runs-on: macos-latest

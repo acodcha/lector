@@ -32,6 +32,10 @@
 #include <system_error>
 #include <type_traits>
 
+#ifdef __APPLE__
+  #include <cstddef>
+#endif  // __APPLE__
+
 namespace lector {
 
 /// @brief A possible spelling for a value of a specified type.
@@ -110,7 +114,7 @@ template <>
   } else if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::uint8_t number{0U};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -151,7 +155,7 @@ template <>
   } else if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::uint16_t number{0U};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -192,7 +196,7 @@ template <>
   } else if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::uint32_t number{0U};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -233,7 +237,7 @@ template <>
   } else if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::uint64_t number{0UL};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -270,7 +274,7 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::int8_t number{0};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -303,7 +307,7 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::int16_t number{0};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -336,7 +340,7 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::int32_t number{0};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -369,7 +373,7 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+  // Parse the text into a number using std::from_chars().
   ::std::int64_t number{0L};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -402,7 +406,24 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+#ifdef __APPLE__
+  // Parse the text into a number using std::stof() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
+  float number{0.0F};
+  ::std::size_t position{0};
+  try {
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stof(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
+  } catch (...) {
+    return ::std::nullopt;
+  }
+  return number;
+#else
+  // Parse the text into a number using std::from_chars().
   float number{0.0F};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -413,6 +434,7 @@ template <>
     return ::std::nullopt;
   }
   return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into a double-precision floating-point number. For example, the
@@ -435,7 +457,24 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+#ifdef __APPLE__
+  // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
+  double number{0.0};
+  ::std::size_t position{0};
+  try {
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stod(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
+  } catch (...) {
+    return ::std::nullopt;
+  }
+  return number;
+#else
+  // Parse the text into a number using std::from_chars().
   double number{0.0};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -446,6 +485,7 @@ template <>
     return ::std::nullopt;
   }
   return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into an extended-precision floating-point number. For example, the
@@ -468,7 +508,24 @@ template <>
   if (modified_text.front() == '+') {
     modified_text.remove_prefix(1);
   }
-  // Parse the text into a number.
+#ifdef __APPLE__
+  // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
+  long double number{0.0L};
+  ::std::size_t position{0};
+  try {
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stold(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
+  } catch (...) {
+    return ::std::nullopt;
+  }
+  return number;
+#else
+  // Parse the text into a number using std::from_chars().
   long double number{0.0L};
   const ::std::from_chars_result result{
     ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
@@ -479,6 +536,7 @@ template <>
     return ::std::nullopt;
   }
   return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into a string. Does not mutate the string view in any way.
