@@ -639,7 +639,7 @@ Then, refer to the following sections:
 
 ### §4.1. Developer Guide: Formatting
 
-The Lector library uses the [ClangFormat](<https://clang.llvm.org/docs/ClangFormat.html>) automatic source code formatter by LLVM to standardize the formatting of its source code files. See the [.clang-format](<https://github.com/acodcha/lector/blob/main/.clang-format>) file for the formatting options that are used.
+The Lector library uses the [ClangFormat](<https://clang.llvm.org/docs/ClangFormat.html>) automatic source code formatter by LLVM to standardize the formatting of its source code files. See the [clang-format](<https://github.com/acodcha/lector/blob/main/.clang-format>) file for the formatting options that are used.
 
 To format the source code files of the Lector library, ensure that ClangFormat is installed on your system:
 
@@ -712,7 +712,7 @@ meson test -C build
 
 ### §4.4. Developer Guide: Linting
 
-The Lector library uses the [ClangTidy](<https://clang.llvm.org/extra/clang-tidy>) automatic source code linter by LLVM to lint its source code files to identify and diagnose common programming issues. See the [.clang-tidy](<https://github.com/acodcha/lector/blob/main/.clang-tidy>) file for the linting options that are used.
+The Lector library uses the [ClangTidy](<https://clang.llvm.org/extra/clang-tidy>) automatic source code linter by LLVM to lint its source code files to identify and diagnose common programming issues. See the [clang-tidy](<https://github.com/acodcha/lector/blob/main/.clang-tidy>) file for the linting options that are used.
 
 To lint the source code files of the Lector library, ensure that ClangTidy is installed on your system:
 
