@@ -627,7 +627,7 @@ private:
   /// @return The best matching argument.
   /// @throws std::invalid_argument if an unknown argument is encountered.
   [[nodiscard]] BestArgument find_best_argument(const ::std::string_view token) const {
-    ::std::optional<BestArgument> best_argument;
+    ::std::optional<BestArgument> best;
     ::std::size_t argument_index{0};
     ::std::apply(
         [&](const auto&... argument) {
@@ -636,30 +636,27 @@ private:
               const ::std::optional<BestArgument> exact_match{
                 try_exact_match(token, argument_index, argument_key)};
               if (exact_match.has_value()) {
-                if (!best_argument.has_value()
-                    || exact_match->key_length > best_argument->key_length
-                    || (exact_match->key_length == best_argument->key_length
-                        && best_argument->is_inline)) {
-                  best_argument = exact_match;
+                if (!best.has_value() || exact_match->key_length > best->key_length
+                    || (exact_match->key_length == best->key_length && best->is_inline)) {
+                  best = exact_match;
                 }
                 continue;
               }
               const ::std::optional<BestArgument> inline_match{
                 try_inline_match<decltype(argument)>(token, argument_index, argument_key)};
               if (inline_match.has_value()
-                  && (!best_argument.has_value()
-                      || inline_match->key_length > best_argument->key_length)) {
-                best_argument = inline_match;
+                  && (!best.has_value() || inline_match->key_length > best->key_length)) {
+                best = inline_match;
               }
             }
             ++argument_index;
           }());
         },
         arguments_);
-    if (!best_argument.has_value()) {
+    if (!best.has_value()) {
       throw ::std::invalid_argument("Unknown argument '" + ::std::string{token} + "'.");
     }
-    return best_argument.value();
+    return best.value();
   }
 
   /// @brief Checks whether a token is the exact match of an argument's key. Called by
