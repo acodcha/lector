@@ -407,8 +407,8 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
-  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
-  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
     return ::std::nullopt;
   }
   // Parse the text into a number using std::stof() instead of std::from_chars(). The <charconv>
@@ -462,8 +462,8 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
-  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
-  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
     return ::std::nullopt;
   }
   // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
@@ -517,8 +517,8 @@ template <>
     modified_text.remove_prefix(1);
   }
 #ifdef __APPLE__
-  // Check if the next character is a sign. This is needed because std::stod() accepts "++1.0".
-  if (!modified_text.empty() && (modified_text.front() == '+' || modified_text.front() == '-')) {
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
     return ::std::nullopt;
   }
   // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
