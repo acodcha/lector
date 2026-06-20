@@ -368,8 +368,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleInfinity) {
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleInvalid) {
   EXPECT_EQ(::lector::parse<double>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<double>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<double>("1.0E1000000000000000000000000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<double>("-1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("1.23E--4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("1.23E++4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<double>("  123 45   "), ::std::nullopt);
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotANumber) {
@@ -397,204 +419,236 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotANumber) {
     const ::std::optional<double> parsed{::lector::parse<double>("nan")};
     EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
   }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotationDecimal) {
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14l")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14);
+    const ::std::optional<double> parsed{::lector::parse<double>("1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotationInteger) {
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-10F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-10f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
-  }
-  {
     const ::std::optional<double> parsed{::lector::parse<double>("-10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-10L")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  -10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-10l")};
+    const ::std::optional<double> parsed{::lector::parse<double>("-10   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  -10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleNotationScientific) {
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23E+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("-1.23e+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23E+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12);
+    const ::std::optional<double> parsed{::lector::parse<double>("  -1.23e+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionDoubleZero) {
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
-  }
-  {
     const ::std::optional<double> parsed{::lector::parse<double>("-0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0L")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  -0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0l")};
+    const ::std::optional<double> parsed{::lector::parse<double>("-0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0.0f")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
@@ -602,19 +656,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0.0L")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  -0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("-0.0l")};
+    const ::std::optional<double> parsed{::lector::parse<double>("-0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("0f")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  -0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
@@ -622,19 +672,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0L")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0l")};
+    const ::std::optional<double> parsed{::lector::parse<double>("0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
-  }
-  {
-    const ::std::optional<double> parsed{::lector::parse<double>("0.0f")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
@@ -642,11 +688,47 @@ TEST(Lector, ParseNumberFloatingPointPrecisionDoubleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0.0L")};
+    const ::std::optional<double> parsed{::lector::parse<double>("  0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
   {
-    const ::std::optional<double> parsed{::lector::parse<double>("0.0l")};
+    const ::std::optional<double> parsed{::lector::parse<double>("0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("+0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
+  }
+  {
+    const ::std::optional<double> parsed{::lector::parse<double>("  +0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0);
   }
 }
@@ -702,8 +784,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedInfinity) {
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedInvalid) {
   EXPECT_EQ(::lector::parse<long double>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<long double>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<long double>("1.0E1000000000000000000000000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<long double>("-1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("1.23E--4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("1.23E++4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<long double>("  123 45   "), ::std::nullopt);
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotANumber) {
@@ -731,204 +835,236 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotANumber) {
     const ::std::optional<long double> parsed{::lector::parse<long double>("nan")};
     EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
   }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotationDecimal) {
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14l")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23L);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotationInteger) {
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-10F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-10f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
-  }
-  {
     const ::std::optional<long double> parsed{::lector::parse<long double>("-10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-10L")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-10l")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-10   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0L);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedNotationScientific) {
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23E+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-1.23e+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23E+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12L);
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -1.23e+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4L);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionExtendedZero) {
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
-  }
-  {
     const ::std::optional<long double> parsed{::lector::parse<long double>("-0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0L")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0l")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0.0f")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
@@ -936,19 +1072,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0.0L")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("-0.0l")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("-0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0f")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  -0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
@@ -956,19 +1088,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0L")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0l")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
-  }
-  {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0.0f")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
@@ -976,11 +1104,47 @@ TEST(Lector, ParseNumberFloatingPointPrecisionExtendedZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0.0L")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
   {
-    const ::std::optional<long double> parsed{::lector::parse<long double>("0.0l")};
+    const ::std::optional<long double> parsed{::lector::parse<long double>("0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("+0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
+  }
+  {
+    const ::std::optional<long double> parsed{::lector::parse<long double>("  +0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0L);
   }
 }
@@ -1027,8 +1191,30 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleInfinity) {
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleInvalid) {
   EXPECT_EQ(::lector::parse<float>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<float>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<float>("1.0E1000000000000000000000000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<float>("-1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("1.0E1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("1.23E--4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("1.23E++4"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<float>("  123 45   "), ::std::nullopt);
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotANumber) {
@@ -1056,204 +1242,236 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotANumber) {
     const ::std::optional<float> parsed{::lector::parse<float>("nan")};
     EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
   }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+NAN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+NaN")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+nan")};
+    EXPECT_TRUE(parsed.has_value() && ::std::isnan(parsed.value()));
+  }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotationDecimal) {
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14l")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14F);
+    const ::std::optional<float> parsed{::lector::parse<float>("1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +1.23")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +1.23   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 1.23F);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotationInteger) {
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-10F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-10f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
-  }
-  {
     const ::std::optional<float> parsed{::lector::parse<float>("-10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-10L")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  -10")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-10l")};
+    const ::std::optional<float> parsed{::lector::parse<float>("-10   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  -10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +10")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +10   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 10.0F);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleNotationScientific) {
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e-04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e-4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e-12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e-12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e-12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e-12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E-12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e+04")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23E+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("-1.23e+4")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e-04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e-4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E-4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e+04   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23E+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14E+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e+12F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e+12f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e+12L")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-3.14e+12")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == -3.14E12F);
+    const ::std::optional<float> parsed{::lector::parse<float>("  -1.23e+4   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == -1.23E4F);
   }
 }
 
 TEST(Lector, ParseNumberFloatingPointPrecisionSingleZero) {
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0f")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
-  }
-  {
     const ::std::optional<float> parsed{::lector::parse<float>("-0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0L")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  -0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0l")};
+    const ::std::optional<float> parsed{::lector::parse<float>("-0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0.0f")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
@@ -1261,19 +1479,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0.0L")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  -0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("-0.0l")};
+    const ::std::optional<float> parsed{::lector::parse<float>("-0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("0f")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  -0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
@@ -1281,19 +1495,15 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0L")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0l")};
+    const ::std::optional<float> parsed{::lector::parse<float>("0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0.0F")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
-  }
-  {
-    const ::std::optional<float> parsed{::lector::parse<float>("0.0f")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
@@ -1301,11 +1511,47 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleZero) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0.0L")};
+    const ::std::optional<float> parsed{::lector::parse<float>("  0.0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
   {
-    const ::std::optional<float> parsed{::lector::parse<float>("0.0l")};
+    const ::std::optional<float> parsed{::lector::parse<float>("0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +0.0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("+0.0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
+  }
+  {
+    const ::std::optional<float> parsed{::lector::parse<float>("  +0.0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == 0.0F);
   }
 }
@@ -1313,14 +1559,42 @@ TEST(Lector, ParseNumberFloatingPointPrecisionSingleZero) {
 TEST(Lector, ParseNumberIntegerBits08) {
   EXPECT_EQ(::lector::parse<::std::int8_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int8_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int8_t>("1000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int8_t>("-1000"), ::std::nullopt);
-  {
-    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("-123")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(-123));
-  }
+  EXPECT_EQ(::lector::parse<::std::int8_t>("1000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int8_t>("  123 45   "), ::std::nullopt);
   {
     const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
   }
   {
@@ -1328,7 +1602,79 @@ TEST(Lector, ParseNumberIntegerBits08) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
   }
   {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(0));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("-123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  -123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("-123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  -123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(-123));
+  }
+  {
     const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
+  }
+  {
+    const ::std::optional<::std::int8_t> parsed{::lector::parse<::std::int8_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int8_t>(123));
   }
 }
@@ -1336,14 +1682,42 @@ TEST(Lector, ParseNumberIntegerBits08) {
 TEST(Lector, ParseNumberIntegerBits16) {
   EXPECT_EQ(::lector::parse<::std::int16_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int16_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("1000000"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int16_t>("-1000000"), ::std::nullopt);
-  {
-    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("-123")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(-123));
-  }
+  EXPECT_EQ(::lector::parse<::std::int16_t>("-100000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("100000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int16_t>("  123 45   "), ::std::nullopt);
   {
     const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
   }
   {
@@ -1351,7 +1725,79 @@ TEST(Lector, ParseNumberIntegerBits16) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
   }
   {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(0));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("-123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  -123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("-123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  -123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(-123));
+  }
+  {
     const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
+  }
+  {
+    const ::std::optional<::std::int16_t> parsed{::lector::parse<::std::int16_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int16_t>(123));
   }
 }
@@ -1359,14 +1805,42 @@ TEST(Lector, ParseNumberIntegerBits16) {
 TEST(Lector, ParseNumberIntegerBits32) {
   EXPECT_EQ(::lector::parse<::std::int32_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int32_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int32_t>("10000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int32_t>("-10000000000"), ::std::nullopt);
-  {
-    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("-123")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(-123));
-  }
+  EXPECT_EQ(::lector::parse<::std::int32_t>("10000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int32_t>("  123 45   "), ::std::nullopt);
   {
     const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
   }
   {
@@ -1374,7 +1848,79 @@ TEST(Lector, ParseNumberIntegerBits32) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
   }
   {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(0));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("-123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  -123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("-123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  -123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(-123));
+  }
+  {
     const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
+  }
+  {
+    const ::std::optional<::std::int32_t> parsed{::lector::parse<::std::int32_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int32_t>(123));
   }
 }
@@ -1382,14 +1928,42 @@ TEST(Lector, ParseNumberIntegerBits32) {
 TEST(Lector, ParseNumberIntegerBits64) {
   EXPECT_EQ(::lector::parse<::std::int64_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int64_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::int64_t>("1000000000000000000000000000000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::int64_t>("-1000000000000000000000000000000"), ::std::nullopt);
-  {
-    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("-123")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(-123));
-  }
+  EXPECT_EQ(::lector::parse<::std::int64_t>("1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("--123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  --123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("--123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  --123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::int64_t>("  123 45   "), ::std::nullopt);
   {
     const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  -0   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
   }
   {
@@ -1397,7 +1971,79 @@ TEST(Lector, ParseNumberIntegerBits64) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
   }
   {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(0));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("-123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  -123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("-123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(-123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  -123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(-123));
+  }
+  {
     const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
+  }
+  {
+    const ::std::optional<::std::int64_t> parsed{::lector::parse<::std::int64_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::int64_t>(123));
   }
 }
@@ -1405,15 +2051,105 @@ TEST(Lector, ParseNumberIntegerBits64) {
 TEST(Lector, ParseNumberNaturalBits08) {
   EXPECT_EQ(::lector::parse<::std::uint8_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint8_t>("-0"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint8_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint8_t>("1000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("-123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  -123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("-123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  -123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint8_t>("  123 45   "), ::std::nullopt);
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  -0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
   {
     const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
   }
   {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(0));
+  }
+  {
     const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint8_t> parsed{::lector::parse<::std::uint8_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint8_t>(123));
   }
 }
@@ -1421,15 +2157,105 @@ TEST(Lector, ParseNumberNaturalBits08) {
 TEST(Lector, ParseNumberNaturalBits16) {
   EXPECT_EQ(::lector::parse<::std::uint16_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint16_t>("-0"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("100000"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint16_t>("-123"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint16_t>("1000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  -123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("-123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  -123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint16_t>("  123 45   "), ::std::nullopt);
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  -0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
   {
     const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("0")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(0));
   }
   {
     const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint16_t> parsed{::lector::parse<::std::uint16_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint16_t>(123));
   }
 }
@@ -1437,15 +2263,105 @@ TEST(Lector, ParseNumberNaturalBits16) {
 TEST(Lector, ParseNumberNaturalBits32) {
   EXPECT_EQ(::lector::parse<::std::uint32_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint32_t>("-0"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint32_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint32_t>("10000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("-123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  -123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("-123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  -123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint32_t>("  123 45   "), ::std::nullopt);
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  -0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
   {
     const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
   }
   {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(0));
+  }
+  {
     const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint32_t> parsed{::lector::parse<::std::uint32_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint32_t>(123));
   }
 }
@@ -1453,15 +2369,105 @@ TEST(Lector, ParseNumberNaturalBits32) {
 TEST(Lector, ParseNumberNaturalBits64) {
   EXPECT_EQ(::lector::parse<::std::uint64_t>(""), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("Hello, world!"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint64_t>("-0"), ::std::nullopt);
-  EXPECT_EQ(::lector::parse<::std::uint64_t>("-123"), ::std::nullopt);
   EXPECT_EQ(::lector::parse<::std::uint64_t>("1000000000000000000000000000000"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("-123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  -123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("-123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  -123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  ++123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  ++123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  123abc"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  123abc   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  abc123"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  abc123   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  123 45"), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("123 45   "), ::std::nullopt);
+  EXPECT_EQ(::lector::parse<::std::uint64_t>("  123 45   "), ::std::nullopt);
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("-0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  -0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("-0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  -0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
   {
     const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("0")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
   }
   {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("+0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  +0")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("+0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  +0   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(0));
+  }
+  {
     const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("+123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  +123")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("+123   ")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
+  }
+  {
+    const ::std::optional<::std::uint64_t> parsed{::lector::parse<::std::uint64_t>("  +123   ")};
     EXPECT_TRUE(parsed.has_value() && parsed.value() == static_cast<::std::uint64_t>(123));
   }
 }

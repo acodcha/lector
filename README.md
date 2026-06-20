@@ -688,7 +688,7 @@ meson compile -C build
 If using the Bazel build system, run all of the Lector library's tests with:
 
 ```bash
-bazel test //...
+bazel test //... --test_output=all
 ```
 
 If using the CMake build system, run all of the Lector library's tests with:
@@ -696,7 +696,7 @@ If using the CMake build system, run all of the Lector library's tests with:
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LECTOR_TEST=ON
 cmake --build build --config Release --parallel
-ctest --test-dir build -C Release
+ctest --test-dir build -C Release --output-on-failure
 ```
 
 If using the Meson build system, run all of the Lector library's tests with:
@@ -757,7 +757,7 @@ If using the CMake build system on Linux or macOS, compute the Lector library's 
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
 cmake --build build --config Debug --parallel
-ctest --test-dir build -C Debug
+ctest --test-dir build -C Debug --output-on-failure
 cmake --build build --target coverage
 ```
 
@@ -766,7 +766,7 @@ If using the CMake build system on Windows, to compute the Lector library's code
 ```bash
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -D LECTOR_TEST=ON -D LECTOR_COVERAGE=ON
 cmake --build build --config Debug --parallel
-ctest --test-dir build -C Debug
+ctest --test-dir build -C Debug --output-on-failure
 cmake --build build --target coverage
 ```
 

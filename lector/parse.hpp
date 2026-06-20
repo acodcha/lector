@@ -19,7 +19,9 @@
 #ifndef LECTOR_PARSE_HPP
 #define LECTOR_PARSE_HPP
 
+#include <algorithm>
 #include <array>
+#include <charconv>
 #include <cstdint>
 #include <filesystem>
 #include <limits>
@@ -27,7 +29,12 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <system_error>
 #include <type_traits>
+
+#ifdef __APPLE__
+  #include <cstddef>
+#endif  // __APPLE__
 
 namespace lector {
 
@@ -90,19 +97,38 @@ template <>
 /// into a valid 8-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint8_t> parse(const ::std::string_view text) {
-  if (text.find('-') != ::std::string::npos) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number{0};
-  try {
-    number = ::std::stoull(::std::string{text});
-  } catch (...) {
+  // Strip the leading '+' or '-' sign, if any, and make note of the sign.
+  bool is_negative{false};
+  if (modified_text.front() == '-') {
+    is_negative = true;
+    modified_text.remove_prefix(1);
+  } else if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::uint8_t number{0U};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::uint64_t>(::std::numeric_limits<::std::uint8_t>::max())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::uint8_t>(number);
+  // The only allowed negative number is -0, which parses to 0.
+  if (is_negative && number != 0U) {
+    return ::std::nullopt;
+  }
+  return number;
 }
 
 /// @brief Parses a string view into a 16-bit natural number. For example, the string view "42"
@@ -112,19 +138,38 @@ template <>
 /// into a valid 16-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint16_t> parse(const ::std::string_view text) {
-  if (text.find('-') != ::std::string::npos) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number{0};
-  try {
-    number = ::std::stoull(::std::string{text});
-  } catch (...) {
+  // Strip the leading '+' or '-' sign, if any, and make note of the sign.
+  bool is_negative{false};
+  if (modified_text.front() == '-') {
+    is_negative = true;
+    modified_text.remove_prefix(1);
+  } else if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::uint16_t number{0U};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::uint64_t>(::std::numeric_limits<::std::uint16_t>::max())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::uint16_t>(number);
+  // The only allowed negative number is -0, which parses to 0.
+  if (is_negative && number != 0U) {
+    return ::std::nullopt;
+  }
+  return number;
 }
 
 /// @brief Parses a string view into a 32-bit natural number. For example, the string view "42"
@@ -134,19 +179,38 @@ template <>
 /// into a valid 32-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint32_t> parse(const ::std::string_view text) {
-  if (text.find('-') != ::std::string::npos) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number{0};
-  try {
-    number = ::std::stoull(::std::string{text});
-  } catch (...) {
+  // Strip the leading '+' or '-' sign, if any, and make note of the sign.
+  bool is_negative{false};
+  if (modified_text.front() == '-') {
+    is_negative = true;
+    modified_text.remove_prefix(1);
+  } else if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::uint32_t number{0U};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::uint64_t>(::std::numeric_limits<::std::uint32_t>::max())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::uint32_t>(number);
+  // The only allowed negative number is -0, which parses to 0.
+  if (is_negative && number != 0U) {
+    return ::std::nullopt;
+  }
+  return number;
 }
 
 /// @brief Parses a string view into a 64-bit natural number. For example, the string view "42"
@@ -156,13 +220,35 @@ template <>
 /// into a valid 64-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint64_t> parse(const ::std::string_view text) {
-  if (text.find('-') != ::std::string::npos) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  ::std::uint64_t number{0};
-  try {
-    number = ::std::stoull(::std::string{text});
-  } catch (...) {
+  // Strip the leading '+' or '-' sign, if any, and make note of the sign.
+  bool is_negative{false};
+  if (modified_text.front() == '-') {
+    is_negative = true;
+    modified_text.remove_prefix(1);
+  } else if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::uint64_t number{0UL};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
+    return ::std::nullopt;
+  }
+  if (result.ptr != modified_text.data() + modified_text.size()) {
+    return ::std::nullopt;
+  }
+  // The only allowed negative number is -0, which parses to 0.
+  if (is_negative && number != 0UL) {
     return ::std::nullopt;
   }
   return number;
@@ -175,19 +261,30 @@ template <>
 /// into a valid 8-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int8_t> parse(const ::std::string_view text) {
-  ::std::int64_t number{0};
-  try {
-    number = ::std::stoll(::std::string{text});
-  } catch (...) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::int64_t>(::std::numeric_limits<::std::int8_t>::max())) {
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::int8_t number{0};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number < static_cast<::std::int64_t>(::std::numeric_limits<::std::int8_t>::lowest())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::int8_t>(number);
+  return number;
 }
 
 /// @brief Parses a string view into a 16-bit integer number. For example, the string view "42"
@@ -197,19 +294,30 @@ template <>
 /// into a valid 16-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int16_t> parse(const ::std::string_view text) {
-  ::std::int64_t number{0};
-  try {
-    number = ::std::stoll(::std::string{text});
-  } catch (...) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::int64_t>(::std::numeric_limits<::std::int16_t>::max())) {
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::int16_t number{0};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number < static_cast<::std::int64_t>(::std::numeric_limits<::std::int16_t>::lowest())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::int16_t>(number);
+  return number;
 }
 
 /// @brief Parses a string view into a 32-bit integer number. For example, the string view "42"
@@ -219,19 +327,30 @@ template <>
 /// into a valid 32-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int32_t> parse(const ::std::string_view text) {
-  ::std::int64_t number{0};
-  try {
-    number = ::std::stoll(::std::string{text});
-  } catch (...) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
     return ::std::nullopt;
   }
-  if (number > static_cast<::std::int64_t>(::std::numeric_limits<::std::int32_t>::max())) {
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::int32_t number{0};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
     return ::std::nullopt;
   }
-  if (number < static_cast<::std::int64_t>(::std::numeric_limits<::std::int32_t>::lowest())) {
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
-  return static_cast<::std::int32_t>(number);
+  return number;
 }
 
 /// @brief Parses a string view into a 64-bit integer number. For example, the string view "42"
@@ -241,10 +360,27 @@ template <>
 /// into a valid 64-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int64_t> parse(const ::std::string_view text) {
-  ::std::int64_t number{0};
-  try {
-    number = ::std::stoll(::std::string{text});
-  } catch (...) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
+    return ::std::nullopt;
+  }
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+  // Parse the text into a number using std::from_chars().
+  ::std::int64_t number{0L};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
+    return ::std::nullopt;
+  }
+  if (result.ptr != modified_text.data() + modified_text.size()) {
     return ::std::nullopt;
   }
   return number;
@@ -257,13 +393,52 @@ template <>
 /// could not be parsed into a valid single-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<float> parse(const ::std::string_view text) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
+    return ::std::nullopt;
+  }
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+#ifdef __APPLE__
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
+    return ::std::nullopt;
+  }
+  // Parse the text into a number using std::stof() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
   float number{0.0F};
+  ::std::size_t position{0};
   try {
-    number = ::std::stof(::std::string{text});
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stof(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
   } catch (...) {
     return ::std::nullopt;
   }
   return number;
+#else
+  // Parse the text into a number using std::from_chars().
+  float number{0.0F};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
+    return ::std::nullopt;
+  }
+  if (result.ptr != modified_text.data() + modified_text.size()) {
+    return ::std::nullopt;
+  }
+  return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into a double-precision floating-point number. For example, the
@@ -273,13 +448,52 @@ template <>
 /// could not be parsed into a valid double-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<double> parse(const ::std::string_view text) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
+    return ::std::nullopt;
+  }
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+#ifdef __APPLE__
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
+    return ::std::nullopt;
+  }
+  // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
   double number{0.0};
+  ::std::size_t position{0};
   try {
-    number = ::std::stod(::std::string{text});
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stod(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
   } catch (...) {
     return ::std::nullopt;
   }
   return number;
+#else
+  // Parse the text into a number using std::from_chars().
+  double number{0.0};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
+    return ::std::nullopt;
+  }
+  if (result.ptr != modified_text.data() + modified_text.size()) {
+    return ::std::nullopt;
+  }
+  return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into an extended-precision floating-point number. For example, the
@@ -289,13 +503,52 @@ template <>
 /// could not be parsed into a valid extended-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<long double> parse(const ::std::string_view text) {
+  ::std::string_view modified_text{text};
+  // Strip leading and trailing whitespace.
+  modified_text.remove_prefix(
+      ::std::min(modified_text.find_first_not_of(" \t\r\n"), modified_text.size()));
+  modified_text.remove_suffix(
+      modified_text.size() - (modified_text.find_last_not_of(" \t\r\n") + 1));
+  if (modified_text.empty()) {
+    return ::std::nullopt;
+  }
+  // Strip the leading '+' sign, if any.
+  if (modified_text.front() == '+') {
+    modified_text.remove_prefix(1);
+  }
+#ifdef __APPLE__
+  // Check if the first character is a '+' sign. This is needed because std::stod() accepts "++1.0".
+  if (!modified_text.empty() && modified_text.front() == '+') {
+    return ::std::nullopt;
+  }
+  // Parse the text into a number using std::stod() instead of std::from_chars(). The <charconv>
+  // library on macOS has an older version of std::from_chars() that only supports integral types
+  // and does not support floating-point types.
   long double number{0.0L};
+  ::std::size_t position{0};
   try {
-    number = ::std::stold(::std::string{text});
+    const ::std::string modified_text_string{modified_text};
+    number = ::std::stold(modified_text_string, &position);
+    if (position != modified_text_string.size()) {
+      return ::std::nullopt;
+    }
   } catch (...) {
     return ::std::nullopt;
   }
   return number;
+#else
+  // Parse the text into a number using std::from_chars().
+  long double number{0.0L};
+  const ::std::from_chars_result result{
+    ::std::from_chars(modified_text.data(), modified_text.data() + modified_text.size(), number)};
+  if (result.ec != ::std::errc{}) {
+    return ::std::nullopt;
+  }
+  if (result.ptr != modified_text.data() + modified_text.size()) {
+    return ::std::nullopt;
+  }
+  return number;
+#endif  // __APPLE__
 }
 
 /// @brief Parses a string view into a string. Does not mutate the string view in any way.
