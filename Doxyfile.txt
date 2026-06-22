@@ -18,7 +18,7 @@
 
 # This is a configuration file for the Doxygen (https://www.doxygen.org) automatic source code
 # documentation generator. To generate documentation for the source files in this repository, run:
-#     doxygen docs/Doxyfile.txt
+#     doxygen Doxyfile.txt
 
 # Project Settings
 
