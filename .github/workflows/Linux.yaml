@@ -23,7 +23,7 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  formatting:
+  clang_format:
     name: ClangFormat
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +42,28 @@ jobs:
             echo "    find . -iname '*.hpp' -or -iname '*.cpp' | xargs clang-format --style=file -i"
             exit 1
           fi
-  build_and_test_bazel_linux:
+  doxygen:
+    name: Doxygen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v6
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes doxygen
+      - name: Print the Doxygen version
+        run: doxygen --version
+      - name: Check documentation
+        run: |
+          doxygen docs/Doxyfile.txt
+          CHANGES=$(git status --porcelain docs/html/)
+          if ! [ -z "$CHANGES" ]; then
+            echo "The documentation is not up to date. To re-generate the documentation, run:"
+            echo "    doxygen docs/Doxyfile.txt"
+            exit 1
+          fi
+  bazel:
     name: Bazel
     runs-on: ubuntu-latest
     steps:
@@ -62,7 +83,7 @@ jobs:
         run: bazel build //...
       - name: Test with Bazel
         run: bazel test //... --test_output=all
-  build_and_test_cmake_linux:
+  cmake:
     name: CMake
     runs-on: ubuntu-latest
     steps:
@@ -78,7 +99,7 @@ jobs:
         run: cmake --build build --config Release --parallel
       - name: Test with CMake
         run: ctest --test-dir build -C Release --output-on-failure
-  build_and_test_meson_linux:
+  meson:
     name: Meson
     runs-on: ubuntu-latest
     steps:
