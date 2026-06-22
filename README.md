@@ -8,7 +8,7 @@ Contents:
 
 - [**§1. Introduction**](#1-introduction)
 - [**§2. Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Classes and Structures](#34-user-guide-classes-and-structures), [Error Checking](#35-user-guide-error-checking)
+- [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Data Structures](#34-user-guide-data-structures), [Error Checking](#35-user-guide-error-checking)
 - [**§4. Developer Guide**](#4-developer-guide): [Formatting](#41-developer-guide-formatting), [Building](#42-developer-guide-building), [Testing](#43-developer-guide-testing), [Linting](#44-developer-guide-linting), [Coverage](#45-developer-guide-coverage), [Documentation](#46-developer-guide-documentation)
 - [**§5. License**](#5-license)
 
@@ -104,9 +104,9 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the [Introduction](#1-introduction) section.
-- The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
-- The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
+- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the [§1. Introduction](#1-introduction) section.
+- The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
+- The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 
 All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 
@@ -244,31 +244,31 @@ my_library_name = library(
 )
 ```
 
-The above Meson code imports the Lector library in your project, defines your library, and adds the Lector library as a dependency to your library.
+The above Meson code imports the Lector library into your project, defines your library, and adds the Lector library as a dependency to your library.
 
 [(Back to Configuration)](#2-configuration)
 
 ## §3. User Guide
 
-This section contains a comprehensive guide for using the Lector library in your C++ projects.
+This section presents a comprehensive guide for using the Lector library in your C++ projects. Refer to the following sections:
 
 - [§3.1. Arguments](#31-user-guide-arguments)
 - [§3.2. Command Line](#32-user-guide-command-line)
 - [§3.3. Enumerations](#33-user-guide-enumerations)
-- [§3.4. Classes and Structures](#34-user-guide-classes-and-structures)
+- [§3.4. Data Structures](#34-user-guide-data-structures)
 - [§3.5. Error Checking](#35-user-guide-error-checking)
 
 [(Back to Top)](#lector)
 
 ### §3.1. User Guide: Arguments
 
-The Lector library uses enumeration values to label arguments. For example, the code from the [**Introduction**](#1-introduction) section defines the following enumeration:
+The Lector library uses enumeration values to label arguments. For example, the code from the [§1. Introduction](#1-introduction) section defines the following enumeration:
 
 ```cpp
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 ```
 
-Defining an argument requires an enumeration value used as a label, a type, one or more keys, a description, and an optional default value. For example, the code from the [**Introduction**](#1-introduction) section defines the following arguments:
+Defining an argument requires an enumeration value used as a label, a type, one or more keys, a description, and an optional default value. For example, the code from the [§1. Introduction](#1-introduction) section defines the following arguments:
 
 ```cpp
 lector::Arguments arguments{
@@ -292,8 +292,8 @@ Supported argument types include:
 - Floating-point numbers: `float`, `double`, `long double`.
 - Strings: `std::string`. If the string contains whitespace, enclose it in double quotes (`""`).
 - Paths: `std::filesystem::path`.
-- Enumerations: See the [User Guide: Enumerations](#33-user-guide-enumerations) section.
-- Classes and Structures: See the [User Guide: Classes and Structures](#34-user-guide-classes-and-structures) section.
+- Enumerations: See the [§3.3. User Guide: Enumerations](#33-user-guide-enumerations) section.
+- Data Structures: See the [§3.4. User Guide: Data Structures](#34-user-guide-data-structures) section.
 
 Once all arguments have been defined, the `lector::Arguments::parse()` method can be used to parse `argc` and `argv`. For example:
 
@@ -301,7 +301,7 @@ Once all arguments have been defined, the `lector::Arguments::parse()` method ca
 arguments.parse(argc, argv);
 ```
 
-This populates all arguments with their parsed values and performs strict error checking. See the [Error Checking](#35-user-guide-error-checking) section for details.
+This populates all arguments with their parsed values and performs strict error checking. See the [§3.5. Error Checking](#35-user-guide-error-checking) section for details.
 
 Usage information can be obtained via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods. For example:
 
@@ -316,7 +316,7 @@ Execution information can be obtained via the  `lector::Arguments::execution()` 
 std::cout << "Execution: " << arguments.execution() << std::endl;
 ```
 
-See the [Command Line](#32-user-guide-command-line) section for details.
+See the [§3.2. Command Line](#32-user-guide-command-line) section for details.
 
 Individual arguments can be fetched via the `lector::Arguments::get()` method using the argument's enumeration value as a template. For example:
 
@@ -332,7 +332,7 @@ const std::int32_t iterations{
 
 ### §3.2. User Guide: Command Line
 
-The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [**Introduction**](#1-introduction) section.
+The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
 
 Display usage information via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods:
 
@@ -449,7 +449,7 @@ inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project
 #endif  // MY_PROJECT_SHAPE_HPP
 ```
 
-With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this enumeration. For example:
+With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with the `my_project::Shape` enumeration. For example:
 
 ```cpp
 #include <cstdlib>
@@ -475,7 +475,7 @@ int main() {
 }
 ```
 
-The enumeration can also be used as a command line argument. For example:
+The `my_project::Shape` enumeration can also be used as a command line argument. For example:
 
 ```cpp
 #include <cstdint>
@@ -507,9 +507,9 @@ int main(int argc, char* argv[]) {
 
 [(Back to User Guide)](#3-user-guide)
 
-### §3.4. User Guide: Classes and Structures
+### §3.4. User Guide: Data Structures
 
-Classes and structures can be used as argument types, but require specializing the input and output stream operators (`<<` and `>>`). For example:
+Data structures can be used as argument types, but require specializing the input and output stream operators (`<<` and `>>`). For example:
 
 ```cpp
 #ifndef MY_PROJECT_POINT_HPP
@@ -540,7 +540,7 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
 #endif  // MY_PROJECT_POINT_HPP
 ```
 
-With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with this data structure. For example:
+With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with the `my_project::Point` data structure. For example:
 
 ```cpp
 #include <cstdlib>
@@ -562,7 +562,7 @@ int main() {
 }
 ```
 
-The data structure can also be used as a command line argument. For example:
+The `my_project::Point` data structure can also be used as a command line argument. For example:
 
 ```cpp
 #include <cstdint>
@@ -607,7 +607,7 @@ The following checks are performed when defining command line arguments:
 - All arguments must have descriptions. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
 - Boolean arguments are always false by default and cannot specify default values. For example, `lector::Argument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
 
-The following checks are performed when parsing command line arguments. These examples use the code from the [**Introduction**](#1-introduction) section:
+The following checks are performed when parsing command line arguments. These examples use the code from the [§1. Introduction](#1-introduction) section:
 
 - Missing required arguments. For example, `path/to/my_project_main --iterations 200` throws an exception because the required argument `--output_directory <path>` is missing.
 - Duplicated arguments. For example, `path/to/my_project_main --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
@@ -795,7 +795,7 @@ Regardless of the build system or operating system, in all cases, a code coverag
 
 ### §4.6. Developer Guide: Documentation
 
-The Lector library's documentation is hosted at <https://acodcha.github.io/lector>. The Lector library uses the [Doxygen](<https://www.doxygen.org>) automatic source code documentation generator to generate the documentation of its source code files. See the [Doxyfile.txt](<https://github.com/acodcha/lector/blob/main/Doxyfile.txt>) file for the documentation options that are used. To generate the Lector library's documentation yourself, ensure that Doxygen is installed on your system:
+The Lector library's documentation is hosted at <https://acodcha.github.io/lector>. The Lector library uses the [Doxygen](<https://www.doxygen.org>) automatic source code documentation generator to generate the documentation of its source code files. See the [Doxyfile.txt](<https://github.com/acodcha/lector/blob/main/docs/Doxyfile.txt>) file for the documentation options that are used. To generate the Lector library's documentation yourself, ensure that Doxygen is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install Doxygen with `sudo apt install doxygen`.
 - On macOS, install Doxygen using the [Homebrew](<https://brew.sh>) package manager with `brew install doxygen`.
@@ -805,7 +805,7 @@ The Lector library's documentation is hosted at <https://acodcha.github.io/lecto
 Generate the Lector library's documentation with:
 
 ```bash
-doxygen Doxyfile.txt
+doxygen docs/Doxyfile.txt
 ```
 
 This builds HTML documentation pages in the `docs/html/` directory. Browse the documentation by opening the `docs/html/index.html` file in any web browser.

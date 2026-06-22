@@ -18,7 +18,7 @@
 
 # This is a configuration file for the Doxygen (https://www.doxygen.org) automatic source code
 # documentation generator. To generate documentation for the source files in this repository, run:
-#     doxygen Doxyfile.txt
+#     doxygen docs/Doxyfile.txt
 
 # Project Settings
 
@@ -133,7 +133,7 @@ WARN_LOGFILE            =
 
 # Input File Settings
 
-INPUT                   = lector/arguments.hpp lector/parse.hpp lector/print.hpp
+INPUT                   = docs/main_page.txt lector/arguments.hpp lector/parse.hpp lector/print.hpp
 INPUT_ENCODING          = UTF-8
 INPUT_FILE_ENCODING     =
 FILE_PATTERNS           = *.cpp *.hpp
@@ -179,12 +179,12 @@ IGNORE_PREFIX           =
 GENERATE_HTML           = YES
 HTML_OUTPUT             = html
 HTML_FILE_EXTENSION     = .html
-HTML_HEADER             =
-HTML_FOOTER             =
+HTML_HEADER             = docs/header.html
+HTML_FOOTER             = docs/footer.html
 HTML_STYLESHEET         =
-HTML_EXTRA_STYLESHEET   =
+HTML_EXTRA_STYLESHEET   = docs/style.css
 HTML_EXTRA_FILES        =
-HTML_COLORSTYLE         = TOGGLE
+HTML_COLORSTYLE         = DARK
 HTML_COLORSTYLE_HUE     = 220
 HTML_COLORSTYLE_SAT     = 100
 HTML_COLORSTYLE_GAMMA   = 80
