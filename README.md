@@ -795,7 +795,7 @@ Regardless of the build system or operating system, in all cases, a code coverag
 
 ### §4.6. Developer Guide: Documentation
 
-The Lector library's documentation is hosted at <https://acodcha.github.io/lector>. The Lector library uses the [Doxygen](<https://www.doxygen.org>) automatic source code documentation generator to generate the documentation of its source code files. See the [Doxyfile.txt](<https://github.com/acodcha/lector/blob/main/docs/Doxyfile.txt>) file for the documentation options that are used. To generate the Lector library's documentation yourself, ensure that Doxygen is installed on your system:
+The Lector library's documentation is hosted at <https://acodcha.github.io/lector>. The Lector library uses the [Doxygen](<https://www.doxygen.org>) automatic source code documentation generator to generate the documentation of its source code files. See the [Doxyfile.txt](<https://github.com/acodcha/lector/blob/main/Doxyfile.txt>) file for the documentation options that are used. To generate the Lector library's documentation yourself, ensure that Doxygen is installed on your system:
 
 - On Ubuntu or other Debian-based Linux systems, install Doxygen with `sudo apt install doxygen`.
 - On macOS, install Doxygen using the [Homebrew](<https://brew.sh>) package manager with `brew install doxygen`.
@@ -805,10 +805,10 @@ The Lector library's documentation is hosted at <https://acodcha.github.io/lecto
 Generate the Lector library's documentation with:
 
 ```bash
-doxygen docs/Doxyfile.txt
+doxygen Doxyfile.txt
 ```
 
-This builds HTML documentation pages in the `docs/html/` directory. Browse the documentation by opening the `docs/html/index.html` file in any web browser.
+This builds HTML documentation pages in the `docs/` directory. Browse the documentation by opening the `docs/index.html` file in any web browser.
 
 [(Back to Developer Guide)](#4-developer-guide)
 

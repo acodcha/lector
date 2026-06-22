@@ -56,11 +56,11 @@ jobs:
         run: doxygen --version
       - name: Check documentation
         run: |
-          doxygen docs/Doxyfile.txt
-          CHANGES=$(git status --porcelain docs/html/)
+          doxygen Doxyfile.txt
+          CHANGES=$(git status --porcelain docs/)
           if ! [ -z "$CHANGES" ]; then
             echo "The documentation is not up to date. To re-generate the documentation, run:"
-            echo "    doxygen docs/Doxyfile.txt"
+            echo "    doxygen Doxyfile.txt"
             exit 1
           fi
   bazel:
