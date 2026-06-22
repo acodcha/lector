@@ -18,7 +18,7 @@
 
 # This is a configuration file for the Doxygen (https://www.doxygen.org) automatic source code
 # documentation generator. To generate documentation for the source files in this repository, run:
-#     doxygen docs/Doxyfile.txt
+#     doxygen Doxyfile.txt
 
 # Project Settings
 
@@ -27,7 +27,7 @@ PROJECT_NAME            = "Lector"
 PROJECT_NUMBER          = "v1.0.0"
 PROJECT_BRIEF           = "C++ library for parsing command line arguments."
 PROJECT_LOGO            =
-OUTPUT_DIRECTORY        = docs/
+OUTPUT_DIRECTORY        =
 CREATE_SUBDIRS          = NO
 CREATE_SUBDIRS_LEVEL    = 0
 ALLOW_UNICODE_NAMES     = NO
@@ -133,7 +133,7 @@ WARN_LOGFILE            =
 
 # Input File Settings
 
-INPUT                   = docs/main_page.txt lector/arguments.hpp lector/parse.hpp lector/print.hpp
+INPUT                   = docs_main.txt lector/arguments.hpp lector/parse.hpp lector/print.hpp
 INPUT_ENCODING          = UTF-8
 INPUT_FILE_ENCODING     =
 FILE_PATTERNS           = *.cpp *.hpp
@@ -177,13 +177,13 @@ IGNORE_PREFIX           =
 # HTML Output Settings
 
 GENERATE_HTML           = YES
-HTML_OUTPUT             = html
+HTML_OUTPUT             = docs
 HTML_FILE_EXTENSION     = .html
-HTML_HEADER             = docs/header.html
-HTML_FOOTER             = docs/footer.html
+HTML_HEADER             = docs_header.html
+HTML_FOOTER             = docs_footer.html
 HTML_STYLESHEET         =
-HTML_EXTRA_STYLESHEET   = docs/style.css
-HTML_EXTRA_FILES        =
+HTML_EXTRA_STYLESHEET   = style.css
+HTML_EXTRA_FILES        = favicon.ico
 HTML_COLORSTYLE         = DARK
 HTML_COLORSTYLE_HUE     = 0
 HTML_COLORSTYLE_SAT     = 0
@@ -243,7 +243,7 @@ EXTRA_SEARCH_MAPPINGS   =
 # LaTeX Output Settings
 
 GENERATE_LATEX          = NO
-LATEX_OUTPUT            = latex
+LATEX_OUTPUT            = docs_latex
 LATEX_CMD_NAME          =
 MAKEINDEX_CMD_NAME      = makeindex
 LATEX_MAKEINDEX_CMD     = makeindex
@@ -264,7 +264,7 @@ LATEX_EMOJI_DIRECTORY   =
 # RTF Output Settings
 
 GENERATE_RTF            = NO
-RTF_OUTPUT              = rtf
+RTF_OUTPUT              = docs_rtf
 COMPACT_RTF             = NO
 RTF_HYPERLINKS          = NO
 RTF_STYLESHEET_FILE     =
@@ -273,7 +273,7 @@ RTF_EXTENSIONS_FILE     =
 # Man Page Output Settings
 
 GENERATE_MAN            = NO
-MAN_OUTPUT              = man
+MAN_OUTPUT              = docs_man
 MAN_EXTENSION           = .3
 MAN_SUBDIR              =
 MAN_LINKS               = NO
@@ -281,14 +281,14 @@ MAN_LINKS               = NO
 # XML Output Settings
 
 GENERATE_XML            = NO
-XML_OUTPUT              = xml
+XML_OUTPUT              = docs_xml
 XML_PROGRAMLISTING      = YES
 XML_NS_MEMB_FILE_SCOPE  = NO
 
 # DOCBOOK Output Settings
 
 GENERATE_DOCBOOK        = NO
-DOCBOOK_OUTPUT          = docbook
+DOCBOOK_OUTPUT          = docs_docbook
 
 # AutoGen Definitions Output Settings
 
@@ -297,7 +297,7 @@ GENERATE_AUTOGEN_DEF    = NO
 # Sqlite3 Output Settings
 
 GENERATE_SQLITE3        = NO
-SQLITE3_OUTPUT          = sqlite3
+SQLITE3_OUTPUT          = docs_sqlite3
 SQLITE3_RECREATE_DB     = YES
 
 # Perl Module Output Settings
