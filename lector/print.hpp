@@ -30,6 +30,7 @@
 #include <string_view>
 #include <type_traits>
 
+/// @brief The Lector library's namespace.
 namespace lector {
 
 /// @brief The canonical printed name for a value of a specified type.
