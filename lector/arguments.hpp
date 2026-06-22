@@ -40,6 +40,7 @@
 #include "lector/parse.hpp"
 #include "lector/print.hpp"
 
+/// @brief The Lector library's namespace.
 namespace lector {
 
 /// @brief Importance of a command line argument.

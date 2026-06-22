@@ -36,6 +36,7 @@
   #include <cstddef>
 #endif  // __APPLE__
 
+/// @brief The Lector library's namespace.
 namespace lector {
 
 /// @brief A possible spelling for a value of a specified type.
