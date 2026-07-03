@@ -40,6 +40,8 @@ cc_library(
     name = "arguments",
     hdrs = ["arguments.hpp"],
     copts = CPP_COMPILER_OPTIONS,
+    include_prefix = "lector",
+    strip_include_prefix = "",
     visibility = ["//visibility:public"],
     deps = [
         "//lector:parse",
@@ -65,6 +67,8 @@ cc_library(
     name = "parse",
     hdrs = ["parse.hpp"],
     copts = CPP_COMPILER_OPTIONS,
+    include_prefix = "lector",
+    strip_include_prefix = "",
     visibility = ["//visibility:public"],
 )
 
@@ -84,6 +88,8 @@ cc_library(
     name = "print",
     hdrs = ["print.hpp"],
     copts = CPP_COMPILER_OPTIONS,
+    include_prefix = "lector",
+    strip_include_prefix = "",
     visibility = ["//visibility:public"],
 )
 
