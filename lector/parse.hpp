@@ -49,15 +49,16 @@ using Spelling = ::std::pair<::std::string_view, Type>;
 template <typename Type>
 inline constexpr ::std::array<::lector::Spelling<Type>, 0UL> Spellings{};
 
-/// @brief Parses a string view into an enumeration value. The enumeration type must define a
+/// @brief Parses a string of text into an enumeration value. The enumeration type must define a
 /// specialization of the lector::Spellings constant for its type.
 /// @tparam EnumerationType The enumeration type.
-/// @param[in] text The string view to parse.
-/// @return The parsed enumeration value, or std::nullopt if the string view could not be parsed
+/// @param[in] text The string of text to parse.
+/// @return The parsed enumeration value, or std::nullopt if the string of text could not be parsed
 /// into a valid enumeration value.
 template <typename EnumerationType>
 [[nodiscard]] constexpr ::std::optional<EnumerationType> parse_enumeration(
     const ::std::string_view text) {
+  static_assert(std::is_enum_v<EnumerationType> == true);
   for (const auto& [spelling, value] : ::lector::Spellings<EnumerationType>) {
     if (spelling == text) {
       return value;
@@ -66,20 +67,20 @@ template <typename EnumerationType>
   return ::std::nullopt;
 }
 
-/// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
-/// it must define a specialization of the lector::Spellings constant for its type.
-/// @tparam Type The type of the value in which to parse the string view.
-/// @param[in] text The string view to parse.
-/// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
+/// @brief Parses a string of text into a value of a specific type. If the type is an enumeration
+/// type, it must define a specialization of the lector::Spellings constant for its type.
+/// @tparam Type The type of the value in which to parse the string of text.
+/// @param[in] text The string of text to parse.
+/// @return The parsed value, or std::nullopt if the string of text could not be parsed into a valid
 /// value.
 template <typename Type>
 [[nodiscard]] ::std::optional<Type> parse(::std::string_view text);
 
-/// @brief Parses a string view into a boolean value. For example, the string view "true" returns
-/// the boolean value true.
-/// @param[in] text  The string view to parse.
-/// @return The parsed boolean value, or std::nullopt if the string view could not be parsed into a
-/// valid boolean value.
+/// @brief Parses a string of text into a boolean value. For example, the string of text "true"
+/// returns the boolean value true.
+/// @param[in] text  The string of text to parse.
+/// @return The parsed boolean value, or std::nullopt if the string of text could not be parsed into
+/// a valid boolean value.
 template <>
 [[nodiscard]] inline ::std::optional<bool> parse(const ::std::string_view text) {
   if (text == "true" || text == "True" || text == "TRUE") {
@@ -91,11 +92,11 @@ template <>
   return ::std::nullopt;
 }
 
-/// @brief Parses a string view into an 8-bit natural number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 8-bit natural number, or std::nullopt if the string view could not be parsed
-/// into a valid 8-bit natural number.
+/// @brief Parses a string of text into an 8-bit natural number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 8-bit natural number, or std::nullopt if the string of text could not be
+/// parsed into a valid 8-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint8_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -132,11 +133,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 16-bit natural number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 16-bit natural number, or std::nullopt if the string view could not be parsed
-/// into a valid 16-bit natural number.
+/// @brief Parses a string of text into a 16-bit natural number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 16-bit natural number, or std::nullopt if the string of text could not be
+/// parsed into a valid 16-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint16_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -173,11 +174,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 32-bit natural number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 32-bit natural number, or std::nullopt if the string view could not be parsed
-/// into a valid 32-bit natural number.
+/// @brief Parses a string of text into a 32-bit natural number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 32-bit natural number, or std::nullopt if the string of text could not be
+/// parsed into a valid 32-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint32_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -214,11 +215,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 64-bit natural number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 64-bit natural number, or std::nullopt if the string view could not be parsed
-/// into a valid 64-bit natural number.
+/// @brief Parses a string of text into a 64-bit natural number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 64-bit natural number, or std::nullopt if the string of text could not be
+/// parsed into a valid 64-bit natural number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::uint64_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -255,11 +256,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into an 8-bit integer number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 8-bit integer number, or std::nullopt if the string view could not be parsed
-/// into a valid 8-bit integer number.
+/// @brief Parses a string of text into an 8-bit integer number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 8-bit integer number, or std::nullopt if the string of text could not be
+/// parsed into a valid 8-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int8_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -288,11 +289,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 16-bit integer number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 16-bit integer number, or std::nullopt if the string view could not be parsed
-/// into a valid 16-bit integer number.
+/// @brief Parses a string of text into a 16-bit integer number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 16-bit integer number, or std::nullopt if the string of text could not be
+/// parsed into a valid 16-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int16_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -321,11 +322,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 32-bit integer number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 32-bit integer number, or std::nullopt if the string view could not be parsed
-/// into a valid 32-bit integer number.
+/// @brief Parses a string of text into a 32-bit integer number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 32-bit integer number, or std::nullopt if the string of text could not be
+/// parsed into a valid 32-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int32_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -354,11 +355,11 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a 64-bit integer number. For example, the string view "42"
-/// returns the number 42.
-/// @param[in] text The string view to parse.
-/// @return The parsed 64-bit integer number, or std::nullopt if the string view could not be parsed
-/// into a valid 64-bit integer number.
+/// @brief Parses a string of text into a 64-bit integer number. For example, the string of text
+/// "42" returns the number 42.
+/// @param[in] text The string of text to parse.
+/// @return The parsed 64-bit integer number, or std::nullopt if the string of text could not be
+/// parsed into a valid 64-bit integer number.
 template <>
 [[nodiscard]] inline ::std::optional<::std::int64_t> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -387,10 +388,10 @@ template <>
   return number;
 }
 
-/// @brief Parses a string view into a single-precision floating-point number. For example, the
-/// string view "3.14" returns the number 3.14.
-/// @param[in] text The string view to parse.
-/// @return The parsed single-precision floating-point number, or std::nullopt if the string view
+/// @brief Parses a string of text into a single-precision floating-point number. For example, the
+/// string of text "3.14" returns the number 3.14.
+/// @param[in] text The string of text to parse.
+/// @return The parsed single-precision floating-point number, or std::nullopt if the string of text
 /// could not be parsed into a valid single-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<float> parse(const ::std::string_view text) {
@@ -416,7 +417,7 @@ template <>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
   float number{0.0F};
-  ::std::size_t position{0};
+  ::std::size_t position{0UL};
   try {
     const ::std::string modified_text_string{modified_text};
     number = ::std::stof(modified_text_string, &position);
@@ -442,10 +443,10 @@ template <>
 #endif  // __APPLE__
 }
 
-/// @brief Parses a string view into a double-precision floating-point number. For example, the
-/// string view "3.14" returns the number 3.14.
-/// @param[in] text The string view to parse.
-/// @return The parsed double-precision floating-point number, or std::nullopt if the string view
+/// @brief Parses a string of text into a double-precision floating-point number. For example, the
+/// string of text "3.14" returns the number 3.14.
+/// @param[in] text The string of text to parse.
+/// @return The parsed double-precision floating-point number, or std::nullopt if the string of text
 /// could not be parsed into a valid double-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<double> parse(const ::std::string_view text) {
@@ -471,7 +472,7 @@ template <>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
   double number{0.0};
-  ::std::size_t position{0};
+  ::std::size_t position{0UL};
   try {
     const ::std::string modified_text_string{modified_text};
     number = ::std::stod(modified_text_string, &position);
@@ -497,11 +498,11 @@ template <>
 #endif  // __APPLE__
 }
 
-/// @brief Parses a string view into an extended-precision floating-point number. For example, the
-/// string view "3.14" returns the number 3.14.
-/// @param[in] text The string view to parse.
-/// @return The parsed extended-precision floating-point number, or std::nullopt if the string view
-/// could not be parsed into a valid extended-precision floating-point number.
+/// @brief Parses a string of text into an extended-precision floating-point number. For example,
+/// the string of text "3.14" returns the number 3.14.
+/// @param[in] text The string of text to parse.
+/// @return The parsed extended-precision floating-point number, or std::nullopt if the string of
+/// text could not be parsed into a valid extended-precision floating-point number.
 template <>
 [[nodiscard]] inline ::std::optional<long double> parse(const ::std::string_view text) {
   ::std::string_view modified_text{text};
@@ -526,7 +527,7 @@ template <>
   // library on macOS has an older version of std::from_chars() that only supports integral types
   // and does not support floating-point types.
   long double number{0.0L};
-  ::std::size_t position{0};
+  ::std::size_t position{0UL};
   try {
     const ::std::string modified_text_string{modified_text};
     number = ::std::stold(modified_text_string, &position);
@@ -552,7 +553,7 @@ template <>
 #endif  // __APPLE__
 }
 
-/// @brief Parses a string view into a string. Does not mutate the string view in any way.
+/// @brief Parses a string view into a string of text.
 /// @param[in] text The string view to parse.
 /// @return The parsed string.
 template <>
@@ -560,28 +561,29 @@ template <>
   return ::std::string{text};
 }
 
-/// @brief Parses a string view into a string view. Does not mutate the string view in any way.
-/// @param[in] text The string view to parse.
-/// @return The parsed string view.
+/// @brief Returns a string of text as-is.
+/// @param[in] text The string of text.
+/// @return The string of text.
 template <>
 [[nodiscard]] inline ::std::optional<::std::string_view> parse(const ::std::string_view text) {
   return text;
 }
 
-/// @brief Parses a string view into a filesystem path.
-/// @param[in] text The string view to parse.
-/// @return The parsed filesystem path, or std::nullopt if the string view could not be parsed into
-/// a valid filesystem path.
+/// @brief Parses a string of text into a filesystem path.
+/// @param[in] text The string of text to parse.
+/// @return The parsed filesystem path, or std::nullopt if the string of text could not be parsed
+/// into a valid filesystem path.
 template <>
 [[nodiscard]] inline ::std::optional<::std::filesystem::path> parse(const ::std::string_view text) {
   return ::std::filesystem::path{text};
 }
 
-/// @brief Parses a string view into a value of a specific type. If the type is an enumeration type,
-/// it must define a specialization of the lector::Spellings constant for its type.
-/// @tparam Type The type of the value in which to parse the string view.
-/// @param[in] text The string view to parse.
-/// @return The parsed value, or std::nullopt if the string view could not be parsed into a valid
+/// @brief Parses a string of text into a value of a specific type. If the type is an enumeration
+/// type, it must define a specialization of the lector::Spellings constant for its type; otherwise,
+/// the type must be streamable with the >> input stream operator.
+/// @tparam Type The type of the value in which to parse the string of text.
+/// @param[in] text The string of text to parse.
+/// @return The parsed value, or std::nullopt if the string of text could not be parsed into a valid
 /// value.
 template <typename Type>
 [[nodiscard]] inline ::std::optional<Type> parse(const ::std::string_view text) {
