@@ -534,13 +534,18 @@ public:
   /// @return The string that contains the usage options of this collection of command line
   /// argument.
   [[nodiscard]] ::std::string usage_options() const {
+    const ::std::size_t argument_count{::std::tuple_size_v<decltype(arguments_)>};
     ::std::ostringstream stream;
+    ::std::size_t argument_index{0UL};
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
-              stream << argument.keys_with_value_types() << "  " << argument.description()
-                     << ::std::endl;
+              stream << argument.keys_with_value_types() << "  " << argument.description();
+              ++argument_index;
+              if (argument_index < argument_count) {
+                stream << ::std::endl;
+              }
             }
           }());
         },
@@ -549,8 +554,11 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
-              stream << "[" << argument.keys_with_value_types() << "]  " << argument.description()
-                     << ::std::endl;
+              stream << "[" << argument.keys_with_value_types() << "]  " << argument.description();
+              ++argument_index;
+              if (argument_index < argument_count) {
+                stream << ::std::endl;
+              }
             }
           }());
         },

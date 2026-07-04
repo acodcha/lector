@@ -96,7 +96,7 @@
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Execution: &quot;</span> &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">execution</a>() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::filesystem::path&amp; output_directory{</div>
-<div class="line">    arguments.get&lt;Label::OutputDirectory&gt;().parsed_value().value()};</div>
+<div class="line">    arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The output directory is: &quot;</span> &lt;&lt; output_directory &lt;&lt; std::endl;</div>
 <div class="line"> </div>
@@ -297,7 +297,7 @@
 </div><!-- fragment --><p>See the <a class="el" href="index.html#user_guide_command_line">§3.2. User Guide: Command Line</a> section for details.</p>
 <p>Individual arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method using the argument's enumeration value as a template. For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> std::filesystem::path&amp; output_directory{</div>
-<div class="line">  arguments.get&lt;Label::OutputDirectory&gt;().parsed_value().value()};</div>
+<div class="line">  arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">const</span> std::int32_t iterations{</div>
 <div class="line">  arguments.get&lt;Label::Iterations&gt;().parsed_or_default_value()};</div>
@@ -394,7 +394,8 @@
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_SHAPE_HPP</span></div>
 <div class="ttc" id="anamespacelector_html"><div class="ttname"><a href="namespacelector.html">lector</a></div><div class="ttdoc">The Lector library's namespace.</div><div class="ttdef"><b>Definition</b> arguments.hpp:44</div></div>
 </div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Shape</code> enumeration. For example:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;lector/parse.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;lector/print.hpp&gt;</span></div>
@@ -406,8 +407,8 @@
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::optional&lt;my_project::Shape&gt; parsed_triangle{</div>
 <div class="line">    lector::parse&lt;my_project::Shape&gt;(<span class="stringliteral">&quot;TRIANGLE&quot;</span>)};</div>
-<div class="line">  assert(parsed_triangle.has_value());</div>
-<div class="line">  assert(parsed_triangle.value() == my_project::Shape::Triangle);</div>
+<div class="line">  assert(parsed_triangle.has_value() &amp;&amp;</div>
+<div class="line">         parsed_triangle.value() == my_project::Shape::Triangle);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::optional&lt;my_project::Shape&gt; invalid_shape{</div>
 <div class="line">    lector::parse&lt;my_project::Shape&gt;(<span class="stringliteral">&quot;Invalid Shape&quot;</span>)};</div>
@@ -473,7 +474,8 @@
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_POINT_HPP</span></div>
 </div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Point</code> data structure. For example:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;lector/parse.hpp&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;lector/print.hpp&gt;</span></div>
@@ -485,8 +487,11 @@
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::optional&lt;my_project::Point&gt; parsed_point{</div>
 <div class="line">    lector::parse&lt;my_project::Point&gt;(<span class="stringliteral">&quot;4.0 5.0 6.0&quot;</span>)};</div>
-<div class="line">  assert(parsed_point.has_value());</div>
-<div class="line">  assert(parsed_point.value() == my_project::Point{4.0, 5.0, 6.0});</div>
+<div class="line">  <span class="keyword">const</span> my_project::Point expected_point{4.0, 5.0, 6.0};</div>
+<div class="line">  assert(parsed_point.has_value() &amp;&amp;</div>
+<div class="line">         parsed_point.value().x == expected_point.x &amp;&amp;</div>
+<div class="line">         parsed_point.value().y == expected_point.y &amp;&amp;</div>
+<div class="line">         parsed_point.value().z == expected_point.z);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
