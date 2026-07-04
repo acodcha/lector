@@ -51,6 +51,7 @@ inline constexpr ::std::array<::lector::Name<Type>, 0UL> Names{};
 /// @return The value as a printed string of text.
 template <typename EnumerationType>
 [[nodiscard]] constexpr ::std::string_view print_enumeration(const EnumerationType value) {
+  static_assert(std::is_enum_v<EnumerationType> == true);
   for (const auto& [enumeration_value, name] : ::lector::Names<EnumerationType>) {
     if (enumeration_value == value) {
       return name;
@@ -273,8 +274,8 @@ template <>
   return stream.str();
 }
 
-/// @brief Returns a string of text. No-op.
-/// @param[in] value The string of text to print.
+/// @brief Returns a string of text as-is.
+/// @param[in] value The string of text.
 /// @return The string of text.
 template <>
 [[nodiscard]] inline ::std::string print(const ::std::string& value) {
@@ -286,7 +287,7 @@ template <>
 /// @return The string view as a printed string of text.
 template <>
 [[nodiscard]] inline ::std::string print(const ::std::string_view& value) {
-  return ::std::string(value);
+  return ::std::string{value};
 }
 
 /// @brief Prints a filesystem path as a string of text.
@@ -298,7 +299,8 @@ template <>
 }
 
 /// @brief Prints a value of a specific type as a string of text. If the type is an enumeration
-/// type, it must define a specialization of the lector::Names constant for its type.
+/// type, it must define a specialization of the lector::Names constant for its type; otherwise, the
+/// type must be streamable with the << output stream operator.
 /// @tparam Type The type of the value to print.
 /// @param[in] value The value to print.
 /// @return The value as a printed string of text.
