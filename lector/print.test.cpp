@@ -20,6 +20,7 @@
 
 #include <array>
 #include <cmath>
+#include <cstddef>
 #include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
@@ -650,6 +651,146 @@ TEST(Lector, PrintString) {
 TEST(Lector, PrintStringView) {
   EXPECT_EQ(::lector::print<::std::string_view>(""), "");
   EXPECT_EQ(::lector::print<::std::string_view>("Hello, world!"), "Hello, world!");
+}
+
+TEST(Lector, Utf8CodePoints) {
+  EXPECT_EQ(::lector::utf8_code_points(""), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::utf8_code_points("Hello!!!"), static_cast<::std::size_t>(8UL));
+  EXPECT_EQ(::lector::utf8_code_points("$5"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::utf8_code_points("¢25"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::utf8_code_points("£5"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::utf8_code_points("¥500"), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(::lector::utf8_code_points("5€"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::utf8_code_points("château"), static_cast<::std::size_t>(7UL));
+  EXPECT_EQ(::lector::utf8_code_points("été"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::utf8_code_points("œuf"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::utf8_code_points("こんにちは"), static_cast<::std::size_t>(5UL));
+}
+
+TEST(Lector, WrapExcessiveWhitespace) {
+  EXPECT_EQ(::lector::wrap("", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap(" ", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("  ", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("\t", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("\t\t", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("\n", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("\n\n", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap(" \t\n \t\n", static_cast<::std::size_t>(100UL)), "");
+  EXPECT_EQ(::lector::wrap("Hello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world! ", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!  ", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" Hello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("  Hello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" Hello, world! ", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("  Hello, world!  ", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\n", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("Hello, world!\n\n", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\nHello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\n\nHello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\n\nHello, world!\n\n", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\t", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("Hello, world!\t\t", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\tHello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\t\tHello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\t\tHello, world!\t\t", static_cast<::std::size_t>(100UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(100UL)),
+            "Hello, world!");
+}
+
+TEST(Lector, WrapMaximumLineLengthSmall) {
+  ::std::ostringstream expected;
+  expected << "The" << std::endl;
+  expected << "brown" << std::endl;
+  expected << "fox" << std::endl;
+  expected << "jumps" << std::endl;
+  expected << "over" << std::endl;
+  expected << "the" << std::endl;
+  expected << "lazy" << std::endl;
+  expected << "dog.";
+  EXPECT_EQ(
+      ::lector::wrap("The brown fox jumps over the lazy dog.", static_cast<::std::size_t>(1UL)),
+      expected.str());
+  EXPECT_EQ(::lector::wrap(
+                " The  brown  fox  jumps  over  the  lazy  dog. ", static_cast<::std::size_t>(1UL)),
+            expected.str());
+}
+
+TEST(Lector, WrapMaximumLineLengthZero) {
+  EXPECT_EQ(::lector::wrap("", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap(" ", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("  ", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("\t", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("\t\t", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("\n", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("\n\n", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap(" \t\n \t\n", static_cast<::std::size_t>(0UL)), "");
+  EXPECT_EQ(::lector::wrap("Hello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world! ", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!  ", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" Hello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("  Hello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" Hello, world! ", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("  Hello, world!  ", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\n", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\n\n", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\nHello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\n\nHello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\n\nHello, world!\n\n", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\t", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("Hello, world!\t\t", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\tHello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap("\t\tHello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(
+      ::lector::wrap("\t\tHello, world!\t\t", static_cast<::std::size_t>(0UL)), "Hello, world!");
+  EXPECT_EQ(::lector::wrap(" \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(0UL)),
+            "Hello, world!");
+}
+
+TEST(Lector, WrapMultipleLines) {
+  ::std::ostringstream expected;
+  expected << "The brown" << std::endl;
+  expected << "fox jumps" << std::endl;
+  expected << "over the" << std::endl;
+  expected << "lazy dog.";
+  EXPECT_EQ(
+      ::lector::wrap("The brown fox jumps over the lazy dog.", static_cast<::std::size_t>(12UL)),
+      expected.str());
+  EXPECT_EQ(::lector::wrap(" The  brown  fox  jumps  over  the  lazy  dog. ",
+                           static_cast<::std::size_t>(12UL)),
+            expected.str());
+}
+
+TEST(Lector, WrapUtf8Characters) {
+  ::std::ostringstream expected;
+  expected << "J'ai hâte à" << std::endl;
+  expected << "l'été!";
+  EXPECT_EQ(::lector::wrap("J'ai hâte à l'été!", static_cast<::std::size_t>(11UL)), expected.str());
+  EXPECT_EQ(
+      ::lector::wrap(" J'ai  hâte  à  l'été! ", static_cast<::std::size_t>(11UL)), expected.str());
+}
+
+TEST(Lector, WrapVeryLongWord) {
+  ::std::ostringstream expected;
+  expected << "The word" << std::endl;
+  expected << "supercalifragilisticexpialidocious" << std::endl;
+  expected << "is my" << std::endl;
+  expected << "favorite" << std::endl;
+  expected << "word!";
+  EXPECT_EQ(::lector::wrap("The word supercalifragilisticexpialidocious is my favorite word!",
+                           static_cast<::std::size_t>(10UL)),
+            expected.str());
+  EXPECT_EQ(
+      ::lector::wrap(" The  word  supercalifragilisticexpialidocious  is  my  favorite  word! ",
+                     static_cast<::std::size_t>(10UL)),
+      expected.str());
 }
 
 }  // namespace
