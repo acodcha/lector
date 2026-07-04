@@ -145,7 +145,7 @@
 <ul>
 <li>The file <code>&lt;<a class="el" href="arguments_8hpp_source.html">lector/arguments.hpp</a>&gt;</code> defines the <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, keys, description, importance, default value,...">lector::Argument</a></code> and <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> classes, as demonstrated in the <a class="el" href="index.html#introduction">§1. Introduction</a> section.</li>
 <li>The file <code>&lt;<a class="el" href="parse_8hpp_source.html">lector/parse.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
-<li>The file <code>&lt;<a class="el" href="print_8hpp_source.html">lector/print.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string.">lector::print()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
+<li>The file <code>&lt;<a class="el" href="print_8hpp_source.html">lector/print.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
 </ul>
 <p>All of the Lector library's contents are cleanly encapsulated within the <code>lector::</code> namespace.</p>
 <p><a class="el" href="index.html">(Back to Top)</a></p>
@@ -393,7 +393,7 @@
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_SHAPE_HPP</span></div>
 <div class="ttc" id="anamespacelector_html"><div class="ttname"><a href="namespacelector.html">lector</a></div><div class="ttdoc">The Lector library's namespace.</div><div class="ttdef"><b>Definition</b> arguments.hpp:44</div></div>
-</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Shape</code> enumeration. For example:</p>
+</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Shape</code> enumeration. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -416,7 +416,7 @@
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacelector_html_afd1943886db2a251ba96ab1166a4ca21"><div class="ttname"><a href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a></div><div class="ttdeci">::std::string print(const Type &amp;value)</div><div class="ttdoc">Prints a value of a specific type as a string.</div><div class="ttdef"><b>Definition</b> print.hpp:305</div></div>
+<div class="ttc" id="anamespacelector_html_afd1943886db2a251ba96ab1166a4ca21"><div class="ttname"><a href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a></div><div class="ttdeci">::std::string print(const Type &amp;value)</div><div class="ttdoc">Prints a value of a specific type as a string of text.</div><div class="ttdef"><b>Definition</b> print.hpp:306</div></div>
 </div><!-- fragment --><p>The <code>my_project::Shape</code> enumeration can also be used as a command line argument. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
@@ -473,7 +473,7 @@
 <div class="line">}  <span class="comment">// namespace my_project</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_POINT_HPP</span></div>
-</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Point</code> data structure. For example:</p>
+</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string view into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Point</code> data structure. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
