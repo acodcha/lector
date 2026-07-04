@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
   std::cout << "Execution: " << arguments.execution() << std::endl;
 
   const std::filesystem::path& output_directory{
-    arguments.get<Label::OutputDirectory>().parsed_value().value()};
+    arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
 
   std::cout << "The output directory is: " << output_directory << std::endl;
 
@@ -322,7 +322,7 @@ Individual arguments can be fetched via the `lector::Arguments::get()` method us
 
 ```cpp
 const std::filesystem::path& output_directory{
-  arguments.get<Label::OutputDirectory>().parsed_value().value()};
+  arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
 
 const std::int32_t iterations{
   arguments.get<Label::Iterations>().parsed_or_default_value()};
@@ -452,6 +452,7 @@ inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with the `my_project::Shape` enumeration. For example:
 
 ```cpp
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include <lector/parse.hpp>
@@ -464,8 +465,8 @@ int main() {
 
   const std::optional<my_project::Shape> parsed_triangle{
     lector::parse<my_project::Shape>("TRIANGLE")};
-  assert(parsed_triangle.has_value());
-  assert(parsed_triangle.value() == my_project::Shape::Triangle);
+  assert(parsed_triangle.has_value() &&
+         parsed_triangle.value() == my_project::Shape::Triangle);
 
   const std::optional<my_project::Shape> invalid_shape{
     lector::parse<my_project::Shape>("Invalid Shape")};
@@ -543,6 +544,7 @@ inline std::ostream& operator<<(std::ostream& output_stream, const Point& point)
 With the above definitions, the `lector::print()` and `lector::parse()` methods can now be used with the `my_project::Point` data structure. For example:
 
 ```cpp
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include <lector/parse.hpp>
@@ -555,8 +557,11 @@ int main() {
 
   const std::optional<my_project::Point> parsed_point{
     lector::parse<my_project::Point>("4.0 5.0 6.0")};
-  assert(parsed_point.has_value());
-  assert(parsed_point.value() == my_project::Point{4.0, 5.0, 6.0});
+  const my_project::Point expected_point{4.0, 5.0, 6.0};
+  assert(parsed_point.has_value() &&
+         parsed_point.value().x == expected_point.x &&
+         parsed_point.value().y == expected_point.y &&
+         parsed_point.value().z == expected_point.z);
 
   return EXIT_SUCCESS;
 }

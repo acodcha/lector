@@ -1,6 +1,6 @@
 // Copyright © 2026, Alexandre Coderre-Chabot.
 
-// This file is part of Lector (https://github.com/acodcha/lector), a C++ library for parsing
+// This file is part of Lector (https://github.com/acodcha/::lector), a C++ library for parsing
 // command line arguments. Lector is licensed under the MIT License (https://mit-license.org).
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -181,7 +181,7 @@ create_argument_confusing_short() {
 ::lector::Argument<::test::Label::Help, bool> create_argument_help() {
   return ::lector::Argument<::test::Label::Help, bool>{
     ::std::initializer_list<::std::string>{"-h", "--help"},
-    "Print usage information."
+    "Display usage information and exit. Optional."
   };
 }
 
@@ -353,7 +353,7 @@ void create_invalid_argument_with_no_keys() {
 void create_invalid_boolean_argument_with_a_default_value() {
   const ::lector::Argument<::test::Label::Help, bool> argument{
     {"-h", "--help"},
-    "Print usage information.",
+    "Display usage information and exit. Optional.",
     true,
   };
 }
@@ -643,9 +643,9 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLong) {
       parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key <number>]  Short confusing argument." << std::endl
-                         << "[--key=200 <number>]  Long confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key <number>]  Short confusing argument." << ::std::endl
+                         << "[--key=200 <number>]  Long confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -662,9 +662,9 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLong) {
       parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << std::endl
-                         << "[--key <number>]  Short confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << ::std::endl
+                         << "[--key <number>]  Short confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -681,9 +681,9 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLong) {
       parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key <number>]  Short confusing argument." << std::endl
-                         << "[--key=200 <number>]  Long confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key <number>]  Short confusing argument." << ::std::endl
+                         << "[--key=200 <number>]  Long confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -700,9 +700,9 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShort) {
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value(), ::std::nullopt);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key <number>] [--key=200 <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key <number>]  Short confusing argument." << std::endl
-                         << "[--key=200 <number>]  Long confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key <number>]  Short confusing argument." << ::std::endl
+                         << "[--key=200 <number>]  Long confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -719,9 +719,9 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLong) {
       parsed_confusing_long.has_value() && parsed_confusing_long.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << std::endl
-                         << "[--key <number>]  Short confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << ::std::endl
+                         << "[--key <number>]  Short confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -738,9 +738,9 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShort) {
   EXPECT_EQ(arguments.get<::test::Label::ConfusingLong>().parsed_value(), ::std::nullopt);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--key=200 <number>] [--key <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << std::endl
-                         << "[--key <number>]  Short confusing argument." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "[--key=200 <number>]  Long confusing argument." << ::std::endl
+                         << "[--key <number>]  Short confusing argument.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -752,9 +752,8 @@ TEST(Lector, ArgumentsValidIndividualHelpNotSpecified) {
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(
+      arguments.usage_options(), "[-h, --help]  Display usage information and exit. Optional.");
 }
 
 TEST(Lector, ArgumentsValidIndividualHelpSpecified) {
@@ -766,9 +765,8 @@ TEST(Lector, ArgumentsValidIndividualHelpSpecified) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable --help");
   EXPECT_EQ(arguments.usage_command(), "executable [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(
+      arguments.usage_options(), "[-h, --help]  Display usage information and exit. Optional.");
 }
 
 TEST(Lector, ArgumentsValidIndividualIterationsOptional) {
@@ -779,10 +777,8 @@ TEST(Lector, ArgumentsValidIndividualIterationsOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::Iterations>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--iterations <number>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(
+      arguments.usage_options(), "[-i <number>, --iterations <number>]  Number of iterations.");
 }
 
 TEST(Lector, ArgumentsValidIndividualIterationsRequired) {
@@ -795,10 +791,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsRequired) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == 200);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200");
   EXPECT_EQ(arguments.usage_command(), "executable --iterations <number>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options
-      << "-i <number>, --iterations <number>  Number of iterations." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-i <number>, --iterations <number>  Number of iterations.");
 }
 
 TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptional) {
@@ -809,9 +802,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::OutputDirectory>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--output <path>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-o <path>, --output <path>]  Output directory." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "[-o <path>, --output <path>]  Output directory.");
 }
 
 TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequired) {
@@ -824,9 +815,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequired) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "/path/to/output");
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output");
   EXPECT_EQ(arguments.usage_command(), "executable --output <path>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-o <path>, --output <path>  Output directory.");
 }
 
 TEST(Lector, ArgumentsValidIndividualPointOptional) {
@@ -837,9 +826,7 @@ TEST(Lector, ArgumentsValidIndividualPointOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::Point>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--point <value>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-p <value>, --point <value>]  Starting point." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "[-p <value>, --point <value>]  Starting point.");
 }
 
 TEST(Lector, ArgumentsValidIndividualPointRequired) {
@@ -852,9 +839,7 @@ TEST(Lector, ArgumentsValidIndividualPointRequired) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == ::test::SecondPoint);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --point 4 5 6");
   EXPECT_EQ(arguments.usage_command(), "executable --point <value>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-p <value>, --point <value>  Starting point." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-p <value>, --point <value>  Starting point.");
 }
 
 TEST(Lector, ArgumentsValidIndividualShapeOptional) {
@@ -865,9 +850,7 @@ TEST(Lector, ArgumentsValidIndividualShapeOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::Shape>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--shape <value>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-s <value>, --shape <value>]  Favorite shape." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "[-s <value>, --shape <value>]  Favorite shape.");
 }
 
 TEST(Lector, ArgumentsValidIndividualShapeRequired) {
@@ -880,9 +863,7 @@ TEST(Lector, ArgumentsValidIndividualShapeRequired) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == ::test::Shape::Triangle);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --shape Triangle");
   EXPECT_EQ(arguments.usage_command(), "executable --shape <value>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-s <value>, --shape <value>  Favorite shape.");
 }
 
 TEST(Lector, ArgumentsValidIndividualTitleOptional) {
@@ -893,9 +874,7 @@ TEST(Lector, ArgumentsValidIndividualTitleOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::Title>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--title <text>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-t <text>, --title <text>]  Report title." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "[-t <text>, --title <text>]  Report title.");
 }
 
 TEST(Lector, ArgumentsValidIndividualTitleRequired) {
@@ -908,9 +887,7 @@ TEST(Lector, ArgumentsValidIndividualTitleRequired) {
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "Some Other Report");
   EXPECT_EQ(arguments.execution(), "/path/to/executable --title Some Other Report");
   EXPECT_EQ(arguments.usage_command(), "executable --title <text>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-t <text>, --title <text>  Report title." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-t <text>, --title <text>  Report title.");
 }
 
 TEST(Lector, ArgumentsValidIndividualToleranceOptional) {
@@ -921,9 +898,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceOptional) {
   EXPECT_FALSE(arguments.get<::test::Label::Tolerance>().parsed_value().has_value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
   EXPECT_EQ(arguments.usage_command(), "executable [--tolerance <value>]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "[-t <value>, --tolerance <value>]  Tolerance value." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "[-t <value>, --tolerance <value>]  Tolerance value.");
 }
 
 TEST(Lector, ArgumentsValidIndividualToleranceRequired) {
@@ -937,9 +912,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceRequired) {
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --tolerance " + ::lector::print<double>(::test::OneOverSixtyFour));
   EXPECT_EQ(arguments.usage_command(), "executable --tolerance <value>");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-t <value>, --tolerance <value>  Tolerance value." << std::endl;
-  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.usage_options(), "-t <value>, --tolerance <value>  Tolerance value.");
 }
 
 TEST(Lector, ArgumentsValidManyInlineLongKeys) {
@@ -966,12 +939,12 @@ TEST(Lector, ArgumentsValidManyInlineLongKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -999,12 +972,12 @@ TEST(Lector, ArgumentsValidManyInlineShortKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1032,12 +1005,12 @@ TEST(Lector, ArgumentsValidManyMixedLongKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1065,12 +1038,12 @@ TEST(Lector, ArgumentsValidManyMixedShortKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1098,12 +1071,12 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1131,12 +1104,12 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeys) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(),
             "executable --shape <value> --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << std::endl;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-s <value>, --shape <value>  Favorite shape." << ::std::endl;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1155,11 +1128,10 @@ TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgain) {
       parsed_iterations_again.has_value() && parsed_iterations_again.value() == ::test::TwoHundred);
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --iter 200");
   EXPECT_EQ(arguments.usage_command(), "executable [--iterations <number>] [--iter <number>]");
-  std::ostringstream expected_usage_options;
+  ::std::ostringstream expected_usage_options;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options
-      << "[-it <number>, --iter <number>]  Number of iterations, again." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-it <number>, --iter <number>]  Number of iterations, again.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1176,10 +1148,10 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelp) {
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --help");
   EXPECT_EQ(arguments.usage_command(), "executable [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
+  ::std::ostringstream expected_usage_options;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1197,9 +1169,9 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelp) {
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output --help");
   EXPECT_EQ(arguments.usage_command(), "executable --output <path> [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1224,11 +1196,11 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelp) {
             "/path/to/executable --output /path/to/output --iterations 200 --help");
   EXPECT_EQ(
       arguments.usage_command(), "executable --output <path> [--iterations <number>] [--help]");
-  std::ostringstream expected_usage_options;
-  expected_usage_options << "-o <path>, --output <path>  Output directory." << std::endl;
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options << "-o <path>, --output <path>  Output directory." << ::std::endl;
   expected_usage_options
-      << "[-i <number>, --iterations <number>]  Number of iterations." << std::endl;
-  expected_usage_options << "[-h, --help]  Print usage information." << std::endl;
+      << "[-i <number>, --iterations <number>]  Number of iterations." << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
   EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
 }
 
@@ -1290,7 +1262,7 @@ TEST(Lector, ArgumentConstructorBooleanOptional) {
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   const ::std::vector<::std::string> expected_keys{"-h", "--help"};
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Print usage information.");
+  EXPECT_EQ(argument.description(), "Display usage information and exit. Optional.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
   const ::std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
@@ -1708,7 +1680,7 @@ TEST(Lector, ArgumentMoveConstructor) {
   EXPECT_EQ(first.parsed_value(), ::std::nullopt);
   EXPECT_EQ(first.parsed_or_default_value(), ::test::OneHundred);
   EXPECT_TRUE(first.execution().empty());
-  ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{std::move(first)};
+  ::lector::Argument<::test::Label::Iterations, ::std::int32_t> second{::std::move(first)};
   EXPECT_EQ(second.label(), ::test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
@@ -1786,7 +1758,7 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   const ::std::vector<::std::string> expected_keys{"-h", "--help"};
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Print usage information.");
+  EXPECT_EQ(argument.description(), "Display usage information and exit. Optional.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
   const ::std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
@@ -1796,7 +1768,7 @@ TEST(Lector, ArgumentSetParsedValueBoolean) {
   argument.set_parsed_value(true);
   EXPECT_EQ(argument.label(), ::test::Label::Help);
   EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Print usage information.");
+  EXPECT_EQ(argument.description(), "Display usage information and exit. Optional.");
   EXPECT_EQ(argument.importance(), ::lector::Importance::Optional);
   const ::std::optional<bool>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && !default_value_again.value());
@@ -1981,6 +1953,168 @@ TEST(Lector, ArgumentValidate) {
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_empty_description());
   EXPECT_ANY_THROW(::test::create_invalid_argument_with_no_keys());
   EXPECT_ANY_THROW(::test::create_invalid_boolean_argument_with_a_default_value());
+}
+
+TEST(Lector, TutorialSection1Basic) {
+  ::lector::Arguments arguments{
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
+        {"-o", "--output_directory"}, "Output directory. Required."),
+    ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
+        {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100),
+    ::lector::Argument<::test::Label::Help, bool>(
+        {"-h", "--help"}, "Display usage information and exit. Optional.")};
+
+  const ::test::Command command{"/path/to/executable", "-o", "/path/to/directory", "-i", "200"};
+
+  arguments.parse(command.argc(), command.argv());
+
+  if (arguments.get<::test::Label::Help>().parsed_or_default_value()) {
+    ::std::cout << "Usage: " << arguments.usage_command() << ::std::endl;
+    ::std::cout << "Options: " << ::std::endl << arguments.usage_options() << ::std::endl;
+  } else {
+    ::std::cout << "Execution: " << arguments.execution() << ::std::endl;
+
+    const ::std::filesystem::path& output_directory{
+      arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value()};
+
+    ::std::cout << "The output directory is: " << output_directory << ::std::endl;
+
+    const ::std::int32_t iterations{
+      arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
+
+    ::std::cout << "The number of iterations is: " << iterations << ::std::endl;
+  }
+
+  EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_or_default_value());
+  EXPECT_EQ(arguments.usage_command(),
+            "executable --output_directory <path> [--iterations <number>] [--help]");
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options
+      << "-o <path>, --output_directory <path>  Output directory. Required." << ::std::endl;
+  expected_usage_options
+      << "[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100."
+      << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
+  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.execution(),
+            "/path/to/executable --output_directory /path/to/directory --iterations 200");
+}
+
+TEST(Lector, TutorialSection1Help) {
+  ::lector::Arguments arguments{
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
+        {"-o", "--output_directory"}, "Output directory. Required."),
+    ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
+        {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100),
+    ::lector::Argument<::test::Label::Help, bool>(
+        {"-h", "--help"}, "Display usage information and exit. Optional.")};
+
+  const ::test::Command command{
+    "/path/to/executable", "-o", "/path/to/directory", "-i", "200", "-h"};
+
+  arguments.parse(command.argc(), command.argv());
+
+  if (arguments.get<::test::Label::Help>().parsed_or_default_value()) {
+    ::std::cout << "Usage: " << arguments.usage_command() << ::std::endl;
+    ::std::cout << "Options: " << ::std::endl << arguments.usage_options() << ::std::endl;
+  } else {
+    ::std::cout << "Execution: " << arguments.execution() << ::std::endl;
+
+    const ::std::filesystem::path& output_directory{
+      arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value()};
+
+    ::std::cout << "The output directory is: " << output_directory << ::std::endl;
+
+    const ::std::int32_t iterations{
+      arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
+
+    ::std::cout << "The number of iterations is: " << iterations << ::std::endl;
+  }
+
+  EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
+  EXPECT_EQ(arguments.usage_command(),
+            "executable --output_directory <path> [--iterations <number>] [--help]");
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options
+      << "-o <path>, --output_directory <path>  Output directory. Required." << ::std::endl;
+  expected_usage_options
+      << "[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100."
+      << ::std::endl;
+  expected_usage_options << "[-h, --help]  Display usage information and exit. Optional.";
+  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.execution(),
+            "/path/to/executable --output_directory /path/to/directory --iterations 200 --help");
+}
+
+TEST(Lector, TutorialSection32) {
+  ::lector::Arguments arguments{
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
+        {"o", "=o", "__out_dir__"}, "Output directory. Required."),
+    ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
+        {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100)};
+
+  const ::test::Command command{"/path/to/executable", "=o", "/path/to/directory", "_it_", "200"};
+
+  arguments.parse(command.argc(), command.argv());
+
+  EXPECT_EQ(arguments.usage_command(), "executable __out_dir__ <path> [==iterations== <number>]");
+  ::std::ostringstream expected_usage_options;
+  expected_usage_options
+      << "o <path>, =o <path>, __out_dir__ <path>  Output directory. Required." << ::std::endl;
+  expected_usage_options << "[=i= <number>, _it_ <number>, ==iterations== <number>]  "
+                            "Number of iterations. Optional. Default: 100.";
+  EXPECT_EQ(arguments.usage_options(), expected_usage_options.str());
+  EXPECT_EQ(arguments.execution(),
+            "/path/to/executable __out_dir__ /path/to/directory ==iterations== 200");
+}
+
+TEST(Lector, TutorialSection33) {
+  const ::std::string printed_triangle{lector::print(::test::Shape::Triangle)};
+  EXPECT_EQ(printed_triangle, "Triangle");
+
+  const ::std::optional<::test::Shape> parsed_triangle{lector::parse<::test::Shape>("TRIANGLE")};
+  EXPECT_TRUE(parsed_triangle.has_value() && parsed_triangle.value() == ::test::Shape::Triangle);
+
+  const ::std::optional<::test::Shape> invalid_shape{lector::parse<::test::Shape>("Invalid Shape")};
+  EXPECT_TRUE(!invalid_shape.has_value());
+
+  ::lector::Arguments arguments{::lector::Argument<::test::Label::Shape, ::test::Shape>(
+      {"-s", "--shape"}, "Your favorite shape. Optional.", ::test::Shape::Circle)};
+
+  const ::test::Command command{"/path/to/executable", "--shape", "square"};
+
+  arguments.parse(command.argc(), command.argv());
+
+  const ::test::Shape shape{arguments.get<::test::Label::Shape>().parsed_or_default_value()};
+
+  ::std::cout << "Your favorite shape is: " << ::lector::print(shape) << ::std::endl;
+
+  EXPECT_EQ(shape, ::test::Shape::Square);
+}
+
+TEST(Lector, TutorialSection34) {
+  const ::std::string printed_point{::lector::print(::test::Point{1.0, 2.0, 3.0})};
+  EXPECT_EQ(printed_point, "1 2 3");
+
+  const ::std::optional<::test::Point> parsed_point{::lector::parse<::test::Point>("4.0 5.0 6.0")};
+  const ::test::Point expected_point{4.0, 5.0, 6.0};
+  EXPECT_TRUE(
+      parsed_point.has_value() && parsed_point.value().x == expected_point.x
+      && parsed_point.value().y == expected_point.y && parsed_point.value().z == expected_point.z);
+
+  ::lector::Arguments arguments{::lector::Argument<::test::Label::Point, ::test::Point>(
+      {"-p", "--point"}, "Your favorite point. Optional.", ::test::Point{})};
+
+  const ::test::Command command{"/path/to/executable", "--point", "4.0 5.0 6.0"};
+
+  arguments.parse(command.argc(), command.argv());
+
+  const ::test::Point point{arguments.get<::test::Label::Point>().parsed_or_default_value()};
+
+  ::std::cout << "Your favorite point is: " << point << ::std::endl;
+
+  EXPECT_TRUE(
+      point.x == expected_point.x && point.y == expected_point.y && point.z == expected_point.z);
 }
 
 }  // namespace
