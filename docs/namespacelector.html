@@ -116,6 +116,15 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a29a9973f4356ffe2a423a580c4e21165" id="r_a29a9973f4356ffe2a423a580c4e21165"><td class="memItemLeft" align="right" valign="top">::std::vector&lt;::std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a29a9973f4356ffe2a423a580c4e21165">combine_columns</a> (const ::std::string_view first_column_text, const ::std::size_t first_column_minimum_width, const ::std::string_view second_column_text, const ::std::size_t second_column_minimum_width)</td></tr>
+<tr class="memdesc:a29a9973f4356ffe2a423a580c4e21165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced apart.  <br /></td></tr>
+<tr class="separator:a29a9973f4356ffe2a423a580c4e21165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06df38759f793e66b87b62a4726d19e5" id="r_a06df38759f793e66b87b62a4726d19e5"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a06df38759f793e66b87b62a4726d19e5">join</a> (const ::std::vector&lt;::std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:a06df38759f793e66b87b62a4726d19e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines.  <br /></td></tr>
+<tr class="separator:a06df38759f793e66b87b62a4726d19e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4423d990e26085a622fa3398043ad24" id="r_af4423d990e26085a622fa3398043ad24"><td class="memItemLeft" align="right" valign="top">::std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af4423d990e26085a622fa3398043ad24">longest_word_length</a> (const ::std::string_view text)</td></tr>
+<tr class="memdesc:af4423d990e26085a622fa3398043ad24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
+<tr class="separator:af4423d990e26085a622fa3398043ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88fd78bdabda7347f448eaa0f1d816e8" id="r_a88fd78bdabda7347f448eaa0f1d816e8"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
 <tr class="memitem:a88fd78bdabda7347f448eaa0f1d816e8"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; Type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8">parse</a> (::std::string_view text)</td></tr>
 <tr class="memdesc:a88fd78bdabda7347f448eaa0f1d816e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type.  <br /></td></tr>
@@ -252,12 +261,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a99cd02e36122cf980043b636cd73242c"><td class="memTemplItemLeft" align="right" valign="top">constexpr ::std::string_view&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a99cd02e36122cf980043b636cd73242c">print_enumeration</a> (const EnumerationType value)</td></tr>
 <tr class="memdesc:a99cd02e36122cf980043b636cd73242c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type.  <br /></td></tr>
 <tr class="separator:a99cd02e36122cf980043b636cd73242c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d97df1680835e2ee5aa9a1922ac1d3e" id="r_a6d97df1680835e2ee5aa9a1922ac1d3e"><td class="memItemLeft" align="right" valign="top">inline ::std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a6d97df1680835e2ee5aa9a1922ac1d3e">utf8_code_points</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a6d97df1680835e2ee5aa9a1922ac1d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of code points is a useful approximation of the length of the string in terms of graphemes.  <br /></td></tr>
-<tr class="separator:a6d97df1680835e2ee5aa9a1922ac1d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad33a86d4f7ec4709d10e4e7baa0b2651" id="r_ad33a86d4f7ec4709d10e4e7baa0b2651"><td class="memItemLeft" align="right" valign="top">inline ::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad33a86d4f7ec4709d10e4e7baa0b2651">wrap</a> (const ::std::string_view text, const ::std::size_t maximum_line_length)</td></tr>
-<tr class="memdesc:ad33a86d4f7ec4709d10e4e7baa0b2651"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a maximum line length.  <br /></td></tr>
-<tr class="separator:ad33a86d4f7ec4709d10e4e7baa0b2651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9bdb6da1017839d642372f0eaf7f301" id="r_ae9bdb6da1017839d642372f0eaf7f301"><td class="memItemLeft" align="right" valign="top">::std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae9bdb6da1017839d642372f0eaf7f301">utf8_code_points</a> (const ::std::string_view text)</td></tr>
+<tr class="memdesc:ae9bdb6da1017839d642372f0eaf7f301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of code points is a useful approximation of the length of the string in terms of graphemes.  <br /></td></tr>
+<tr class="separator:ae9bdb6da1017839d642372f0eaf7f301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fb86c82b9bda7c496db2d5a1526a5f8" id="r_a3fb86c82b9bda7c496db2d5a1526a5f8"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a3fb86c82b9bda7c496db2d5a1526a5f8">wrap</a> (const ::std::string_view text, const ::std::size_t line_length)</td></tr>
+<tr class="memdesc:a3fb86c82b9bda7c496db2d5a1526a5f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
+<tr class="separator:a3fb86c82b9bda7c496db2d5a1526a5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae92c96895d05c097b00eb48846432f0f" id="r_ae92c96895d05c097b00eb48846432f0f"><td class="memItemLeft" align="right" valign="top">::std::vector&lt;::std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae92c96895d05c097b00eb48846432f0f">wrap_and_split</a> (const ::std::string_view text, const ::std::size_t line_length)</td></tr>
+<tr class="memdesc:ae92c96895d05c097b00eb48846432f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and splits it into a vector of strings that contains one string per line.  <br /></td></tr>
+<tr class="separator:ae92c96895d05c097b00eb48846432f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -353,6 +365,112 @@ template&lt;typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a29a9973f4356ffe2a423a580c4e21165" name="a29a9973f4356ffe2a423a580c4e21165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29a9973f4356ffe2a423a580c4e21165">&#9670;&#160;</a></span>combine_columns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::vector&lt;::std::string &gt; lector::combine_columns </td>
+          <td>(</td>
+          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramname"><em>first_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramname"><em>first_column_minimum_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramname"><em>second_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramname"><em>second_column_minimum_width</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced apart. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_minimum_width</td><td>The minimum width of the first column. The actual width may be larger. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_text</td><td>The string of text for the second column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_minimum_width</td><td>The minimum width of the second column. The actual width may be larger. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The vector of strings that contains the combined text. </dd></dl>
+
+</div>
+</div>
+<a id="a06df38759f793e66b87b62a4726d19e5" name="a06df38759f793e66b87b62a4726d19e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06df38759f793e66b87b62a4726d19e5">&#9670;&#160;</a></span>join()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::string lector::join </td>
+          <td>(</td>
+          <td class="paramtype">const ::std::vector&lt;::std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lines</td><td>Vector of strings to be joined. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The joined string of text. </dd></dl>
+
+</div>
+</div>
+<a id="af4423d990e26085a622fa3398043ad24" name="af4423d990e26085a622fa3398043ad24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4423d990e26085a622fa3398043ad24">&#9670;&#160;</a></span>longest_word_length()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::size_t lector::longest_word_length </td>
+          <td>(</td>
+          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text whose longest word length is to be computed. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The length of the longest word in the string of text. </dd></dl>
+
+</div>
+</div>
 <a id="a88fd78bdabda7347f448eaa0f1d816e8" name="a88fd78bdabda7347f448eaa0f1d816e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a88fd78bdabda7347f448eaa0f1d816e8">&#9670;&#160;</a></span>parse() <span class="overload">[1/16]</span></h2>
 
@@ -1381,14 +1499,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="a6d97df1680835e2ee5aa9a1922ac1d3e" name="a6d97df1680835e2ee5aa9a1922ac1d3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d97df1680835e2ee5aa9a1922ac1d3e">&#9670;&#160;</a></span>utf8_code_points()</h2>
+<a id="ae9bdb6da1017839d642372f0eaf7f301" name="ae9bdb6da1017839d642372f0eaf7f301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9bdb6da1017839d642372f0eaf7f301">&#9670;&#160;</a></span>utf8_code_points()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inline ::std::size_t lector::utf8_code_points </td>
+          <td class="memname">::std::size_t lector::utf8_code_points </td>
           <td>(</td>
           <td class="paramtype">const ::std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
@@ -1408,14 +1526,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="ad33a86d4f7ec4709d10e4e7baa0b2651" name="ad33a86d4f7ec4709d10e4e7baa0b2651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad33a86d4f7ec4709d10e4e7baa0b2651">&#9670;&#160;</a></span>wrap()</h2>
+<a id="a3fb86c82b9bda7c496db2d5a1526a5f8" name="a3fb86c82b9bda7c496db2d5a1526a5f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fb86c82b9bda7c496db2d5a1526a5f8">&#9670;&#160;</a></span>wrap()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">inline ::std::string lector::wrap </td>
+          <td class="memname">::std::string lector::wrap </td>
           <td>(</td>
           <td class="paramtype">const ::std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -1424,7 +1542,7 @@ template&lt;typename EnumerationType &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const ::std::size_t&#160;</td>
-          <td class="paramname"><em>maximum_line_length</em>&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1434,15 +1552,53 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Left-aligns and wraps a string of text to a maximum line length. </p>
+<p>Left-aligns and wraps a string of text to a line length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to left-align and wrap. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">maximum_line_length</td><td>The maximum line length to use when wrapping. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired maximum line length to use when wrapping. The actual maximum line length may be greater. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting left-aligned and wrapped text. </dd></dl>
+
+</div>
+</div>
+<a id="ae92c96895d05c097b00eb48846432f0f" name="ae92c96895d05c097b00eb48846432f0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae92c96895d05c097b00eb48846432f0f">&#9670;&#160;</a></span>wrap_and_split()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::vector&lt;::std::string &gt; lector::wrap_and_split </td>
+          <td>(</td>
+          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wraps a string of text to a line length and splits it into a vector of strings that contains one string per line. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and split. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired maximum line length to use when wrapping. The actual maximum line length may be greater. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting vector of strings that contains one string per line. </dd></dl>
 
 </div>
 </div>
