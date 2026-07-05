@@ -93,8 +93,7 @@ public:
   /// default value is needed. Boolean command line arguments are always optional and always default
   /// to false.
   /// @param[in] keys The keys that can be used to specify the command line argument.
-  /// @param[in] description The description of the command line argument. Used when printing usage
-  /// information. Set at construction.
+  /// @param[in] description The description of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
   Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description)
     : keys_{keys}, description_{description},
@@ -108,8 +107,7 @@ public:
   /// @brief Constructor for an optional non-boolean command line argument. A default value must be
   /// provided.
   /// @param[in] keys The keys that can be used to specify the command line argument.
-  /// @param[in] description The description of the command line argument. Used when printing usage
-  /// information. Set at construction.
+  /// @param[in] description The description of the command line argument.
   /// @param[in] default_value The default value of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
   Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description,
@@ -153,8 +151,7 @@ public:
     return keys_;
   }
 
-  /// @brief Description of this command line argument. Used when printing usage information. Set at
-  /// construction.
+  /// @brief Description of this command line argument. Set at construction.
   /// @return The description of this command line argument.
   [[nodiscard]] ::std::string_view description() const noexcept {
     return description_;
@@ -233,11 +230,11 @@ public:
     return result;
   }
 
-  /// @brief Prints the usage command of this command line argument as a string of text. The usage
-  /// command consists of the longest key and value type, enclosed in square braces if this command
-  /// line argument is optional.
-  /// @return The string of text that contains the usage command of this command line argument.
-  [[nodiscard]] ::std::string usage_command() const {
+  /// @brief Prints the usage of this command line argument as a string of text. The usage consists
+  /// of this command line argument's longest key and value type, enclosed in square braces if this
+  /// command line argument is optional.
+  /// @return The string of text that contains the usage of this command line argument.
+  [[nodiscard]] ::std::string usage() const {
     if (keys_.empty()) {
       return ::std::string{};
     }
@@ -247,18 +244,19 @@ public:
     return longest_key_with_value_type();
   }
 
-  /// @brief Prints the usage options of this command line argument as a string of text. The usage
-  /// options consists of the list of keys and value types along with the description of this
-  /// command line argument.
-  /// @return The string of text that contains the usage options of this command line argument.
-  [[nodiscard]] ::std::string usage_options() const {
+  /// @brief Prints the options of this command line argument as a string of text. The options
+  /// consist of this command line argument's list of keys and value types along with its
+  /// description.
+  /// @return The string of text that contains the options of this command line argument.
+  [[nodiscard]] ::std::string options() const {
     if (keys_.empty() && description_.empty()) {
       return ::std::string{};
     }
     return keys_with_value_types() + "  " + description_;
   }
 
-  /// @brief Prints the execution of this command line argument as a string of text.
+  /// @brief Prints the execution of this command line argument as a string of text. The execution
+  /// consists of this command line argument's longest key and parsed value, if any.
   /// @return The string of text that contains the execution of this command line argument.
   [[nodiscard]] ::std::string execution() const {
     if constexpr (::std::is_same_v<Type, bool>) {
@@ -371,8 +369,7 @@ private:
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
   ::std::vector<::std::string> keys_;
 
-  /// @brief Description of this command line argument. Used when printing usage information. Set at
-  /// construction.
+  /// @brief Description of this command line argument. Set at construction.
   ::std::string description_;
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
@@ -507,40 +504,20 @@ public:
     return ::std::get<Type>(arguments_);
   }
 
-  /// @brief Prints the execution of this collection of command line argument as a string of text.
-  /// @return The string of text that contains the execution of this collection of command line
-  /// argument.
-  [[nodiscard]] ::std::string execution() const {
-    ::std::string printed_execution_arguments;
-    ::std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            const std::string argument_execution{argument.execution()};
-            if (!printed_execution_arguments.empty() && !argument_execution.empty()) {
-              printed_execution_arguments += " ";
-            }
-            printed_execution_arguments += argument_execution;
-          }());
-        },
-        arguments_);
-    if (printed_execution_arguments.empty()) {
-      return executable_path_.string();
-    }
-    return executable_path_.string() + " " + printed_execution_arguments;
-  }
-
-  /// @brief Prints the usage command of this collection of command line argument as a string of
-  /// text.
-  /// @return The string of text that contains the usage command of this collection of command line
-  /// argument.
-  [[nodiscard]] ::std::string usage_command() const {
+  /// @brief Prints the usage of this collection of command line arguments as a string of text. The
+  /// usage consists of each argument's longest key and value type, enclosed in square braces for
+  /// optional command line arguments. Required command line arguments are printed first, followed
+  /// by optional ones.
+  /// @return The string of text that contains the usage of this collection of command line
+  /// arguments.
+  [[nodiscard]] ::std::string usage() const {
     ::std::string result;
     result += executable_path_.filename().string();
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
-              result += " " + argument.usage_command();
+              result += " " + argument.usage();
             }
           }());
         },
@@ -549,7 +526,7 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
-              result += " " + argument.usage_command();
+              result += " " + argument.usage();
             }
           }());
         },
@@ -557,14 +534,16 @@ public:
     return result;
   }
 
-  /// @brief Prints the usage options of this collection of command line argument as a string of
-  /// text.
-  /// @return The string of text that contains the usage options of this collection of command line
+  /// @brief Prints the options of this collection of command line argument as a string of text. The
+  /// options consist of each command line argument's list of keys and value types along their
+  /// descriptions. Required command line arguments are printed first, followed by optional ones.
+  /// @return The string of text that contains the options of this collection of command line
   /// argument.
-  [[nodiscard]] ::std::string usage_options() const {
+  [[nodiscard]] ::std::string options() const {
     constexpr ::std::size_t maximum_line_length{80UL};
-    constexpr ::std::size_t maximum_first_column_length{39UL};
     constexpr ::std::size_t gutter_width{2UL};
+    constexpr ::std::size_t maximum_first_column_length{
+      (maximum_line_length - gutter_width) / static_cast<::std::size_t>(2UL)};
     const ::std::size_t maximum_length_of_keys_with_value_types_{
       maximum_length_of_keys_with_value_types()};
     const ::std::size_t first_column_target_length{
@@ -605,6 +584,29 @@ public:
         },
         arguments_);
     return result;
+  }
+
+  /// @brief Prints the execution of this collection of command line argument as a string of text.
+  /// The execution consists of each argument's longest key and corresponding parsed value, if any.
+  /// @return The string of text that contains the execution of this collection of command line
+  /// argument.
+  [[nodiscard]] ::std::string execution() const {
+    ::std::string printed_execution_arguments;
+    ::std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            const std::string argument_execution{argument.execution()};
+            if (!printed_execution_arguments.empty() && !argument_execution.empty()) {
+              printed_execution_arguments += " ";
+            }
+            printed_execution_arguments += argument_execution;
+          }());
+        },
+        arguments_);
+    if (printed_execution_arguments.empty()) {
+      return executable_path_.string();
+    }
+    return executable_path_.string() + " " + printed_execution_arguments;
   }
 
 private:
@@ -859,8 +861,7 @@ private:
   }
 
   /// @brief Computes and returns the maximum length of the printed keys with value types across all
-  /// arguments in this collection of command line arguments. This length is used when formatting
-  /// usage options.
+  /// arguments in this collection of command line arguments.
   /// @return The maximum length of the printed keys with value types across all arguments in this
   /// collection.
   [[nodiscard]] ::std::size_t maximum_length_of_keys_with_value_types() const {

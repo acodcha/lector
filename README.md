@@ -41,8 +41,8 @@ int main(int argc, char* argv[]) {
   arguments.parse(argc, argv);
 
   if (arguments.get<Label::Help>().parsed_or_default_value()) {
-    std::cout << "Usage: " << arguments.usage_command() << std::endl;
-    std::cout << "Options: " << std::endl << arguments.usage_options() << std::endl;
+    std::cout << "Usage: " << arguments.usage() << std::endl;
+    std::cout << "Options: " << std::endl << arguments.options() << std::endl;
     return EXIT_SUCCESS;
   }
 
@@ -303,11 +303,11 @@ arguments.parse(argc, argv);
 
 This populates all arguments with their parsed values and performs strict error checking. See the [§3.5. Error Checking](#35-user-guide-error-checking) section for details.
 
-Usage information can be obtained via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods. For example:
+Usage and options information can be obtained via the `lector::Arguments::usage()` and `lector::Arguments::options()` methods, respectively. For example:
 
 ```cpp
-std::cout << "Usage: " << arguments.usage_command() << std::endl;
-std::cout << "Options: " << std::endl << arguments.usage_options() << std::endl;
+std::cout << "Usage: " << arguments.usage() << std::endl;
+std::cout << "Options: " << std::endl << arguments.options() << std::endl;
 ```
 
 Execution information can be obtained via the  `lector::Arguments::execution()` method. For example:
@@ -332,9 +332,9 @@ const std::int32_t iterations{
 
 ### §3.2. User Guide: Command Line
 
-The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
+The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage, options, and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
 
-Display usage information via the `lector::Arguments::usage_command()` and `lector::Arguments::usage_options()` methods:
+Display usage and options information via the `lector::Arguments::usage()` and `lector::Arguments::options()` methods, respectively:
 
 ```text
 path/to/my_project_main --help
