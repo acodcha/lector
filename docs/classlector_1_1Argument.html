@@ -68,7 +68,7 @@
 </div><!--header-->
 <div class="contents">
 
-<p>A command line argument, including its label, keys, description, importance, default value, and parsed value.  
+<p>A command line argument, including its label, value type, keys, description, importance, default value, and parsed value.  
  <a href="classlector_1_1Argument.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="arguments_8hpp_source.html">arguments.hpp</a>&gt;</code></p>
@@ -103,10 +103,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:addf274cd243a8f481ca674645f71c383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value of this command line argument. Only relevant for optional non-boolean arguments. Set at construction.  <br /></td></tr>
 <tr class="separator:addf274cd243a8f481ca674645f71c383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8016204a244c5b6ed7d6b6d4f95ff36" id="r_af8016204a244c5b6ed7d6b6d4f95ff36"><td class="memItemLeft" align="right" valign="top">::std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#af8016204a244c5b6ed7d6b6d4f95ff36">description</a> () const noexcept</td></tr>
-<tr class="memdesc:af8016204a244c5b6ed7d6b6d4f95ff36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of this command line argument. Used when printing usage information. Set at construction.  <br /></td></tr>
+<tr class="memdesc:af8016204a244c5b6ed7d6b6d4f95ff36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of this command line argument. Set at construction.  <br /></td></tr>
 <tr class="separator:af8016204a244c5b6ed7d6b6d4f95ff36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98298aa6f5932b701d9f810f860946e9" id="r_a98298aa6f5932b701d9f810f860946e9"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">execution</a> () const</td></tr>
-<tr class="memdesc:a98298aa6f5932b701d9f810f860946e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the execution of this command line argument as a string of text.  <br /></td></tr>
+<tr class="memdesc:a98298aa6f5932b701d9f810f860946e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the execution of this command line argument as a string of text. The execution consists of this command line argument's longest key and parsed value, if any.  <br /></td></tr>
 <tr class="separator:a98298aa6f5932b701d9f810f860946e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b92a6101d401f56bf4df946ee659c84" id="r_a7b92a6101d401f56bf4df946ee659c84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7">::lector::Importance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a7b92a6101d401f56bf4df946ee659c84">importance</a> () const noexcept</td></tr>
 <tr class="memdesc:a7b92a6101d401f56bf4df946ee659c84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of this command line argument. Required arguments must be provided by the user, while optional arguments may or may not be provided by the user. Set at construction.  <br /></td></tr>
@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaee40f0f9522431d3517fe3ed04c9d77" id="r_aaee40f0f9522431d3517fe3ed04c9d77"><td class="memItemLeft" align="right" valign="top">const ::std::vector&lt;::std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#aaee40f0f9522431d3517fe3ed04c9d77">keys</a> () const noexcept</td></tr>
 <tr class="memdesc:aaee40f0f9522431d3517fe3ed04c9d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keys that can be used to specify this command line argument. Set at construction.  <br /></td></tr>
 <tr class="separator:aaee40f0f9522431d3517fe3ed04c9d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92777569e8eb49846d86dffbaa7a9080" id="r_a92777569e8eb49846d86dffbaa7a9080"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a92777569e8eb49846d86dffbaa7a9080">keys_with_value_types</a> () const</td></tr>
-<tr class="memdesc:a92777569e8eb49846d86dffbaa7a9080"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the keys of this command line argument with their associated value types as a string.  <br /></td></tr>
-<tr class="separator:a92777569e8eb49846d86dffbaa7a9080"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79d5df12a4f05a5fd293c43d0a7bd492" id="r_a79d5df12a4f05a5fd293c43d0a7bd492"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a79d5df12a4f05a5fd293c43d0a7bd492">keys_with_value_type</a> () const</td></tr>
+<tr class="memdesc:a79d5df12a4f05a5fd293c43d0a7bd492"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the keys and value type of this command line argument as a string of text.  <br /></td></tr>
+<tr class="separator:a79d5df12a4f05a5fd293c43d0a7bd492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a700ae5d7e3e75711164b332a5d6df6ae" id="r_a700ae5d7e3e75711164b332a5d6df6ae"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a700ae5d7e3e75711164b332a5d6df6ae">longest_key_with_value_type</a> () const</td></tr>
 <tr class="memdesc:a700ae5d7e3e75711164b332a5d6df6ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the longest key of this command line argument with its associated value type as a string.  <br /></td></tr>
 <tr class="separator:a700ae5d7e3e75711164b332a5d6df6ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa08d9ecd89aa5e93a5e340c34a4e5737" id="r_aa08d9ecd89aa5e93a5e340c34a4e5737"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlector_1_1Argument.html">::lector::Argument</a>&lt; LabelValue, Type &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#aa08d9ecd89aa5e93a5e340c34a4e5737">operator=</a> (const <a class="el" href="classlector_1_1Argument.html">::lector::Argument</a>&lt; LabelValue, Type &gt; &amp;)=default</td></tr>
 <tr class="memdesc:aa08d9ecd89aa5e93a5e340c34a4e5737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator. Assigns this command line argument by copying another one.  <br /></td></tr>
 <tr class="separator:aa08d9ecd89aa5e93a5e340c34a4e5737"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4a671d2daddeb92e95c47c8984056a0" id="r_aa4a671d2daddeb92e95c47c8984056a0"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#aa4a671d2daddeb92e95c47c8984056a0">options</a> () const</td></tr>
+<tr class="memdesc:aa4a671d2daddeb92e95c47c8984056a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options of this command line argument as a string of text. The options consist of this command line argument's list of keys and value type along with its description.  <br /></td></tr>
+<tr class="separator:aa4a671d2daddeb92e95c47c8984056a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8002396b0305a043ee40764344e7c18" id="r_af8002396b0305a043ee40764344e7c18"><td class="memItemLeft" align="right" valign="top">const Type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#af8002396b0305a043ee40764344e7c18">parsed_or_default_value</a> () const</td></tr>
 <tr class="memdesc:af8002396b0305a043ee40764344e7c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value of this command line argument. Returns the parsed value if it exists; otherwise, returns the default value.  <br /></td></tr>
 <tr class="separator:af8002396b0305a043ee40764344e7c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,12 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ea4a7b83882adaace5f36107c2f8a59" id="r_a1ea4a7b83882adaace5f36107c2f8a59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a1ea4a7b83882adaace5f36107c2f8a59">set_parsed_value</a> (const Type &amp;value)</td></tr>
 <tr class="memdesc:a1ea4a7b83882adaace5f36107c2f8a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parsed value of this command line argument.  <br /></td></tr>
 <tr class="separator:a1ea4a7b83882adaace5f36107c2f8a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a368c5d3dab6e3828778c6a2ae1b3d48c" id="r_a368c5d3dab6e3828778c6a2ae1b3d48c"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a368c5d3dab6e3828778c6a2ae1b3d48c">usage_command</a> () const</td></tr>
-<tr class="memdesc:a368c5d3dab6e3828778c6a2ae1b3d48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage command of this command line argument as a string of text. The usage command consists of the longest key and value type, enclosed in square braces if this command line argument is optional.  <br /></td></tr>
-<tr class="separator:a368c5d3dab6e3828778c6a2ae1b3d48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad43114fc00112956ead5d1cd3e378f87" id="r_ad43114fc00112956ead5d1cd3e378f87"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#ad43114fc00112956ead5d1cd3e378f87">usage_options</a> () const</td></tr>
-<tr class="memdesc:ad43114fc00112956ead5d1cd3e378f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage options of this command line argument as a string of text. The usage options consists of the list of keys and value types along with the description of this command line argument.  <br /></td></tr>
-<tr class="separator:ad43114fc00112956ead5d1cd3e378f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb80937b37464442038ddbbb2afc2695" id="r_afb80937b37464442038ddbbb2afc2695"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#afb80937b37464442038ddbbb2afc2695">usage</a> () const</td></tr>
+<tr class="memdesc:afb80937b37464442038ddbbb2afc2695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage of this command line argument as a string of text. The usage consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional.  <br /></td></tr>
+<tr class="separator:afb80937b37464442038ddbbb2afc2695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -150,11 +150,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;auto LabelValue, typename Type&gt;<br />
-class lector::Argument&lt; LabelValue, Type &gt;</div><p>A command line argument, including its label, keys, description, importance, default value, and parsed value. </p>
+class lector::Argument&lt; LabelValue, Type &gt;</div><p>A command line argument, including its label, value type, keys, description, importance, default value, and parsed value. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">LabelValue</td><td>Value of this command line argument's label. The label is used to uniquely identify the command line argument. </td></tr>
-    <tr><td class="paramname">Type</td><td>The type of the command line argument. </td></tr>
+    <tr><td class="paramname">LabelValue</td><td>Value of this command line argument's label. The label is used to uniquely identify this command line argument in a collection of command line arguments. </td></tr>
+    <tr><td class="paramname">Type</td><td>The type of the value stored in this command line argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -220,7 +220,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">keys</td><td>The keys that can be used to specify the command line argument. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">description</td><td>The description of the command line argument. Used when printing usage information. Set at construction. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">description</td><td>The description of the command line argument. </td></tr>
   </table>
   </dd>
 </dl>
@@ -271,7 +271,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">keys</td><td>The keys that can be used to specify the command line argument. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">description</td><td>The description of the command line argument. Used when printing usage information. Set at construction. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">description</td><td>The description of the command line argument. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">default_value</td><td>The default value of the command line argument. </td></tr>
   </table>
   </dd>
@@ -430,7 +430,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Description of this command line argument. Used when printing usage information. Set at construction. </p>
+<p>Description of this command line argument. Set at construction. </p>
 <dl class="section return"><dt>Returns</dt><dd>The description of this command line argument. </dd></dl>
 
 </div>
@@ -452,7 +452,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the execution of this command line argument as a string of text. </p>
+<p>Prints the execution of this command line argument as a string of text. The execution consists of this command line argument's longest key and parsed value, if any. </p>
 <dl class="section return"><dt>Returns</dt><dd>The string of text that contains the execution of this command line argument. </dd></dl>
 
 </div>
@@ -517,8 +517,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a92777569e8eb49846d86dffbaa7a9080" name="a92777569e8eb49846d86dffbaa7a9080"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92777569e8eb49846d86dffbaa7a9080">&#9670;&#160;</a></span>keys_with_value_types()</h2>
+<a id="a79d5df12a4f05a5fd293c43d0a7bd492" name="a79d5df12a4f05a5fd293c43d0a7bd492"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79d5df12a4f05a5fd293c43d0a7bd492">&#9670;&#160;</a></span>keys_with_value_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,7 +526,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 template&lt;auto LabelValue, typename Type &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::keys_with_value_types </td>
+          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::keys_with_value_type </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -534,8 +534,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the keys of this command line argument with their associated value types as a string. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string that contains the keys and value types. </dd></dl>
+<p>Prints the keys and value type of this command line argument as a string of text. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the keys and value type of this command line argument. </dd></dl>
 
 </div>
 </div>
@@ -653,6 +653,28 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 </div>
 </div>
+<a id="aa4a671d2daddeb92e95c47c8984056a0" name="aa4a671d2daddeb92e95c47c8984056a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4a671d2daddeb92e95c47c8984056a0">&#9670;&#160;</a></span>options()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;auto LabelValue, typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::options </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints the options of this command line argument as a string of text. The options consist of this command line argument's list of keys and value type along with its description. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options of this command line argument. </dd></dl>
+
+</div>
+</div>
 <a id="af8002396b0305a043ee40764344e7c18" name="af8002396b0305a043ee40764344e7c18"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af8002396b0305a043ee40764344e7c18">&#9670;&#160;</a></span>parsed_or_default_value()</h2>
 
@@ -739,8 +761,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a368c5d3dab6e3828778c6a2ae1b3d48c" name="a368c5d3dab6e3828778c6a2ae1b3d48c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a368c5d3dab6e3828778c6a2ae1b3d48c">&#9670;&#160;</a></span>usage_command()</h2>
+<a id="afb80937b37464442038ddbbb2afc2695" name="afb80937b37464442038ddbbb2afc2695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb80937b37464442038ddbbb2afc2695">&#9670;&#160;</a></span>usage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -748,7 +770,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 template&lt;auto LabelValue, typename Type &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::usage_command </td>
+          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::usage </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -756,30 +778,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the usage command of this command line argument as a string of text. The usage command consists of the longest key and value type, enclosed in square braces if this command line argument is optional. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage command of this command line argument. </dd></dl>
-
-</div>
-</div>
-<a id="ad43114fc00112956ead5d1cd3e378f87" name="ad43114fc00112956ead5d1cd3e378f87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad43114fc00112956ead5d1cd3e378f87">&#9670;&#160;</a></span>usage_options()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;auto LabelValue, typename Type &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::usage_options </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints the usage options of this command line argument as a string of text. The usage options consists of the list of keys and value types along with the description of this command line argument. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage options of this command line argument. </dd></dl>
+<p>Prints the usage of this command line argument as a string of text. The usage consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage of this command line argument. </dd></dl>
 
 </div>
 </div>
