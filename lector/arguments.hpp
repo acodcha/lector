@@ -75,11 +75,11 @@ inline constexpr ::std::array<::lector::Spelling<::lector::Importance>, 6>
        }
 };
 
-/// @brief A command line argument, including its label, keys, description, importance, default
-/// value, and parsed value.
+/// @brief A command line argument, including its label, value type, keys, description, importance,
+/// default value, and parsed value.
 /// @tparam LabelValue Value of this command line argument's label. The label is used to uniquely
-/// identify the command line argument.
-/// @tparam Type The type of the command line argument.
+/// identify this command line argument in a collection of command line arguments.
+/// @tparam Type The type of the value stored in this command line argument.
 template <auto LabelValue, typename Type>
 class Argument final {
 public:
@@ -212,10 +212,10 @@ public:
     return result;
   }
 
-  /// @brief Prints the keys of this command line argument with their associated value types as a
-  /// string.
-  /// @return The string that contains the keys and value types.
-  [[nodiscard]] ::std::string keys_with_value_types() const {
+  /// @brief Prints the keys and value type of this command line argument as a string of text.
+  /// @return The string of text that contains the keys and value type of this command line
+  /// argument.
+  [[nodiscard]] ::std::string keys_with_value_type() const {
     ::std::string result;
     for (::std::size_t index{0}; index < keys_.size(); ++index) {
       const ::std::string type{value_type()};
@@ -245,14 +245,14 @@ public:
   }
 
   /// @brief Prints the options of this command line argument as a string of text. The options
-  /// consist of this command line argument's list of keys and value types along with its
+  /// consist of this command line argument's list of keys and value type along with its
   /// description.
   /// @return The string of text that contains the options of this command line argument.
   [[nodiscard]] ::std::string options() const {
     if (keys_.empty() && description_.empty()) {
       return ::std::string{};
     }
-    return keys_with_value_types() + "  " + description_;
+    return keys_with_value_type() + "  " + description_;
   }
 
   /// @brief Prints the execution of this command line argument as a string of text. The execution
@@ -535,7 +535,7 @@ public:
   }
 
   /// @brief Prints the options of this collection of command line argument as a string of text. The
-  /// options consist of each command line argument's list of keys and value types along their
+  /// options consist of each command line argument's list of keys and value type along with their
   /// descriptions. Required command line arguments are printed first, followed by optional ones.
   /// @return The string of text that contains the options of this collection of command line
   /// argument.
@@ -545,7 +545,7 @@ public:
     constexpr ::std::size_t maximum_first_column_length{
       (maximum_line_length - gutter_width) / static_cast<::std::size_t>(2UL)};
     const ::std::size_t maximum_length_of_keys_with_value_types_{
-      maximum_length_of_keys_with_value_types()};
+      maximum_length_of_keys_with_value_type()};
     const ::std::size_t first_column_target_length{
       ::std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_length)};
     const ::std::size_t second_column_target_length{
@@ -558,7 +558,7 @@ public:
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
               result.append(::lector::join(::lector::combine_columns(
-                  argument.keys_with_value_types(), first_column_target_length,
+                  argument.keys_with_value_type(), first_column_target_length,
                   argument.description(), second_column_target_length)));
               ++argument_index;
               if (argument_index < argument_count) {
@@ -573,7 +573,7 @@ public:
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
               result.append(::lector::join(::lector::combine_columns(
-                  argument.keys_with_value_types(), first_column_target_length,
+                  argument.keys_with_value_type(), first_column_target_length,
                   argument.description(), second_column_target_length)));
               ++argument_index;
               if (argument_index < argument_count) {
@@ -587,7 +587,8 @@ public:
   }
 
   /// @brief Prints the execution of this collection of command line argument as a string of text.
-  /// The execution consists of each argument's longest key and corresponding parsed value, if any.
+  /// The execution consists of the executable path followed by each argument's longest key and
+  /// corresponding parsed value, if any.
   /// @return The string of text that contains the execution of this collection of command line
   /// argument.
   [[nodiscard]] ::std::string execution() const {
@@ -860,17 +861,16 @@ private:
         arguments_);
   }
 
-  /// @brief Computes and returns the maximum length of the printed keys with value types across all
+  /// @brief Computes and returns the maximum length of the printed keys and value type across all
   /// arguments in this collection of command line arguments.
-  /// @return The maximum length of the printed keys with value types across all arguments in this
+  /// @return The maximum length of the printed keys and value type across all arguments in this
   /// collection.
-  [[nodiscard]] ::std::size_t maximum_length_of_keys_with_value_types() const {
+  [[nodiscard]] ::std::size_t maximum_length_of_keys_with_value_type() const {
     ::std::size_t maximum_length{0UL};
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            const ::std::size_t length{
-              ::lector::utf8_code_points(argument.keys_with_value_types())};
+            const ::std::size_t length{::lector::utf8_code_points(argument.keys_with_value_type())};
             maximum_length = ::std::max(maximum_length, length);
           }());
         },

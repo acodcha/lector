@@ -90,7 +90,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a430c0649d454b796137a8a8b880dc151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the executable path of this collection of command line arguments. If the command line arguments have not yet been parsed from argc and argv, this path is empty.  <br /></td></tr>
 <tr class="separator:a430c0649d454b796137a8a8b880dc151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a304e6cd9229cc830e44afe6b642918d2" id="r_a304e6cd9229cc830e44afe6b642918d2"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2">execution</a> () const</td></tr>
-<tr class="memdesc:a304e6cd9229cc830e44afe6b642918d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the execution of this collection of command line argument as a string of text. The execution consists of each argument's longest key and corresponding parsed value, if any.  <br /></td></tr>
+<tr class="memdesc:a304e6cd9229cc830e44afe6b642918d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the execution of this collection of command line argument as a string of text. The execution consists of the executable path followed by each argument's longest key and corresponding parsed value, if any.  <br /></td></tr>
 <tr class="separator:a304e6cd9229cc830e44afe6b642918d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3dc9fc170984a26f6676c231d081f79" id="r_ab3dc9fc170984a26f6676c231d081f79"><td class="memTemplParams" colspan="2">template&lt;auto Label&gt; </td></tr>
 <tr class="memitem:ab3dc9fc170984a26f6676c231d081f79"><td class="memTemplItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79">get</a> () const</td></tr>
@@ -103,7 +103,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a74e31eee173315ad5b9b775dd9c33471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator. Assigns this collection of command line argument by copying another one.  <br /></td></tr>
 <tr class="separator:a74e31eee173315ad5b9b775dd9c33471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac62e659a586d74776444a4a0990387b5" id="r_ac62e659a586d74776444a4a0990387b5"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ac62e659a586d74776444a4a0990387b5">options</a> () const</td></tr>
-<tr class="memdesc:ac62e659a586d74776444a4a0990387b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value types along their descriptions. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
+<tr class="memdesc:ac62e659a586d74776444a4a0990387b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value type along with their descriptions. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
 <tr class="separator:ac62e659a586d74776444a4a0990387b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba7afe06f29efef5f7337fe93c3b1eba" id="r_aba7afe06f29efef5f7337fe93c3b1eba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba">parse</a> (const int argc, char *argv[])</td></tr>
 <tr class="memdesc:aba7afe06f29efef5f7337fe93c3b1eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses argc and argv to populate the parsed values of the command line arguments in this collection.  <br /></td></tr>
@@ -287,7 +287,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the execution of this collection of command line argument as a string of text. The execution consists of each argument's longest key and corresponding parsed value, if any. </p>
+<p>Prints the execution of this collection of command line argument as a string of text. The execution consists of the executable path followed by each argument's longest key and corresponding parsed value, if any. </p>
 <dl class="section return"><dt>Returns</dt><dd>The string of text that contains the execution of this collection of command line argument. </dd></dl>
 
 </div>
@@ -401,7 +401,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value types along their descriptions. Required command line arguments are printed first, followed by optional ones. </p>
+<p>Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value type along with their descriptions. Required command line arguments are printed first, followed by optional ones. </p>
 <dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options of this collection of command line argument. </dd></dl>
 
 </div>
