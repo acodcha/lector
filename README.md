@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
       {"-o", "--output_directory"}, "Output directory. Required."
     },
     lector::Argument<Label::Iterations, std::int32_t>{
-      {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+      {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
     },
     lector::Argument<Label::Help, bool>{
       {"-h", "--help"}, "Display usage information and exit. Optional."
@@ -276,7 +276,7 @@ lector::Arguments arguments{
     {"-o", "--output_directory"}, "Output directory. Required."
   },
   lector::Argument<Label::Iterations, std::int32_t>{
-    {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+    {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
   },
   lector::Argument<Label::Help, bool>{
     {"-h", "--help"}, "Display usage information and exit. Optional."
@@ -342,8 +342,8 @@ path/to/my_project_main --help
 Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
 Options:
 -o <path>, --output_directory <path>  Output directory. Required.
-[-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100.
-[-h, --help]  Display usage information and exit. Optional.
+-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
+-h, --help                            Display usage information and exit. Optional.
 ```
 
 Display execution information via the  `lector::Arguments::execution()` method:
@@ -384,7 +384,7 @@ lector::Arguments arguments{
     {"o", "=o", "__out_dir__"}, "Output directory. Required."
   },
   lector::Argument<Label::Iterations, std::int32_t>{
-    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100
+    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100
   }
 };
 ```

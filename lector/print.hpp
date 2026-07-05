@@ -19,6 +19,7 @@
 #ifndef LECTOR_PRINT_HPP
 #define LECTOR_PRINT_HPP
 
+#include <algorithm>
 #include <array>
 #include <cctype>
 #include <cmath>
@@ -30,6 +31,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
+#include <vector>
 
 /// @brief The Lector library's namespace.
 namespace lector {
@@ -51,7 +53,7 @@ inline constexpr ::std::array<::lector::Name<Type>, 0UL> Names{};
 /// @return The value as a printed string of text.
 template <typename EnumerationType>
 [[nodiscard]] constexpr ::std::string_view print_enumeration(const EnumerationType value) {
-  static_assert(std::is_enum_v<EnumerationType> == true);
+  static_assert(std::is_enum_v<EnumerationType>);
   for (const auto& [enumeration_value, name] : ::lector::Names<EnumerationType>) {
     if (enumeration_value == value) {
       return name;
@@ -319,7 +321,7 @@ template <typename Type>
 /// code points is a useful approximation of the length of the string in terms of graphemes.
 /// @param[in] text The string of text whose code points are to be counted.
 /// @return The number of UTF-8 code points in the string of text.
-inline ::std::size_t utf8_code_points(const ::std::string_view text) {
+[[nodiscard]] inline ::std::size_t utf8_code_points(const ::std::string_view text) {
   // This function uses an optimized trick for counting code points. It works because of how UTF-8
   // is designed at the binary level:
   // - The ASCII characters all use 1 byte and all start with 0. They are of the form 0xxxxxxx.
@@ -347,26 +349,62 @@ inline ::std::size_t utf8_code_points(const ::std::string_view text) {
   return count;
 }
 
-/// @brief Left-aligns and wraps a string of text to a maximum line length.
-/// @param[in] text The string of text to left-align and wrap.
-/// @param[in] maximum_line_length The maximum line length to use when wrapping.
-/// @return The resulting left-aligned and wrapped text.
-inline ::std::string wrap(const ::std::string_view text, const ::std::size_t maximum_line_length) {
-  // Adjust the maximum line length if needed. A specified maximum line length of 0 indicates that
-  // the line length is unlimited.
-  ::std::size_t actual_maximum_line_length{maximum_line_length};
-  if (actual_maximum_line_length == static_cast<::std::size_t>(0UL)) {
-    actual_maximum_line_length = ::std::string::npos;
+/// @brief Computes and returns the length of the longest word in a string of text. The length of a
+/// word is measured by its number of UTF-8 code points.
+/// @param[in] text The string of text whose longest word length is to be computed.
+/// @return The length of the longest word in the string of text.
+[[nodiscard]] inline ::std::size_t longest_word_length(const ::std::string_view text) {
+  ::std::size_t longest_word_length{0UL};
+  ::std::size_t index{0UL};
+  while (index < text.length()) {
+    // Skip over any whitespaces.
+    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) != 0) {
+      ++index;
+    }
+    // Return if the end of the string has been reached after skipping whitespaces.
+    if (index >= text.length()) {
+      break;
+    }
+    // The index now points to the start of the current word.
+    const ::std::size_t current_word_start{index};
+    // Find the end of the current word.
+    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
+      ++index;
+    }
+    // Obtain the current word.
+    const ::std::string_view current_word{
+      text.substr(current_word_start, index - current_word_start)};
+    // Compute the length of the current word.
+    const ::std::size_t current_word_length{::lector::utf8_code_points(current_word)};
+    // Update the longest word length.
+    longest_word_length = ::std::max(longest_word_length, current_word_length);
   }
+  return longest_word_length;
+}
+
+/// @brief Left-aligns and wraps a string of text to a line length.
+/// @param[in] text The string of text to left-align and wrap.
+/// @param[in] line_length The desired maximum line length to use when wrapping. The actual maximum
+/// line length may be greater.
+/// @return The resulting left-aligned and wrapped text.
+[[nodiscard]] inline ::std::string wrap(
+    const ::std::string_view text, const ::std::size_t line_length) {
+  // Adjust the specified maximum line length if needed, increasing it to the longest word length if
+  // it is greater than the specified maximum line length. A specified maximum line length of 0
+  // indicates that the line length is unlimited.
+  const ::std::size_t maximum_line_length{
+    line_length == static_cast<::std::size_t>(0UL) ?
+        ::std::string::npos :
+        ::std::max(line_length, ::lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
   // distribution.
   ::std::string result;
-  result.reserve(text.length() + (text.length() / actual_maximum_line_length)
-                 + static_cast<::std::size_t>(1UL));
+  result.reserve(
+      text.length() + (text.length() / maximum_line_length) + static_cast<::std::size_t>(1UL));
   // Iterate through the string.
-  ::std::size_t current_line_length{0};
+  ::std::size_t current_line_length{0UL};
+  ::std::size_t index{0UL};
   bool is_first_word{true};
-  ::std::size_t index{0};
   while (index < text.length()) {
     // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
     // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
@@ -378,33 +416,190 @@ inline ::std::string wrap(const ::std::string_view text, const ::std::size_t max
     if (index >= text.length()) {
       break;
     }
-    // Find the boundaries of the next word.
+    // The index now points to the start of the current word.
     const ::std::size_t word_start_index{index};
+    // Find the end of the current word.
     while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
       ++index;
     }
-    // Obtain the next word.
-    const ::std::string_view word{text.substr(word_start_index, index - word_start_index)};
-    const ::std::size_t word_length{utf8_code_points(word)};
+    // Obtain the current word.
+    const ::std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
+    const ::std::size_t current_word_length{::lector::utf8_code_points(current_word)};
     // Place the word in the result string.
     if (is_first_word) {
-      result.append(word);
-      current_line_length = word_length;
+      // In this case, this is the first word in the result string, so it can be safely added
+      // without a leading space.
+      result.append(current_word);
+      current_line_length = current_word_length;
       is_first_word = false;
     } else {
-      // Check if adding the word plus a space would exceed the line limit.
-      if (current_line_length + 1 + word_length <= actual_maximum_line_length) {
+      // In this case, this is not the first word in the result string, so a leading space must be
+      // added. Check if adding a space plus the word would exceed the line limit.
+      if (current_line_length + 1 + current_word_length <= maximum_line_length) {
         // In this case, the word can be safely added to the current line.
         result.push_back(' ');
-        result.append(word);
-        current_line_length += static_cast<::std::size_t>(1UL) + word_length;
+        result.append(current_word);
+        current_line_length += static_cast<::std::size_t>(1UL) + current_word_length;
       } else {
         // In this case, the word doesn't fit on this line, so drop down to the next line.
         result.push_back('\n');
-        result.append(word);
-        current_line_length = word_length;
+        result.append(current_word);
+        current_line_length = current_word_length;
       }
     }
+  }
+  return result;
+}
+
+/// @brief Wraps a string of text to a line length and splits it into a vector of strings that
+/// contains one string per line.
+/// @param[in] text The string of text to wrap and split.
+/// @param[in] line_length The desired maximum line length to use when wrapping. The actual maximum
+/// line length may be greater.
+/// @return The resulting vector of strings that contains one string per line.
+[[nodiscard]] inline ::std::vector<::std::string> wrap_and_split(
+    const ::std::string_view text, const ::std::size_t line_length) {
+  // Adjust the specified maximum line length if needed, increasing it to the longest word length if
+  // it is greater than the specified maximum line length. A specified maximum line length of 0
+  // indicates that the line length is unlimited.
+  const ::std::size_t maximum_line_length{
+    line_length == static_cast<::std::size_t>(0UL) ?
+        ::std::string::npos :
+        ::std::max(line_length, ::lector::longest_word_length(text))};
+  // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
+  // distribution.
+  ::std::vector<::std::string> result;
+  result.reserve((text.length() / maximum_line_length) + static_cast<::std::size_t>(1UL));
+  // Iterate through the string.
+  ::std::size_t current_line_length{0UL};
+  ::std::size_t index{0UL};
+  bool is_first_word{true};
+  while (index < text.length()) {
+    // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
+    // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
+    // character values in std::isspace.
+    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) != 0) {
+      ++index;
+    }
+    // Return if the end of the string has been reached after skipping whitespaces.
+    if (index >= text.length()) {
+      break;
+    }
+    // The index now points to the start of the current word.
+    const ::std::size_t word_start_index{index};
+    // Find the end of the current word.
+    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
+      ++index;
+    }
+    // Obtain the current word.
+    const ::std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
+    const ::std::size_t current_word_length{::lector::utf8_code_points(current_word)};
+    // Place the word in the result vector.
+    if (is_first_word) {
+      // In this case, this is the first word in the result string, so it can be safely added
+      // without a leading space.
+      result.emplace_back(current_word);
+      current_line_length = current_word_length;
+      is_first_word = false;
+    } else {
+      // In this case, this is not the first word in the result string, so a leading space must be
+      // added. Check if adding a space plus the word would exceed the line limit.
+      if (current_line_length + 1 + current_word_length <= maximum_line_length) {
+        // In this case, the word can be safely added to the current line. Access the current line
+        // via result.back() and append to it.
+        result.back().push_back(' ');
+        result.back().append(current_word);
+        current_line_length += static_cast<::std::size_t>(1UL) + current_word_length;
+      } else {
+        // In this case, the word doesn't fit on this line, so push a new line into the vector.
+        result.emplace_back(current_word);
+        current_line_length = current_word_length;
+      }
+    }
+  }
+  return result;
+}
+
+/// @brief Combines two strings of text, each representing a column, into a single vector of strings
+/// that contains one line per string of text, with the lines formatted such that the two columns
+/// are left-aligned and spaced apart.
+/// @param[in] first_column_text The string of text for the first column.
+/// @param[in] first_column_minimum_width The minimum width of the first column. The actual width
+/// may be larger.
+/// @param[in] second_column_text The string of text for the second column.
+/// @param[in] second_column_minimum_width The minimum width of the second column. The actual width
+/// may be larger.
+/// @return The vector of strings that contains the combined text.
+[[nodiscard]] inline ::std::vector<::std::string> combine_columns(
+    const ::std::string_view first_column_text, const ::std::size_t first_column_minimum_width,
+    const ::std::string_view second_column_text, const ::std::size_t second_column_minimum_width) {
+  // Use a minimum gutter width of two spaces.
+  constexpr ::std::size_t gutter_width{2UL};
+  // Wrap and split both columns.
+  const ::std::vector<::std::string> first_column{
+    ::lector::wrap_and_split(first_column_text, first_column_minimum_width)};
+  const ::std::vector<::std::string> second_column{
+    ::lector::wrap_and_split(second_column_text, second_column_minimum_width)};
+  // Find the length of the longest line in the first column.
+  ::std::size_t first_column_maximum_line_length{0UL};
+  for (const ::std::string& line : first_column) {
+    first_column_maximum_line_length =
+        ::std::max(first_column_maximum_line_length, ::lector::utf8_code_points(line));
+  }
+  // Determine the reserved width for the first column. This automatically handles
+  // first_column_minimum_width == 0 because first_column_maximum_line_length will be >= 0.
+  const ::std::size_t first_column_display_width{
+    ::std::max(first_column_minimum_width, first_column_maximum_line_length)};
+  // Determine the total number of rows required.
+  const ::std::size_t rows{::std::max(first_column.size(), second_column.size())};
+  ::std::vector<::std::string> result;
+  result.reserve(rows);
+  // Combine the rows line by line.
+  for (::std::size_t row_index{0UL}; row_index < rows; ++row_index) {
+    ::std::string row;
+    // Grab the string for column 1 if it exists on this row; otherwise, use an empty string.
+    const ::std::string_view first_cell{
+      row_index < first_column.size() ? ::std::string_view{first_column.at(row_index)} :
+                                        ::std::string_view{}};
+    row.append(first_cell);
+    // If column 2 has text on this row, pad column 1 and append column 2. Otherwise, if column 2 is
+    // exhausted, skip this padding to avoid unnecessary trailing whitespace.
+    if (row_index < second_column.size()) {
+      const ::std::size_t first_cell_length{::lector::utf8_code_points(first_cell)};
+      const ::std::size_t padding{first_column_display_width - first_cell_length + gutter_width};
+      row.append(padding, ' ');
+      row.append(second_column.at(row_index));
+    }
+    result.emplace_back(::std::move(row));
+  }
+  return result;
+}
+
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines.
+/// @param[in] lines Vector of strings to be joined.
+/// @return The joined string of text.
+[[nodiscard]] inline ::std::string join(const ::std::vector<::std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return ::std::string{};
+  }
+  // Calculate the exact required capacity.
+  ::std::size_t total_length{0UL};
+  for (const ::std::string& line : lines) {
+    total_length += line.length();
+  }
+  // Add space for the newline separators (one less than the total number of lines).
+  total_length += lines.size() - static_cast<::std::size_t>(1UL);
+  // Create and allocate the result.
+  ::std::string result;
+  result.reserve(total_length);
+  // Append the first line.
+  result.append(lines.front());
+  // Append subsequent lines prefixed by a newline.
+  for (::std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
+    result.push_back('\n');
+    result.append(lines.at(line_index));
   }
   return result;
 }

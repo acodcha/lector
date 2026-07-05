@@ -29,7 +29,7 @@
 ///       {"-o", "--output_directory"}, "Output directory. Required."
 ///     },
 ///     lector::Argument<Label::Iterations, std::int32_t>{
-///       {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+///       {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
 ///     },
 ///     lector::Argument<Label::Help, bool>{
 ///       {"-h", "--help"}, "Display usage information and exit. Optional."
@@ -274,7 +274,7 @@
 ///     {"-o", "--output_directory"}, "Output directory. Required."
 ///   },
 ///   lector::Argument<Label::Iterations, std::int32_t>{
-///     {"-i", "--iterations"}, "Number of iterations. Optional. Default: 100.", 100
+///     {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
 ///   },
 ///   lector::Argument<Label::Help, bool>{
 ///     {"-h", "--help"}, "Display usage information and exit. Optional."
@@ -340,8 +340,8 @@
 /// Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
 /// Options:
 /// -o <path>, --output_directory <path>  Output directory. Required.
-/// [-i <number>, --iterations <number>]  Number of iterations. Optional. Default: 100.
-/// [-h, --help]  Display usage information and exit. Optional.
+/// -i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
+/// -h, --help                            Display usage information and exit. Optional.
 /// ```
 ///
 /// Display execution information via the  `lector::Arguments::execution()` method:
@@ -382,7 +382,7 @@
 ///     {"o", "=o", "__out_dir__"}, "Output directory. Required."
 ///   },
 ///   lector::Argument<Label::Iterations, std::int32_t>{
-///     {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default: 100.", 100
+///     {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100
 ///   }
 /// };
 /// ```
