@@ -58,7 +58,7 @@ inline constexpr ::std::array<::lector::Spelling<Type>, 0UL> Spellings{};
 template <typename EnumerationType>
 [[nodiscard]] constexpr ::std::optional<EnumerationType> parse_enumeration(
     const ::std::string_view text) {
-  static_assert(std::is_enum_v<EnumerationType> == true);
+  static_assert(std::is_enum_v<EnumerationType>);
   for (const auto& [spelling, value] : ::lector::Spellings<EnumerationType>) {
     if (spelling == text) {
       return value;

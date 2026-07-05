@@ -29,6 +29,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace test {
 
@@ -142,6 +143,137 @@ inline constexpr ::std::array<::lector::Name<::test::Shape>, 3> Names<::test::Sh
 }  // namespace lector
 
 namespace {
+
+TEST(Lector, CombineColumnsBothColumnsEmpty) {
+  const ::std::vector<::std::string> expected{};
+  EXPECT_EQ(::lector::combine_columns("", 0, "", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("", 0, "", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("", 0, "", 2), expected);
+  EXPECT_EQ(::lector::combine_columns("", 1, "", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("", 1, "", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("", 1, "", 2), expected);
+  EXPECT_EQ(::lector::combine_columns("", 2, "", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("", 2, "", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("", 2, "", 2), expected);
+}
+
+TEST(Lector, CombineColumnsBothColumnsWhitespace) {
+  const ::std::vector<::std::string> expected{};
+  EXPECT_EQ(::lector::combine_columns("  ", 0, "  ", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 0, "  ", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 0, "  ", 2), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 1, "  ", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 1, "  ", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 1, "  ", 2), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 2, "  ", 0), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 2, "  ", 1), expected);
+  EXPECT_EQ(::lector::combine_columns("  ", 2, "  ", 2), expected);
+}
+
+TEST(Lector, CombineColumnsEmptyFirstColumn) {
+  const ::std::vector<::std::string> expected{
+    "            And this is", "            the second", "            column."};
+  EXPECT_EQ(::lector::combine_columns("", 10, "And this is the second column.", 12), expected);
+}
+
+TEST(Lector, CombineColumnsShortFirstColumn) {
+  const ::std::vector<::std::string> expected{
+    "Hello.      And this is", "            the second", "            column."};
+  EXPECT_EQ(
+      ::lector::combine_columns("Hello.", 10, "And this is the second column.", 12), expected);
+}
+
+TEST(Lector, CombineColumnsTypical) {
+  const ::std::vector<::std::string> expected{
+    "This is   And this is", "the       the second", "first     column.", "column."};
+  EXPECT_EQ(::lector::combine_columns(
+                "This is the first column.", 8, "And this is the second column.", 12),
+            expected);
+}
+
+TEST(Lector, CombineColumnsVeryLongWord) {
+  const ::std::vector<::std::string> expected{
+    "Very_long_word.  And this is", "                 the second", "                 column."};
+  EXPECT_EQ(::lector::combine_columns("Very_long_word.", 1, "And this is the second column.", 12),
+            expected);
+}
+
+TEST(Lector, CombineColumnsZeroFirstColumnWidth) {
+  const ::std::vector<::std::string> expected{
+    "This is the first column.  And this is", "                           the second",
+    "                           column."};
+  EXPECT_EQ(::lector::combine_columns(
+                "This is the first column.", 0, "And this is the second column.", 12),
+            expected);
+}
+
+TEST(Lector, JoinEmpty) {
+  EXPECT_EQ(::lector::join({}), "");
+}
+
+TEST(Lector, JoinMultiple) {
+  EXPECT_EQ(::lector::join({"  Hello, ", "world!  "}), "  Hello, \nworld!  ");
+}
+
+TEST(Lector, JoinSingle) {
+  EXPECT_EQ(::lector::join({"  Hello, world!  "}), "  Hello, world!  ");
+}
+
+TEST(Lector, LongestWordLengthEmpty) {
+  EXPECT_EQ(::lector::longest_word_length(""), static_cast<::std::size_t>(0UL));
+}
+
+TEST(Lector, LongestWordLengthExcessiveWhitespace) {
+  EXPECT_EQ(::lector::longest_word_length("  Hello there!  "), static_cast<::std::size_t>(6UL));
+  EXPECT_EQ(::lector::longest_word_length("  It is $5.  "), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("  It is ¢25.  "), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(::lector::longest_word_length("  It is £5.  "), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("  It is ¥500.  "), static_cast<::std::size_t>(5UL));
+  EXPECT_EQ(::lector::longest_word_length("  It is 5€.  "), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(
+      ::lector::longest_word_length("  C'est un château.  "), static_cast<::std::size_t>(8UL));
+  EXPECT_EQ(
+      ::lector::longest_word_length("  J'ai hâte à l'été!  "), static_cast<::std::size_t>(6UL));
+  EXPECT_EQ(::lector::longest_word_length("  Un œuf.  "), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(
+      ::lector::longest_word_length("  こんにちは、友よ！  "), static_cast<::std::size_t>(9UL));
+}
+
+TEST(Lector, LongestWordLengthMultiple) {
+  EXPECT_EQ(::lector::longest_word_length("Hello there!"), static_cast<::std::size_t>(6UL));
+  EXPECT_EQ(::lector::longest_word_length("It is $5."), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("It is ¢25."), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(::lector::longest_word_length("It is £5."), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("It is ¥500."), static_cast<::std::size_t>(5UL));
+  EXPECT_EQ(::lector::longest_word_length("It is 5€."), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("C'est un château."), static_cast<::std::size_t>(8UL));
+  EXPECT_EQ(::lector::longest_word_length("J'ai hâte à l'été!"), static_cast<::std::size_t>(6UL));
+  EXPECT_EQ(::lector::longest_word_length("Un œuf."), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(::lector::longest_word_length("こんにちは、友よ！"), static_cast<::std::size_t>(9UL));
+}
+
+TEST(Lector, LongestWordLengthSingle) {
+  EXPECT_EQ(::lector::longest_word_length("Hello!!!"), static_cast<::std::size_t>(8UL));
+  EXPECT_EQ(::lector::longest_word_length("$5"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::longest_word_length("¢25"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("£5"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::longest_word_length("¥500"), static_cast<::std::size_t>(4UL));
+  EXPECT_EQ(::lector::longest_word_length("5€"), static_cast<::std::size_t>(2UL));
+  EXPECT_EQ(::lector::longest_word_length("château"), static_cast<::std::size_t>(7UL));
+  EXPECT_EQ(::lector::longest_word_length("été"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("œuf"), static_cast<::std::size_t>(3UL));
+  EXPECT_EQ(::lector::longest_word_length("こんにちは"), static_cast<::std::size_t>(5UL));
+}
+
+TEST(Lector, LongestWordLengthWhitespaceOnly) {
+  EXPECT_EQ(::lector::longest_word_length(" "), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length("  "), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length("\t"), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length("\t\t"), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length("\n"), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length("\n\n"), static_cast<::std::size_t>(0UL));
+  EXPECT_EQ(::lector::longest_word_length(" \t\n \t\n"), static_cast<::std::size_t>(0UL));
+}
 
 TEST(Lector, PrintBoolean) {
   EXPECT_EQ(::lector::print(true), "true");
@@ -667,7 +799,144 @@ TEST(Lector, Utf8CodePoints) {
   EXPECT_EQ(::lector::utf8_code_points("こんにちは"), static_cast<::std::size_t>(5UL));
 }
 
-TEST(Lector, WrapExcessiveWhitespace) {
+TEST(Lector, WrapAndSplitExcessiveWhitespaceEmpty) {
+  const ::std::vector<::std::string> expected;
+  EXPECT_EQ(::lector::wrap_and_split("", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("  ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\t", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\t\t", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\n", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\n\n", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" \t\n \t\n", static_cast<::std::size_t>(100UL)), expected);
+}
+
+TEST(Lector, WrapAndSplitExcessiveWhitespaceTypical) {
+  const ::std::vector<::std::string> expected{"Hello, world!"};
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world! ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!  ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split(" Hello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("  Hello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split(" Hello, world! ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("  Hello, world!  ", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\n", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\n\n", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\nHello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\n\nHello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\n\nHello, world!\n\n", static_cast<::std::size_t>(100UL)),
+            expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\t", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\t\t", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\tHello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\t\tHello, world!", static_cast<::std::size_t>(100UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\t\tHello, world!\t\t", static_cast<::std::size_t>(100UL)),
+            expected);
+  EXPECT_EQ(::lector::wrap_and_split(
+                " \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(100UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndSplitMaximumLineLengthSmall) {
+  const ::std::vector<::std::string> expected{
+    "The", "brown", "fox", "jumps", "over", "the", "lazy", "dog."};
+  EXPECT_EQ(::lector::wrap_and_split(
+                "The brown fox jumps over the lazy dog.", static_cast<::std::size_t>(1UL)),
+            expected);
+  EXPECT_EQ(::lector::wrap_and_split(
+                " The  brown  fox  jumps  over  the  lazy  dog. ", static_cast<::std::size_t>(1UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndSplitMaximumLineLengthZeroEmpty) {
+  const ::std::vector<::std::string> expected;
+  EXPECT_EQ(::lector::wrap_and_split("", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("  ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\t", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\t\t", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\n", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\n\n", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" \t\n \t\n", static_cast<::std::size_t>(0UL)), expected);
+}
+
+TEST(Lector, WrapAndSplitMaximumLineLengthZeroTypical) {
+  const ::std::vector<::std::string> expected{"Hello, world!"};
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world! ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world!  ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" Hello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("  Hello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" Hello, world! ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("  Hello, world!  ", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world!\n", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\n\n", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\nHello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\n\nHello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\n\nHello, world!\n\n", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("Hello, world!\t", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("Hello, world!\t\t", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split("\tHello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\t\tHello, world!", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(
+      ::lector::wrap_and_split("\t\tHello, world!\t\t", static_cast<::std::size_t>(0UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(
+                " \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(0UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndSplitMultipleLines) {
+  const ::std::vector<::std::string> expected{"The brown", "fox jumps", "over the", "lazy dog."};
+  EXPECT_EQ(::lector::wrap_and_split(
+                "The brown fox jumps over the lazy dog.", static_cast<::std::size_t>(12UL)),
+            expected);
+  EXPECT_EQ(::lector::wrap_and_split(" The  brown  fox  jumps  over  the  lazy  dog. ",
+                                     static_cast<::std::size_t>(12UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndSplitUtf8Characters) {
+  const ::std::vector<::std::string> expected{"J'ai hâte à", "l'été!"};
+  EXPECT_EQ(
+      ::lector::wrap_and_split("J'ai hâte à l'été!", static_cast<::std::size_t>(11UL)), expected);
+  EXPECT_EQ(::lector::wrap_and_split(" J'ai  hâte  à  l'été! ", static_cast<::std::size_t>(11UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndSplitVeryLongWord) {
+  const ::std::vector<::std::string> expected{
+    "The word", "supercalifragilisticexpialidocious", "is my favorite word!"};
+  EXPECT_EQ(
+      ::lector::wrap_and_split("The word supercalifragilisticexpialidocious is my favorite word!",
+                               static_cast<::std::size_t>(10UL)),
+      expected);
+  EXPECT_EQ(::lector::wrap_and_split(
+                " The  word  supercalifragilisticexpialidocious  is  my  favorite  word! ",
+                static_cast<::std::size_t>(10UL)),
+            expected);
+}
+
+TEST(Lector, WrapBasicExcessiveWhitespaceEmpty) {
   EXPECT_EQ(::lector::wrap("", static_cast<::std::size_t>(100UL)), "");
   EXPECT_EQ(::lector::wrap(" ", static_cast<::std::size_t>(100UL)), "");
   EXPECT_EQ(::lector::wrap("  ", static_cast<::std::size_t>(100UL)), "");
@@ -676,6 +945,9 @@ TEST(Lector, WrapExcessiveWhitespace) {
   EXPECT_EQ(::lector::wrap("\n", static_cast<::std::size_t>(100UL)), "");
   EXPECT_EQ(::lector::wrap("\n\n", static_cast<::std::size_t>(100UL)), "");
   EXPECT_EQ(::lector::wrap(" \t\n \t\n", static_cast<::std::size_t>(100UL)), "");
+}
+
+TEST(Lector, WrapBasicExcessiveWhitespaceTypical) {
   EXPECT_EQ(::lector::wrap("Hello, world!", static_cast<::std::size_t>(100UL)), "Hello, world!");
   EXPECT_EQ(::lector::wrap("Hello, world! ", static_cast<::std::size_t>(100UL)), "Hello, world!");
   EXPECT_EQ(::lector::wrap("Hello, world!  ", static_cast<::std::size_t>(100UL)), "Hello, world!");
@@ -704,7 +976,7 @@ TEST(Lector, WrapExcessiveWhitespace) {
             "Hello, world!");
 }
 
-TEST(Lector, WrapMaximumLineLengthSmall) {
+TEST(Lector, WrapBasicMaximumLineLengthSmall) {
   ::std::ostringstream expected;
   expected << "The" << std::endl;
   expected << "brown" << std::endl;
@@ -722,7 +994,7 @@ TEST(Lector, WrapMaximumLineLengthSmall) {
             expected.str());
 }
 
-TEST(Lector, WrapMaximumLineLengthZero) {
+TEST(Lector, WrapBasicMaximumLineLengthZeroEmpty) {
   EXPECT_EQ(::lector::wrap("", static_cast<::std::size_t>(0UL)), "");
   EXPECT_EQ(::lector::wrap(" ", static_cast<::std::size_t>(0UL)), "");
   EXPECT_EQ(::lector::wrap("  ", static_cast<::std::size_t>(0UL)), "");
@@ -731,6 +1003,9 @@ TEST(Lector, WrapMaximumLineLengthZero) {
   EXPECT_EQ(::lector::wrap("\n", static_cast<::std::size_t>(0UL)), "");
   EXPECT_EQ(::lector::wrap("\n\n", static_cast<::std::size_t>(0UL)), "");
   EXPECT_EQ(::lector::wrap(" \t\n \t\n", static_cast<::std::size_t>(0UL)), "");
+}
+
+TEST(Lector, WrapBasicMaximumLineLengthZeroTypical) {
   EXPECT_EQ(::lector::wrap("Hello, world!", static_cast<::std::size_t>(0UL)), "Hello, world!");
   EXPECT_EQ(::lector::wrap("Hello, world! ", static_cast<::std::size_t>(0UL)), "Hello, world!");
   EXPECT_EQ(::lector::wrap("Hello, world!  ", static_cast<::std::size_t>(0UL)), "Hello, world!");
@@ -754,7 +1029,7 @@ TEST(Lector, WrapMaximumLineLengthZero) {
             "Hello, world!");
 }
 
-TEST(Lector, WrapMultipleLines) {
+TEST(Lector, WrapBasicMultipleLines) {
   ::std::ostringstream expected;
   expected << "The brown" << std::endl;
   expected << "fox jumps" << std::endl;
@@ -768,7 +1043,7 @@ TEST(Lector, WrapMultipleLines) {
             expected.str());
 }
 
-TEST(Lector, WrapUtf8Characters) {
+TEST(Lector, WrapBasicUtf8Characters) {
   ::std::ostringstream expected;
   expected << "J'ai hâte à" << std::endl;
   expected << "l'été!";
@@ -777,13 +1052,11 @@ TEST(Lector, WrapUtf8Characters) {
       ::lector::wrap(" J'ai  hâte  à  l'été! ", static_cast<::std::size_t>(11UL)), expected.str());
 }
 
-TEST(Lector, WrapVeryLongWord) {
+TEST(Lector, WrapBasicVeryLongWord) {
   ::std::ostringstream expected;
   expected << "The word" << std::endl;
   expected << "supercalifragilisticexpialidocious" << std::endl;
-  expected << "is my" << std::endl;
-  expected << "favorite" << std::endl;
-  expected << "word!";
+  expected << "is my favorite word!";
   EXPECT_EQ(::lector::wrap("The word supercalifragilisticexpialidocious is my favorite word!",
                            static_cast<::std::size_t>(10UL)),
             expected.str());
