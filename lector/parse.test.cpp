@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <gtest/gtest.h>
-#include <iostream>
+#include <istream>
 #include <limits>
 #include <optional>
 #include <string>

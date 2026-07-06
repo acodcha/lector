@@ -46,6 +46,7 @@ cc_library(
     deps = [
         "//lector:parse",
         "//lector:print",
+        "//lector:text",
     ],
 )
 
@@ -101,6 +102,27 @@ cc_test(
     visibility = ["//visibility:public"],
     deps = [
         "//lector:print",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "text",
+    hdrs = ["text.hpp"],
+    copts = CPP_COMPILER_OPTIONS,
+    include_prefix = "lector",
+    strip_include_prefix = "",
+    visibility = ["//visibility:public"],
+)
+
+cc_test(
+    name = "text_test",
+    size = "small",
+    srcs = ["text.test.cpp"],
+    copts = CPP_COMPILER_OPTIONS,
+    visibility = ["//visibility:public"],
+    deps = [
+        "//lector:text",
         "@googletest//:gtest_main",
     ],
 )

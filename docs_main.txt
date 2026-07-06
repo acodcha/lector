@@ -98,13 +98,15 @@
 /// #include <lector/arguments.hpp>
 /// #include <lector/parse.hpp>
 /// #include <lector/print.hpp>
+/// #include <lector/text.hpp>
 /// ```
 ///
 /// The Lector library is modular:
 ///
-/// - The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the \ref introduction "§1. Introduction" section.
+/// - The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the \ref introduction "§1. Introduction" section. See the \ref user_guide_arguments "§3.1. User Guide: Arguments" section for usage.
 /// - The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section for usage.
 /// - The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section for usage.
+/// - The file `<lector/text.hpp>` defines general-purpose utilities for manipulating strings of text; these utilities are used by the `lector::Arguments` class.
 ///
 /// All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
 ///

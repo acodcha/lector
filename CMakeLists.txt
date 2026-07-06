@@ -117,7 +117,7 @@ if(LECTOR_TEST)
   endif()
   include(GoogleTest)
   # Define the unit test modules.
-  set(LECTOR_TEST_MODULES arguments parse print)
+  set(LECTOR_TEST_MODULES arguments parse print text)
   # Configure each test module.
   foreach(module ${LECTOR_TEST_MODULES})
     set(LECTOR_TEST_TARGET lector_${module}_test)

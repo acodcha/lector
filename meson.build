@@ -60,7 +60,7 @@ lector = declare_dependency(
 meson.override_dependency('lector', lector)
 
 # Dynamically generate targets for the test files.
-test_modules = ['arguments', 'parse', 'print']
+test_modules = ['arguments', 'parse', 'print', 'text']
 foreach module : test_modules
   test_exe = executable(
     module + '_test',
