@@ -39,6 +39,7 @@
 
 #include "lector/parse.hpp"
 #include "lector/print.hpp"
+#include "lector/text.hpp"
 
 /// @brief The Lector library's namespace.
 namespace lector {
@@ -557,9 +558,9 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
-              result.append(::lector::join(::lector::combine_columns(
+              result.append(::lector::combine_and_left_align(
                   argument.keys_with_value_type(), first_column_target_length,
-                  argument.description(), second_column_target_length)));
+                  argument.description(), second_column_target_length));
               ++argument_index;
               if (argument_index < argument_count) {
                 result.push_back('\n');
@@ -572,9 +573,9 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
-              result.append(::lector::join(::lector::combine_columns(
+              result.append(::lector::combine_and_left_align(
                   argument.keys_with_value_type(), first_column_target_length,
-                  argument.description(), second_column_target_length)));
+                  argument.description(), second_column_target_length));
               ++argument_index;
               if (argument_index < argument_count) {
                 result.push_back('\n');
@@ -870,7 +871,7 @@ private:
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            const ::std::size_t length{::lector::utf8_code_points(argument.keys_with_value_type())};
+            const ::std::size_t length{::lector::code_points(argument.keys_with_value_type())};
             maximum_length = ::std::max(maximum_length, length);
           }());
         },

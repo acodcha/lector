@@ -133,7 +133,7 @@ WARN_LOGFILE            =
 
 # Input File Settings
 
-INPUT                   = docs_main.txt lector/arguments.hpp lector/parse.hpp lector/print.hpp
+INPUT                   = docs_main.txt lector/arguments.hpp lector/parse.hpp lector/print.hpp lector/text.hpp
 INPUT_ENCODING          = UTF-8
 INPUT_FILE_ENCODING     =
 FILE_PATTERNS           = *.cpp *.hpp
