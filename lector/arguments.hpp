@@ -208,7 +208,8 @@ public:
     ::std::string result{longest_key()};
     const ::std::string type{value_type()};
     if (!type.empty()) {
-      result += " " + type;
+      result.push_back(' ');
+      result.append(type);
     }
     return result;
   }
@@ -218,14 +219,15 @@ public:
   /// argument.
   [[nodiscard]] ::std::string keys_with_value_type() const {
     ::std::string result;
-    for (::std::size_t index{0}; index < keys_.size(); ++index) {
+    for (::std::size_t index{0UL}; index < keys_.size(); ++index) {
       const ::std::string type{value_type()};
-      result += keys_[index];
+      result.append(keys_.at(index));
       if (!type.empty()) {
-        result += " " + type;
+        result.push_back(' ');
+        result.append(type);
       }
       if (index + 1 < keys_.size()) {
-        result += ", ";
+        result.append(", ");
       }
     }
     return result;
@@ -300,8 +302,9 @@ private:
       }
     }
     const ::std::size_t keys_size{keys_.size()};
-    for (::std::size_t first{0}; first < keys_size; ++first) {
-      for (::std::size_t second{first + 1}; second < keys_size; ++second) {
+    for (::std::size_t first{0UL}; first < keys_size; ++first) {
+      for (::std::size_t second{first + static_cast<::std::size_t>(1UL)}; second < keys_size;
+           ++second) {
         if (keys_[first] == keys_[second]) {
           throw ::std::logic_error(
               "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
@@ -358,8 +361,8 @@ private:
     if (keys_.empty()) {
       throw ::std::logic_error("All arguments must each have at least one key.");
     }
-    ::std::size_t longest_key_index{0};
-    for (::std::size_t index{1}; index < keys_.size(); ++index) {
+    ::std::size_t longest_key_index{0UL};
+    for (::std::size_t index{1UL}; index < keys_.size(); ++index) {
       if (keys_[index].size() > keys_[longest_key_index].size()) {
         longest_key_index = index;
       }
@@ -513,12 +516,13 @@ public:
   /// arguments.
   [[nodiscard]] ::std::string usage() const {
     ::std::string result;
-    result += executable_path_.filename().string();
+    result.append(executable_path_.filename().string());
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
-              result += " " + argument.usage();
+              result.push_back(' ');
+              result.append(argument.usage());
             }
           }());
         },
@@ -527,12 +531,13 @@ public:
         [&](const auto&... argument) {
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
-              result += " " + argument.usage();
+              result.push_back(' ');
+              result.append(argument.usage());
             }
           }());
         },
         arguments_);
-    return result;
+    return ::lector::wrap_and_left_align(result, maximum_line_length_);
   }
 
   /// @brief Prints the options of this collection of command line argument as a string of text. The
@@ -541,17 +546,19 @@ public:
   /// @return The string of text that contains the options of this collection of command line
   /// argument.
   [[nodiscard]] ::std::string options() const {
-    constexpr ::std::size_t maximum_line_length{80UL};
+    // Compute the text formatting dimensions.
     constexpr ::std::size_t gutter_width{2UL};
-    constexpr ::std::size_t maximum_first_column_length{
-      (maximum_line_length - gutter_width) / static_cast<::std::size_t>(2UL)};
+    constexpr ::std::size_t maximum_first_column_width{
+      (maximum_line_length_ - gutter_width) / static_cast<::std::size_t>(2UL)};
     const ::std::size_t maximum_length_of_keys_with_value_types_{
       maximum_length_of_keys_with_value_type()};
-    const ::std::size_t first_column_target_length{
-      ::std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_length)};
-    const ::std::size_t second_column_target_length{
-      maximum_line_length - gutter_width - first_column_target_length};
-    const ::std::size_t argument_count{::std::tuple_size_v<decltype(arguments_)>};
+    const ::std::size_t first_column_width{
+      ::std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_width)};
+    const ::std::size_t second_column_width{
+      maximum_line_length_ - gutter_width - first_column_width};
+    // Obtain the number of command line arguments.
+    constexpr ::std::size_t argument_count{::std::tuple_size_v<decltype(arguments_)>};
+    // Iterate through the command line arguments and update the resulting string of text.
     ::std::string result;
     ::std::size_t argument_index{0UL};
     ::std::apply(
@@ -559,8 +566,8 @@ public:
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Required) {
               result.append(::lector::combine_and_left_align(
-                  argument.keys_with_value_type(), first_column_target_length,
-                  argument.description(), second_column_target_length));
+                  argument.keys_with_value_type(), first_column_width, argument.description(),
+                  second_column_width));
               ++argument_index;
               if (argument_index < argument_count) {
                 result.push_back('\n');
@@ -574,8 +581,8 @@ public:
           (..., [&]() {
             if (argument.importance() == ::lector::Importance::Optional) {
               result.append(::lector::combine_and_left_align(
-                  argument.keys_with_value_type(), first_column_target_length,
-                  argument.description(), second_column_target_length));
+                  argument.keys_with_value_type(), first_column_width, argument.description(),
+                  second_column_width));
               ++argument_index;
               if (argument_index < argument_count) {
                 result.push_back('\n');
@@ -599,9 +606,9 @@ public:
           (..., [&]() {
             const std::string argument_execution{argument.execution()};
             if (!printed_execution_arguments.empty() && !argument_execution.empty()) {
-              printed_execution_arguments += " ";
+              printed_execution_arguments.push_back(' ');
             }
-            printed_execution_arguments += argument_execution;
+            printed_execution_arguments.append(argument_execution);
           }());
         },
         arguments_);
@@ -612,6 +619,9 @@ public:
   }
 
 private:
+  /// @brief Maximum length of a line when printing usage information or options information.
+  static constexpr ::std::size_t maximum_line_length_{80UL};
+
   /// @brief The best matching argument for a command line argument token during parsing. The best
   /// matching argument is the argument with the longest matching key, and if there are multiple
   /// arguments with keys of the same length that match, then the best matching argument is the one
@@ -621,14 +631,14 @@ private:
   struct BestArgument final {
     /// @brief Index of this argument in the tuple of arguments. Used to identify this argument
     /// during parsing.
-    ::std::size_t index{0};
+    ::std::size_t index{0UL};
 
     /// @brief Length of the longest matching key for this argument. Used to avoid shadowing when
     /// multiple arguments have keys that are prefixes of each other. For example, if one argument
     /// has the key "key" and another argument has the key "key_long", then the argument with the
     /// key "key_long" should be matched for the command line argument "key_long=value", not the
     /// argument with the key "key".
-    ::std::size_t key_length{0};
+    ::std::size_t key_length{0UL};
 
     /// @brief Whether this argument was matched by an inline key of the form "key=value" rather
     /// than a whitespace-separated key-value pair of the form "key value". Used to prefer
@@ -659,10 +669,10 @@ private:
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
     const ::std::size_t count{static_cast<::std::size_t>(argc)};
-    for (::std::size_t argv_index{1}; argv_index < count; ++argv_index) {
+    for (::std::size_t argv_index{1UL}; argv_index < count; ++argv_index) {
       const ::std::string_view token{argv[argv_index]};
       const BestArgument best_argument{find_best_argument(token)};
-      ::std::size_t current_index{0};
+      ::std::size_t current_index{0UL};
       ::std::apply(
           [&](auto&... argument) {
             (..., [&]() {
@@ -682,7 +692,7 @@ private:
   /// @throws std::invalid_argument if an unknown argument is encountered.
   [[nodiscard]] BestArgument find_best_argument(const ::std::string_view token) const {
     ::std::optional<BestArgument> best;
-    ::std::size_t argument_index{0};
+    ::std::size_t argument_index{0UL};
     ::std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
