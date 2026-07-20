@@ -127,7 +127,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa08d9ecd89aa5e93a5e340c34a4e5737"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator. Assigns this command line argument by copying another one.  <br /></td></tr>
 <tr class="separator:aa08d9ecd89aa5e93a5e340c34a4e5737"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4a671d2daddeb92e95c47c8984056a0" id="r_aa4a671d2daddeb92e95c47c8984056a0"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#aa4a671d2daddeb92e95c47c8984056a0">options</a> () const</td></tr>
-<tr class="memdesc:aa4a671d2daddeb92e95c47c8984056a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options of this command line argument as a string of text. The options consist of this command line argument's list of keys and value type along with its description.  <br /></td></tr>
+<tr class="memdesc:aa4a671d2daddeb92e95c47c8984056a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this command line argument as a string of text. The options information consist of this command line argument's keys, value type, and description.  <br /></td></tr>
 <tr class="separator:aa4a671d2daddeb92e95c47c8984056a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8002396b0305a043ee40764344e7c18" id="r_af8002396b0305a043ee40764344e7c18"><td class="memItemLeft" align="right" valign="top">const Type &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#af8002396b0305a043ee40764344e7c18">parsed_or_default_value</a> () const</td></tr>
 <tr class="memdesc:af8002396b0305a043ee40764344e7c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value of this command line argument. Returns the parsed value if it exists; otherwise, returns the default value.  <br /></td></tr>
@@ -139,7 +139,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1ea4a7b83882adaace5f36107c2f8a59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the parsed value of this command line argument.  <br /></td></tr>
 <tr class="separator:a1ea4a7b83882adaace5f36107c2f8a59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb80937b37464442038ddbbb2afc2695" id="r_afb80937b37464442038ddbbb2afc2695"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#afb80937b37464442038ddbbb2afc2695">usage</a> () const</td></tr>
-<tr class="memdesc:afb80937b37464442038ddbbb2afc2695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage of this command line argument as a string of text. The usage consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional.  <br /></td></tr>
+<tr class="memdesc:afb80937b37464442038ddbbb2afc2695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this command line argument as a string of text. The usage information consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional.  <br /></td></tr>
 <tr class="separator:afb80937b37464442038ddbbb2afc2695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -670,8 +670,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the options of this command line argument as a string of text. The options consist of this command line argument's list of keys and value type along with its description. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options of this command line argument. </dd></dl>
+<p>Prints the options information of this command line argument as a string of text. The options information consist of this command line argument's keys, value type, and description. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options information of this command line argument. </dd></dl>
 
 </div>
 </div>
@@ -778,8 +778,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the usage of this command line argument as a string of text. The usage consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage of this command line argument. </dd></dl>
+<p>Prints the usage information of this command line argument as a string of text. The usage information consists of this command line argument's longest key and value type, enclosed in square braces if this command line argument is optional. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage information of this command line argument. </dd></dl>
 
 </div>
 </div>
