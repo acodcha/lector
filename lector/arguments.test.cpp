@@ -3461,12 +3461,18 @@ TEST(Lector, ArgumentValidate) {
 
 TEST(Lector, ReadmeSection1Basic) {
   ::lector::Arguments arguments{
-    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
-        {"-o", "--output_directory"}, "Output directory. Required."),
+    ::lector::Configuration{{"My Application"},
+                            {"Description of my application."},
+                            {"Additional notes about my application."}},
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>{
+                            {"-o", "--output_directory"}, "Output directory. Required."},
     ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
-        {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100),
+        {"-i", "--iterations"},
+    "Number of iterations. Optional. Default 100.", 100),
     ::lector::Argument<::test::Label::Help, bool>(
-        {"-h", "--help"}, "Display this help information and exit. Optional.")};
+        {"-h", "--help"},
+    "Display this help information and exit. Optional.")
+  };
   const ::test::Command command{"/path/to/executable", "-o", "/path/to/directory", "-i", "200"};
   arguments.parse(command.argc(), command.argv());
   if (arguments.get<::test::Label::Help>().parsed_or_default_value()) {
@@ -3497,10 +3503,13 @@ TEST(Lector, ReadmeSection1Basic) {
   expected_options << "                                      Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
+  expected_help << "My Application" << std::endl << std::endl;
   expected_help << "Usage:" << std::endl;
   expected_help << expected_usage << std::endl << std::endl;
+  expected_help << "Description of my application." << std::endl << std::endl;
   expected_help << "Options:" << std::endl;
-  expected_help << expected_options.str();
+  expected_help << expected_options.str() << std::endl << std::endl;
+  expected_help << "Additional notes about my application.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --output_directory /path/to/directory --iterations 200");
@@ -3508,12 +3517,18 @@ TEST(Lector, ReadmeSection1Basic) {
 
 TEST(Lector, ReadmeSection1Help) {
   ::lector::Arguments arguments{
-    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
-        {"-o", "--output_directory"}, "Output directory. Required."),
+    ::lector::Configuration{{"My Application"},
+                            {"Description of my application."},
+                            {"Additional notes about my application."}},
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>{
+                            {"-o", "--output_directory"}, "Output directory. Required."},
     ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
-        {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100),
+        {"-i", "--iterations"},
+    "Number of iterations. Optional. Default 100.", 100),
     ::lector::Argument<::test::Label::Help, bool>(
-        {"-h", "--help"}, "Display this help information and exit. Optional.")};
+        {"-h", "--help"},
+    "Display this help information and exit. Optional.")
+  };
   const ::test::Command command{
     "/path/to/executable", "-o", "/path/to/directory", "-i", "200", "-h"};
   arguments.parse(command.argc(), command.argv());
@@ -3545,10 +3560,13 @@ TEST(Lector, ReadmeSection1Help) {
   expected_options << "                                      Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
+  expected_help << "My Application" << std::endl << std::endl;
   expected_help << "Usage:" << std::endl;
   expected_help << expected_usage << std::endl << std::endl;
+  expected_help << "Description of my application." << std::endl << std::endl;
   expected_help << "Options:" << std::endl;
-  expected_help << expected_options.str();
+  expected_help << expected_options.str() << std::endl << std::endl;
+  expected_help << "Additional notes about my application.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable --output_directory /path/to/directory --iterations 200 --help");
@@ -3556,10 +3574,15 @@ TEST(Lector, ReadmeSection1Help) {
 
 TEST(Lector, ReadmeSection32) {
   ::lector::Arguments arguments{
-    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>(
-        {"o", "=o", "__out_dir__"}, "Output directory. Required."),
+    ::lector::Configuration{{"My Application"},
+                            {"Description of my application."},
+                            {"Additional notes about my application."}},
+    ::lector::Argument<::test::Label::OutputDirectory, ::std::filesystem::path>{
+                            {"o", "=o", "__out_dir__"}, "Output directory. Required."},
     ::lector::Argument<::test::Label::Iterations, ::std::int32_t>(
-        {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100)};
+        {"=i=", "_it_", "==iterations=="},
+    "Number of iterations. Optional. Default 100.", 100)
+  };
   const ::test::Command command{"/path/to/executable", "=o", "/path/to/directory", "_it_", "200"};
   arguments.parse(command.argc(), command.argv());
   const ::std::string expected_usage{"executable __out_dir__ <path> [==iterations== <number>]"};
@@ -3573,10 +3596,13 @@ TEST(Lector, ReadmeSection32) {
       << "==iterations== <number>                  100.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
+  expected_help << "My Application" << std::endl << std::endl;
   expected_help << "Usage:" << std::endl;
   expected_help << expected_usage << std::endl << std::endl;
+  expected_help << "Description of my application." << std::endl << std::endl;
   expected_help << "Options:" << std::endl;
-  expected_help << expected_options.str();
+  expected_help << expected_options.str() << std::endl << std::endl;
+  expected_help << "Additional notes about my application.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
             "/path/to/executable __out_dir__ /path/to/directory ==iterations== 200");
