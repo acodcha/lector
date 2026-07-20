@@ -27,6 +27,10 @@ enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
+    lector::Configuration{
+      "My Application",
+      "Description of my application.",
+      "Additional notes about my application."},
     lector::Argument<Label::OutputDirectory, std::filesystem::path>{
       {"-o", "--output_directory"}, "Output directory. Required."
     },
@@ -104,7 +108,7 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
+- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes and the `lector::Configuration` data structure, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
 - The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 - The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 - The file `<lector/text.hpp>` defines general-purpose utilities for manipulating strings of text; these utilities are used by the `lector::Arguments` class.
@@ -273,6 +277,10 @@ Defining an argument requires an enumeration value used as a label, a type, one 
 
 ```cpp
 lector::Arguments arguments{
+  lector::Configuration{
+    "My Application",
+    "Description of my application.",
+    "Additional notes about my application."},
   lector::Argument<Label::OutputDirectory, std::filesystem::path>{
     {"-o", "--output_directory"}, "Output directory. Required."
   },
@@ -284,6 +292,8 @@ lector::Arguments arguments{
   }
 };
 ```
+
+Note: The `lector::Configuration` data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of collection of command line arguments.
 
 Supported argument types include:
 
@@ -339,8 +349,12 @@ Display help information via the `lector::Arguments::help()` method:
 ```text
 path/to/my_project_main --help
 
+My Application
+
 Usage:
 my_project_main --output_directory <path> [--iterations <number>] [--help]
+
+Description of my application.
 
 Options:
 -o <path>, --output_directory <path>  Output directory. Required.
@@ -348,6 +362,8 @@ Options:
                                       100.
 -h, --help                            Display this help information and exit.
                                       Optional.
+
+Additional notes about my application.
 ```
 
 Display execution information via the  `lector::Arguments::execution()` method:
