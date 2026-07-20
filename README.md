@@ -32,14 +32,11 @@ int main(int argc, char* argv[]) {
       "Description of my application.",
       "Additional notes about my application."},
     lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-      {"-o", "--output_directory"}, "Output directory. Required."
-    },
+      {"-o", "--output_directory"}, "Output directory. Required."},
     lector::Argument<Label::Iterations, std::int32_t>{
-      {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
-    },
+      {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
     lector::Argument<Label::Help, bool>{
-      {"-h", "--help"}, "Display this help information and exit. Optional."
-    }
+      {"-h", "--help"}, "Display this help information and exit. Optional."}
   };
 
   arguments.parse(argc, argv);
@@ -282,14 +279,11 @@ lector::Arguments arguments{
     "Description of my application.",
     "Additional notes about my application."},
   lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-    {"-o", "--output_directory"}, "Output directory. Required."
-  },
+    {"-o", "--output_directory"}, "Output directory. Required."},
   lector::Argument<Label::Iterations, std::int32_t>{
-    {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
-  },
+    {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
   lector::Argument<Label::Help, bool>{
-    {"-h", "--help"}, "Display this help information and exit. Optional."
-  }
+    {"-h", "--help"}, "Display this help information and exit. Optional."}
 };
 ```
 
@@ -404,11 +398,9 @@ Keys do not need to start with a hyphen (`-`); keys can be composed of any chara
 ```cpp
 lector::Arguments arguments{
   lector::Argument<Label::OutputDirectory, std::filesystem::path>{
-    {"o", "=o", "__out_dir__"}, "Output directory. Required."
-  },
+    {"o", "=o", "__out_dir__"}, "Output directory. Required."},
   lector::Argument<Label::Iterations, std::int32_t>{
-    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100
-  }
+    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100}
 };
 ```
 
@@ -515,8 +507,7 @@ enum class Label : std::int8_t {FavoriteShape};
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
     lector::Argument<Label::FavoriteShape, my_project::Shape>{
-      {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle
-    }
+      {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle}
   };
 
   arguments.parse(argc, argv);
@@ -605,8 +596,7 @@ enum class Label : std::int8_t {FavoritePoint};
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
     lector::Argument<Label::FavoritePoint, my_project::Point>{
-      {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{}
-    }
+      {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{} }
   };
 
   arguments.parse(argc, argv);

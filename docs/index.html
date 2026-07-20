@@ -79,14 +79,11 @@
 <div class="line">      <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">      <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
-<div class="line">      {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span></div>
-<div class="line">    },</div>
+<div class="line">      {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
-<div class="line">      {<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--iterations&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100</div>
-<div class="line">    },</div>
+<div class="line">      {<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--iterations&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Help, bool&gt;</a>{</div>
-<div class="line">      {<span class="stringliteral">&quot;-h&quot;</span>, <span class="stringliteral">&quot;--help&quot;</span>}, <span class="stringliteral">&quot;Display this help information and exit. Optional.&quot;</span></div>
-<div class="line">    }</div>
+<div class="line">      {<span class="stringliteral">&quot;-h&quot;</span>, <span class="stringliteral">&quot;--help&quot;</span>}, <span class="stringliteral">&quot;Display this help information and exit. Optional.&quot;</span>}</div>
 <div class="line">  };</div>
 <div class="line"> </div>
 <div class="line">  arguments.parse(argc, argv);</div>
@@ -276,14 +273,11 @@
 <div class="line">    <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span></div>
-<div class="line">  },</div>
+<div class="line">    {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--iterations&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100</div>
-<div class="line">  },</div>
+<div class="line">    {<span class="stringliteral">&quot;-i&quot;</span>, <span class="stringliteral">&quot;--iterations&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Help, bool&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;-h&quot;</span>, <span class="stringliteral">&quot;--help&quot;</span>}, <span class="stringliteral">&quot;Display this help information and exit. Optional.&quot;</span></div>
-<div class="line">  }</div>
+<div class="line">    {<span class="stringliteral">&quot;-h&quot;</span>, <span class="stringliteral">&quot;--help&quot;</span>}, <span class="stringliteral">&quot;Display this help information and exit. Optional.&quot;</span>}</div>
 <div class="line">};</div>
 </div><!-- fragment --><p>Note: The <code><a class="el" href="structlector_1_1Configuration.html" title="Configuration of the help information of a collection of command line arguments.">lector::Configuration</a></code> data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of collection of command line arguments.</p>
 <p>Supported argument types include:</p>
@@ -357,11 +351,9 @@
 </div><!-- fragment --><p>Keys do not need to start with a hyphen (<code>-</code>); keys can be composed of any characters, including equal signs (<code>=</code>). For example, the following definitions are unusual but perfectly valid:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;o&quot;</span>, <span class="stringliteral">&quot;=o&quot;</span>, <span class="stringliteral">&quot;__out_dir__&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span></div>
-<div class="line">  },</div>
+<div class="line">    {<span class="stringliteral">&quot;o&quot;</span>, <span class="stringliteral">&quot;=o&quot;</span>, <span class="stringliteral">&quot;__out_dir__&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;=i=&quot;</span>, <span class="stringliteral">&quot;_it_&quot;</span>, <span class="stringliteral">&quot;==iterations==&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100</div>
-<div class="line">  }</div>
+<div class="line">    {<span class="stringliteral">&quot;=i=&quot;</span>, <span class="stringliteral">&quot;_it_&quot;</span>, <span class="stringliteral">&quot;==iterations==&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100}</div>
 <div class="line">};</div>
 </div><!-- fragment --><div class="fragment"><div class="line">path/to/my_project_main __out_dir__ /some/path =i= 200</div>
 <div class="line"> </div>
@@ -454,8 +446,7 @@
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[]) {</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::FavoriteShape, my_project::Shape&gt;</a>{</div>
-<div class="line">      {<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--shape&quot;</span>}, <span class="stringliteral">&quot;Your favorite shape. Optional.&quot;</span>, my_project::Shape::Circle</div>
-<div class="line">    }</div>
+<div class="line">      {<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;--shape&quot;</span>}, <span class="stringliteral">&quot;Your favorite shape. Optional.&quot;</span>, my_project::Shape::Circle}</div>
 <div class="line">  };</div>
 <div class="line"> </div>
 <div class="line">  arguments.parse(argc, argv);</div>
@@ -531,8 +522,7 @@
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[]) {</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::FavoritePoint, my_project::Point&gt;</a>{</div>
-<div class="line">      {<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--point&quot;</span>}, <span class="stringliteral">&quot;Your favorite point. Optional.&quot;</span>, my_project::Point{}</div>
-<div class="line">    }</div>
+<div class="line">      {<span class="stringliteral">&quot;-p&quot;</span>, <span class="stringliteral">&quot;--point&quot;</span>}, <span class="stringliteral">&quot;Your favorite point. Optional.&quot;</span>, my_project::Point{} }</div>
 <div class="line">  };</div>
 <div class="line"> </div>
 <div class="line">  arguments.parse(argc, argv);</div>
