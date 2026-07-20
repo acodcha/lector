@@ -77,8 +77,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a68310847545a5793bd584b9c3dcce884" id="r_a68310847545a5793bd584b9c3dcce884"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a68310847545a5793bd584b9c3dcce884">Arguments</a> (<a class="el" href="classlector_1_1Arguments.html">::lector::Arguments</a>&lt; ArgumentTypes... &gt; &amp;&amp;) noexcept=default</td></tr>
 <tr class="memdesc:a68310847545a5793bd584b9c3dcce884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. Constructs a collection of command line argument by moving another one.  <br /></td></tr>
 <tr class="separator:a68310847545a5793bd584b9c3dcce884"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a126d491efe05a1a4e12f2a80864e62ab" id="r_a126d491efe05a1a4e12f2a80864e62ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a126d491efe05a1a4e12f2a80864e62ab">Arguments</a> (<a class="el" href="structlector_1_1Configuration.html">::lector::Configuration</a> &amp;&amp;configuration, ArgumentTypes... arguments)</td></tr>
+<tr class="memdesc:a126d491efe05a1a4e12f2a80864e62ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time check that all arguments have unique labels.  <br /></td></tr>
+<tr class="separator:a126d491efe05a1a4e12f2a80864e62ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aba53ca9399a4bcfea255de877c8763" id="r_a3aba53ca9399a4bcfea255de877c8763"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a3aba53ca9399a4bcfea255de877c8763">Arguments</a> (ArgumentTypes... arguments)</td></tr>
-<tr class="memdesc:a3aba53ca9399a4bcfea255de877c8763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time check that all arguments have unique labels.  <br /></td></tr>
+<tr class="memdesc:a3aba53ca9399a4bcfea255de877c8763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. Constructs a collection of command line arguments from a variadic list of command line arguments.  <br /></td></tr>
 <tr class="separator:a3aba53ca9399a4bcfea255de877c8763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b7075bfa9a951fec18bef0892141be3" id="r_a9b7075bfa9a951fec18bef0892141be3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a9b7075bfa9a951fec18bef0892141be3">Arguments</a> (const <a class="el" href="classlector_1_1Arguments.html">::lector::Arguments</a>&lt; ArgumentTypes... &gt; &amp;)=default</td></tr>
 <tr class="memdesc:a9b7075bfa9a951fec18bef0892141be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. Constructs a collection of command line argument by copying another one.  <br /></td></tr>
@@ -96,6 +99,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3dc9fc170984a26f6676c231d081f79"><td class="memTemplItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79">get</a> () const</td></tr>
 <tr class="memdesc:ab3dc9fc170984a26f6676c231d081f79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a specified command line argument from this collection.  <br /></td></tr>
 <tr class="separator:ab3dc9fc170984a26f6676c231d081f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07891828818d1d099171ff61d41f6e1c" id="r_a07891828818d1d099171ff61d41f6e1c"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c">help</a> () const</td></tr>
+<tr class="memdesc:a07891828818d1d099171ff61d41f6e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the help information of this collection of command line arguments as a string of text. The help information consists of this collection of command line arguments' title, usage information, description, options information, and notes.  <br /></td></tr>
+<tr class="separator:a07891828818d1d099171ff61d41f6e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0978bd792e2e4e8301c735fd28430db8" id="r_a0978bd792e2e4e8301c735fd28430db8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classlector_1_1Arguments.html">::lector::Arguments</a>&lt; ArgumentTypes... &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a0978bd792e2e4e8301c735fd28430db8">operator=</a> (<a class="el" href="classlector_1_1Arguments.html">::lector::Arguments</a>&lt; ArgumentTypes... &gt; &amp;&amp;) noexcept=default</td></tr>
 <tr class="memdesc:a0978bd792e2e4e8301c735fd28430db8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator. Assigns this collection of command line argument by moving another one.  <br /></td></tr>
 <tr class="separator:a0978bd792e2e4e8301c735fd28430db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -103,13 +109,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a74e31eee173315ad5b9b775dd9c33471"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy assignment operator. Assigns this collection of command line argument by copying another one.  <br /></td></tr>
 <tr class="separator:a74e31eee173315ad5b9b775dd9c33471"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac62e659a586d74776444a4a0990387b5" id="r_ac62e659a586d74776444a4a0990387b5"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ac62e659a586d74776444a4a0990387b5">options</a> () const</td></tr>
-<tr class="memdesc:ac62e659a586d74776444a4a0990387b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value type along with their descriptions. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
+<tr class="memdesc:ac62e659a586d74776444a4a0990387b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
 <tr class="separator:ac62e659a586d74776444a4a0990387b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba7afe06f29efef5f7337fe93c3b1eba" id="r_aba7afe06f29efef5f7337fe93c3b1eba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba">parse</a> (const int argc, char *argv[])</td></tr>
 <tr class="memdesc:aba7afe06f29efef5f7337fe93c3b1eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses argc and argv to populate the parsed values of the command line arguments in this collection.  <br /></td></tr>
 <tr class="separator:aba7afe06f29efef5f7337fe93c3b1eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab11294cafc407832743e07921d7236e2" id="r_ab11294cafc407832743e07921d7236e2"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ab11294cafc407832743e07921d7236e2">usage</a> () const</td></tr>
-<tr class="memdesc:ab11294cafc407832743e07921d7236e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage of this collection of command line arguments as a string of text. The usage consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
+<tr class="memdesc:ab11294cafc407832743e07921d7236e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
 <tr class="separator:ab11294cafc407832743e07921d7236e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -122,8 +128,54 @@ class lector::Arguments&lt; ArgumentTypes &gt;</div><p>A collection of command l
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a126d491efe05a1a4e12f2a80864e62ab" name="a126d491efe05a1a4e12f2a80864e62ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a126d491efe05a1a4e12f2a80864e62ab">&#9670;&#160;</a></span>Arguments() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ArgumentTypes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classlector_1_1Arguments.html">lector::Arguments</a>&lt; ArgumentTypes &gt;::Arguments </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structlector_1_1Configuration.html">::lector::Configuration</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>configuration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ArgumentTypes...&#160;</td>
+          <td class="paramname"><em>arguments</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compile-time check that all arguments have unique labels. </p>
+<p>Constructor. Constructs a collection of command line arguments from a configuration data structure and a variadic list of command line arguments. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">...arguments</td><td>The variadic list of command line arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a3aba53ca9399a4bcfea255de877c8763" name="a3aba53ca9399a4bcfea255de877c8763"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3aba53ca9399a4bcfea255de877c8763">&#9670;&#160;</a></span>Arguments() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aba53ca9399a4bcfea255de877c8763">&#9670;&#160;</a></span>Arguments() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,8 +200,8 @@ template&lt;typename... ArgumentTypes&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Compile-time check that all arguments have unique labels. </p>
-<p>Constructor. Constructs a collection of command line arguments by moving a variadic list of command line arguments. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Constructor. Constructs a collection of command line arguments from a variadic list of command line arguments. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">...arguments</td><td>The variadic list of command line arguments. </td></tr>
   </table>
@@ -188,7 +240,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
 </div>
 </div>
 <a id="a9b7075bfa9a951fec18bef0892141be3" name="a9b7075bfa9a951fec18bef0892141be3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b7075bfa9a951fec18bef0892141be3">&#9670;&#160;</a></span>Arguments() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b7075bfa9a951fec18bef0892141be3">&#9670;&#160;</a></span>Arguments() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +270,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
 </div>
 </div>
 <a id="a68310847545a5793bd584b9c3dcce884" name="a68310847545a5793bd584b9c3dcce884"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68310847545a5793bd584b9c3dcce884">&#9670;&#160;</a></span>Arguments() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a68310847545a5793bd584b9c3dcce884">&#9670;&#160;</a></span>Arguments() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,6 +374,28 @@ template&lt;auto Label&gt; </div>
 
 </div>
 </div>
+<a id="a07891828818d1d099171ff61d41f6e1c" name="a07891828818d1d099171ff61d41f6e1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07891828818d1d099171ff61d41f6e1c">&#9670;&#160;</a></span>help()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ArgumentTypes&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">::std::string <a class="el" href="classlector_1_1Arguments.html">lector::Arguments</a>&lt; ArgumentTypes &gt;::help </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints the help information of this collection of command line arguments as a string of text. The help information consists of this collection of command line arguments' title, usage information, description, options information, and notes. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the help information of this collection of command line arguments. </dd></dl>
+
+</div>
+</div>
 <a id="a0978bd792e2e4e8301c735fd28430db8" name="a0978bd792e2e4e8301c735fd28430db8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0978bd792e2e4e8301c735fd28430db8">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
 
@@ -401,8 +475,8 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the options of this collection of command line argument as a string of text. The options consist of each command line argument's list of keys and value type along with their descriptions. Required command line arguments are printed first, followed by optional ones. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options of this collection of command line argument. </dd></dl>
+<p>Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options information of this collection of command line arguments. </dd></dl>
 
 </div>
 </div>
@@ -468,8 +542,8 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the usage of this collection of command line arguments as a string of text. The usage consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones. </p>
-<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage of this collection of command line arguments. </dd></dl>
+<p>Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones. </p>
+<dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage information of this collection of command line arguments. </dd></dl>
 
 </div>
 </div>

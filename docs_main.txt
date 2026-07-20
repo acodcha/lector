@@ -32,19 +32,18 @@
 ///       {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
 ///     },
 ///     lector::Argument<Label::Help, bool>{
-///       {"-h", "--help"}, "Display usage information and exit. Optional."
+///       {"-h", "--help"}, "Display this help information and exit. Optional."
 ///     }
 ///   };
 ///
 ///   arguments.parse(argc, argv);
 ///
 ///   if (arguments.get<Label::Help>().parsed_or_default_value()) {
-///     std::cout << "Usage: " << arguments.usage() << std::endl;
-///     std::cout << "Options: " << std::endl << arguments.options() << std::endl;
+///     std::cout << arguments.help() << std::endl;
 ///     return EXIT_SUCCESS;
 ///   }
 ///
-///   std::cout << "Execution: " << arguments.execution() << std::endl;
+///   std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 ///
 ///   const std::filesystem::path& output_directory{
 ///     arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
@@ -279,7 +278,7 @@
 ///     {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100
 ///   },
 ///   lector::Argument<Label::Help, bool>{
-///     {"-h", "--help"}, "Display usage information and exit. Optional."
+///     {"-h", "--help"}, "Display this help information and exit. Optional."
 ///   }
 /// };
 /// ```
@@ -303,17 +302,16 @@
 ///
 /// This populates all arguments with their parsed values and performs strict error checking. See the \ref user_guide_error_checking "§3.5. User Guide: Error Checking" section for details.
 ///
-/// Usage and options information can be obtained via the `lector::Arguments::usage()` and `lector::Arguments::options()` methods, respectively. For example:
+/// Help information can be obtained via the `lector::Arguments::help()` method. For example:
 ///
 /// ```cpp
-/// std::cout << "Usage: " << arguments.usage() << std::endl;
-/// std::cout << "Options: " << std::endl << arguments.options() << std::endl;
+/// std::cout << arguments.help() << std::endl;
 /// ```
 ///
 /// Execution information can be obtained via the  `lector::Arguments::execution()` method. For example:
 ///
 /// ```cpp
-/// std::cout << "Execution: " << arguments.execution() << std::endl;
+/// std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 /// ```
 ///
 /// See the \ref user_guide_command_line "§3.2. User Guide: Command Line" section for details.
@@ -334,16 +332,20 @@
 ///
 /// The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage, options, and execution information of your program. The following examples use the code from the \ref introduction "§1. Introduction" section.
 ///
-/// Display usage and options information via the `lector::Arguments::usage()` and `lector::Arguments::options()` methods, respectively:
+/// Display help information via the `lector::Arguments::help()` method:
 ///
 /// ```text
 /// path/to/my_project_main --help
 ///
-/// Usage: my_project_main --output_directory <path> [--iterations <number>] [--help]
+/// Usage:
+/// my_project_main --output_directory <path> [--iterations <number>] [--help]
+///
 /// Options:
 /// -o <path>, --output_directory <path>  Output directory. Required.
-/// -i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
-/// -h, --help                            Display usage information and exit. Optional.
+/// -i <number>, --iterations <number>    Number of iterations. Optional. Default
+///                                       100.
+/// -h, --help                            Display this help information and exit.
+///                                       Optional.
 /// ```
 ///
 /// Display execution information via the  `lector::Arguments::execution()` method:
@@ -351,7 +353,8 @@
 /// ```text
 /// path/to/my_project_main --output_directory /some/path --iterations 200
 ///
-/// Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+/// Execution:
+/// path/to/my_project_main --output_directory /some/path --iterations 200
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -361,7 +364,8 @@
 /// ```text
 /// path/to/my_project_main --output_directory=/some/path --iterations=200
 ///
-/// Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+/// Execution:
+/// path/to/my_project_main --output_directory /some/path --iterations 200
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -371,7 +375,8 @@
 /// ```text
 /// path/to/my_project_main -o /some/path -i=200
 ///
-/// Execution: path/to/my_project_main --output_directory /some/path --iterations 200
+/// Execution:
+/// path/to/my_project_main --output_directory /some/path --iterations 200
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -392,7 +397,8 @@
 /// ```text
 /// path/to/my_project_main __out_dir__ /some/path =i= 200
 ///
-/// Execution: path/to/my_project_main __out_dir__ /some/path ==iterations== 200
+/// Execution:
+/// path/to/my_project_main __out_dir__ /some/path ==iterations== 200
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```

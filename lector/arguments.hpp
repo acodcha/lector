@@ -233,10 +233,10 @@ public:
     return result;
   }
 
-  /// @brief Prints the usage of this command line argument as a string of text. The usage consists
-  /// of this command line argument's longest key and value type, enclosed in square braces if this
-  /// command line argument is optional.
-  /// @return The string of text that contains the usage of this command line argument.
+  /// @brief Prints the usage information of this command line argument as a string of text. The
+  /// usage information consists of this command line argument's longest key and value type,
+  /// enclosed in square braces if this command line argument is optional.
+  /// @return The string of text that contains the usage information of this command line argument.
   [[nodiscard]] ::std::string usage() const {
     if (keys_.empty()) {
       return ::std::string{};
@@ -247,10 +247,10 @@ public:
     return longest_key_with_value_type();
   }
 
-  /// @brief Prints the options of this command line argument as a string of text. The options
-  /// consist of this command line argument's list of keys and value type along with its
-  /// description.
-  /// @return The string of text that contains the options of this command line argument.
+  /// @brief Prints the options information of this command line argument as a string of text. The
+  /// options information consist of this command line argument's keys, value type, and description.
+  /// @return The string of text that contains the options information of this command line
+  /// argument.
   [[nodiscard]] ::std::string options() const {
     if (keys_.empty() && description_.empty()) {
       return ::std::string{};
@@ -389,6 +389,28 @@ private:
   ::lector::Importance importance_{::lector::Importance::Required};
 };
 
+/// @brief Configuration of the help information of a collection of command line arguments.
+struct Configuration final {
+public:
+  /// @brief Title of the application whose command line arguments are to be parsed. When the
+  /// collection of command line arguments' help information is printed, this title appears first,
+  /// before its usage information. Optional and empty by default, in which case no title is
+  /// printed.
+  ::std::optional<::std::string> title{::std::nullopt};
+
+  /// @brief Description of the application whose command line arguments are to be parsed. When the
+  /// collection of command line arguments' help information is printed, this description appears
+  /// between its usage information and its options information. Optional and empty by default, in
+  /// which case no description is printed.
+  ::std::optional<::std::string> description{::std::nullopt};
+
+  /// @brief Additional notes pertaining to the application whose command line arguments are to be
+  /// parsed. When the collection of command line arguments' help information is printed, these
+  /// notes appear last, after its options information. Optional and empty by default, in which case
+  /// no notes are printed.
+  ::std::optional<::std::string> notes{::std::nullopt};
+};
+
 /// @brief Type trait used to extract a command line argument from a collection of command line
 /// arguments, using only its Label.
 /// @tparam Label The label of the command line argument to extract.
@@ -449,8 +471,16 @@ public:
   static_assert(AreUnique<ArgumentTypes::label()...>::value,
                 "Duplicate argument labels detected. Each argument must have a unique label.");
 
-  /// @brief Constructor. Constructs a collection of command line arguments by moving a variadic
-  /// list of command line arguments.
+  /// @brief Constructor. Constructs a collection of command line arguments from a configuration
+  /// data structure and a variadic list of command line arguments.
+  /// @param[in] ...arguments The variadic list of command line arguments.
+  explicit Arguments(::lector::Configuration&& configuration, ArgumentTypes... arguments)
+    : configuration_{::std::move(configuration)}, arguments_{::std::move(arguments)...} {
+    validate_keys();
+  }
+
+  /// @brief Constructor. Constructs a collection of command line arguments from a variadic list of
+  /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {
     validate_keys();
@@ -508,12 +538,12 @@ public:
     return ::std::get<Type>(arguments_);
   }
 
-  /// @brief Prints the usage of this collection of command line arguments as a string of text. The
-  /// usage consists of each argument's longest key and value type, enclosed in square braces for
-  /// optional command line arguments. Required command line arguments are printed first, followed
-  /// by optional ones.
-  /// @return The string of text that contains the usage of this collection of command line
-  /// arguments.
+  /// @brief Prints the usage information of this collection of command line arguments as a string
+  /// of text. The usage information consists of each argument's longest key and value type,
+  /// enclosed in square braces for optional command line arguments. Required command line arguments
+  /// are printed first, followed by optional ones.
+  /// @return The string of text that contains the usage information of this collection of command
+  /// line arguments.
   [[nodiscard]] ::std::string usage() const {
     ::std::string result;
     result.append(executable_path_.filename().string());
@@ -537,14 +567,15 @@ public:
           }());
         },
         arguments_);
-    return ::lector::wrap_and_left_align(result, maximum_line_length_);
+    return result;
   }
 
-  /// @brief Prints the options of this collection of command line argument as a string of text. The
-  /// options consist of each command line argument's list of keys and value type along with their
-  /// descriptions. Required command line arguments are printed first, followed by optional ones.
-  /// @return The string of text that contains the options of this collection of command line
-  /// argument.
+  /// @brief Prints the options information of this collection of command line argument as a string
+  /// of text. The options information consists of the list of each command line argument's keys,
+  /// value type, and description. Required command line arguments are printed first, followed by
+  /// optional ones.
+  /// @return The string of text that contains the options information of this collection of command
+  /// line arguments.
   [[nodiscard]] ::std::string options() const {
     // Compute the text formatting dimensions.
     constexpr ::std::size_t gutter_width{2UL};
@@ -594,6 +625,54 @@ public:
     return result;
   }
 
+  /// @brief Prints the help information of this collection of command line arguments as a string of
+  /// text. The help information consists of this collection of command line arguments' title, usage
+  /// information, description, options information, and notes.
+  /// @return The string of text that contains the help information of this collection of command
+  /// line arguments.
+  [[nodiscard]] ::std::string help() const {
+    ::std::string result;
+    if (configuration_.title.has_value() && !configuration_.title.value().empty()) {
+      result.append(
+          ::lector::wrap_and_left_align(configuration_.title.value(), maximum_line_length_));
+    }
+    const ::std::string usage_{::lector::wrap_and_left_align(usage(), maximum_line_length_)};
+    if (!usage_.empty()) {
+      if (!result.empty()) {
+        result.push_back('\n');
+        result.push_back('\n');
+      }
+      result.append("Usage:\n");
+      result.append(usage_);
+    }
+    if (configuration_.description.has_value() && !configuration_.description.value().empty()) {
+      if (!result.empty()) {
+        result.push_back('\n');
+        result.push_back('\n');
+      }
+      result.append(
+          ::lector::wrap_and_left_align(configuration_.description.value(), maximum_line_length_));
+    }
+    const ::std::string options_{options()};
+    if (!options_.empty()) {
+      if (!result.empty()) {
+        result.push_back('\n');
+        result.push_back('\n');
+      }
+      result.append("Options:\n");
+      result.append(options_);
+    }
+    if (configuration_.notes.has_value() && !configuration_.notes.value().empty()) {
+      if (!result.empty()) {
+        result.push_back('\n');
+        result.push_back('\n');
+      }
+      result.append(
+          ::lector::wrap_and_left_align(configuration_.notes.value(), maximum_line_length_));
+    }
+    return result;
+  }
+
   /// @brief Prints the execution of this collection of command line argument as a string of text.
   /// The execution consists of the executable path followed by each argument's longest key and
   /// corresponding parsed value, if any.
@@ -619,7 +698,8 @@ public:
   }
 
 private:
-  /// @brief Maximum length of a line when printing usage information or options information.
+  /// @brief Maximum length of a line when printing usage information, options information, or help
+  /// information as a string of text.
   static constexpr ::std::size_t maximum_line_length_{80UL};
 
   /// @brief The best matching argument for a command line argument token during parsing. The best
@@ -888,6 +968,9 @@ private:
         arguments_);
     return maximum_length;
   }
+
+  /// @brief Configuration of the help information of this collection of command line arguments.
+  ::lector::Configuration configuration_{};
 
   /// @brief Variadic collection of command line arguments.
   ::std::tuple<ArgumentTypes...> arguments_;
