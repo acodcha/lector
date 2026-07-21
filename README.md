@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether usage information should be printed, prints the execution information, and obtains and prints the parsed arguments.
+The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.
 
 In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.
 
@@ -352,10 +352,8 @@ Description of my application.
 
 Options:
 -o <path>, --output_directory <path>  Output directory. Required.
--i <number>, --iterations <number>    Number of iterations. Optional. Default
-                                      100.
--h, --help                            Display this help information and exit.
-                                      Optional.
+-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
+-h, --help                            Display this help information and exit. Optional.
 
 Additional notes about my application.
 ```

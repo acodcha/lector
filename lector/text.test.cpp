@@ -41,25 +41,15 @@ TEST(Lector, CodePoints) {
 }
 
 TEST(Lector, CombineAndLeftAlignBothColumnsEmpty) {
-  EXPECT_EQ(::lector::combine_and_left_align("", 0, "", 0), "");
-  EXPECT_EQ(::lector::combine_and_left_align("", 0, "", 1), "");
-  EXPECT_EQ(::lector::combine_and_left_align("", 0, "", 2), "");
-  EXPECT_EQ(::lector::combine_and_left_align("", 1, "", 0), "");
   EXPECT_EQ(::lector::combine_and_left_align("", 1, "", 1), "");
   EXPECT_EQ(::lector::combine_and_left_align("", 1, "", 2), "");
-  EXPECT_EQ(::lector::combine_and_left_align("", 2, "", 0), "");
   EXPECT_EQ(::lector::combine_and_left_align("", 2, "", 1), "");
   EXPECT_EQ(::lector::combine_and_left_align("", 2, "", 2), "");
 }
 
 TEST(Lector, CombineAndLeftAlignBothColumnsWhitespace) {
-  EXPECT_EQ(::lector::combine_and_left_align("  ", 0, "  ", 0), "");
-  EXPECT_EQ(::lector::combine_and_left_align("  ", 0, "  ", 1), "");
-  EXPECT_EQ(::lector::combine_and_left_align("  ", 0, "  ", 2), "");
-  EXPECT_EQ(::lector::combine_and_left_align("  ", 1, "  ", 0), "");
   EXPECT_EQ(::lector::combine_and_left_align("  ", 1, "  ", 1), "");
   EXPECT_EQ(::lector::combine_and_left_align("  ", 1, "  ", 2), "");
-  EXPECT_EQ(::lector::combine_and_left_align("  ", 2, "  ", 0), "");
   EXPECT_EQ(::lector::combine_and_left_align("  ", 2, "  ", 1), "");
   EXPECT_EQ(::lector::combine_and_left_align("  ", 2, "  ", 2), "");
 }
@@ -69,6 +59,14 @@ TEST(Lector, CombineAndLeftAlignFirstColumnEmpty) {
             "            And this is\n"
             "            the second\n"
             "            column.");
+}
+
+TEST(Lector, CombineAndLeftAlignFirstColumnLargeWidth) {
+  EXPECT_EQ(::lector::combine_and_left_align(
+                "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
+            "This is the first column.                 And this is\n"
+            "                                          the second\n"
+            "                                          column.");
 }
 
 TEST(Lector, CombineAndLeftAlignFirstColumnShort) {
@@ -83,14 +81,6 @@ TEST(Lector, CombineAndLeftAlignFirstColumnWhitespace) {
             "            And this is\n"
             "            the second\n"
             "            column.");
-}
-
-TEST(Lector, CombineAndLeftAlignFirstColumnZeroWidth) {
-  EXPECT_EQ(::lector::combine_and_left_align(
-                "  This is the first column.  ", 0, "  And this is the second column.  ", 12),
-            "This is the first column.  And this is\n"
-            "                           the second\n"
-            "                           column.");
 }
 
 TEST(Lector, CombineAndLeftAlignTypical) {
@@ -231,63 +221,16 @@ TEST(Lector, WrapAndLeftAlignExcessiveWhitespaceTypical) {
             "Hello, world!");
 }
 
+TEST(Lector, WrapAndLeftAlignInvalid) {
+  EXPECT_ANY_THROW(::lector::wrap_and_left_align("Hello, world!", static_cast<::std::size_t>(0UL)));
+}
+
 TEST(Lector, WrapAndLeftAlignMaximumLineLengthSmall) {
   const ::std::string expected{"The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog."};
   EXPECT_EQ(
       ::lector::wrap_and_left_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                     static_cast<::std::size_t>(1UL)),
       expected);
-}
-
-TEST(Lector, WrapAndLeftAlignMaximumLineLengthZeroEmpty) {
-  EXPECT_EQ(::lector::wrap_and_left_align("", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align(" ", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align("  ", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align("\t", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align("\t\t", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align("\n", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align("\n\n", static_cast<::std::size_t>(0UL)), "");
-  EXPECT_EQ(::lector::wrap_and_left_align(" \t\n \t\n", static_cast<::std::size_t>(0UL)), "");
-}
-
-TEST(Lector, WrapAndLeftAlignMaximumLineLengthZeroTypical) {
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world! ", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!  ", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align(" Hello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("  Hello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align(" Hello, world! ", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("  Hello, world!  ", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!\n", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!\n\n", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\nHello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\n\nHello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\n\nHello, world!\n\n", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!\t", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("Hello, world!\t\t", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\tHello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\t\tHello, world!", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align("\t\tHello, world!\t\t", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
-  EXPECT_EQ(::lector::wrap_and_left_align(
-                " \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(0UL)),
-            "Hello, world!");
 }
 
 TEST(Lector, WrapAndLeftAlignMultipleLines) {
@@ -349,46 +292,15 @@ TEST(Lector, WrapToVectorExcessiveWhitespaceTypical) {
             expected);
 }
 
+TEST(Lector, WrapToVectorInvalid) {
+  EXPECT_ANY_THROW(::lector::wrap("Hello, world!", static_cast<::std::size_t>(0UL)));
+}
+
 TEST(Lector, WrapToVectorMaximumLineLengthSmall) {
   const ::std::vector<::std::string> expected{
     "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."};
   EXPECT_EQ(::lector::wrap("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                            static_cast<::std::size_t>(1UL)),
-            expected);
-}
-
-TEST(Lector, WrapToVectorMaximumLineLengthZeroEmpty) {
-  const ::std::vector<::std::string> expected;
-  EXPECT_EQ(::lector::wrap("", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap(" ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("  ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\t", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\t\t", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\n", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\n\n", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap(" \t\n \t\n", static_cast<::std::size_t>(0UL)), expected);
-}
-
-TEST(Lector, WrapToVectorMaximumLineLengthZeroTypical) {
-  const ::std::vector<::std::string> expected{"Hello, world!"};
-  EXPECT_EQ(::lector::wrap("Hello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world! ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world!  ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap(" Hello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("  Hello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap(" Hello, world! ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("  Hello, world!  ", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world!\n", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world!\n\n", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\nHello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\n\nHello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\n\nHello, world!\n\n", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world!\t", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("Hello, world!\t\t", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\tHello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\t\tHello, world!", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap("\t\tHello, world!\t\t", static_cast<::std::size_t>(0UL)), expected);
-  EXPECT_EQ(::lector::wrap(" \n\t \n\tHello, world! \n\t \n\t", static_cast<::std::size_t>(0UL)),
             expected);
 }
 

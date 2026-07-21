@@ -1805,9 +1805,8 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -1847,9 +1846,8 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -1891,9 +1889,8 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -1933,9 +1930,8 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -1977,9 +1973,8 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2019,9 +2014,8 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -2063,9 +2057,8 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2105,9 +2098,8 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -2149,9 +2141,8 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2191,9 +2182,8 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -2235,9 +2225,8 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2277,9 +2266,8 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
   expected_options << "-s <value>, --shape <value>         Favorite shape." << ::std::endl;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -2369,9 +2357,8 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpNoConfiguration) {
   EXPECT_EQ(arguments.usage(), expected_usage);
   ::std::ostringstream expected_options;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2398,9 +2385,8 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpWithConfiguration) {
   EXPECT_EQ(arguments.usage(), expected_usage);
   ::std::ostringstream expected_options;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -2496,9 +2482,8 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpNoConfiguration) 
   ::std::ostringstream expected_options;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "Usage:" << std::endl;
@@ -2532,9 +2517,8 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpWithConfiguration
   ::std::ostringstream expected_options;
   expected_options << "-o <path>, --output <path>          Output directory." << ::std::endl;
   expected_options << "-i <number>, --iterations <number>  Number of iterations." << ::std::endl;
-  expected_options << "-h, --help                          Display this help information and exit."
-                   << ::std::endl;
-  expected_options << "                                    Optional.";
+  expected_options
+      << "-h, --help                          Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -3494,13 +3478,10 @@ TEST(Lector, ReadmeSection1Basic) {
   expected_options
       << "-o <path>, --output_directory <path>  Output directory. Required." << ::std::endl;
   expected_options
-      << "-i <number>, --iterations <number>    Number of iterations. Optional. Default"
+      << "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100."
       << ::std::endl;
-  expected_options << "                                      100." << ::std::endl;
   expected_options
-      << "-h, --help                            Display this help information and exit."
-      << ::std::endl;
-  expected_options << "                                      Optional.";
+      << "-h, --help                            Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -3551,13 +3532,10 @@ TEST(Lector, ReadmeSection1Help) {
   expected_options
       << "-o <path>, --output_directory <path>  Output directory. Required." << ::std::endl;
   expected_options
-      << "-i <number>, --iterations <number>    Number of iterations. Optional. Default"
+      << "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100."
       << ::std::endl;
-  expected_options << "                                      100." << ::std::endl;
   expected_options
-      << "-h, --help                            Display this help information and exit."
-      << ::std::endl;
-  expected_options << "                                      Optional.";
+      << "-h, --help                            Display this help information and exit. Optional.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
@@ -3589,11 +3567,10 @@ TEST(Lector, ReadmeSection32) {
   EXPECT_EQ(arguments.usage(), expected_usage);
   ::std::ostringstream expected_options;
   expected_options
-      << "o <path>, =o <path>, __out_dir__ <path>  Output directory. Required." << ::std::endl;
-  expected_options
-      << "=i= <number>, _it_ <number>,             Number of iterations. Optional. Default"
-      << ::std::endl
-      << "==iterations== <number>                  100.";
+      << "o <path>, =o <path>, __out_dir__ <path>               Output directory. Required."
+      << ::std::endl;
+  expected_options << "=i= <number>, _it_ <number>, ==iterations== <number>  "
+                   << "Number of iterations. Optional. Default 100.";
   EXPECT_EQ(arguments.options(), expected_options.str());
   ::std::ostringstream expected_help;
   expected_help << "My Application" << std::endl << std::endl;
