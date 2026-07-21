@@ -545,6 +545,21 @@ public:
   /// @return The string of text that contains the usage information of this collection of command
   /// line arguments.
   [[nodiscard]] ::std::string usage() const {
+    return usage(::std::numeric_limits<::std::size_t>::max());
+  }
+
+  /// @brief Prints the usage information of this collection of command line arguments as a string
+  /// of text. The usage information consists of each argument's longest key and value type,
+  /// enclosed in square braces for optional command line arguments. Required command line arguments
+  /// are printed first, followed by optional ones. Lines are wrapped.
+  /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+  /// than zero. The recommended value is 80. The actual line length may be longer if the string of
+  /// text contains very long words whose lengths exceed the desired line length.
+  /// @return The string of text that contains the usage information of this collection of command
+  /// line arguments.
+  /// @throws std::invalid_argument if the desired line length is zero.
+  [[nodiscard]] ::std::string usage(const ::std::size_t line_length) const {
+    validate_line_length(line_length);
     ::std::string result;
     result.append(executable_path_.filename().string());
     ::std::apply(
@@ -577,16 +592,30 @@ public:
   /// @return The string of text that contains the options information of this collection of command
   /// line arguments.
   [[nodiscard]] ::std::string options() const {
+    return options(::std::numeric_limits<::std::size_t>::max());
+  }
+
+  /// @brief Prints the options information of this collection of command line argument as a string
+  /// of text. The options information consists of the list of each command line argument's keys,
+  /// value type, and description. Required command line arguments are printed first, followed by
+  /// optional ones. Lines are wrapped.
+  /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+  /// than zero. The recommended value is 80. The actual line length may be longer if the string of
+  /// text contains very long words whose lengths exceed the desired line length.
+  /// @return The string of text that contains the options information of this collection of command
+  /// line arguments.
+  /// @throws std::invalid_argument if the desired line length is zero.
+  [[nodiscard]] ::std::string options(const ::std::size_t line_length) const {
+    validate_line_length(line_length);
     // Compute the text formatting dimensions.
     constexpr ::std::size_t gutter_width{2UL};
-    constexpr ::std::size_t maximum_first_column_width{
-      (maximum_line_length_ - gutter_width) / static_cast<::std::size_t>(2UL)};
+    const ::std::size_t maximum_first_column_width{
+      (line_length - gutter_width) / static_cast<::std::size_t>(2UL)};
     const ::std::size_t maximum_length_of_keys_with_value_types_{
       maximum_length_of_keys_with_value_type()};
     const ::std::size_t first_column_width{
       ::std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_width)};
-    const ::std::size_t second_column_width{
-      maximum_line_length_ - gutter_width - first_column_width};
+    const ::std::size_t second_column_width{line_length - gutter_width - first_column_width};
     // Obtain the number of command line arguments.
     constexpr ::std::size_t argument_count{::std::tuple_size_v<decltype(arguments_)>};
     // Iterate through the command line arguments and update the resulting string of text.
@@ -631,12 +660,25 @@ public:
   /// @return The string of text that contains the help information of this collection of command
   /// line arguments.
   [[nodiscard]] ::std::string help() const {
+    return help(::std::numeric_limits<::std::size_t>::max());
+  }
+
+  /// @brief Prints the help information of this collection of command line arguments as a string of
+  /// text. The help information consists of this collection of command line arguments' title, usage
+  /// information, description, options information, and notes. Lines are wrapped.
+  /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+  /// than zero. The recommended value is 80. The actual line length may be longer if the string of
+  /// text contains very long words whose lengths exceed the desired line length.
+  /// @return The string of text that contains the help information of this collection of command
+  /// line arguments.
+  /// @throws std::invalid_argument if the desired line length is zero.
+  [[nodiscard]] ::std::string help(const ::std::size_t line_length) const {
+    validate_line_length(line_length);
     ::std::string result;
     if (configuration_.title.has_value() && !configuration_.title.value().empty()) {
-      result.append(
-          ::lector::wrap_and_left_align(configuration_.title.value(), maximum_line_length_));
+      result.append(::lector::wrap_and_left_align(configuration_.title.value(), line_length));
     }
-    const ::std::string usage_{::lector::wrap_and_left_align(usage(), maximum_line_length_)};
+    const ::std::string usage_{::lector::wrap_and_left_align(usage(), line_length)};
     if (!usage_.empty()) {
       if (!result.empty()) {
         result.push_back('\n');
@@ -650,10 +692,9 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(
-          ::lector::wrap_and_left_align(configuration_.description.value(), maximum_line_length_));
+      result.append(::lector::wrap_and_left_align(configuration_.description.value(), line_length));
     }
-    const ::std::string options_{options()};
+    const ::std::string options_{options(line_length)};
     if (!options_.empty()) {
       if (!result.empty()) {
         result.push_back('\n');
@@ -667,8 +708,7 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(
-          ::lector::wrap_and_left_align(configuration_.notes.value(), maximum_line_length_));
+      result.append(::lector::wrap_and_left_align(configuration_.notes.value(), line_length));
     }
     return result;
   }
@@ -679,6 +719,20 @@ public:
   /// @return The string of text that contains the execution of this collection of command line
   /// argument.
   [[nodiscard]] ::std::string execution() const {
+    return execution(::std::numeric_limits<::std::size_t>::max());
+  }
+
+  /// @brief Prints the execution of this collection of command line argument as a string of text.
+  /// The execution consists of the executable path followed by each argument's longest key and
+  /// corresponding parsed value, if any. Lines are wrapped.
+  /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+  /// than zero. The recommended value is 80. The actual line length may be longer if the string of
+  /// text contains very long words whose lengths exceed the desired line length.
+  /// @return The string of text that contains the execution of this collection of command line
+  /// argument.
+  /// @throws std::invalid_argument if the desired line length is zero.
+  [[nodiscard]] ::std::string execution(const ::std::size_t line_length) const {
+    validate_line_length(line_length);
     ::std::string printed_execution_arguments;
     ::std::apply(
         [&](const auto&... argument) {
@@ -694,13 +748,15 @@ public:
     if (printed_execution_arguments.empty()) {
       return executable_path_.string();
     }
-    return executable_path_.string() + " " + printed_execution_arguments;
+    return ::lector::wrap_and_left_align(
+        executable_path_.string() + " " + printed_execution_arguments, line_length);
   }
 
 private:
-  /// @brief Maximum length of a line when printing usage information, options information, or help
-  /// information as a string of text.
-  static constexpr ::std::size_t maximum_line_length_{80UL};
+  /// @brief Default length to use when wrapping lines when printing usage information, options
+  /// information, or help information as a string of text. The actual line length may be longer if
+  /// the string of text contains very long words whose lengths exceed the desired line length.
+  static constexpr ::std::size_t default_line_length_{80UL};
 
   /// @brief The best matching argument for a command line argument token during parsing. The best
   /// matching argument is the argument with the longest matching key, and if there are multiple
@@ -728,6 +784,16 @@ private:
     /// argument with the key "key_long".
     bool is_inline{false};
   };
+
+  /// @brief Validates that a specified line length is strictly greater than zero.
+  /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+  /// than zero.
+  /// @throws std::invalid_argument if the desired line length is zero.
+  static void validate_line_length(const ::std::size_t line_length) {
+    if (line_length <= static_cast<::std::size_t>(0UL)) {
+      throw ::std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+    }
+  }
 
   /// @brief Parses the executable path from argc and argv. Called by the lector::Arguments::parse
   /// method.

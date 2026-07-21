@@ -111,7 +111,7 @@
 <div class="ttc" id="aclasslector_1_1Argument_html_a98298aa6f5932b701d9f810f860946e9"><div class="ttname"><a href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">lector::Argument::execution</a></div><div class="ttdeci">::std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:264</div></div>
 <div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:468</div></div>
 <div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:393</div></div>
-</div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether usage information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
+</div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
 <p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.</p>
 <p>The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form <code>key value</code> or as inline key-value pairs of the form <code>key=value</code>. It can also handle keys that contain arbitrary characters.</p>
 <p><a class="el" href="index.html">(Back to Top)</a></p>
@@ -321,10 +321,8 @@
 <div class="line"> </div>
 <div class="line">Options:</div>
 <div class="line">-o &lt;path&gt;, --output_directory &lt;path&gt;  Output directory. Required.</div>
-<div class="line">-i &lt;number&gt;, --iterations &lt;number&gt;    Number of iterations. Optional. Default</div>
-<div class="line">                                      100.</div>
-<div class="line">-h, --help                            Display this help information and exit.</div>
-<div class="line">                                      Optional.</div>
+<div class="line">-i &lt;number&gt;, --iterations &lt;number&gt;    Number of iterations. Optional. Default 100.</div>
+<div class="line">-h, --help                            Display this help information and exit. Optional.</div>
 <div class="line"> </div>
 <div class="line">Additional notes about my application.</div>
 </div><!-- fragment --><p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>

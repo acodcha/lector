@@ -1559,11 +1559,17 @@ template&lt;typename EnumerationType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting vector of strings that contains one string per line. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1597,11 +1603,17 @@ template&lt;typename EnumerationType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to left-align and wrap. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting left-aligned and wrapped text. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

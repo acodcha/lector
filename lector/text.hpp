@@ -22,6 +22,8 @@
 #include <algorithm>
 #include <cctype>
 #include <cstddef>
+#include <limits>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -126,19 +128,25 @@ namespace lector {
 /// @brief Wraps a string of text to a line length and returns the result as a vector of strings
 /// that contains one string per line.
 /// @param[in] text The string of text to wrap.
-/// @param[in] line_length The desired line length to use when wrapping. The actual line length may
-/// be longer if the string of text contains very long words whose lengths exceed the desired line
-/// length.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. The actual line length may be longer if the string of text contains very long words
+/// whose lengths exceed the desired line length.
 /// @return The resulting vector of strings that contains one string per line.
+/// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline ::std::vector<::std::string> wrap(
     const ::std::string_view text, const ::std::size_t line_length) {
+  // Validate the specified maximum line length.
+  if (line_length <= static_cast<::std::size_t>(0UL)) {
+    throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+  }
+  // Check if the string of text is empty.
+  if (text.empty()) {
+    return {};
+  }
   // Adjust the specified maximum line length if needed, increasing it to the longest word length if
-  // it is greater than the specified maximum line length. A specified maximum line length of 0
-  // indicates that the line length is unlimited.
+  // it is greater than the specified maximum line length.
   const ::std::size_t maximum_line_length{
-    line_length == static_cast<::std::size_t>(0UL) ?
-        ::std::string::npos :
-        ::std::max(line_length, ::lector::longest_word_length(text))};
+    ::std::max(line_length, ::lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
   // distribution.
   ::std::vector<::std::string> result;
@@ -195,19 +203,25 @@ namespace lector {
 
 /// @brief Left-aligns and wraps a string of text to a line length.
 /// @param[in] text The string of text to left-align and wrap.
-/// @param[in] line_length The desired line length to use when wrapping. The actual line length may
-/// be longer if the string of text contains very long words whose lengths exceed the desired line
-/// length.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. The actual line length may be longer if the string of text contains very long words
+/// whose lengths exceed the desired line length.
 /// @return The resulting left-aligned and wrapped text.
+/// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline ::std::string wrap_and_left_align(
     const ::std::string_view text, const ::std::size_t line_length) {
+  // Validate the specified maximum line length.
+  if (line_length <= static_cast<::std::size_t>(0UL)) {
+    throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+  }
+  // Check if the string of text is empty.
+  if (text.empty()) {
+    return {};
+  }
   // Adjust the specified maximum line length if needed, increasing it to the longest word length if
-  // it is greater than the specified maximum line length. A specified maximum line length of 0
-  // indicates that the line length is unlimited.
+  // it is greater than the specified maximum line length.
   const ::std::size_t maximum_line_length{
-    line_length == static_cast<::std::size_t>(0UL) ?
-        ::std::string::npos :
-        ::std::max(line_length, ::lector::longest_word_length(text))};
+    ::std::max(line_length, ::lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
   // distribution.
   ::std::string result;
@@ -291,9 +305,7 @@ namespace lector {
     first_column_longest_line_length =
         ::std::max(first_column_longest_line_length, ::lector::code_points(line));
   }
-  // Determine the actual width of the first column. This automatically handles the case where the
-  // desired first column width is zero because in this case, the first column longest line length
-  // is necessarily greater than or equal to zero.
+  // Determine the actual width of the first column.
   const ::std::size_t first_column_actual_width{
     ::std::max(first_column_width, first_column_longest_line_length)};
   // Determine the total number of rows required.
@@ -320,7 +332,7 @@ namespace lector {
     // exhausted, skip this padding to avoid unnecessary trailing whitespace.
     if (row_index < second_column.size()) {
       const ::std::size_t first_cell_length{::lector::code_points(first_cell)};
-      const ::std::size_t padding{first_column_actual_width - first_cell_length + gutter_width};
+      const ::std::size_t padding{first_column_actual_width + gutter_width - first_cell_length};
       result.append(padding, ' ');
       result.append(second_column.at(row_index));
     }
