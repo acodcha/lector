@@ -331,13 +331,13 @@ Each `lector::Argument` object exposes a rich public interface. Commonly-used in
 - `lector::Argument::importance()` returns either `lector::Importance::Required` or `lector::Importance::Optional`, as appropriate for the argument.
 - `lector::Argument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
 - `lector::Argument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
-- `lector::Argument::parsed_or_default_value()` returns argument's parsed value if it exists, or its default value otherwise.
+- `lector::Argument::parsed_or_default_value()` returns the argument's parsed value if it exists, or its default value otherwise.
 
 [(Back to User Guide)](#3-user-guide)
 
 ### §3.2. User Guide: Command Line
 
-The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
+The Lector library enables you to flexibly run C++ applications from the command line and to conveniently display their usage and execution information. The following examples use the code from the [§1. Introduction](#1-introduction) section.
 
 A common use case is to define a `--help` command line option that uses the `lector::Arguments::help()` method to display the help information of the collection of command line arguments:
 
