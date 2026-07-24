@@ -89,6 +89,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a84bc57a2c9b835ad7711184dd02a9764" id="r_a84bc57a2c9b835ad7711184dd02a9764"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a84bc57a2c9b835ad7711184dd02a9764">~Arguments</a> () noexcept=default</td></tr>
 <tr class="memdesc:a84bc57a2c9b835ad7711184dd02a9764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. Destroys this collection of command line arguments.  <br /></td></tr>
 <tr class="separator:a84bc57a2c9b835ad7711184dd02a9764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49d1aa15b1c13c690b42ed856ed285af" id="r_a49d1aa15b1c13c690b42ed856ed285af"><td class="memItemLeft" align="right" valign="top"><a id="a49d1aa15b1c13c690b42ed856ed285af" name="a49d1aa15b1c13c690b42ed856ed285af"></a>
+const <a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>configuration</b> () const</td></tr>
+<tr class="separator:a49d1aa15b1c13c690b42ed856ed285af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3626b15a0a14c953385f7092dc06ad78" id="r_a3626b15a0a14c953385f7092dc06ad78"><td class="memItemLeft" align="right" valign="top">const std::filesystem::path &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a3626b15a0a14c953385f7092dc06ad78">executable_path</a> () const</td></tr>
 <tr class="memdesc:a3626b15a0a14c953385f7092dc06ad78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the executable path of this collection of command line arguments. If the command line arguments have not yet been parsed from argc and argv, this path is empty.  <br /></td></tr>
 <tr class="separator:a3626b15a0a14c953385f7092dc06ad78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,19 +118,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ada8ca672e43ada68ec21cf58857ca00e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator. Assigns this collection of command line argument by moving another one.  <br /></td></tr>
 <tr class="separator:ada8ca672e43ada68ec21cf58857ca00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23d8933b7c15472a645c1815f16a99bd" id="r_a23d8933b7c15472a645c1815f16a99bd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a23d8933b7c15472a645c1815f16a99bd">options</a> () const</td></tr>
-<tr class="memdesc:a23d8933b7c15472a645c1815f16a99bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
+<tr class="memdesc:a23d8933b7c15472a645c1815f16a99bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description.  <br /></td></tr>
 <tr class="separator:a23d8933b7c15472a645c1815f16a99bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe0bb3fe97252c72f6126c1efac2ec2d" id="r_afe0bb3fe97252c72f6126c1efac2ec2d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#afe0bb3fe97252c72f6126c1efac2ec2d">options</a> (const std::size_t line_length) const</td></tr>
-<tr class="memdesc:afe0bb3fe97252c72f6126c1efac2ec2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones. Lines are wrapped.  <br /></td></tr>
+<tr class="memdesc:afe0bb3fe97252c72f6126c1efac2ec2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Lines are wrapped.  <br /></td></tr>
 <tr class="separator:afe0bb3fe97252c72f6126c1efac2ec2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba7afe06f29efef5f7337fe93c3b1eba" id="r_aba7afe06f29efef5f7337fe93c3b1eba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba">parse</a> (const int argc, char *argv[])</td></tr>
 <tr class="memdesc:aba7afe06f29efef5f7337fe93c3b1eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses argc and argv to populate the parsed values of the command line arguments in this collection.  <br /></td></tr>
 <tr class="separator:aba7afe06f29efef5f7337fe93c3b1eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1209dcdea1615ecc085404f30870359" id="r_ac1209dcdea1615ecc085404f30870359"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ac1209dcdea1615ecc085404f30870359">usage</a> () const</td></tr>
-<tr class="memdesc:ac1209dcdea1615ecc085404f30870359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones.  <br /></td></tr>
+<tr class="memdesc:ac1209dcdea1615ecc085404f30870359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments.  <br /></td></tr>
 <tr class="separator:ac1209dcdea1615ecc085404f30870359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e6d3fb52acfe3eab582b1d519fbf2eb" id="r_a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a1e6d3fb52acfe3eab582b1d519fbf2eb">usage</a> (const std::size_t line_length) const</td></tr>
-<tr class="memdesc:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones. Lines are wrapped.  <br /></td></tr>
+<tr class="memdesc:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Lines are wrapped.  <br /></td></tr>
 <tr class="separator:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -557,7 +560,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones. </p>
+<p>Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. </p>
 <dl class="section return"><dt>Returns</dt><dd>The string of text that contains the options information of this collection of command line arguments. </dd></dl>
 
 </div>
@@ -580,7 +583,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Required command line arguments are printed first, followed by optional ones. Lines are wrapped. </p>
+<p>Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Lines are wrapped. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The recommended value is 80. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
@@ -659,7 +662,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones. </p>
+<p>Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. </p>
 <dl class="section return"><dt>Returns</dt><dd>The string of text that contains the usage information of this collection of command line arguments. </dd></dl>
 
 </div>
@@ -682,7 +685,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Required command line arguments are printed first, followed by optional ones. Lines are wrapped. </p>
+<p>Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Lines are wrapped. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The recommended value is 80. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
