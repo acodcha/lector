@@ -569,6 +569,10 @@ public:
     validate_all_required_arguments_have_parsed_values();
   }
 
+  [[nodiscard]] const lector::Configuration& configuration() const {
+    return configuration_;
+  }
+
   /// @brief Returns the executable path of this collection of command line arguments. If the
   /// command line arguments have not yet been parsed from argc and argv, this path is empty.
   /// @return The executable path of this collection of command line arguments.
@@ -587,8 +591,7 @@ public:
 
   /// @brief Prints the usage information of this collection of command line arguments as a string
   /// of text. The usage information consists of each argument's longest key and value type,
-  /// enclosed in square braces for optional command line arguments. Required command line arguments
-  /// are printed first, followed by optional ones.
+  /// enclosed in square braces for optional command line arguments.
   /// @return The string of text that contains the usage information of this collection of command
   /// line arguments.
   [[nodiscard]] std::string usage() const {
@@ -597,8 +600,7 @@ public:
 
   /// @brief Prints the usage information of this collection of command line arguments as a string
   /// of text. The usage information consists of each argument's longest key and value type,
-  /// enclosed in square braces for optional command line arguments. Required command line arguments
-  /// are printed first, followed by optional ones. Lines are wrapped.
+  /// enclosed in square braces for optional command line arguments. Lines are wrapped.
   /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
   /// than zero. The recommended value is 80. The actual line length may be longer if the string of
   /// text contains very long words whose lengths exceed the desired line length.
@@ -612,20 +614,8 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Required) {
-              result.push_back(' ');
-              result.append(argument.usage());
-            }
-          }());
-        },
-        arguments_);
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            if (argument.importance() == lector::Importance::Optional) {
-              result.push_back(' ');
-              result.append(argument.usage());
-            }
+            result.push_back(' ');
+            result.append(argument.usage());
           }());
         },
         arguments_);
@@ -634,8 +624,7 @@ public:
 
   /// @brief Prints the options information of this collection of command line argument as a string
   /// of text. The options information consists of the list of each command line argument's keys,
-  /// value type, and description. Required command line arguments are printed first, followed by
-  /// optional ones.
+  /// value type, and description.
   /// @return The string of text that contains the options information of this collection of command
   /// line arguments.
   [[nodiscard]] std::string options() const {
@@ -644,8 +633,7 @@ public:
 
   /// @brief Prints the options information of this collection of command line argument as a string
   /// of text. The options information consists of the list of each command line argument's keys,
-  /// value type, and description. Required command line arguments are printed first, followed by
-  /// optional ones. Lines are wrapped.
+  /// value type, and description. Lines are wrapped.
   /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
   /// than zero. The recommended value is 80. The actual line length may be longer if the string of
   /// text contains very long words whose lengths exceed the desired line length.
@@ -671,29 +659,12 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == lector::Importance::Required) {
-              result.append(lector::combine_and_left_align(
-                  argument.keys_with_value_type(), first_column_width, argument.description(),
-                  second_column_width));
-              ++argument_index;
-              if (argument_index < argument_count) {
-                result.push_back('\n');
-              }
-            }
-          }());
-        },
-        arguments_);
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            if (argument.importance() == lector::Importance::Optional) {
-              result.append(lector::combine_and_left_align(
-                  argument.keys_with_value_type(), first_column_width, argument.description(),
-                  second_column_width));
-              ++argument_index;
-              if (argument_index < argument_count) {
-                result.push_back('\n');
-              }
+            result.append(lector::combine_and_left_align(
+                argument.keys_with_value_type(), first_column_width, argument.description(),
+                second_column_width));
+            ++argument_index;
+            if (argument_index < argument_count) {
+              result.push_back('\n');
             }
           }());
         },

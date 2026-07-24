@@ -280,7 +280,7 @@
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Help, bool&gt;</a>{</div>
 <div class="line">    {<span class="stringliteral">&quot;-h&quot;</span>, <span class="stringliteral">&quot;--help&quot;</span>}, <span class="stringliteral">&quot;Display this help information and exit. Optional.&quot;</span>}</div>
 <div class="line">};</div>
-</div><!-- fragment --><p>Note: The <code><a class="el" href="structlector_1_1Configuration.html" title="Configuration of the help information of a collection of command line arguments.">lector::Configuration</a></code> data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of collection of command line arguments.</p>
+</div><!-- fragment --><p>Note: The <code><a class="el" href="structlector_1_1Configuration.html" title="Configuration of the help information of a collection of command line arguments.">lector::Configuration</a></code> data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of a collection of command line arguments.</p>
 <p>Supported argument types include:</p>
 <ul>
 <li>Boolean flags: <code>bool</code>.</li>
@@ -295,11 +295,7 @@
 <p>Once all arguments have been defined, the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection.">lector::Arguments::parse()</a></code> method can be used to parse <code>argc</code> and <code>argv</code>. For example:</p>
 <div class="fragment"><div class="line">arguments.parse(argc, argv);</div>
 </div><!-- fragment --><p>This populates all arguments with their parsed values and performs strict error checking. See the <a class="el" href="index.html#user_guide_error_checking">§3.5. User Guide: Error Checking</a> section for details.</p>
-<p>Help information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method. For example:</p>
-<div class="fragment"><div class="line">std::cout &lt;&lt; arguments.help() &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method. For example:</p>
-<div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.execution() &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
+<p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
 <div class="line">  arguments.get&lt;Label::OutputDirectory&gt;()};</div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>&amp; iterations{</div>
@@ -317,7 +313,11 @@
 §3.2. User Guide: Command Line</h2>
 <p>The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section.</p>
 <p>A common use case is to define a <code>--help</code> command line option that uses the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method to display the help information of the collection of command line arguments:</p>
-<div class="fragment"><div class="line">path/to/my_application --help</div>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span> (arguments.get&lt;Label::Help&gt;().parsed_or_default_value()) {</div>
+<div class="line">  std::cout &lt;&lt; arguments.help() &lt;&lt; std::endl;</div>
+<div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line">}</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application --help</div>
 </div><!-- fragment --><div class="fragment"><div class="line">My Application</div>
 <div class="line"> </div>
 <div class="line">Usage:</div>
@@ -332,8 +332,10 @@
 <div class="line"> </div>
 <div class="line">Additional notes about my application.</div>
 </div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::help(80)</code> would format its output to 80-character lines.</p>
-<p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
-<div class="fragment"><div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+<p>The <code><a class="el" href="classlector_1_1Arguments.html#ac1209dcdea1615ecc085404f30870359" title="Prints the usage information of this collection of command line arguments as a string of text....">lector::Arguments::usage()</a></code> and <code><a class="el" href="classlector_1_1Arguments.html#a23d8933b7c15472a645c1815f16a99bd" title="Prints the options information of this collection of command line argument as a string of text....">lector::Arguments::options()</a></code> methods are similar to the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method, but only display the usage and options portions of the full help information, respectively. They can also take optional line lengths to format their output.</p>
+<p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
+<div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.execution() &lt;&lt; std::endl;</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
 <div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 <div class="line">The output directory is: /some/path</div>

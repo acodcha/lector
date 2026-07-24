@@ -289,7 +289,7 @@ lector::Arguments arguments{
 };
 ```
 
-Note: The `lector::Configuration` data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of collection of command line arguments.
+Note: The `lector::Configuration` data structure is not a command line argument; it is an optional data structure that lists an optional title, description, and miscellaneous notes to be included when printing the help information of a collection of command line arguments.
 
 Supported argument types include:
 
@@ -309,18 +309,6 @@ arguments.parse(argc, argv);
 ```
 
 This populates all arguments with their parsed values and performs strict error checking. See the [§3.5. Error Checking](#35-user-guide-error-checking) section for details.
-
-Help information can be obtained via the `lector::Arguments::help()` method. For example:
-
-```cpp
-std::cout << arguments.help() << std::endl;
-```
-
-Execution information can be obtained via the  `lector::Arguments::execution()` method. For example:
-
-```cpp
-std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
-```
 
 Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 
@@ -353,6 +341,13 @@ The Lector library allows you to flexibly run your program from the command line
 
 A common use case is to define a `--help` command line option that uses the `lector::Arguments::help()` method to display the help information of the collection of command line arguments:
 
+```cpp
+if (arguments.get<Label::Help>().parsed_or_default_value()) {
+  std::cout << arguments.help() << std::endl;
+  return EXIT_SUCCESS;
+}
+```
+
 ```bash
 path/to/my_application --help
 ```
@@ -375,7 +370,13 @@ Additional notes about my application.
 
 The `lector::Arguments::help()` method can take an optional line length to format its output. For example, `lector::Arguments::help(80)` would format its output to 80-character lines.
 
-Display execution information via the  `lector::Arguments::execution()` method:
+The `lector::Arguments::usage()` and `lector::Arguments::options()` methods are similar to the `lector::Arguments::help()` method, but only display the usage and options portions of the full help information, respectively. They can also take optional line lengths to format their output.
+
+Execution information can be obtained via the  `lector::Arguments::execution()` method:
+
+```cpp
+std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
+```
 
 ```bash
 path/to/my_application --output_directory /some/path --iterations 200

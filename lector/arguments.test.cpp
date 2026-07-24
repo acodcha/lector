@@ -3663,6 +3663,9 @@ TEST(Lector, ReadmeSection1Basic) {
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
     "executable --output_directory <path> [--iterations <number>] [--help]"};
+  EXPECT_EQ(arguments.configuration().title, "My Application");
+  EXPECT_EQ(arguments.configuration().description, "Description of my application.");
+  EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   std::ostringstream expected_options;
   expected_options
@@ -3716,6 +3719,9 @@ TEST(Lector, ReadmeSection1Help) {
   EXPECT_TRUE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
     "executable --output_directory <path> [--iterations <number>] [--help]"};
+  EXPECT_EQ(arguments.configuration().title, "My Application");
+  EXPECT_EQ(arguments.configuration().description, "Description of my application.");
+  EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   std::ostringstream expected_options;
   expected_options
@@ -3754,6 +3760,9 @@ TEST(Lector, ReadmeSection32) {
     "/path/to/executable", "__out_dir__", "/path/to/directory", "=i=", "200"};
   arguments.parse(command.argc(), command.argv());
   const std::string expected_usage{"executable __out_dir__ <path> [==iterations== <number>]"};
+  EXPECT_EQ(arguments.configuration().title, "My Application");
+  EXPECT_EQ(arguments.configuration().description, "Description of my application.");
+  EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   std::ostringstream expected_options;
   expected_options
