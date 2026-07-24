@@ -35,7 +35,7 @@ namespace lector {
 /// UTF-8 code points is a useful approximation of the number of graphemes in the string.
 /// @param[in] text The string of text whose UTF-8 code points are to be counted.
 /// @return The number of UTF-8 code points in the string of text.
-[[nodiscard]] inline ::std::size_t code_points(const ::std::string_view text) {
+[[nodiscard]] inline std::size_t code_points(const std::string_view text) {
   // This function uses an optimized trick for counting UTF-8 code points. It works because of how
   // UTF-8 is designed at the binary level:
   // - The ASCII characters all use 1 byte and all start with 0. They are of the form 0xxxxxxx.
@@ -52,7 +52,7 @@ namespace lector {
   // number of valid code points, treating ASCII characters and UTF-8 multi-byte characters as
   // exactly one unit of length, which is a good approximation of the number of graphemes in the
   // string.
-  ::std::size_t count{0UL};
+  std::size_t count{0UL};
   for (const char character : text) {
     // Cast to an unsigned character to avoid undefined behavior with bitwise operations on signed
     // characters. 0xC0 is 11000000 in binary. 0x80 is 10000000 in binary.
@@ -67,25 +67,25 @@ namespace lector {
 /// string of text, with newline characters inserted between the lines, and the lines left-aligned.
 /// @param[in] lines Vector of strings to be joined and left-aligned.
 /// @return The joined and left-aligned string of text.
-[[nodiscard]] inline ::std::string join_and_left_align(const ::std::vector<::std::string>& lines) {
+[[nodiscard]] inline std::string join_and_left_align(const std::vector<std::string>& lines) {
   // Handle the empty case immediately to prevent underflow later.
   if (lines.empty()) {
-    return ::std::string{};
+    return std::string{};
   }
   // Calculate the exact required capacity.
-  ::std::size_t total_length{0UL};
-  for (const ::std::string& line : lines) {
+  std::size_t total_length{0UL};
+  for (const std::string& line : lines) {
     total_length += line.length();
   }
   // Add space for the newline separators (one less than the total number of lines).
-  total_length += lines.size() - static_cast<::std::size_t>(1UL);
+  total_length += lines.size() - static_cast<std::size_t>(1UL);
   // Create and allocate the result.
-  ::std::string result;
+  std::string result;
   result.reserve(total_length);
   // Append the first line.
   result.append(lines.front());
   // Append subsequent lines prefixed by a newline.
-  for (::std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
+  for (std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
     result.push_back('\n');
     result.append(lines.at(line_index));
   }
@@ -96,12 +96,12 @@ namespace lector {
 /// word is measured by its number of UTF-8 code points.
 /// @param[in] text The string of text whose longest word length is to be computed.
 /// @return The length of the longest word in the string of text.
-[[nodiscard]] inline ::std::size_t longest_word_length(const ::std::string_view text) {
-  ::std::size_t longest_word_length{0UL};
-  ::std::size_t index{0UL};
+[[nodiscard]] inline std::size_t longest_word_length(const std::string_view text) {
+  std::size_t longest_word_length{0UL};
+  std::size_t index{0UL};
   while (index < text.length()) {
     // Skip over any whitespaces.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) != 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) != 0) {
       ++index;
     }
     // Return if the end of the string has been reached after skipping whitespaces.
@@ -109,18 +109,18 @@ namespace lector {
       break;
     }
     // The index now points to the start of the current word.
-    const ::std::size_t current_word_start{index};
+    const std::size_t current_word_start{index};
     // Find the end of the current word.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) == 0) {
       ++index;
     }
     // Obtain the current word.
-    const ::std::string_view current_word{
+    const std::string_view current_word{
       text.substr(current_word_start, index - current_word_start)};
     // Compute the length of the current word.
-    const ::std::size_t current_word_length{::lector::code_points(current_word)};
+    const std::size_t current_word_length{lector::code_points(current_word)};
     // Update the longest word length.
-    longest_word_length = ::std::max(longest_word_length, current_word_length);
+    longest_word_length = std::max(longest_word_length, current_word_length);
   }
   return longest_word_length;
 }
@@ -133,10 +133,10 @@ namespace lector {
 /// whose lengths exceed the desired line length.
 /// @return The resulting vector of strings that contains one string per line.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline ::std::vector<::std::string> wrap(
-    const ::std::string_view text, const ::std::size_t line_length) {
+[[nodiscard]] inline std::vector<std::string> wrap(
+    const std::string_view text, const std::size_t line_length) {
   // Validate the specified maximum line length.
-  if (line_length <= static_cast<::std::size_t>(0UL)) {
+  if (line_length <= static_cast<std::size_t>(0UL)) {
     throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
   }
   // Check if the string of text is empty.
@@ -145,21 +145,20 @@ namespace lector {
   }
   // Adjust the specified maximum line length if needed, increasing it to the longest word length if
   // it is greater than the specified maximum line length.
-  const ::std::size_t maximum_line_length{
-    ::std::max(line_length, ::lector::longest_word_length(text))};
+  const std::size_t maximum_line_length{std::max(line_length, lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
   // distribution.
-  ::std::vector<::std::string> result;
-  result.reserve((text.length() / maximum_line_length) + static_cast<::std::size_t>(1UL));
+  std::vector<std::string> result;
+  result.reserve((text.length() / maximum_line_length) + static_cast<std::size_t>(1UL));
   // Iterate through the string.
-  ::std::size_t current_line_length{0UL};
-  ::std::size_t index{0UL};
+  std::size_t current_line_length{0UL};
+  std::size_t index{0UL};
   bool is_first_word{true};
   while (index < text.length()) {
     // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
     // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
     // character values in std::isspace.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) != 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) != 0) {
       ++index;
     }
     // Return if the end of the string has been reached after skipping whitespaces.
@@ -167,14 +166,14 @@ namespace lector {
       break;
     }
     // The index now points to the start of the current word.
-    const ::std::size_t word_start_index{index};
+    const std::size_t word_start_index{index};
     // Find the end of the current word.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) == 0) {
       ++index;
     }
     // Obtain the current word.
-    const ::std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
-    const ::std::size_t current_word_length{::lector::code_points(current_word)};
+    const std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
+    const std::size_t current_word_length{lector::code_points(current_word)};
     // Place the word in the result vector.
     if (is_first_word) {
       // In this case, this is the first word in the result string, so it can be safely added
@@ -190,7 +189,7 @@ namespace lector {
         // via result.back() and append to it.
         result.back().push_back(' ');
         result.back().append(current_word);
-        current_line_length += static_cast<::std::size_t>(1UL) + current_word_length;
+        current_line_length += static_cast<std::size_t>(1UL) + current_word_length;
       } else {
         // In this case, the word doesn't fit on this line, so push a new line into the vector.
         result.emplace_back(current_word);
@@ -208,10 +207,10 @@ namespace lector {
 /// whose lengths exceed the desired line length.
 /// @return The resulting left-aligned and wrapped text.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline ::std::string wrap_and_left_align(
-    const ::std::string_view text, const ::std::size_t line_length) {
+[[nodiscard]] inline std::string wrap_and_left_align(
+    const std::string_view text, const std::size_t line_length) {
   // Validate the specified maximum line length.
-  if (line_length <= static_cast<::std::size_t>(0UL)) {
+  if (line_length <= static_cast<std::size_t>(0UL)) {
     throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
   }
   // Check if the string of text is empty.
@@ -220,22 +219,21 @@ namespace lector {
   }
   // Adjust the specified maximum line length if needed, increasing it to the longest word length if
   // it is greater than the specified maximum line length.
-  const ::std::size_t maximum_line_length{
-    ::std::max(line_length, ::lector::longest_word_length(text))};
+  const std::size_t maximum_line_length{std::max(line_length, lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
   // distribution.
-  ::std::string result;
+  std::string result;
   result.reserve(
-      text.length() + (text.length() / maximum_line_length) + static_cast<::std::size_t>(1UL));
+      text.length() + (text.length() / maximum_line_length) + static_cast<std::size_t>(1UL));
   // Iterate through the string.
-  ::std::size_t current_line_length{0UL};
-  ::std::size_t index{0UL};
+  std::size_t current_line_length{0UL};
+  std::size_t index{0UL};
   bool is_first_word{true};
   while (index < text.length()) {
     // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
     // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
     // character values in std::isspace.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) != 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) != 0) {
       ++index;
     }
     // Return if the end of the string has been reached after skipping whitespaces.
@@ -243,14 +241,14 @@ namespace lector {
       break;
     }
     // The index now points to the start of the current word.
-    const ::std::size_t word_start_index{index};
+    const std::size_t word_start_index{index};
     // Find the end of the current word.
-    while (index < text.length() && ::std::isspace(static_cast<unsigned char>(text[index])) == 0) {
+    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) == 0) {
       ++index;
     }
     // Obtain the current word.
-    const ::std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
-    const ::std::size_t current_word_length{::lector::code_points(current_word)};
+    const std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
+    const std::size_t current_word_length{lector::code_points(current_word)};
     // Place the word in the result string.
     if (is_first_word) {
       // In this case, this is the first word in the result string, so it can be safely added
@@ -265,7 +263,7 @@ namespace lector {
         // In this case, the word can be safely added to the current line.
         result.push_back(' ');
         result.append(current_word);
-        current_line_length += static_cast<::std::size_t>(1UL) + current_word_length;
+        current_line_length += static_cast<std::size_t>(1UL) + current_word_length;
       } else {
         // In this case, the word doesn't fit on this line, so drop down to the next line.
         result.push_back('\n');
@@ -289,50 +287,49 @@ namespace lector {
 /// larger if the string of text contains very long words whose lengths exceed the desired column
 /// width.
 /// @return The vector of strings that contains the combined text.
-[[nodiscard]] inline ::std::string combine_and_left_align(
-    const ::std::string_view first_column_text, const ::std::size_t first_column_width,
-    const ::std::string_view second_column_text, const ::std::size_t second_column_width) {
+[[nodiscard]] inline std::string combine_and_left_align(
+    const std::string_view first_column_text, const std::size_t first_column_width,
+    const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a minimum gutter width of two spaces.
-  constexpr ::std::size_t gutter_width{2UL};
+  constexpr std::size_t gutter_width{2UL};
   // Wrap and split both columns.
-  const ::std::vector<::std::string> first_column{
-    ::lector::wrap(first_column_text, first_column_width)};
-  const ::std::vector<::std::string> second_column{
-    ::lector::wrap(second_column_text, second_column_width)};
+  const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};
+  const std::vector<std::string> second_column{
+    lector::wrap(second_column_text, second_column_width)};
   // Find the length of the longest line in the first column.
-  ::std::size_t first_column_longest_line_length{0UL};
-  for (const ::std::string& line : first_column) {
+  std::size_t first_column_longest_line_length{0UL};
+  for (const std::string& line : first_column) {
     first_column_longest_line_length =
-        ::std::max(first_column_longest_line_length, ::lector::code_points(line));
+        std::max(first_column_longest_line_length, lector::code_points(line));
   }
   // Determine the actual width of the first column.
-  const ::std::size_t first_column_actual_width{
-    ::std::max(first_column_width, first_column_longest_line_length)};
+  const std::size_t first_column_actual_width{
+    std::max(first_column_width, first_column_longest_line_length)};
   // Determine the total number of rows required.
-  const ::std::size_t rows{::std::max(first_column.size(), second_column.size())};
+  const std::size_t rows{std::max(first_column.size(), second_column.size())};
   // Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of
   // both original input strings, plus the maximum possible padding spaces and newlines per row.
-  ::std::string result;
+  std::string result;
   result.reserve(
       first_column_text.length() + second_column_text.length()
-      + (rows * (first_column_actual_width + gutter_width + static_cast<::std::size_t>(1UL))));
+      + (rows * (first_column_actual_width + gutter_width + static_cast<std::size_t>(1UL))));
   // Combine the rows line by line.
-  for (::std::size_t row_index{0UL}; row_index < rows; ++row_index) {
+  for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
     // Append a newline character for every row after the first to separate them without leaving a
     // trailing newline at the very end of the string.
-    if (row_index > static_cast<::std::size_t>(0UL)) {
+    if (row_index > static_cast<std::size_t>(0UL)) {
       result.push_back('\n');
     }
     // Grab the string for column 1 if it exists on this row; otherwise, use an empty string.
-    const ::std::string_view first_cell{
-      row_index < first_column.size() ? ::std::string_view{first_column.at(row_index)} :
-                                        ::std::string_view{}};
+    const std::string_view first_cell{
+      row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
+                                        std::string_view{}};
     result.append(first_cell);
     // If column 2 has text on this row, pad column 1 and append column 2. Otherwise, if column 2 is
     // exhausted, skip this padding to avoid unnecessary trailing whitespace.
     if (row_index < second_column.size()) {
-      const ::std::size_t first_cell_length{::lector::code_points(first_cell)};
-      const ::std::size_t padding{first_column_actual_width + gutter_width - first_cell_length};
+      const std::size_t first_cell_length{lector::code_points(first_cell)};
+      const std::size_t padding{first_column_actual_width + gutter_width - first_cell_length};
       result.append(padding, ' ');
       result.append(second_column.at(row_index));
     }
