@@ -44,19 +44,64 @@
 /// @brief The Lector library's namespace.
 namespace lector {
 
+/// @brief Form of a command line argument.
+enum class Form : std::int8_t {
+  /// @brief Unknown, unspecified, or invalid command line argument form.
+  Unknown = 0,
+
+  /// @brief The command line argument is a positional argument; it does not define any keys and
+  /// must be specified in a specific order on the command line.
+  Positional = 1,
+
+  /// @brief The command line argument is a named argument; it defines one or more keys and is
+  /// specified on the command line by one of its keys. Named arguments can be specified in any
+  /// order on the command line.
+  Named = 2,
+};
+
+/// @brief Specialization of the lector::Names constant for the lector::Form enumeration.
+template <>
+inline constexpr std::array<lector::Name<lector::Form>, 3> Names<lector::Form>{
+  {
+   {lector::Form::Unknown, "Unknown"},
+   {lector::Form::Positional, "Positional"},
+   {lector::Form::Named, "Named"},
+   }
+};
+
+/// @brief Specialization of the lector::Spellings constant for the lector::Form enumeration.
+template <>
+inline constexpr std::array<lector::Spelling<lector::Form>, 9> Spellings<lector::Form>{
+  {
+   {"Unknown", lector::Form::Unknown},
+   {"Positional", lector::Form::Positional},
+   {"Named", lector::Form::Named},
+   {"unknown", lector::Form::Unknown},
+   {"positional", lector::Form::Positional},
+   {"named", lector::Form::Named},
+   {"UNKNOWN", lector::Form::Unknown},
+   {"POSITIONAL", lector::Form::Positional},
+   {"NAMED", lector::Form::Named},
+   }
+};
+
 /// @brief Importance of a command line argument.
 enum class Importance : std::int8_t {
+  /// @brief Unknown, unspecified, or invalid command line argument importance.
+  Unknown = 0,
+
   /// @brief The command line argument is optional; it may or may not be provided by the user.
-  Optional = 0,
+  Optional = 1,
 
   /// @brief The command line argument is required; it must be provided by the user.
-  Required = 1,
+  Required = 2,
 };
 
 /// @brief Specialization of the lector::Names constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<lector::Name<lector::Importance>, 2> Names<lector::Importance>{
+inline constexpr std::array<lector::Name<lector::Importance>, 3> Names<lector::Importance>{
   {
+   {lector::Importance::Unknown, "Unknown"},
    {lector::Importance::Optional, "Optional"},
    {lector::Importance::Required, "Required"},
    }
@@ -64,12 +109,15 @@ inline constexpr std::array<lector::Name<lector::Importance>, 2> Names<lector::I
 
 /// @brief Specialization of the lector::Spellings constant for the lector::Importance enumeration.
 template <>
-inline constexpr std::array<lector::Spelling<lector::Importance>, 6> Spellings<lector::Importance>{
+inline constexpr std::array<lector::Spelling<lector::Importance>, 9> Spellings<lector::Importance>{
   {
+   {"Unknown", lector::Importance::Unknown},
    {"Optional", lector::Importance::Optional},
    {"Required", lector::Importance::Required},
+   {"unknown", lector::Importance::Unknown},
    {"optional", lector::Importance::Optional},
    {"required", lector::Importance::Required},
+   {"UNKNOWN", lector::Importance::Unknown},
    {"OPTIONAL", lector::Importance::Optional},
    {"REQUIRED", lector::Importance::Required},
    }

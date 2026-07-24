@@ -3416,6 +3416,223 @@ TEST(Lector, ArgumentValidate) {
   EXPECT_ANY_THROW(test::create_invalid_boolean_argument_with_a_default_value());
 }
 
+TEST(Lector, FormParseEnumeration) {
+  static_assert(lector::parse_enumeration<lector::Form>("") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Form>("Hello, world!") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Form>("UnKnOwN") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Form>("PoSiTiOnAl") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Form>("NaMeD") == std::nullopt);
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("POSITIONAL")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("Positional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{
+      lector::parse_enumeration<lector::Form>("positional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{lector::parse_enumeration<lector::Form>("NAMED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{lector::parse_enumeration<lector::Form>("Named")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+  {
+    constexpr std::optional<lector::Form> parsed{lector::parse_enumeration<lector::Form>("named")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+}
+
+TEST(Lector, FormParseGeneral) {
+  EXPECT_EQ(lector::parse<lector::Form>(""), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Form>("Hello, world!"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Form>("UnKnOwN"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Form>("PoSiTiOnAl"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Form>("NaMeD"), std::nullopt);
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Unknown);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("POSITIONAL")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("Positional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("positional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Positional);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("NAMED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("Named")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+  {
+    const std::optional<lector::Form> parsed{lector::parse<lector::Form>("named")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Form::Named);
+  }
+}
+
+TEST(Lector, FormPrintEnumeration) {
+  EXPECT_EQ(lector::print_enumeration<lector::Form>(lector::Form::Unknown), "Unknown");
+  EXPECT_EQ(lector::print_enumeration<lector::Form>(lector::Form::Positional), "Positional");
+  EXPECT_EQ(lector::print_enumeration<lector::Form>(lector::Form::Named), "Named");
+}
+
+TEST(Lector, FormPrintGeneral) {
+  EXPECT_EQ(lector::print<lector::Form>(lector::Form::Unknown), "Unknown");
+  EXPECT_EQ(lector::print<lector::Form>(lector::Form::Positional), "Positional");
+  EXPECT_EQ(lector::print<lector::Form>(lector::Form::Named), "Named");
+}
+
+TEST(Lector, ImportanceParseEnumeration) {
+  static_assert(lector::parse_enumeration<lector::Importance>("") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Importance>("Hello, world!") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Importance>("UnKnOwN") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Importance>("OpTiOnAl") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Importance>("ReQuIrEd") == std::nullopt);
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("OPTIONAL")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("Optional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("optional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("REQUIRED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("Required")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+  {
+    constexpr std::optional<lector::Importance> parsed{
+      lector::parse_enumeration<lector::Importance>("required")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+}
+
+TEST(Lector, ImportanceParseGeneral) {
+  EXPECT_EQ(lector::parse<lector::Importance>(""), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Importance>("Hello, world!"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Importance>("UnKnOwN"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Importance>("OpTiOnAl"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Importance>("ReQuIrEd"), std::nullopt);
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Unknown);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("OPTIONAL")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("Optional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("optional")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Optional);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("REQUIRED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("Required")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+  {
+    const std::optional<lector::Importance> parsed{lector::parse<lector::Importance>("required")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Importance::Required);
+  }
+}
+
+TEST(Lector, ImportancePrintEnumeration) {
+  EXPECT_EQ(lector::print_enumeration<lector::Importance>(lector::Importance::Unknown), "Unknown");
+  EXPECT_EQ(
+      lector::print_enumeration<lector::Importance>(lector::Importance::Optional), "Optional");
+  EXPECT_EQ(
+      lector::print_enumeration<lector::Importance>(lector::Importance::Required), "Required");
+}
+
+TEST(Lector, ImportancePrintGeneral) {
+  EXPECT_EQ(lector::print<lector::Importance>(lector::Importance::Unknown), "Unknown");
+  EXPECT_EQ(lector::print<lector::Importance>(lector::Importance::Optional), "Optional");
+  EXPECT_EQ(lector::print<lector::Importance>(lector::Importance::Required), "Required");
+}
+
 TEST(Lector, ReadmeSection1Basic) {
   lector::Arguments arguments{
     lector::Configuration{{"My Application"},
