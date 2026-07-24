@@ -88,208 +88,208 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait used to extract a command line argument from a collection of command line arguments, using only its Label. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, ::lector::Argument&lt; Label, Type &gt;, OtherArgumentTypes... &gt;</b></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, lector::Argument&lt; Label, Type &gt;, OtherArgumentTypes... &gt;</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait specialization used to extract a command line argument from a collection of command line arguments, using its Label, its type, and the types of the remaining command line arguments in the collection. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, ::lector::Argument&lt; OtherLabel, OtherType &gt;, RemainingArgumentTypes... &gt;</b></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, lector::Argument&lt; OtherLabel, OtherType &gt;, RemainingArgumentTypes... &gt;</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait specialization used to extract a command line argument from a collection of command line arguments, using its Label and the types of the remaining command line arguments in the collection. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a77e376256ed001a26a13a29ce24ae24e" id="r_a77e376256ed001a26a13a29ce24ae24e"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:a77e376256ed001a26a13a29ce24ae24e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a77e376256ed001a26a13a29ce24ae24e">Name</a> = ::std::pair&lt; Type, ::std::string_view &gt;</td></tr>
-<tr class="memdesc:a77e376256ed001a26a13a29ce24ae24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The canonical printed name for a value of a specified type.  <br /></td></tr>
-<tr class="separator:a77e376256ed001a26a13a29ce24ae24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab068269df97785985a43c25c4113da58" id="r_ab068269df97785985a43c25c4113da58"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:ab068269df97785985a43c25c4113da58"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab068269df97785985a43c25c4113da58">Spelling</a> = ::std::pair&lt;::std::string_view, Type &gt;</td></tr>
-<tr class="memdesc:ab068269df97785985a43c25c4113da58"><td class="mdescLeft">&#160;</td><td class="mdescRight">A possible spelling for a value of a specified type.  <br /></td></tr>
-<tr class="separator:ab068269df97785985a43c25c4113da58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b08d941e7c891a747eb7677103f9075" id="r_a6b08d941e7c891a747eb7677103f9075"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a6b08d941e7c891a747eb7677103f9075"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a6b08d941e7c891a747eb7677103f9075">Name</a> = std::pair&lt; Type, std::string_view &gt;</td></tr>
+<tr class="memdesc:a6b08d941e7c891a747eb7677103f9075"><td class="mdescLeft">&#160;</td><td class="mdescRight">The canonical printed name for a value of a specified type.  <br /></td></tr>
+<tr class="separator:a6b08d941e7c891a747eb7677103f9075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a755f5c78ba0732b13de9eb82234026af" id="r_a755f5c78ba0732b13de9eb82234026af"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a755f5c78ba0732b13de9eb82234026af"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a755f5c78ba0732b13de9eb82234026af">Spelling</a> = std::pair&lt; std::string_view, Type &gt;</td></tr>
+<tr class="memdesc:a755f5c78ba0732b13de9eb82234026af"><td class="mdescLeft">&#160;</td><td class="mdescRight">A possible spelling for a value of a specified type.  <br /></td></tr>
+<tr class="separator:a755f5c78ba0732b13de9eb82234026af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1ed1a054cc4dc6aa8e36ef896dc3f2a7" id="r_a1ed1a054cc4dc6aa8e36ef896dc3f2a7"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7">Importance</a> : ::std::int8_t { <br />
-&#160;&#160;<a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7aebb061953c0454b2c8ee7b0ac615ebcd">Optional</a> = 0
+<tr class="memitem:a8a84b06fbb1b1f83f4178c59c22ece65" id="r_a8a84b06fbb1b1f83f4178c59c22ece65"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">Importance</a> : std::int8_t { <br />
+&#160;&#160;<a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65aebb061953c0454b2c8ee7b0ac615ebcd">Optional</a> = 0
 , <br />
-&#160;&#160;<a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7ab651efdb98a5d6bd2b3935d0c3f4a5e2">Required</a> = 1
+&#160;&#160;<a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65ab651efdb98a5d6bd2b3935d0c3f4a5e2">Required</a> = 1
 <br />
  }</td></tr>
-<tr class="memdesc:a1ed1a054cc4dc6aa8e36ef896dc3f2a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of a command line argument.  <a href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7">More...</a><br /></td></tr>
-<tr class="separator:a1ed1a054cc4dc6aa8e36ef896dc3f2a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a8a84b06fbb1b1f83f4178c59c22ece65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of a command line argument.  <a href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">More...</a><br /></td></tr>
+<tr class="separator:a8a84b06fbb1b1f83f4178c59c22ece65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aabc55ab765774f566e0a4866f2120319" id="r_aabc55ab765774f566e0a4866f2120319"><td class="memItemLeft" align="right" valign="top">::std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aabc55ab765774f566e0a4866f2120319">code_points</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:aabc55ab765774f566e0a4866f2120319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string.  <br /></td></tr>
-<tr class="separator:aabc55ab765774f566e0a4866f2120319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaccaac5a08903ce83e0c2852c275d3eb" id="r_aaccaac5a08903ce83e0c2852c275d3eb"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aaccaac5a08903ce83e0c2852c275d3eb">combine_and_left_align</a> (const ::std::string_view first_column_text, const ::std::size_t first_column_width, const ::std::string_view second_column_text, const ::std::size_t second_column_width)</td></tr>
-<tr class="memdesc:aaccaac5a08903ce83e0c2852c275d3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
-<tr class="separator:aaccaac5a08903ce83e0c2852c275d3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeba0dd2dc5cb33bc3a901894626c7767" id="r_aeba0dd2dc5cb33bc3a901894626c7767"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aeba0dd2dc5cb33bc3a901894626c7767">join_and_left_align</a> (const ::std::vector&lt;::std::string &gt; &amp;lines)</td></tr>
-<tr class="memdesc:aeba0dd2dc5cb33bc3a901894626c7767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
-<tr class="separator:aeba0dd2dc5cb33bc3a901894626c7767"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4423d990e26085a622fa3398043ad24" id="r_af4423d990e26085a622fa3398043ad24"><td class="memItemLeft" align="right" valign="top">::std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af4423d990e26085a622fa3398043ad24">longest_word_length</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:af4423d990e26085a622fa3398043ad24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
-<tr class="separator:af4423d990e26085a622fa3398043ad24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88fd78bdabda7347f448eaa0f1d816e8" id="r_a88fd78bdabda7347f448eaa0f1d816e8"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:a88fd78bdabda7347f448eaa0f1d816e8"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; Type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8">parse</a> (::std::string_view text)</td></tr>
-<tr class="memdesc:a88fd78bdabda7347f448eaa0f1d816e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type.  <br /></td></tr>
-<tr class="separator:a88fd78bdabda7347f448eaa0f1d816e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ed41ff235cbfb383e6833a56326e295" id="r_a7ed41ff235cbfb383e6833a56326e295"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a7ed41ff235cbfb383e6833a56326e295"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; bool &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7ed41ff235cbfb383e6833a56326e295">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a7ed41ff235cbfb383e6833a56326e295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a boolean value. For example, the string of text "true" returns the boolean value true.  <br /></td></tr>
-<tr class="separator:a7ed41ff235cbfb383e6833a56326e295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb0edafaa0208fd7e97e7894b4741105" id="r_aeb0edafaa0208fd7e97e7894b4741105"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:aeb0edafaa0208fd7e97e7894b4741105"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::uint8_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#aeb0edafaa0208fd7e97e7894b4741105">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:aeb0edafaa0208fd7e97e7894b4741105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an 8-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:aeb0edafaa0208fd7e97e7894b4741105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5109662134b115a9448fab581aaf263" id="r_ab5109662134b115a9448fab581aaf263"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ab5109662134b115a9448fab581aaf263"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::uint16_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab5109662134b115a9448fab581aaf263">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:ab5109662134b115a9448fab581aaf263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 16-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:ab5109662134b115a9448fab581aaf263"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee8262f41a6bb3a2338dd6341c976b22" id="r_aee8262f41a6bb3a2338dd6341c976b22"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:aee8262f41a6bb3a2338dd6341c976b22"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::uint32_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#aee8262f41a6bb3a2338dd6341c976b22">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:aee8262f41a6bb3a2338dd6341c976b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 32-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:aee8262f41a6bb3a2338dd6341c976b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accbc06ab374e1be6c836168aaf436e19" id="r_accbc06ab374e1be6c836168aaf436e19"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:accbc06ab374e1be6c836168aaf436e19"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::uint64_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#accbc06ab374e1be6c836168aaf436e19">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:accbc06ab374e1be6c836168aaf436e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 64-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:accbc06ab374e1be6c836168aaf436e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace53e15d4e2116cc0edf4dd3d1c509f9" id="r_ace53e15d4e2116cc0edf4dd3d1c509f9"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ace53e15d4e2116cc0edf4dd3d1c509f9"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::int8_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ace53e15d4e2116cc0edf4dd3d1c509f9">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:ace53e15d4e2116cc0edf4dd3d1c509f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an 8-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:ace53e15d4e2116cc0edf4dd3d1c509f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ab427e7bd52cbd5a94c58de1cd4b5af" id="r_a1ab427e7bd52cbd5a94c58de1cd4b5af"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a1ab427e7bd52cbd5a94c58de1cd4b5af"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::int16_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1ab427e7bd52cbd5a94c58de1cd4b5af">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a1ab427e7bd52cbd5a94c58de1cd4b5af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 16-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:a1ab427e7bd52cbd5a94c58de1cd4b5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21cfa6f2d69af56edb09563563ad8fdd" id="r_a21cfa6f2d69af56edb09563563ad8fdd"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a21cfa6f2d69af56edb09563563ad8fdd"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::int32_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a21cfa6f2d69af56edb09563563ad8fdd">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a21cfa6f2d69af56edb09563563ad8fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 32-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:a21cfa6f2d69af56edb09563563ad8fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8375b8b693eaa84b4ffa779b1a9f48e" id="r_ad8375b8b693eaa84b4ffa779b1a9f48e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ad8375b8b693eaa84b4ffa779b1a9f48e"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::int64_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad8375b8b693eaa84b4ffa779b1a9f48e">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:ad8375b8b693eaa84b4ffa779b1a9f48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 64-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
-<tr class="separator:ad8375b8b693eaa84b4ffa779b1a9f48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6d405772a3723b1cc33455d164c3cad" id="r_ad6d405772a3723b1cc33455d164c3cad"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ad6d405772a3723b1cc33455d164c3cad"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; float &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad6d405772a3723b1cc33455d164c3cad">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:ad6d405772a3723b1cc33455d164c3cad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a single-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
-<tr class="separator:ad6d405772a3723b1cc33455d164c3cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f0e61b6a8635796fe93a514bf9aecc5" id="r_a1f0e61b6a8635796fe93a514bf9aecc5"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a1f0e61b6a8635796fe93a514bf9aecc5"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1f0e61b6a8635796fe93a514bf9aecc5">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a1f0e61b6a8635796fe93a514bf9aecc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a double-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
-<tr class="separator:a1f0e61b6a8635796fe93a514bf9aecc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24468c8e4d0cd879284996bd2a5d113a" id="r_a24468c8e4d0cd879284996bd2a5d113a"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a24468c8e4d0cd879284996bd2a5d113a"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt; long double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a24468c8e4d0cd879284996bd2a5d113a">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a24468c8e4d0cd879284996bd2a5d113a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an extended-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
-<tr class="separator:a24468c8e4d0cd879284996bd2a5d113a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f4c0849347f829000c381d199bd653f" id="r_a2f4c0849347f829000c381d199bd653f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a2f4c0849347f829000c381d199bd653f"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a2f4c0849347f829000c381d199bd653f">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a2f4c0849347f829000c381d199bd653f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string view into a string of text.  <br /></td></tr>
-<tr class="separator:a2f4c0849347f829000c381d199bd653f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31961c763bb218db37dd635aa14a7de3" id="r_a31961c763bb218db37dd635aa14a7de3"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a31961c763bb218db37dd635aa14a7de3"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::string_view &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a31961c763bb218db37dd635aa14a7de3">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a31961c763bb218db37dd635aa14a7de3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string of text as-is.  <br /></td></tr>
-<tr class="separator:a31961c763bb218db37dd635aa14a7de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a467fa40c02d5839dcaed526c7bdbbe86" id="r_a467fa40c02d5839dcaed526c7bdbbe86"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a467fa40c02d5839dcaed526c7bdbbe86"><td class="memTemplItemLeft" align="right" valign="top">::std::optional&lt;::std::filesystem::path &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a467fa40c02d5839dcaed526c7bdbbe86">parse</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a467fa40c02d5839dcaed526c7bdbbe86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a filesystem path.  <br /></td></tr>
-<tr class="separator:a467fa40c02d5839dcaed526c7bdbbe86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8110a82475cd9812eff93643feb14d40" id="r_a8110a82475cd9812eff93643feb14d40"><td class="memTemplParams" colspan="2">template&lt;typename EnumerationType &gt; </td></tr>
-<tr class="memitem:a8110a82475cd9812eff93643feb14d40"><td class="memTemplItemLeft" align="right" valign="top">constexpr ::std::optional&lt; EnumerationType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8110a82475cd9812eff93643feb14d40">parse_enumeration</a> (const ::std::string_view text)</td></tr>
-<tr class="memdesc:a8110a82475cd9812eff93643feb14d40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an enumeration value. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type.  <br /></td></tr>
-<tr class="separator:a8110a82475cd9812eff93643feb14d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adee0fbeb0db336b1d2c25316242b1551" id="r_adee0fbeb0db336b1d2c25316242b1551"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:adee0fbeb0db336b1d2c25316242b1551"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#adee0fbeb0db336b1d2c25316242b1551">print</a> (const ::std::filesystem::path &amp;value)</td></tr>
-<tr class="memdesc:adee0fbeb0db336b1d2c25316242b1551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a filesystem path as a string of text.  <br /></td></tr>
-<tr class="separator:adee0fbeb0db336b1d2c25316242b1551"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae53dbe222d33c8b70657589453d94e59" id="r_ae53dbe222d33c8b70657589453d94e59"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ae53dbe222d33c8b70657589453d94e59"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae53dbe222d33c8b70657589453d94e59">print</a> (const ::std::int16_t &amp;value)</td></tr>
-<tr class="memdesc:ae53dbe222d33c8b70657589453d94e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 16-bit integer number as a string of text.  <br /></td></tr>
-<tr class="separator:ae53dbe222d33c8b70657589453d94e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ea6889946a5678cdf28158c01eaaaf7" id="r_a3ea6889946a5678cdf28158c01eaaaf7"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a3ea6889946a5678cdf28158c01eaaaf7"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a3ea6889946a5678cdf28158c01eaaaf7">print</a> (const ::std::int32_t &amp;value)</td></tr>
-<tr class="memdesc:a3ea6889946a5678cdf28158c01eaaaf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 32-bit integer number as a string of text.  <br /></td></tr>
-<tr class="separator:a3ea6889946a5678cdf28158c01eaaaf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89e50684dc7f6109f091b5dcfb182210" id="r_a89e50684dc7f6109f091b5dcfb182210"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a89e50684dc7f6109f091b5dcfb182210"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a89e50684dc7f6109f091b5dcfb182210">print</a> (const ::std::int64_t &amp;value)</td></tr>
-<tr class="memdesc:a89e50684dc7f6109f091b5dcfb182210"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 64-bit integer number as a string of text.  <br /></td></tr>
-<tr class="separator:a89e50684dc7f6109f091b5dcfb182210"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d9b486a406200fcd8bd974f71e9147b" id="r_a4d9b486a406200fcd8bd974f71e9147b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a4d9b486a406200fcd8bd974f71e9147b"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4d9b486a406200fcd8bd974f71e9147b">print</a> (const ::std::int8_t &amp;value)</td></tr>
-<tr class="memdesc:a4d9b486a406200fcd8bd974f71e9147b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an 8-bit integer number as a string of text.  <br /></td></tr>
-<tr class="separator:a4d9b486a406200fcd8bd974f71e9147b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5329075d5f5bdfc631dd8e4f7944444f" id="r_a5329075d5f5bdfc631dd8e4f7944444f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a5329075d5f5bdfc631dd8e4f7944444f"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a5329075d5f5bdfc631dd8e4f7944444f">print</a> (const ::std::string &amp;value)</td></tr>
-<tr class="memdesc:a5329075d5f5bdfc631dd8e4f7944444f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string of text as-is.  <br /></td></tr>
-<tr class="separator:a5329075d5f5bdfc631dd8e4f7944444f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cb10fac7b0f4c39c947e3967b335e0a" id="r_a6cb10fac7b0f4c39c947e3967b335e0a"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a6cb10fac7b0f4c39c947e3967b335e0a"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a6cb10fac7b0f4c39c947e3967b335e0a">print</a> (const ::std::string_view &amp;value)</td></tr>
-<tr class="memdesc:a6cb10fac7b0f4c39c947e3967b335e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a string view as a string of text.  <br /></td></tr>
-<tr class="separator:a6cb10fac7b0f4c39c947e3967b335e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d86d9079a72790605dd108135ada577" id="r_a0d86d9079a72790605dd108135ada577"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a0d86d9079a72790605dd108135ada577"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a0d86d9079a72790605dd108135ada577">print</a> (const ::std::uint16_t &amp;value)</td></tr>
-<tr class="memdesc:a0d86d9079a72790605dd108135ada577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 16-bit natural number as a string of text.  <br /></td></tr>
-<tr class="separator:a0d86d9079a72790605dd108135ada577"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01163546614296b764c37a6ad7b716c2" id="r_a01163546614296b764c37a6ad7b716c2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a01163546614296b764c37a6ad7b716c2"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a01163546614296b764c37a6ad7b716c2">print</a> (const ::std::uint32_t &amp;value)</td></tr>
-<tr class="memdesc:a01163546614296b764c37a6ad7b716c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 32-bit natural number as a string of text.  <br /></td></tr>
-<tr class="separator:a01163546614296b764c37a6ad7b716c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae623c8d98027b4f54aadd1882bdaea" id="r_a8ae623c8d98027b4f54aadd1882bdaea"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a8ae623c8d98027b4f54aadd1882bdaea"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8ae623c8d98027b4f54aadd1882bdaea">print</a> (const ::std::uint64_t &amp;value)</td></tr>
-<tr class="memdesc:a8ae623c8d98027b4f54aadd1882bdaea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 64-bit natural number as a string of text.  <br /></td></tr>
-<tr class="separator:a8ae623c8d98027b4f54aadd1882bdaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82c9672a09d6b074fbfe0f0d41635616" id="r_a82c9672a09d6b074fbfe0f0d41635616"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a82c9672a09d6b074fbfe0f0d41635616"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a82c9672a09d6b074fbfe0f0d41635616">print</a> (const ::std::uint8_t &amp;value)</td></tr>
-<tr class="memdesc:a82c9672a09d6b074fbfe0f0d41635616"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an 8-bit natural number as a string of text.  <br /></td></tr>
-<tr class="separator:a82c9672a09d6b074fbfe0f0d41635616"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbe02bbcd0c44aa3ba8436bb41ebc575" id="r_acbe02bbcd0c44aa3ba8436bb41ebc575"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:acbe02bbcd0c44aa3ba8436bb41ebc575"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#acbe02bbcd0c44aa3ba8436bb41ebc575">print</a> (const bool &amp;value)</td></tr>
-<tr class="memdesc:acbe02bbcd0c44aa3ba8436bb41ebc575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a boolean value as a string of text.  <br /></td></tr>
-<tr class="separator:acbe02bbcd0c44aa3ba8436bb41ebc575"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31288f21069b9213dc4932181bb22c53" id="r_a31288f21069b9213dc4932181bb22c53"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a31288f21069b9213dc4932181bb22c53"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a31288f21069b9213dc4932181bb22c53">print</a> (const double &amp;value)</td></tr>
-<tr class="memdesc:a31288f21069b9213dc4932181bb22c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a double-precision floating-point number as a string of text.  <br /></td></tr>
-<tr class="separator:a31288f21069b9213dc4932181bb22c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc64ae4221c9369bc3eb98892d2ff97b" id="r_acc64ae4221c9369bc3eb98892d2ff97b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:acc64ae4221c9369bc3eb98892d2ff97b"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#acc64ae4221c9369bc3eb98892d2ff97b">print</a> (const float &amp;value)</td></tr>
-<tr class="memdesc:acc64ae4221c9369bc3eb98892d2ff97b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a single-precision floating-point number as a string of text.  <br /></td></tr>
-<tr class="separator:acc64ae4221c9369bc3eb98892d2ff97b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5ef82a74eff6167a09e9faa9ff9074f" id="r_ac5ef82a74eff6167a09e9faa9ff9074f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ac5ef82a74eff6167a09e9faa9ff9074f"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ac5ef82a74eff6167a09e9faa9ff9074f">print</a> (const long double &amp;value)</td></tr>
-<tr class="memdesc:ac5ef82a74eff6167a09e9faa9ff9074f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an extended-precision floating-point number as a string of text.  <br /></td></tr>
-<tr class="separator:ac5ef82a74eff6167a09e9faa9ff9074f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd1943886db2a251ba96ab1166a4ca21" id="r_afd1943886db2a251ba96ab1166a4ca21"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:afd1943886db2a251ba96ab1166a4ca21"><td class="memTemplItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">print</a> (const Type &amp;value)</td></tr>
-<tr class="memdesc:afd1943886db2a251ba96ab1166a4ca21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specific type as a string of text.  <br /></td></tr>
-<tr class="separator:afd1943886db2a251ba96ab1166a4ca21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a99cd02e36122cf980043b636cd73242c" id="r_a99cd02e36122cf980043b636cd73242c"><td class="memTemplParams" colspan="2">template&lt;typename EnumerationType &gt; </td></tr>
-<tr class="memitem:a99cd02e36122cf980043b636cd73242c"><td class="memTemplItemLeft" align="right" valign="top">constexpr ::std::string_view&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a99cd02e36122cf980043b636cd73242c">print_enumeration</a> (const EnumerationType value)</td></tr>
-<tr class="memdesc:a99cd02e36122cf980043b636cd73242c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type.  <br /></td></tr>
-<tr class="separator:a99cd02e36122cf980043b636cd73242c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af68a5eeacabe37deb305b4343721dd02" id="r_af68a5eeacabe37deb305b4343721dd02"><td class="memItemLeft" align="right" valign="top">::std::vector&lt;::std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af68a5eeacabe37deb305b4343721dd02">wrap</a> (const ::std::string_view text, const ::std::size_t line_length)</td></tr>
-<tr class="memdesc:af68a5eeacabe37deb305b4343721dd02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a vector of strings that contains one string per line.  <br /></td></tr>
-<tr class="separator:af68a5eeacabe37deb305b4343721dd02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a240b9422ac0f565c8c229fe4a0b3fa0a" id="r_a240b9422ac0f565c8c229fe4a0b3fa0a"><td class="memItemLeft" align="right" valign="top">::std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a240b9422ac0f565c8c229fe4a0b3fa0a">wrap_and_left_align</a> (const ::std::string_view text, const ::std::size_t line_length)</td></tr>
-<tr class="memdesc:a240b9422ac0f565c8c229fe4a0b3fa0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
-<tr class="separator:a240b9422ac0f565c8c229fe4a0b3fa0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786b5f0d81bbfa73273d467ccb6cc34b" id="r_a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">code_points</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string.  <br /></td></tr>
+<tr class="separator:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26eea2188d2bff251878c7af773e2555" id="r_a26eea2188d2bff251878c7af773e2555"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">combine_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:a26eea2188d2bff251878c7af773e2555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
+<tr class="separator:a26eea2188d2bff251878c7af773e2555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
+<tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b1dde915cb9ead99329697e201ba32f" id="r_a7b1dde915cb9ead99329697e201ba32f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7b1dde915cb9ead99329697e201ba32f">longest_word_length</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a7b1dde915cb9ead99329697e201ba32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
+<tr class="separator:a7b1dde915cb9ead99329697e201ba32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575d367a2203a7a0e48459c552af78b2" id="r_a575d367a2203a7a0e48459c552af78b2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a575d367a2203a7a0e48459c552af78b2"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; bool &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a575d367a2203a7a0e48459c552af78b2">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a575d367a2203a7a0e48459c552af78b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a boolean value. For example, the string of text "true" returns the boolean value true.  <br /></td></tr>
+<tr class="separator:a575d367a2203a7a0e48459c552af78b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae77a11916fc3310a83617a40c9774243" id="r_ae77a11916fc3310a83617a40c9774243"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ae77a11916fc3310a83617a40c9774243"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::uint8_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae77a11916fc3310a83617a40c9774243">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:ae77a11916fc3310a83617a40c9774243"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an 8-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:ae77a11916fc3310a83617a40c9774243"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6afa1e1a279580d01ac34d83f080158" id="r_ab6afa1e1a279580d01ac34d83f080158"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ab6afa1e1a279580d01ac34d83f080158"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::uint16_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab6afa1e1a279580d01ac34d83f080158">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:ab6afa1e1a279580d01ac34d83f080158"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 16-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:ab6afa1e1a279580d01ac34d83f080158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7dbd2103275360fff9cdeee461685a1" id="r_ae7dbd2103275360fff9cdeee461685a1"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ae7dbd2103275360fff9cdeee461685a1"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::uint32_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae7dbd2103275360fff9cdeee461685a1">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:ae7dbd2103275360fff9cdeee461685a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 32-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:ae7dbd2103275360fff9cdeee461685a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73c4d647e9e44a2a2f2e34f77bd0a524" id="r_a73c4d647e9e44a2a2f2e34f77bd0a524"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a73c4d647e9e44a2a2f2e34f77bd0a524"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::uint64_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a73c4d647e9e44a2a2f2e34f77bd0a524">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a73c4d647e9e44a2a2f2e34f77bd0a524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 64-bit natural number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:a73c4d647e9e44a2a2f2e34f77bd0a524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46e6d2f8646ba52a14d180e45abee113" id="r_a46e6d2f8646ba52a14d180e45abee113"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a46e6d2f8646ba52a14d180e45abee113"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::int8_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a46e6d2f8646ba52a14d180e45abee113">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a46e6d2f8646ba52a14d180e45abee113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an 8-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:a46e6d2f8646ba52a14d180e45abee113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd45deec4528677702aaebba06cf065" id="r_afdd45deec4528677702aaebba06cf065"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:afdd45deec4528677702aaebba06cf065"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::int16_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#afdd45deec4528677702aaebba06cf065">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:afdd45deec4528677702aaebba06cf065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 16-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:afdd45deec4528677702aaebba06cf065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f1318daa2266bd5ba2f2fe0658dae94" id="r_a1f1318daa2266bd5ba2f2fe0658dae94"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a1f1318daa2266bd5ba2f2fe0658dae94"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::int32_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1f1318daa2266bd5ba2f2fe0658dae94">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a1f1318daa2266bd5ba2f2fe0658dae94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 32-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:a1f1318daa2266bd5ba2f2fe0658dae94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a300d655621490d20ebe3521be30c2d33" id="r_a300d655621490d20ebe3521be30c2d33"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a300d655621490d20ebe3521be30c2d33"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::int64_t &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a300d655621490d20ebe3521be30c2d33">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a300d655621490d20ebe3521be30c2d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a 64-bit integer number. For example, the string of text "42" returns the number 42.  <br /></td></tr>
+<tr class="separator:a300d655621490d20ebe3521be30c2d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a058d5332d46eefb46c0aff5403c77a50" id="r_a058d5332d46eefb46c0aff5403c77a50"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a058d5332d46eefb46c0aff5403c77a50"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; float &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a058d5332d46eefb46c0aff5403c77a50">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a058d5332d46eefb46c0aff5403c77a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a single-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
+<tr class="separator:a058d5332d46eefb46c0aff5403c77a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae07e25c6cf88d125b5b270d89c02dd0b" id="r_ae07e25c6cf88d125b5b270d89c02dd0b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ae07e25c6cf88d125b5b270d89c02dd0b"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae07e25c6cf88d125b5b270d89c02dd0b">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:ae07e25c6cf88d125b5b270d89c02dd0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a double-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
+<tr class="separator:ae07e25c6cf88d125b5b270d89c02dd0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fd2bbcb1207cfffbba64de0c5dd4e1f" id="r_a5fd2bbcb1207cfffbba64de0c5dd4e1f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a5fd2bbcb1207cfffbba64de0c5dd4e1f"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; long double &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a5fd2bbcb1207cfffbba64de0c5dd4e1f">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a5fd2bbcb1207cfffbba64de0c5dd4e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an extended-precision floating-point number. For example, the string of text "3.14" returns the number 3.14.  <br /></td></tr>
+<tr class="separator:a5fd2bbcb1207cfffbba64de0c5dd4e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d51d037b38f2854af8f79c217ba5b10" id="r_a3d51d037b38f2854af8f79c217ba5b10"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a3d51d037b38f2854af8f79c217ba5b10"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a3d51d037b38f2854af8f79c217ba5b10">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a3d51d037b38f2854af8f79c217ba5b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string view into a string of text.  <br /></td></tr>
+<tr class="separator:a3d51d037b38f2854af8f79c217ba5b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4e9481595b8e0821eb23b69a87f1bb6" id="r_ac4e9481595b8e0821eb23b69a87f1bb6"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ac4e9481595b8e0821eb23b69a87f1bb6"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::string_view &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ac4e9481595b8e0821eb23b69a87f1bb6">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:ac4e9481595b8e0821eb23b69a87f1bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string of text as-is.  <br /></td></tr>
+<tr class="separator:ac4e9481595b8e0821eb23b69a87f1bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4563c2b63f1609a99ed28a6a4ed910c2" id="r_a4563c2b63f1609a99ed28a6a4ed910c2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a4563c2b63f1609a99ed28a6a4ed910c2"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; std::filesystem::path &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4563c2b63f1609a99ed28a6a4ed910c2">parse</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a4563c2b63f1609a99ed28a6a4ed910c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a filesystem path.  <br /></td></tr>
+<tr class="separator:a4563c2b63f1609a99ed28a6a4ed910c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc2cdd2c404638159678f4f5b08d4b58" id="r_adc2cdd2c404638159678f4f5b08d4b58"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:adc2cdd2c404638159678f4f5b08d4b58"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; Type &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#adc2cdd2c404638159678f4f5b08d4b58">parse</a> (std::string_view text)</td></tr>
+<tr class="memdesc:adc2cdd2c404638159678f4f5b08d4b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type.  <br /></td></tr>
+<tr class="separator:adc2cdd2c404638159678f4f5b08d4b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a017dff756df4c83caf3ab4759d008609" id="r_a017dff756df4c83caf3ab4759d008609"><td class="memTemplParams" colspan="2">template&lt;typename EnumerationType &gt; </td></tr>
+<tr class="memitem:a017dff756df4c83caf3ab4759d008609"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::optional&lt; EnumerationType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a017dff756df4c83caf3ab4759d008609">parse_enumeration</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a017dff756df4c83caf3ab4759d008609"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into an enumeration value. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type.  <br /></td></tr>
+<tr class="separator:a017dff756df4c83caf3ab4759d008609"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68ce1900a9151bf0ddcfdcd08d762760" id="r_a68ce1900a9151bf0ddcfdcd08d762760"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a68ce1900a9151bf0ddcfdcd08d762760"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a68ce1900a9151bf0ddcfdcd08d762760">print</a> (const bool &amp;value)</td></tr>
+<tr class="memdesc:a68ce1900a9151bf0ddcfdcd08d762760"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a boolean value as a string of text.  <br /></td></tr>
+<tr class="separator:a68ce1900a9151bf0ddcfdcd08d762760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6fb0abd1928b3bce3f2b52c100d424e" id="r_ae6fb0abd1928b3bce3f2b52c100d424e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ae6fb0abd1928b3bce3f2b52c100d424e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae6fb0abd1928b3bce3f2b52c100d424e">print</a> (const double &amp;value)</td></tr>
+<tr class="memdesc:ae6fb0abd1928b3bce3f2b52c100d424e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a double-precision floating-point number as a string of text.  <br /></td></tr>
+<tr class="separator:ae6fb0abd1928b3bce3f2b52c100d424e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1534171f3dbe33b8107153c299fd6efa" id="r_a1534171f3dbe33b8107153c299fd6efa"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a1534171f3dbe33b8107153c299fd6efa"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1534171f3dbe33b8107153c299fd6efa">print</a> (const float &amp;value)</td></tr>
+<tr class="memdesc:a1534171f3dbe33b8107153c299fd6efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a single-precision floating-point number as a string of text.  <br /></td></tr>
+<tr class="separator:a1534171f3dbe33b8107153c299fd6efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d61f145f673297d480eb63fdcd1b8cd" id="r_a4d61f145f673297d480eb63fdcd1b8cd"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a4d61f145f673297d480eb63fdcd1b8cd"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4d61f145f673297d480eb63fdcd1b8cd">print</a> (const long double &amp;value)</td></tr>
+<tr class="memdesc:a4d61f145f673297d480eb63fdcd1b8cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an extended-precision floating-point number as a string of text.  <br /></td></tr>
+<tr class="separator:a4d61f145f673297d480eb63fdcd1b8cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00593d7486bd391c7e53923514cd3764" id="r_a00593d7486bd391c7e53923514cd3764"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a00593d7486bd391c7e53923514cd3764"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a00593d7486bd391c7e53923514cd3764">print</a> (const std::filesystem::path &amp;value)</td></tr>
+<tr class="memdesc:a00593d7486bd391c7e53923514cd3764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a filesystem path as a string of text.  <br /></td></tr>
+<tr class="separator:a00593d7486bd391c7e53923514cd3764"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8169b85e94cbe1246511d6a97db11e6e" id="r_a8169b85e94cbe1246511d6a97db11e6e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a8169b85e94cbe1246511d6a97db11e6e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8169b85e94cbe1246511d6a97db11e6e">print</a> (const std::int16_t &amp;value)</td></tr>
+<tr class="memdesc:a8169b85e94cbe1246511d6a97db11e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 16-bit integer number as a string of text.  <br /></td></tr>
+<tr class="separator:a8169b85e94cbe1246511d6a97db11e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fe7bc268904bf08ea8776ea233f568b" id="r_a6fe7bc268904bf08ea8776ea233f568b"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a6fe7bc268904bf08ea8776ea233f568b"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a6fe7bc268904bf08ea8776ea233f568b">print</a> (const std::int32_t &amp;value)</td></tr>
+<tr class="memdesc:a6fe7bc268904bf08ea8776ea233f568b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 32-bit integer number as a string of text.  <br /></td></tr>
+<tr class="separator:a6fe7bc268904bf08ea8776ea233f568b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51666b7893c2fb3335bdc9d9e6ab06dc" id="r_a51666b7893c2fb3335bdc9d9e6ab06dc"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a51666b7893c2fb3335bdc9d9e6ab06dc"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a51666b7893c2fb3335bdc9d9e6ab06dc">print</a> (const std::int64_t &amp;value)</td></tr>
+<tr class="memdesc:a51666b7893c2fb3335bdc9d9e6ab06dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 64-bit integer number as a string of text.  <br /></td></tr>
+<tr class="separator:a51666b7893c2fb3335bdc9d9e6ab06dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67170ba70c11fb56a3489f065e96d8ab" id="r_a67170ba70c11fb56a3489f065e96d8ab"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a67170ba70c11fb56a3489f065e96d8ab"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a67170ba70c11fb56a3489f065e96d8ab">print</a> (const std::int8_t &amp;value)</td></tr>
+<tr class="memdesc:a67170ba70c11fb56a3489f065e96d8ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an 8-bit integer number as a string of text.  <br /></td></tr>
+<tr class="separator:a67170ba70c11fb56a3489f065e96d8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a904fc005701a9530e3ba82e67b077bc8" id="r_a904fc005701a9530e3ba82e67b077bc8"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a904fc005701a9530e3ba82e67b077bc8"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a904fc005701a9530e3ba82e67b077bc8">print</a> (const std::string &amp;value)</td></tr>
+<tr class="memdesc:a904fc005701a9530e3ba82e67b077bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string of text as-is.  <br /></td></tr>
+<tr class="separator:a904fc005701a9530e3ba82e67b077bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa296cbe158b6795e9cb779b024985961" id="r_aa296cbe158b6795e9cb779b024985961"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aa296cbe158b6795e9cb779b024985961"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#aa296cbe158b6795e9cb779b024985961">print</a> (const std::string_view &amp;value)</td></tr>
+<tr class="memdesc:aa296cbe158b6795e9cb779b024985961"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a string view as a string of text.  <br /></td></tr>
+<tr class="separator:aa296cbe158b6795e9cb779b024985961"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a828e54037a13a5c83784b8ea1de89a87" id="r_a828e54037a13a5c83784b8ea1de89a87"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a828e54037a13a5c83784b8ea1de89a87"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a828e54037a13a5c83784b8ea1de89a87">print</a> (const std::uint16_t &amp;value)</td></tr>
+<tr class="memdesc:a828e54037a13a5c83784b8ea1de89a87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 16-bit natural number as a string of text.  <br /></td></tr>
+<tr class="separator:a828e54037a13a5c83784b8ea1de89a87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18a281edca11cf417eb6ebbdf4d85f3d" id="r_a18a281edca11cf417eb6ebbdf4d85f3d"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a18a281edca11cf417eb6ebbdf4d85f3d"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a18a281edca11cf417eb6ebbdf4d85f3d">print</a> (const std::uint32_t &amp;value)</td></tr>
+<tr class="memdesc:a18a281edca11cf417eb6ebbdf4d85f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 32-bit natural number as a string of text.  <br /></td></tr>
+<tr class="separator:a18a281edca11cf417eb6ebbdf4d85f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaaaae024acea3e6e8c299a4f598ba0f" id="r_adaaaae024acea3e6e8c299a4f598ba0f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:adaaaae024acea3e6e8c299a4f598ba0f"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#adaaaae024acea3e6e8c299a4f598ba0f">print</a> (const std::uint64_t &amp;value)</td></tr>
+<tr class="memdesc:adaaaae024acea3e6e8c299a4f598ba0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a 64-bit natural number as a string of text.  <br /></td></tr>
+<tr class="separator:adaaaae024acea3e6e8c299a4f598ba0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e4a9a59d7406d1ae0e2cf2f4fcc9a93" id="r_a0e4a9a59d7406d1ae0e2cf2f4fcc9a93"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a0e4a9a59d7406d1ae0e2cf2f4fcc9a93"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a0e4a9a59d7406d1ae0e2cf2f4fcc9a93">print</a> (const std::uint8_t &amp;value)</td></tr>
+<tr class="memdesc:a0e4a9a59d7406d1ae0e2cf2f4fcc9a93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints an 8-bit natural number as a string of text.  <br /></td></tr>
+<tr class="separator:a0e4a9a59d7406d1ae0e2cf2f4fcc9a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14ab972766e198d66923e65faaed57ba" id="r_a14ab972766e198d66923e65faaed57ba"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a14ab972766e198d66923e65faaed57ba"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">print</a> (const Type &amp;value)</td></tr>
+<tr class="memdesc:a14ab972766e198d66923e65faaed57ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specific type as a string of text.  <br /></td></tr>
+<tr class="separator:a14ab972766e198d66923e65faaed57ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e485bdacc529d35c78a74e95ff5a065" id="r_a2e485bdacc529d35c78a74e95ff5a065"><td class="memTemplParams" colspan="2">template&lt;typename EnumerationType &gt; </td></tr>
+<tr class="memitem:a2e485bdacc529d35c78a74e95ff5a065"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a2e485bdacc529d35c78a74e95ff5a065">print_enumeration</a> (const EnumerationType value)</td></tr>
+<tr class="memdesc:a2e485bdacc529d35c78a74e95ff5a065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type.  <br /></td></tr>
+<tr class="separator:a2e485bdacc529d35c78a74e95ff5a065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3dbae2688050c8117b86b38afdfaaa7" id="r_ad3dbae2688050c8117b86b38afdfaaa7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">wrap</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:ad3dbae2688050c8117b86b38afdfaaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a vector of strings that contains one string per line.  <br /></td></tr>
+<tr class="separator:ad3dbae2688050c8117b86b38afdfaaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44bd330c9016a93ce6be338042e52d9c" id="r_a44bd330c9016a93ce6be338042e52d9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">wrap_and_left_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a44bd330c9016a93ce6be338042e52d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
+<tr class="separator:a44bd330c9016a93ce6be338042e52d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a4a1e3e4a87c4a5d975caf6e2c58112ca" id="r_a4a1e3e4a87c4a5d975caf6e2c58112ca"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:a4a1e3e4a87c4a5d975caf6e2c58112ca"><td class="memTemplItemLeft" align="right" valign="top">constexpr ::std::array&lt;<a class="el" href="namespacelector.html#a77e376256ed001a26a13a29ce24ae24e">::lector::Name</a>&lt; Type &gt;, 0UL &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca">Names</a> {}</td></tr>
-<tr class="memdesc:a4a1e3e4a87c4a5d975caf6e2c58112ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of canonical printed names to their corresponding values of a specified type.  <br /></td></tr>
-<tr class="separator:a4a1e3e4a87c4a5d975caf6e2c58112ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad392f17c284e9503c6d428a3b0c9c14b" id="r_ad392f17c284e9503c6d428a3b0c9c14b"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
-<tr class="memitem:ad392f17c284e9503c6d428a3b0c9c14b"><td class="memTemplItemLeft" align="right" valign="top">constexpr ::std::array&lt;<a class="el" href="namespacelector.html#ab068269df97785985a43c25c4113da58">::lector::Spelling</a>&lt; Type &gt;, 0UL &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b">Spellings</a> {}</td></tr>
-<tr class="memdesc:ad392f17c284e9503c6d428a3b0c9c14b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of spellings to their corresponding values of a specified type.  <br /></td></tr>
-<tr class="separator:ad392f17c284e9503c6d428a3b0c9c14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1323f11a0134e8de8f3d0ed1dd5c4f08" id="r_a1323f11a0134e8de8f3d0ed1dd5c4f08"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a1323f11a0134e8de8f3d0ed1dd5c4f08"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::array&lt; <a class="el" href="namespacelector.html#a6b08d941e7c891a747eb7677103f9075">lector::Name</a>&lt; Type &gt;, 0UL &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08">Names</a> {}</td></tr>
+<tr class="memdesc:a1323f11a0134e8de8f3d0ed1dd5c4f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of canonical printed names to their corresponding values of a specified type.  <br /></td></tr>
+<tr class="separator:a1323f11a0134e8de8f3d0ed1dd5c4f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db2d43984e13b9ffcbe08263a1ea427" id="r_a5db2d43984e13b9ffcbe08263a1ea427"><td class="memTemplParams" colspan="2">template&lt;typename Type &gt; </td></tr>
+<tr class="memitem:a5db2d43984e13b9ffcbe08263a1ea427"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::array&lt; <a class="el" href="namespacelector.html#a755f5c78ba0732b13de9eb82234026af">lector::Spelling</a>&lt; Type &gt;, 0UL &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427">Spellings</a> {}</td></tr>
+<tr class="memdesc:a5db2d43984e13b9ffcbe08263a1ea427"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map of spellings to their corresponding values of a specified type.  <br /></td></tr>
+<tr class="separator:a5db2d43984e13b9ffcbe08263a1ea427"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The Lector library's namespace. </p>
 </div><h2 class="groupheader">Typedef Documentation</h2>
-<a id="a77e376256ed001a26a13a29ce24ae24e" name="a77e376256ed001a26a13a29ce24ae24e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77e376256ed001a26a13a29ce24ae24e">&#9670;&#160;</a></span>Name</h2>
+<a id="a6b08d941e7c891a747eb7677103f9075" name="a6b08d941e7c891a747eb7677103f9075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b08d941e7c891a747eb7677103f9075">&#9670;&#160;</a></span>Name</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +297,7 @@ Variables</h2></td></tr>
 template&lt;typename Type &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacelector.html#a77e376256ed001a26a13a29ce24ae24e">lector::Name</a> = typedef ::std::pair&lt;Type, ::std::string_view&gt;</td>
+          <td class="memname">using <a class="el" href="namespacelector.html#a6b08d941e7c891a747eb7677103f9075">lector::Name</a> = typedef std::pair&lt;Type, std::string_view&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -312,8 +312,8 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="ab068269df97785985a43c25c4113da58" name="ab068269df97785985a43c25c4113da58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab068269df97785985a43c25c4113da58">&#9670;&#160;</a></span>Spelling</h2>
+<a id="a755f5c78ba0732b13de9eb82234026af" name="a755f5c78ba0732b13de9eb82234026af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a755f5c78ba0732b13de9eb82234026af">&#9670;&#160;</a></span>Spelling</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +321,7 @@ template&lt;typename Type &gt; </div>
 template&lt;typename Type &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="namespacelector.html#ab068269df97785985a43c25c4113da58">lector::Spelling</a> = typedef ::std::pair&lt;::std::string_view, Type&gt;</td>
+          <td class="memname">using <a class="el" href="namespacelector.html#a755f5c78ba0732b13de9eb82234026af">lector::Spelling</a> = typedef std::pair&lt;std::string_view, Type&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -337,8 +337,8 @@ template&lt;typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a1ed1a054cc4dc6aa8e36ef896dc3f2a7" name="a1ed1a054cc4dc6aa8e36ef896dc3f2a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ed1a054cc4dc6aa8e36ef896dc3f2a7">&#9670;&#160;</a></span>Importance</h2>
+<a id="a8a84b06fbb1b1f83f4178c59c22ece65" name="a8a84b06fbb1b1f83f4178c59c22ece65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a84b06fbb1b1f83f4178c59c22ece65">&#9670;&#160;</a></span>Importance</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,7 +347,7 @@ template&lt;typename Type &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7">lector::Importance</a> : ::std::int8_t</td>
+          <td class="memname">enum class <a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">lector::Importance</a> : std::int8_t</td>
         </tr>
       </table>
   </td>
@@ -359,25 +359,25 @@ template&lt;typename Type &gt; </div>
 
 <p>Importance of a command line argument. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1ed1a054cc4dc6aa8e36ef896dc3f2a7aebb061953c0454b2c8ee7b0ac615ebcd" name="a1ed1a054cc4dc6aa8e36ef896dc3f2a7aebb061953c0454b2c8ee7b0ac615ebcd"></a>Optional&#160;</td><td class="fielddoc"><p>The command line argument is optional; it may or may not be provided by the user. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8a84b06fbb1b1f83f4178c59c22ece65aebb061953c0454b2c8ee7b0ac615ebcd" name="a8a84b06fbb1b1f83f4178c59c22ece65aebb061953c0454b2c8ee7b0ac615ebcd"></a>Optional&#160;</td><td class="fielddoc"><p>The command line argument is optional; it may or may not be provided by the user. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a1ed1a054cc4dc6aa8e36ef896dc3f2a7ab651efdb98a5d6bd2b3935d0c3f4a5e2" name="a1ed1a054cc4dc6aa8e36ef896dc3f2a7ab651efdb98a5d6bd2b3935d0c3f4a5e2"></a>Required&#160;</td><td class="fielddoc"><p>The command line argument is required; it must be provided by the user. </p>
+<tr><td class="fieldname"><a id="a8a84b06fbb1b1f83f4178c59c22ece65ab651efdb98a5d6bd2b3935d0c3f4a5e2" name="a8a84b06fbb1b1f83f4178c59c22ece65ab651efdb98a5d6bd2b3935d0c3f4a5e2"></a>Required&#160;</td><td class="fielddoc"><p>The command line argument is required; it must be provided by the user. </p>
 </td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aabc55ab765774f566e0a4866f2120319" name="aabc55ab765774f566e0a4866f2120319"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabc55ab765774f566e0a4866f2120319">&#9670;&#160;</a></span>code_points()</h2>
+<a id="a786b5f0d81bbfa73273d467ccb6cc34b" name="a786b5f0d81bbfa73273d467ccb6cc34b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a786b5f0d81bbfa73273d467ccb6cc34b">&#9670;&#160;</a></span>code_points()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::size_t lector::code_points </td>
+          <td class="memname">std::size_t lector::code_points </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -395,34 +395,34 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="aaccaac5a08903ce83e0c2852c275d3eb" name="aaccaac5a08903ce83e0c2852c275d3eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaccaac5a08903ce83e0c2852c275d3eb">&#9670;&#160;</a></span>combine_and_left_align()</h2>
+<a id="a26eea2188d2bff251878c7af773e2555" name="a26eea2188d2bff251878c7af773e2555"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26eea2188d2bff251878c7af773e2555">&#9670;&#160;</a></span>combine_and_left_align()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::combine_and_left_align </td>
+          <td class="memname">std::string lector::combine_and_left_align </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>first_column_width</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>second_column_text</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>second_column_width</em>&#160;</td>
         </tr>
         <tr>
@@ -447,16 +447,16 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="aeba0dd2dc5cb33bc3a901894626c7767" name="aeba0dd2dc5cb33bc3a901894626c7767"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeba0dd2dc5cb33bc3a901894626c7767">&#9670;&#160;</a></span>join_and_left_align()</h2>
+<a id="a949efcf68c94184aace84277fc123761" name="a949efcf68c94184aace84277fc123761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a949efcf68c94184aace84277fc123761">&#9670;&#160;</a></span>join_and_left_align()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::join_and_left_align </td>
+          <td class="memname">std::string lector::join_and_left_align </td>
           <td>(</td>
-          <td class="paramtype">const ::std::vector&lt;::std::string &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>lines</em></td><td>)</td>
           <td></td>
         </tr>
@@ -474,16 +474,16 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="af4423d990e26085a622fa3398043ad24" name="af4423d990e26085a622fa3398043ad24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4423d990e26085a622fa3398043ad24">&#9670;&#160;</a></span>longest_word_length()</h2>
+<a id="a7b1dde915cb9ead99329697e201ba32f" name="a7b1dde915cb9ead99329697e201ba32f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b1dde915cb9ead99329697e201ba32f">&#9670;&#160;</a></span>longest_word_length()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::size_t lector::longest_word_length </td>
+          <td class="memname">std::size_t lector::longest_word_length </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -501,44 +501,8 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a88fd78bdabda7347f448eaa0f1d816e8" name="a88fd78bdabda7347f448eaa0f1d816e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88fd78bdabda7347f448eaa0f1d816e8">&#9670;&#160;</a></span>parse() <span class="overload">[1/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Type &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::optional&lt; Type &gt; lector::parse </td>
-          <td>(</td>
-          <td class="paramtype">::std::string_view&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type. </p>
-<p>Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type; otherwise, the type must be streamable with the &gt;&gt; input stream operator.</p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">Type</td><td>The type of the value in which to parse the string of text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to parse. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The parsed value, or std::nullopt if the string of text could not be parsed into a valid value. </dd></dl>
-
-</div>
-</div>
-<a id="a7ed41ff235cbfb383e6833a56326e295" name="a7ed41ff235cbfb383e6833a56326e295"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ed41ff235cbfb383e6833a56326e295">&#9670;&#160;</a></span>parse() <span class="overload">[2/16]</span></h2>
+<a id="a575d367a2203a7a0e48459c552af78b2" name="a575d367a2203a7a0e48459c552af78b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a575d367a2203a7a0e48459c552af78b2">&#9670;&#160;</a></span>parse() <span class="overload">[1/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -546,9 +510,9 @@ template&lt;typename Type &gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt; bool &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; bool &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -566,8 +530,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="aeb0edafaa0208fd7e97e7894b4741105" name="aeb0edafaa0208fd7e97e7894b4741105"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb0edafaa0208fd7e97e7894b4741105">&#9670;&#160;</a></span>parse() <span class="overload">[3/16]</span></h2>
+<a id="ae77a11916fc3310a83617a40c9774243" name="ae77a11916fc3310a83617a40c9774243"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae77a11916fc3310a83617a40c9774243">&#9670;&#160;</a></span>parse() <span class="overload">[2/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -575,9 +539,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::uint8_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::uint8_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -595,8 +559,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ab5109662134b115a9448fab581aaf263" name="ab5109662134b115a9448fab581aaf263"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5109662134b115a9448fab581aaf263">&#9670;&#160;</a></span>parse() <span class="overload">[4/16]</span></h2>
+<a id="ab6afa1e1a279580d01ac34d83f080158" name="ab6afa1e1a279580d01ac34d83f080158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6afa1e1a279580d01ac34d83f080158">&#9670;&#160;</a></span>parse() <span class="overload">[3/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -604,9 +568,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::uint16_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::uint16_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -624,8 +588,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="aee8262f41a6bb3a2338dd6341c976b22" name="aee8262f41a6bb3a2338dd6341c976b22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee8262f41a6bb3a2338dd6341c976b22">&#9670;&#160;</a></span>parse() <span class="overload">[5/16]</span></h2>
+<a id="ae7dbd2103275360fff9cdeee461685a1" name="ae7dbd2103275360fff9cdeee461685a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7dbd2103275360fff9cdeee461685a1">&#9670;&#160;</a></span>parse() <span class="overload">[4/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -633,9 +597,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::uint32_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::uint32_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -653,8 +617,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="accbc06ab374e1be6c836168aaf436e19" name="accbc06ab374e1be6c836168aaf436e19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accbc06ab374e1be6c836168aaf436e19">&#9670;&#160;</a></span>parse() <span class="overload">[6/16]</span></h2>
+<a id="a73c4d647e9e44a2a2f2e34f77bd0a524" name="a73c4d647e9e44a2a2f2e34f77bd0a524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73c4d647e9e44a2a2f2e34f77bd0a524">&#9670;&#160;</a></span>parse() <span class="overload">[5/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -662,9 +626,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::uint64_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::uint64_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -682,8 +646,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ace53e15d4e2116cc0edf4dd3d1c509f9" name="ace53e15d4e2116cc0edf4dd3d1c509f9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace53e15d4e2116cc0edf4dd3d1c509f9">&#9670;&#160;</a></span>parse() <span class="overload">[7/16]</span></h2>
+<a id="a46e6d2f8646ba52a14d180e45abee113" name="a46e6d2f8646ba52a14d180e45abee113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46e6d2f8646ba52a14d180e45abee113">&#9670;&#160;</a></span>parse() <span class="overload">[6/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -691,9 +655,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::int8_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::int8_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -711,8 +675,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a1ab427e7bd52cbd5a94c58de1cd4b5af" name="a1ab427e7bd52cbd5a94c58de1cd4b5af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ab427e7bd52cbd5a94c58de1cd4b5af">&#9670;&#160;</a></span>parse() <span class="overload">[8/16]</span></h2>
+<a id="afdd45deec4528677702aaebba06cf065" name="afdd45deec4528677702aaebba06cf065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd45deec4528677702aaebba06cf065">&#9670;&#160;</a></span>parse() <span class="overload">[7/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -720,9 +684,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::int16_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::int16_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -740,8 +704,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a21cfa6f2d69af56edb09563563ad8fdd" name="a21cfa6f2d69af56edb09563563ad8fdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21cfa6f2d69af56edb09563563ad8fdd">&#9670;&#160;</a></span>parse() <span class="overload">[9/16]</span></h2>
+<a id="a1f1318daa2266bd5ba2f2fe0658dae94" name="a1f1318daa2266bd5ba2f2fe0658dae94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f1318daa2266bd5ba2f2fe0658dae94">&#9670;&#160;</a></span>parse() <span class="overload">[8/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -749,9 +713,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::int32_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::int32_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -769,8 +733,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ad8375b8b693eaa84b4ffa779b1a9f48e" name="ad8375b8b693eaa84b4ffa779b1a9f48e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8375b8b693eaa84b4ffa779b1a9f48e">&#9670;&#160;</a></span>parse() <span class="overload">[10/16]</span></h2>
+<a id="a300d655621490d20ebe3521be30c2d33" name="a300d655621490d20ebe3521be30c2d33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a300d655621490d20ebe3521be30c2d33">&#9670;&#160;</a></span>parse() <span class="overload">[9/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -778,9 +742,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::int64_t &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::int64_t &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -798,8 +762,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ad6d405772a3723b1cc33455d164c3cad" name="ad6d405772a3723b1cc33455d164c3cad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6d405772a3723b1cc33455d164c3cad">&#9670;&#160;</a></span>parse() <span class="overload">[11/16]</span></h2>
+<a id="a058d5332d46eefb46c0aff5403c77a50" name="a058d5332d46eefb46c0aff5403c77a50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a058d5332d46eefb46c0aff5403c77a50">&#9670;&#160;</a></span>parse() <span class="overload">[10/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -807,9 +771,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt; float &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; float &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -827,8 +791,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a1f0e61b6a8635796fe93a514bf9aecc5" name="a1f0e61b6a8635796fe93a514bf9aecc5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f0e61b6a8635796fe93a514bf9aecc5">&#9670;&#160;</a></span>parse() <span class="overload">[12/16]</span></h2>
+<a id="ae07e25c6cf88d125b5b270d89c02dd0b" name="ae07e25c6cf88d125b5b270d89c02dd0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae07e25c6cf88d125b5b270d89c02dd0b">&#9670;&#160;</a></span>parse() <span class="overload">[11/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -836,9 +800,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt; double &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; double &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -856,8 +820,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a24468c8e4d0cd879284996bd2a5d113a" name="a24468c8e4d0cd879284996bd2a5d113a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24468c8e4d0cd879284996bd2a5d113a">&#9670;&#160;</a></span>parse() <span class="overload">[13/16]</span></h2>
+<a id="a5fd2bbcb1207cfffbba64de0c5dd4e1f" name="a5fd2bbcb1207cfffbba64de0c5dd4e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fd2bbcb1207cfffbba64de0c5dd4e1f">&#9670;&#160;</a></span>parse() <span class="overload">[12/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -865,9 +829,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt; long double &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; long double &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -885,8 +849,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a2f4c0849347f829000c381d199bd653f" name="a2f4c0849347f829000c381d199bd653f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f4c0849347f829000c381d199bd653f">&#9670;&#160;</a></span>parse() <span class="overload">[14/16]</span></h2>
+<a id="a3d51d037b38f2854af8f79c217ba5b10" name="a3d51d037b38f2854af8f79c217ba5b10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d51d037b38f2854af8f79c217ba5b10">&#9670;&#160;</a></span>parse() <span class="overload">[13/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -894,9 +858,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::string &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::string &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -914,8 +878,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a31961c763bb218db37dd635aa14a7de3" name="a31961c763bb218db37dd635aa14a7de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31961c763bb218db37dd635aa14a7de3">&#9670;&#160;</a></span>parse() <span class="overload">[15/16]</span></h2>
+<a id="ac4e9481595b8e0821eb23b69a87f1bb6" name="ac4e9481595b8e0821eb23b69a87f1bb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4e9481595b8e0821eb23b69a87f1bb6">&#9670;&#160;</a></span>parse() <span class="overload">[14/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -923,9 +887,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::string_view &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::string_view &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -943,8 +907,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a467fa40c02d5839dcaed526c7bdbbe86" name="a467fa40c02d5839dcaed526c7bdbbe86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a467fa40c02d5839dcaed526c7bdbbe86">&#9670;&#160;</a></span>parse() <span class="overload">[16/16]</span></h2>
+<a id="a4563c2b63f1609a99ed28a6a4ed910c2" name="a4563c2b63f1609a99ed28a6a4ed910c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4563c2b63f1609a99ed28a6a4ed910c2">&#9670;&#160;</a></span>parse() <span class="overload">[15/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -952,9 +916,9 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::optional&lt;::std::filesystem::path &gt; lector::parse </td>
+          <td class="memname">std::optional&lt; std::filesystem::path &gt; lector::parse </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -972,8 +936,44 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a8110a82475cd9812eff93643feb14d40" name="a8110a82475cd9812eff93643feb14d40"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8110a82475cd9812eff93643feb14d40">&#9670;&#160;</a></span>parse_enumeration()</h2>
+<a id="adc2cdd2c404638159678f4f5b08d4b58" name="adc2cdd2c404638159678f4f5b08d4b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc2cdd2c404638159678f4f5b08d4b58">&#9670;&#160;</a></span>parse() <span class="overload">[16/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Type &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; Type &gt; lector::parse </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type. </p>
+<p>Parses a string of text into a value of a specific type. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type; otherwise, the type must be streamable with the &gt;&gt; input stream operator.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">Type</td><td>The type of the value in which to parse the string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to parse. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The parsed value, or std::nullopt if the string of text could not be parsed into a valid value. </dd></dl>
+
+</div>
+</div>
+<a id="a017dff756df4c83caf3ab4759d008609" name="a017dff756df4c83caf3ab4759d008609"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a017dff756df4c83caf3ab4759d008609">&#9670;&#160;</a></span>parse_enumeration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -984,9 +984,9 @@ template&lt;typename EnumerationType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr ::std::optional&lt; EnumerationType &gt; lector::parse_enumeration </td>
+          <td class="memname">constexpr std::optional&lt; EnumerationType &gt; lector::parse_enumeration </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em></td><td>)</td>
           <td></td>
         </tr>
@@ -998,7 +998,7 @@ template&lt;typename EnumerationType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Parses a string of text into an enumeration value. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type. </p>
+<p>Parses a string of text into an enumeration value. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a> constant for its type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">EnumerationType</td><td>The enumeration type. </td></tr>
@@ -1015,8 +1015,8 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="adee0fbeb0db336b1d2c25316242b1551" name="adee0fbeb0db336b1d2c25316242b1551"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adee0fbeb0db336b1d2c25316242b1551">&#9670;&#160;</a></span>print() <span class="overload">[1/16]</span></h2>
+<a id="a68ce1900a9151bf0ddcfdcd08d762760" name="a68ce1900a9151bf0ddcfdcd08d762760"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68ce1900a9151bf0ddcfdcd08d762760">&#9670;&#160;</a></span>print() <span class="overload">[1/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1024,326 +1024,7 @@ template&lt;typename EnumerationType &gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a filesystem path as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The filesystem path to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The filesystem path as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="ae53dbe222d33c8b70657589453d94e59" name="ae53dbe222d33c8b70657589453d94e59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae53dbe222d33c8b70657589453d94e59">&#9670;&#160;</a></span>print() <span class="overload">[2/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::int16_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 16-bit integer number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 16-bit integer number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 16-bit integer number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a3ea6889946a5678cdf28158c01eaaaf7" name="a3ea6889946a5678cdf28158c01eaaaf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ea6889946a5678cdf28158c01eaaaf7">&#9670;&#160;</a></span>print() <span class="overload">[3/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::int32_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 32-bit integer number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 32-bit integer number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 32-bit integer number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a89e50684dc7f6109f091b5dcfb182210" name="a89e50684dc7f6109f091b5dcfb182210"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89e50684dc7f6109f091b5dcfb182210">&#9670;&#160;</a></span>print() <span class="overload">[4/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 64-bit integer number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 64-bit integer number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 64-bit integer number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a4d9b486a406200fcd8bd974f71e9147b" name="a4d9b486a406200fcd8bd974f71e9147b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d9b486a406200fcd8bd974f71e9147b">&#9670;&#160;</a></span>print() <span class="overload">[5/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::int8_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints an 8-bit integer number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 8-bit integer number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 8-bit integer number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a5329075d5f5bdfc631dd8e4f7944444f" name="a5329075d5f5bdfc631dd8e4f7944444f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5329075d5f5bdfc631dd8e4f7944444f">&#9670;&#160;</a></span>print() <span class="overload">[6/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::string &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a string of text as-is. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The string of text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a6cb10fac7b0f4c39c947e3967b335e0a" name="a6cb10fac7b0f4c39c947e3967b335e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6cb10fac7b0f4c39c947e3967b335e0a">&#9670;&#160;</a></span>print() <span class="overload">[7/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::string_view &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a string view as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The string view to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The string view as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a0d86d9079a72790605dd108135ada577" name="a0d86d9079a72790605dd108135ada577"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d86d9079a72790605dd108135ada577">&#9670;&#160;</a></span>print() <span class="overload">[8/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::uint16_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 16-bit natural number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 16-bit natural number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 16-bit natural number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a01163546614296b764c37a6ad7b716c2" name="a01163546614296b764c37a6ad7b716c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01163546614296b764c37a6ad7b716c2">&#9670;&#160;</a></span>print() <span class="overload">[9/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::uint32_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 32-bit natural number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 32-bit natural number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 32-bit natural number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a8ae623c8d98027b4f54aadd1882bdaea" name="a8ae623c8d98027b4f54aadd1882bdaea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ae623c8d98027b4f54aadd1882bdaea">&#9670;&#160;</a></span>print() <span class="overload">[10/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::uint64_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints a 64-bit natural number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 64-bit natural number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 64-bit natural number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="a82c9672a09d6b074fbfe0f0d41635616" name="a82c9672a09d6b074fbfe0f0d41635616"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82c9672a09d6b074fbfe0f0d41635616">&#9670;&#160;</a></span>print() <span class="overload">[11/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
-          <td>(</td>
-          <td class="paramtype">const ::std::uint8_t &amp;&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Prints an 8-bit natural number as a string of text. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 8-bit natural number to print. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The 8-bit natural number as a printed string of text. </dd></dl>
-
-</div>
-</div>
-<a id="acbe02bbcd0c44aa3ba8436bb41ebc575" name="acbe02bbcd0c44aa3ba8436bb41ebc575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbe02bbcd0c44aa3ba8436bb41ebc575">&#9670;&#160;</a></span>print() <span class="overload">[12/16]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">::std::string lector::print </td>
+          <td class="memname">std::string lector::print </td>
           <td>(</td>
           <td class="paramtype">const bool &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1363,8 +1044,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a31288f21069b9213dc4932181bb22c53" name="a31288f21069b9213dc4932181bb22c53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31288f21069b9213dc4932181bb22c53">&#9670;&#160;</a></span>print() <span class="overload">[13/16]</span></h2>
+<a id="ae6fb0abd1928b3bce3f2b52c100d424e" name="ae6fb0abd1928b3bce3f2b52c100d424e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6fb0abd1928b3bce3f2b52c100d424e">&#9670;&#160;</a></span>print() <span class="overload">[2/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1372,7 +1053,7 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::print </td>
+          <td class="memname">std::string lector::print </td>
           <td>(</td>
           <td class="paramtype">const double &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1392,8 +1073,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="acc64ae4221c9369bc3eb98892d2ff97b" name="acc64ae4221c9369bc3eb98892d2ff97b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc64ae4221c9369bc3eb98892d2ff97b">&#9670;&#160;</a></span>print() <span class="overload">[14/16]</span></h2>
+<a id="a1534171f3dbe33b8107153c299fd6efa" name="a1534171f3dbe33b8107153c299fd6efa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1534171f3dbe33b8107153c299fd6efa">&#9670;&#160;</a></span>print() <span class="overload">[3/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1401,7 +1082,7 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::print </td>
+          <td class="memname">std::string lector::print </td>
           <td>(</td>
           <td class="paramtype">const float &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1421,8 +1102,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ac5ef82a74eff6167a09e9faa9ff9074f" name="ac5ef82a74eff6167a09e9faa9ff9074f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5ef82a74eff6167a09e9faa9ff9074f">&#9670;&#160;</a></span>print() <span class="overload">[15/16]</span></h2>
+<a id="a4d61f145f673297d480eb63fdcd1b8cd" name="a4d61f145f673297d480eb63fdcd1b8cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d61f145f673297d480eb63fdcd1b8cd">&#9670;&#160;</a></span>print() <span class="overload">[4/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1430,7 +1111,7 @@ template&lt;&gt; </div>
 template&lt;&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::print </td>
+          <td class="memname">std::string lector::print </td>
           <td>(</td>
           <td class="paramtype">const long double &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1450,8 +1131,327 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="afd1943886db2a251ba96ab1166a4ca21" name="afd1943886db2a251ba96ab1166a4ca21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd1943886db2a251ba96ab1166a4ca21">&#9670;&#160;</a></span>print() <span class="overload">[16/16]</span></h2>
+<a id="a00593d7486bd391c7e53923514cd3764" name="a00593d7486bd391c7e53923514cd3764"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00593d7486bd391c7e53923514cd3764">&#9670;&#160;</a></span>print() <span class="overload">[5/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a filesystem path as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The filesystem path to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The filesystem path as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a8169b85e94cbe1246511d6a97db11e6e" name="a8169b85e94cbe1246511d6a97db11e6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8169b85e94cbe1246511d6a97db11e6e">&#9670;&#160;</a></span>print() <span class="overload">[6/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::int16_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 16-bit integer number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 16-bit integer number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 16-bit integer number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a6fe7bc268904bf08ea8776ea233f568b" name="a6fe7bc268904bf08ea8776ea233f568b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fe7bc268904bf08ea8776ea233f568b">&#9670;&#160;</a></span>print() <span class="overload">[7/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::int32_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 32-bit integer number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 32-bit integer number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 32-bit integer number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a51666b7893c2fb3335bdc9d9e6ab06dc" name="a51666b7893c2fb3335bdc9d9e6ab06dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51666b7893c2fb3335bdc9d9e6ab06dc">&#9670;&#160;</a></span>print() <span class="overload">[8/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 64-bit integer number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 64-bit integer number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 64-bit integer number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a67170ba70c11fb56a3489f065e96d8ab" name="a67170ba70c11fb56a3489f065e96d8ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67170ba70c11fb56a3489f065e96d8ab">&#9670;&#160;</a></span>print() <span class="overload">[9/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::int8_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints an 8-bit integer number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 8-bit integer number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 8-bit integer number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a904fc005701a9530e3ba82e67b077bc8" name="a904fc005701a9530e3ba82e67b077bc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a904fc005701a9530e3ba82e67b077bc8">&#9670;&#160;</a></span>print() <span class="overload">[10/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a string of text as-is. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string of text. </dd></dl>
+
+</div>
+</div>
+<a id="aa296cbe158b6795e9cb779b024985961" name="aa296cbe158b6795e9cb779b024985961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa296cbe158b6795e9cb779b024985961">&#9670;&#160;</a></span>print() <span class="overload">[11/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a string view as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The string view to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string view as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a828e54037a13a5c83784b8ea1de89a87" name="a828e54037a13a5c83784b8ea1de89a87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a828e54037a13a5c83784b8ea1de89a87">&#9670;&#160;</a></span>print() <span class="overload">[12/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 16-bit natural number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 16-bit natural number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 16-bit natural number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a18a281edca11cf417eb6ebbdf4d85f3d" name="a18a281edca11cf417eb6ebbdf4d85f3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18a281edca11cf417eb6ebbdf4d85f3d">&#9670;&#160;</a></span>print() <span class="overload">[13/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 32-bit natural number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 32-bit natural number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 32-bit natural number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="adaaaae024acea3e6e8c299a4f598ba0f" name="adaaaae024acea3e6e8c299a4f598ba0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaaaae024acea3e6e8c299a4f598ba0f">&#9670;&#160;</a></span>print() <span class="overload">[14/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::uint64_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints a 64-bit natural number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 64-bit natural number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 64-bit natural number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a0e4a9a59d7406d1ae0e2cf2f4fcc9a93" name="a0e4a9a59d7406d1ae0e2cf2f4fcc9a93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e4a9a59d7406d1ae0e2cf2f4fcc9a93">&#9670;&#160;</a></span>print() <span class="overload">[15/16]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::print </td>
+          <td>(</td>
+          <td class="paramtype">const std::uint8_t &amp;&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prints an 8-bit natural number as a string of text. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The 8-bit natural number to print. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The 8-bit natural number as a printed string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a14ab972766e198d66923e65faaed57ba" name="a14ab972766e198d66923e65faaed57ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14ab972766e198d66923e65faaed57ba">&#9670;&#160;</a></span>print() <span class="overload">[16/16]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1459,7 +1459,7 @@ template&lt;&gt; </div>
 template&lt;typename Type &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::print </td>
+          <td class="memname">std::string lector::print </td>
           <td>(</td>
           <td class="paramtype">const Type &amp;&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1469,7 +1469,7 @@ template&lt;typename Type &gt; </div>
 </div><div class="memdoc">
 
 <p>Prints a value of a specific type as a string of text. </p>
-<p>Prints a value of a specific type as a string of text. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type; otherwise, the type must be streamable with the &lt;&lt; output stream operator.</p>
+<p>Prints a value of a specific type as a string of text. If the type is an enumeration type, it must define a specialization of the <a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type; otherwise, the type must be streamable with the &lt;&lt; output stream operator.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">Type</td><td>The type of the value to print. </td></tr>
@@ -1486,8 +1486,8 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a99cd02e36122cf980043b636cd73242c" name="a99cd02e36122cf980043b636cd73242c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99cd02e36122cf980043b636cd73242c">&#9670;&#160;</a></span>print_enumeration()</h2>
+<a id="a2e485bdacc529d35c78a74e95ff5a065" name="a2e485bdacc529d35c78a74e95ff5a065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e485bdacc529d35c78a74e95ff5a065">&#9670;&#160;</a></span>print_enumeration()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1498,7 +1498,7 @@ template&lt;typename EnumerationType &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr ::std::string_view lector::print_enumeration </td>
+          <td class="memname">constexpr std::string_view lector::print_enumeration </td>
           <td>(</td>
           <td class="paramtype">const EnumerationType&#160;</td>
           <td class="paramname"><em>value</em></td><td>)</td>
@@ -1512,7 +1512,7 @@ template&lt;typename EnumerationType &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type. </p>
+<p>Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">EnumerationType</td><td>The enumeration type. </td></tr>
@@ -1529,22 +1529,22 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="af68a5eeacabe37deb305b4343721dd02" name="af68a5eeacabe37deb305b4343721dd02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af68a5eeacabe37deb305b4343721dd02">&#9670;&#160;</a></span>wrap()</h2>
+<a id="ad3dbae2688050c8117b86b38afdfaaa7" name="ad3dbae2688050c8117b86b38afdfaaa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3dbae2688050c8117b86b38afdfaaa7">&#9670;&#160;</a></span>wrap()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::vector&lt;::std::string &gt; lector::wrap </td>
+          <td class="memname">std::vector&lt; std::string &gt; lector::wrap </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>line_length</em>&#160;</td>
         </tr>
         <tr>
@@ -1573,22 +1573,22 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="a240b9422ac0f565c8c229fe4a0b3fa0a" name="a240b9422ac0f565c8c229fe4a0b3fa0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a240b9422ac0f565c8c229fe4a0b3fa0a">&#9670;&#160;</a></span>wrap_and_left_align()</h2>
+<a id="a44bd330c9016a93ce6be338042e52d9c" name="a44bd330c9016a93ce6be338042e52d9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44bd330c9016a93ce6be338042e52d9c">&#9670;&#160;</a></span>wrap_and_left_align()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">::std::string lector::wrap_and_left_align </td>
+          <td class="memname">std::string lector::wrap_and_left_align </td>
           <td>(</td>
-          <td class="paramtype">const ::std::string_view&#160;</td>
+          <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::std::size_t&#160;</td>
+          <td class="paramtype">const std::size_t&#160;</td>
           <td class="paramname"><em>line_length</em>&#160;</td>
         </tr>
         <tr>
@@ -1618,18 +1618,26 @@ template&lt;typename EnumerationType &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a4a1e3e4a87c4a5d975caf6e2c58112ca" name="a4a1e3e4a87c4a5d975caf6e2c58112ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a1e3e4a87c4a5d975caf6e2c58112ca">&#9670;&#160;</a></span>Names</h2>
+<a id="a1323f11a0134e8de8f3d0ed1dd5c4f08" name="a1323f11a0134e8de8f3d0ed1dd5c4f08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1323f11a0134e8de8f3d0ed1dd5c4f08">&#9670;&#160;</a></span>Names</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr ::std::array&lt;<a class="el" href="namespacelector.html#a77e376256ed001a26a13a29ce24ae24e">::lector::Name</a>&lt;Type&gt;, 0UL&gt; lector::Names {}</td>
+          <td class="memname">constexpr std::array&lt;<a class="el" href="namespacelector.html#a6b08d941e7c891a747eb7677103f9075">lector::Name</a>&lt;Type&gt;, 0UL&gt; lector::Names {}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Map of canonical printed names to their corresponding values of a specified type. </p>
@@ -1642,18 +1650,26 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="ad392f17c284e9503c6d428a3b0c9c14b" name="ad392f17c284e9503c6d428a3b0c9c14b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad392f17c284e9503c6d428a3b0c9c14b">&#9670;&#160;</a></span>Spellings</h2>
+<a id="a5db2d43984e13b9ffcbe08263a1ea427" name="a5db2d43984e13b9ffcbe08263a1ea427"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db2d43984e13b9ffcbe08263a1ea427">&#9670;&#160;</a></span>Spellings</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr ::std::array&lt;<a class="el" href="namespacelector.html#ab068269df97785985a43c25c4113da58">::lector::Spelling</a>&lt;Type&gt;, 0UL&gt; lector::Spellings {}</td>
+          <td class="memname">constexpr std::array&lt;<a class="el" href="namespacelector.html#a755f5c78ba0732b13de9eb82234026af">lector::Spelling</a>&lt;Type&gt;, 0UL&gt; lector::Spellings {}</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Map of spellings to their corresponding values of a specified type. </p>

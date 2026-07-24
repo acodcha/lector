@@ -93,7 +93,7 @@
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">  }</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">execution</a>() &lt;&lt; std::endl;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1Argument.html#acad8e1d10f8825d95cec5a1f38bcb513">execution</a>() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::filesystem::path&amp; output_directory_path{</div>
 <div class="line">    arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
@@ -107,10 +107,10 @@
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasslector_1_1Argument_html"><div class="ttname"><a href="classlector_1_1Argument.html">lector::Argument</a></div><div class="ttdoc">A command line argument, including its label, value type, keys, description, importance,...</div><div class="ttdef"><b>Definition</b> arguments.hpp:85</div></div>
-<div class="ttc" id="aclasslector_1_1Argument_html_a98298aa6f5932b701d9f810f860946e9"><div class="ttname"><a href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">lector::Argument::execution</a></div><div class="ttdeci">::std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:264</div></div>
-<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:468</div></div>
-<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:393</div></div>
+<div class="ttc" id="aclasslector_1_1Argument_html"><div class="ttname"><a href="classlector_1_1Argument.html">lector::Argument</a></div><div class="ttdoc">A command line argument, including its label, value type, keys, description, importance,...</div><div class="ttdef"><b>Definition</b> arguments.hpp:84</div></div>
+<div class="ttc" id="aclasslector_1_1Argument_html_acad8e1d10f8825d95cec5a1f38bcb513"><div class="ttname"><a href="classlector_1_1Argument.html#acad8e1d10f8825d95cec5a1f38bcb513">lector::Argument::execution</a></div><div class="ttdeci">std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:263</div></div>
+<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:467</div></div>
+<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:392</div></div>
 </div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
 <p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.</p>
 <p>The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form <code>key value</code> or as inline key-value pairs of the form <code>key=value</code>. It can also handle keys that contain arbitrary characters.</p>
@@ -146,8 +146,8 @@
 </div><!-- fragment --><p>The Lector library is modular:</p>
 <ul>
 <li>The file <code>&lt;<a class="el" href="arguments_8hpp_source.html">lector/arguments.hpp</a>&gt;</code> defines the <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, value type, keys, description, importance,...">lector::Argument</a></code> and <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> classes and the <code><a class="el" href="structlector_1_1Configuration.html" title="Configuration of the help information of a collection of command line arguments.">lector::Configuration</a></code> data structure, as demonstrated in the <a class="el" href="index.html#introduction">§1. Introduction</a> section. See the <a class="el" href="index.html#user_guide_arguments">§3.1. User Guide: Arguments</a> section for usage.</li>
-<li>The file <code>&lt;<a class="el" href="parse_8hpp_source.html">lector/parse.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
-<li>The file <code>&lt;<a class="el" href="print_8hpp_source.html">lector/print.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
+<li>The file <code>&lt;<a class="el" href="parse_8hpp_source.html">lector/parse.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#adc2cdd2c404638159678f4f5b08d4b58" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
+<li>The file <code>&lt;<a class="el" href="print_8hpp_source.html">lector/print.hpp</a>&gt;</code> defines the <code><a class="el" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> utility function. See the <a class="el" href="index.html#user_guide_enumerations">§3.3 User Guide: Enumerations</a> section for usage.</li>
 <li>The file <code>&lt;<a class="el" href="text_8hpp_source.html">lector/text.hpp</a>&gt;</code> defines general-purpose utilities for manipulating strings of text; these utilities are used by the <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> class.</li>
 </ul>
 <p>All of the Lector library's contents are cleanly encapsulated within the <code>lector::</code> namespace.</p>
@@ -295,9 +295,9 @@
 <p>Once all arguments have been defined, the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection.">lector::Arguments::parse()</a></code> method can be used to parse <code>argc</code> and <code>argv</code>. For example:</p>
 <div class="fragment"><div class="line">arguments.parse(argc, argv);</div>
 </div><!-- fragment --><p>This populates all arguments with their parsed values and performs strict error checking. See the <a class="el" href="index.html#user_guide_error_checking">§3.5. User Guide: Error Checking</a> section for details.</p>
-<p>Help information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method. For example:</p>
+<p>Help information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method. For example:</p>
 <div class="fragment"><div class="line">std::cout &lt;&lt; arguments.help() &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method. For example:</p>
+</div><!-- fragment --><p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method. For example:</p>
 <div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.execution() &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
@@ -307,16 +307,16 @@
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Help, bool&gt;</a>&amp; help{arguments.get&lt;Label::Help&gt;()};</div>
 </div><!-- fragment --><p>Each <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, value type, keys, description, importance,...">lector::Argument</a></code> object exposes a rich public interface. Commonly-used interface members of <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, value type, keys, description, importance,...">lector::Argument</a></code> include:</p>
 <ul>
-<li><code><a class="el" href="classlector_1_1Argument.html#a7b92a6101d401f56bf4df946ee659c84" title="Importance of this command line argument. Required arguments must be provided by the user,...">lector::Argument::importance()</a></code> returns either <code><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7ab651efdb98a5d6bd2b3935d0c3f4a5e2" title="The command line argument is required; it must be provided by the user.">lector::Importance::Required</a></code> or <code><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7aebb061953c0454b2c8ee7b0ac615ebcd" title="The command line argument is optional; it may or may not be provided by the user.">lector::Importance::Optional</a></code>, as appropriate for the argument.</li>
-<li><code><a class="el" href="classlector_1_1Argument.html#addf274cd243a8f481ca674645f71c383" title="Default value of this command line argument. Only relevant for optional non-boolean arguments....">lector::Argument::default_value()</a></code> returns a <code>std::optional</code> that contains the argument's default value, if any.</li>
-<li><code><a class="el" href="classlector_1_1Argument.html#a6b4f72f6e6a0fdbf83401981efa8a5cc" title="Parsed value of this command line argument. Set when this command line argument is parsed.">lector::Argument::parsed_value()</a></code> returns a <code>std::optional</code> that contains the argument's value parsed from the command line, if any.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#a44949901f3653784dcab539fe5574e25" title="Importance of this command line argument. Required arguments must be provided by the user,...">lector::Argument::importance()</a></code> returns either <code><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65ab651efdb98a5d6bd2b3935d0c3f4a5e2" title="The command line argument is required; it must be provided by the user.">lector::Importance::Required</a></code> or <code><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65aebb061953c0454b2c8ee7b0ac615ebcd" title="The command line argument is optional; it may or may not be provided by the user.">lector::Importance::Optional</a></code>, as appropriate for the argument.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#a0291aadd85b231b6cf04255dc78114bc" title="Default value of this command line argument. Only relevant for optional non-boolean arguments....">lector::Argument::default_value()</a></code> returns a <code>std::optional</code> that contains the argument's default value, if any.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#a849a9038e6fb306834590e9dff464b02" title="Parsed value of this command line argument. Set when this command line argument is parsed.">lector::Argument::parsed_value()</a></code> returns a <code>std::optional</code> that contains the argument's value parsed from the command line, if any.</li>
 <li><code><a class="el" href="classlector_1_1Argument.html#af8002396b0305a043ee40764344e7c18" title="Value of this command line argument. Returns the parsed value if it exists; otherwise,...">lector::Argument::parsed_or_default_value()</a></code> returns argument's parsed value if it exists, or its default value otherwise.</li>
 </ul>
 <p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_command_line"></a>
 §3.2. User Guide: Command Line</h2>
 <p>The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section.</p>
-<p>A common use case is to define a <code>--help</code> command line option that uses the <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method to display the help information of the collection of command line arguments:</p>
+<p>A common use case is to define a <code>--help</code> command line option that uses the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method to display the help information of the collection of command line arguments:</p>
 <div class="fragment"><div class="line">path/to/my_application --help</div>
 </div><!-- fragment --><div class="fragment"><div class="line">My Application</div>
 <div class="line"> </div>
@@ -331,14 +331,14 @@
 <div class="line">-h, --help                            Display this help information and exit. Optional.</div>
 <div class="line"> </div>
 <div class="line">Additional notes about my application.</div>
-</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::help(80)</code> would format its output to 80-character lines.</p>
-<p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
+</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::help(80)</code> would format its output to 80-character lines.</p>
+<p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
 <div class="fragment"><div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
 <div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
-</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::execution(80)</code> would format its output to 80-character lines.</p>
+</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::execution(80)</code> would format its output to 80-character lines.</p>
 <p>Inline key-value pairs of the form <code>key=value</code> are also supported:</p>
 <div class="fragment"><div class="line">path/to/my_application --output_directory=/some/path --iterations=200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
@@ -366,7 +366,7 @@
 </div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_enumerations"></a>
 §3.3. User Guide: Enumerations</h2>
-<p>Enumerations can be used as argument types, but require specializing the <code><a class="el" href="namespacelector.html#a4a1e3e4a87c4a5d975caf6e2c58112ca" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a></code> and <code><a class="el" href="namespacelector.html#ad392f17c284e9503c6d428a3b0c9c14b" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a></code> constants for their values. For example:</p>
+<p>Enumerations can be used as argument types, but require specializing the <code><a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a></code> and <code><a class="el" href="namespacelector.html#a5db2d43984e13b9ffcbe08263a1ea427" title="Map of spellings to their corresponding values of a specified type.">lector::Spellings</a></code> constants for their values. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#ifndef MY_PROJECT_SHAPE_HPP</span></div>
 <div class="line"><span class="preprocessor">#define MY_PROJECT_SHAPE_HPP</span></div>
 <div class="line"> </div>
@@ -411,7 +411,7 @@
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_SHAPE_HPP</span></div>
 <div class="ttc" id="anamespacelector_html"><div class="ttname"><a href="namespacelector.html">lector</a></div><div class="ttdoc">The Lector library's namespace.</div><div class="ttdef"><b>Definition</b> arguments.hpp:45</div></div>
-</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Shape</code> enumeration. For example:</p>
+</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#adc2cdd2c404638159678f4f5b08d4b58" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Shape</code> enumeration. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -420,7 +420,7 @@
 <div class="line"><span class="preprocessor">#include &quot;my_project/shape.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">  <span class="keyword">const</span> std::string printed_triangle{<a class="code hl_function" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a>(my_project::Shape::Triangle)};</div>
+<div class="line">  <span class="keyword">const</span> std::string printed_triangle{<a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(my_project::Shape::Triangle)};</div>
 <div class="line">  assert(printed_triangle == <span class="stringliteral">&quot;Triangle&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::optional&lt;my_project::Shape&gt; parsed_triangle{</div>
@@ -434,7 +434,7 @@
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacelector_html_afd1943886db2a251ba96ab1166a4ca21"><div class="ttname"><a href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a></div><div class="ttdeci">::std::string print(const Type &amp;value)</div><div class="ttdoc">Prints a value of a specific type as a string of text.</div><div class="ttdef"><b>Definition</b> print.hpp:307</div></div>
+<div class="ttc" id="anamespacelector_html_a14ab972766e198d66923e65faaed57ba"><div class="ttname"><a href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a></div><div class="ttdeci">std::string print(const Type &amp;value)</div><div class="ttdoc">Prints a value of a specific type as a string of text.</div><div class="ttdef"><b>Definition</b> print.hpp:307</div></div>
 </div><!-- fragment --><p>The <code>my_project::Shape</code> enumeration can also be used as a command line argument. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
@@ -456,7 +456,7 @@
 <div class="line">  <span class="keyword">const</span> my_project::Shape shape{</div>
 <div class="line">    arguments.get&lt;Label::FavoriteShape&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Your favorite shape is: &quot;</span> &lt;&lt; <a class="code hl_function" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a>(shape) &lt;&lt; std::endl;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Your favorite shape is: &quot;</span> &lt;&lt; <a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(shape) &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
@@ -490,7 +490,7 @@
 <div class="line">}  <span class="comment">// namespace my_project</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#endif  </span><span class="comment">// MY_PROJECT_POINT_HPP</span></div>
-</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#a88fd78bdabda7347f448eaa0f1d816e8" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Point</code> data structure. For example:</p>
+</div><!-- fragment --><p>With the above definitions, the <code><a class="el" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba" title="Prints a value of a specific type as a string of text.">lector::print()</a></code> and <code><a class="el" href="namespacelector.html#adc2cdd2c404638159678f4f5b08d4b58" title="Parses a string of text into a value of a specific type. If the type is an enumeration type,...">lector::parse()</a></code> methods can now be used with the <code>my_project::Point</code> data structure. For example:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -499,7 +499,7 @@
 <div class="line"><span class="preprocessor">#include &quot;my_project/point.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">  <span class="keyword">const</span> std::string printed_point{<a class="code hl_function" href="namespacelector.html#afd1943886db2a251ba96ab1166a4ca21">lector::print</a>(my_project::Point{1.0, 2.0, 3.0})};</div>
+<div class="line">  <span class="keyword">const</span> std::string printed_point{<a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(my_project::Point{1.0, 2.0, 3.0})};</div>
 <div class="line">  assert(printed_point == <span class="stringliteral">&quot;1 2 3&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::optional&lt;my_project::Point&gt; parsed_point{</div>

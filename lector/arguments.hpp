@@ -45,7 +45,7 @@
 namespace lector {
 
 /// @brief Importance of a command line argument.
-enum class Importance : ::std::int8_t {
+enum class Importance : std::int8_t {
   /// @brief The command line argument is optional; it may or may not be provided by the user.
   Optional = 0,
 
@@ -55,25 +55,24 @@ enum class Importance : ::std::int8_t {
 
 /// @brief Specialization of the lector::Names constant for the lector::Importance enumeration.
 template <>
-inline constexpr ::std::array<::lector::Name<::lector::Importance>, 2> Names<::lector::Importance>{
+inline constexpr std::array<lector::Name<lector::Importance>, 2> Names<lector::Importance>{
   {
-   {::lector::Importance::Optional, "Optional"},
-   {::lector::Importance::Required, "Required"},
+   {lector::Importance::Optional, "Optional"},
+   {lector::Importance::Required, "Required"},
    }
 };
 
 /// @brief Specialization of the lector::Spellings constant for the lector::Importance enumeration.
 template <>
-inline constexpr ::std::array<::lector::Spelling<::lector::Importance>, 6>
-    Spellings<::lector::Importance>{
-      {
-       {"Optional", ::lector::Importance::Optional},
-       {"Required", ::lector::Importance::Required},
-       {"optional", ::lector::Importance::Optional},
-       {"required", ::lector::Importance::Required},
-       {"OPTIONAL", ::lector::Importance::Optional},
-       {"REQUIRED", ::lector::Importance::Required},
-       }
+inline constexpr std::array<lector::Spelling<lector::Importance>, 6> Spellings<lector::Importance>{
+  {
+   {"Optional", lector::Importance::Optional},
+   {"Required", lector::Importance::Required},
+   {"optional", lector::Importance::Optional},
+   {"required", lector::Importance::Required},
+   {"OPTIONAL", lector::Importance::Optional},
+   {"REQUIRED", lector::Importance::Required},
+   }
 };
 
 /// @brief A command line argument, including its label, value type, keys, description, importance,
@@ -96,10 +95,10 @@ public:
   /// @param[in] keys The keys that can be used to specify the command line argument.
   /// @param[in] description The description of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description)
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description)
     : keys_{keys}, description_{description},
-      importance_{::std::is_same_v<Type, bool> ? ::lector::Importance::Optional :
-                                                 ::lector::Importance::Required} {
+      importance_{
+        std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
     set_boolean_default();
     validate_keys();
     validate_description();
@@ -111,10 +110,10 @@ public:
   /// @param[in] description The description of the command line argument.
   /// @param[in] default_value The default value of the command line argument.
   /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const ::std::initializer_list<::std::string>& keys, const ::std::string& description,
+  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
            const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
-      importance_{::lector::Importance::Optional} {
+      importance_{lector::Importance::Optional} {
     validate_keys();
     validate_description();
     validate_default_value();
@@ -124,20 +123,20 @@ public:
   ~Argument() noexcept = default;
 
   /// @brief Copy constructor. Constructs a command line argument by copying another one.
-  Argument(const ::lector::Argument<LabelValue, Type>&) = default;
+  Argument(const lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
   /// @return This command line argument after the assignment.
-  ::lector::Argument<LabelValue, Type>& operator=(
-      const ::lector::Argument<LabelValue, Type>&) = default;
+  lector::Argument<LabelValue, Type>& operator=(
+      const lector::Argument<LabelValue, Type>&) = default;
 
   /// @brief Move constructor. Constructs a command line argument by moving another one.
-  Argument(::lector::Argument<LabelValue, Type>&&) noexcept = default;
+  Argument(lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this command line argument by moving another one.
   /// @return This command line argument after the assignment.
-  ::lector::Argument<LabelValue, Type>& operator=(
-      ::lector::Argument<LabelValue, Type>&&) noexcept = default;
+  lector::Argument<LabelValue, Type>& operator=(
+      lector::Argument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Label of this command line argument. Used to uniquely identify this command line
   /// argument. Set at construction.
@@ -148,34 +147,34 @@ public:
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
   /// @return The keys that can be used to specify this command line argument.
-  [[nodiscard]] const ::std::vector<::std::string>& keys() const noexcept {
+  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
     return keys_;
   }
 
   /// @brief Description of this command line argument. Set at construction.
   /// @return The description of this command line argument.
-  [[nodiscard]] ::std::string_view description() const noexcept {
+  [[nodiscard]] std::string_view description() const noexcept {
     return description_;
   }
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
   /// @return The default value of this command line argument.
-  [[nodiscard]] const ::std::optional<Type>& default_value() const noexcept {
+  [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
     return default_value_;
   }
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
   /// @return The parsed value of this command line argument.
-  [[nodiscard]] const ::std::optional<Type>& parsed_value() const noexcept {
+  [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
     return parsed_value_;
   }
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
   /// @return The importance of this command line argument.
-  [[nodiscard]] ::lector::Importance importance() const noexcept {
+  [[nodiscard]] lector::Importance importance() const noexcept {
     return importance_;
   }
 
@@ -191,7 +190,7 @@ public:
     if (default_value_.has_value()) {
       return default_value_.value();
     }
-    throw ::std::logic_error(
+    throw std::logic_error(
         "No parsed or default value for argument '" + longest_key_with_value_type() + "'.");
   }
 
@@ -204,9 +203,9 @@ public:
   /// @brief Prints the longest key of this command line argument with its associated value type as
   /// a string.
   /// @return The string that contains the longest key and its associated value type.
-  [[nodiscard]] ::std::string longest_key_with_value_type() const {
-    ::std::string result{longest_key()};
-    const ::std::string type{value_type()};
+  [[nodiscard]] std::string longest_key_with_value_type() const {
+    std::string result{longest_key()};
+    const std::string type{value_type()};
     if (!type.empty()) {
       result.push_back(' ');
       result.append(type);
@@ -217,10 +216,10 @@ public:
   /// @brief Prints the keys and value type of this command line argument as a string of text.
   /// @return The string of text that contains the keys and value type of this command line
   /// argument.
-  [[nodiscard]] ::std::string keys_with_value_type() const {
-    ::std::string result;
-    for (::std::size_t index{0UL}; index < keys_.size(); ++index) {
-      const ::std::string type{value_type()};
+  [[nodiscard]] std::string keys_with_value_type() const {
+    std::string result;
+    for (std::size_t index{0UL}; index < keys_.size(); ++index) {
+      const std::string type{value_type()};
       result.append(keys_.at(index));
       if (!type.empty()) {
         result.push_back(' ');
@@ -237,11 +236,11 @@ public:
   /// usage information consists of this command line argument's longest key and value type,
   /// enclosed in square braces if this command line argument is optional.
   /// @return The string of text that contains the usage information of this command line argument.
-  [[nodiscard]] ::std::string usage() const {
+  [[nodiscard]] std::string usage() const {
     if (keys_.empty()) {
-      return ::std::string{};
+      return std::string{};
     }
-    if (importance() == ::lector::Importance::Optional) {
+    if (importance() == lector::Importance::Optional) {
       return "[" + longest_key_with_value_type() + "]";
     }
     return longest_key_with_value_type();
@@ -251,9 +250,9 @@ public:
   /// options information consist of this command line argument's keys, value type, and description.
   /// @return The string of text that contains the options information of this command line
   /// argument.
-  [[nodiscard]] ::std::string options() const {
+  [[nodiscard]] std::string options() const {
     if (keys_.empty() && description_.empty()) {
-      return ::std::string{};
+      return std::string{};
     }
     return keys_with_value_type() + "  " + description_;
   }
@@ -261,15 +260,15 @@ public:
   /// @brief Prints the execution of this command line argument as a string of text. The execution
   /// consists of this command line argument's longest key and parsed value, if any.
   /// @return The string of text that contains the execution of this command line argument.
-  [[nodiscard]] ::std::string execution() const {
-    if constexpr (::std::is_same_v<Type, bool>) {
+  [[nodiscard]] std::string execution() const {
+    if constexpr (std::is_same_v<Type, bool>) {
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
       }
       return "";
     } else {
       if (parsed_value_.has_value()) {
-        return longest_key() + " " + ::lector::print<Type>(parsed_value_.value());
+        return longest_key() + " " + lector::print<Type>(parsed_value_.value());
       }
       return "";
     }
@@ -280,7 +279,7 @@ private:
   /// Called by the constructor that does not specify a default value. Boolean arguments are always
   /// optional and always default to false.
   void set_boolean_default() {
-    if constexpr (::std::is_same_v<Type, bool>) {
+    if constexpr (std::is_same_v<Type, bool>) {
       default_value_ = false;
     }
   }
@@ -290,23 +289,23 @@ private:
   /// invalid.
   void validate_keys() const {
     if (keys_.empty()) {
-      throw ::std::logic_error("All arguments must each have at least one key.");
+      throw std::logic_error("All arguments must each have at least one key.");
     }
-    for (const ::std::string& key : keys_) {
+    for (const std::string& key : keys_) {
       if (key.empty()) {
         if (longest_key().empty()) {
-          throw ::std::logic_error("Arguments cannot have empty keys.");
+          throw std::logic_error("Arguments cannot have empty keys.");
         }
-        throw ::std::logic_error("Empty key in argument '" + longest_key_with_value_type()
-                                 + "'. Arguments cannot have empty keys.");
+        throw std::logic_error("Empty key in argument '" + longest_key_with_value_type()
+                               + "'. Arguments cannot have empty keys.");
       }
     }
-    const ::std::size_t keys_size{keys_.size()};
-    for (::std::size_t first{0UL}; first < keys_size; ++first) {
-      for (::std::size_t second{first + static_cast<::std::size_t>(1UL)}; second < keys_size;
+    const std::size_t keys_size{keys_.size()};
+    for (std::size_t first{0UL}; first < keys_size; ++first) {
+      for (std::size_t second{first + static_cast<std::size_t>(1UL)}; second < keys_size;
            ++second) {
         if (keys_[first] == keys_[second]) {
-          throw ::std::logic_error(
+          throw std::logic_error(
               "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
               + "'. Arguments cannot have duplicate keys.");
         }
@@ -318,8 +317,8 @@ private:
   /// @throws std::logic_error if this command line argument's description is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw ::std::logic_error("Empty description in argument '" + longest_key_with_value_type()
-                               + "'. All arguments must have descriptions.");
+      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+                             + "'. All arguments must have descriptions.");
     }
   };
 
@@ -328,8 +327,8 @@ private:
   /// @throws std::logic_error if this command line argument is boolean but specifies a default
   /// value.
   constexpr void validate_default_value() const {
-    if constexpr (::std::is_same_v<Type, bool>) {
-      throw ::std::logic_error(
+    if constexpr (std::is_same_v<Type, bool>) {
+      throw std::logic_error(
           "Specified default value for boolean argument '" + longest_key_with_value_type()
           + "'. Boolean arguments are always false by default and cannot specify default values.");
     }
@@ -337,17 +336,17 @@ private:
 
   /// @brief Prints the value type of this command line argument as a string of text.
   /// @return The string of text that contains the value type.
-  [[nodiscard]] constexpr ::std::string_view value_type() const {
-    if constexpr (::std::is_same_v<Type, bool>) {
+  [[nodiscard]] constexpr std::string_view value_type() const {
+    if constexpr (std::is_same_v<Type, bool>) {
       return "";
-    } else if constexpr (::std::numeric_limits<Type>::is_integer) {
+    } else if constexpr (std::numeric_limits<Type>::is_integer) {
       return "<number>";
-    } else if constexpr (::std::is_floating_point_v<Type>) {
+    } else if constexpr (std::is_floating_point_v<Type>) {
       return "<value>";
     } else if constexpr (
-        ::std::is_same_v<Type, ::std::string> || ::std::is_same_v<Type, ::std::string_view>) {
+        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
       return "<text>";
-    } else if constexpr (::std::is_same_v<Type, ::std::filesystem::path>) {
+    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
       return "<path>";
     } else {
       return "<value>";
@@ -357,12 +356,12 @@ private:
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
   /// @throws std::logic_error if this command line argument has no keys.
-  [[nodiscard]] const ::std::string& longest_key() const {
+  [[nodiscard]] const std::string& longest_key() const {
     if (keys_.empty()) {
-      throw ::std::logic_error("All arguments must each have at least one key.");
+      throw std::logic_error("All arguments must each have at least one key.");
     }
-    ::std::size_t longest_key_index{0UL};
-    for (::std::size_t index{1UL}; index < keys_.size(); ++index) {
+    std::size_t longest_key_index{0UL};
+    for (std::size_t index{1UL}; index < keys_.size(); ++index) {
       if (keys_[index].size() > keys_[longest_key_index].size()) {
         longest_key_index = index;
       }
@@ -371,22 +370,22 @@ private:
   }
 
   /// @brief Keys that can be used to specify this command line argument. Set at construction.
-  ::std::vector<::std::string> keys_;
+  std::vector<std::string> keys_;
 
   /// @brief Description of this command line argument. Set at construction.
-  ::std::string description_;
+  std::string description_;
 
   /// @brief Default value of this command line argument. Only relevant for optional non-boolean
   /// arguments. Set at construction.
-  ::std::optional<Type> default_value_;
+  std::optional<Type> default_value_;
 
   /// @brief Parsed value of this command line argument. Set when this command line argument is
   /// parsed.
-  ::std::optional<Type> parsed_value_;
+  std::optional<Type> parsed_value_;
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
   /// user, while optional arguments may or may not be provided by the user. Set at construction.
-  ::lector::Importance importance_{::lector::Importance::Required};
+  lector::Importance importance_{lector::Importance::Required};
 };
 
 /// @brief Configuration of the help information of a collection of command line arguments.
@@ -396,19 +395,19 @@ public:
   /// collection of command line arguments' help information is printed, this title appears first,
   /// before its usage information. Optional and empty by default, in which case no title is
   /// printed.
-  ::std::optional<::std::string> title{::std::nullopt};
+  std::optional<std::string> title{std::nullopt};
 
   /// @brief Description of the application whose command line arguments are to be parsed. When the
   /// collection of command line arguments' help information is printed, this description appears
   /// between its usage information and its options information. Optional and empty by default, in
   /// which case no description is printed.
-  ::std::optional<::std::string> description{::std::nullopt};
+  std::optional<std::string> description{std::nullopt};
 
   /// @brief Additional notes pertaining to the application whose command line arguments are to be
   /// parsed. When the collection of command line arguments' help information is printed, these
   /// notes appear last, after its options information. Optional and empty by default, in which case
   /// no notes are printed.
-  ::std::optional<::std::string> notes{::std::nullopt};
+  std::optional<std::string> notes{std::nullopt};
 };
 
 /// @brief Type trait used to extract a command line argument from a collection of command line
@@ -427,8 +426,8 @@ struct FindArgumentByLabel;
 /// @tparam ...OtherArgumentTypes The variadic list of argument types in the collection of command
 /// line arguments, excluding the command line argument to extract.
 template <auto Label, typename Type, typename... OtherArgumentTypes>
-struct FindArgumentByLabel<Label, ::lector::Argument<Label, Type>, OtherArgumentTypes...> {
-  using type = ::lector::Argument<Label, Type>;
+struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTypes...> {
+  using type = lector::Argument<Label, Type>;
 };
 
 /// @brief Type trait specialization used to extract a command line argument from a collection of
@@ -440,10 +439,10 @@ struct FindArgumentByLabel<Label, ::lector::Argument<Label, Type>, OtherArgument
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
-struct FindArgumentByLabel<Label, ::lector::Argument<OtherLabel, OtherType>,
+struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
                            RemainingArgumentTypes...>
     final {
-  using type = typename ::lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
+  using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
 /// @brief Data structure that validates at compilation time that a specified variadic list of types
@@ -474,15 +473,15 @@ public:
   /// @brief Constructor. Constructs a collection of command line arguments from a configuration
   /// data structure and a variadic list of command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
-  explicit Arguments(::lector::Configuration&& configuration, ArgumentTypes... arguments)
-    : configuration_{::std::move(configuration)}, arguments_{::std::move(arguments)...} {
+  explicit Arguments(lector::Configuration&& configuration, ArgumentTypes... arguments)
+    : configuration_{std::move(configuration)}, arguments_{std::move(arguments)...} {
     validate_keys();
   }
 
   /// @brief Constructor. Constructs a collection of command line arguments from a variadic list of
   /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
-  explicit Arguments(ArgumentTypes... arguments) : arguments_{::std::move(arguments)...} {
+  explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {
     validate_keys();
   }
 
@@ -491,23 +490,23 @@ public:
 
   /// @brief Copy constructor. Constructs a collection of command line argument by copying another
   /// one.
-  Arguments(const ::lector::Arguments<ArgumentTypes...>&) = default;
+  Arguments(const lector::Arguments<ArgumentTypes...>&) = default;
 
   /// @brief Copy assignment operator. Assigns this collection of command line argument by copying
   /// another one.
   /// @return This collection of command line argument after the assignment.
-  ::lector::Arguments<ArgumentTypes...>& operator=(
-      const ::lector::Arguments<ArgumentTypes...>&) = default;
+  lector::Arguments<ArgumentTypes...>& operator=(
+      const lector::Arguments<ArgumentTypes...>&) = default;
 
   /// @brief Move constructor. Constructs a collection of command line argument by moving another
   /// one.
-  Arguments(::lector::Arguments<ArgumentTypes...>&&) noexcept = default;
+  Arguments(lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   /// @brief Move assignment operator. Assigns this collection of command line argument by moving
   /// another one.
   /// @return This collection of command line argument after the assignment.
-  ::lector::Arguments<ArgumentTypes...>& operator=(
-      ::lector::Arguments<ArgumentTypes...>&&) noexcept = default;
+  lector::Arguments<ArgumentTypes...>& operator=(
+      lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   /// @brief Parses argc and argv to populate the parsed values of the command line arguments in
   /// this collection.
@@ -525,7 +524,7 @@ public:
   /// @brief Returns the executable path of this collection of command line arguments. If the
   /// command line arguments have not yet been parsed from argc and argv, this path is empty.
   /// @return The executable path of this collection of command line arguments.
-  [[nodiscard]] const ::std::filesystem::path& executable_path() const {
+  [[nodiscard]] const std::filesystem::path& executable_path() const {
     return executable_path_;
   }
 
@@ -534,8 +533,8 @@ public:
   /// @return The specified command line argument.
   template <auto Label>
   [[nodiscard]] const auto& get() const {
-    using Type = typename ::lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
-    return ::std::get<Type>(arguments_);
+    using Type = typename lector::FindArgumentByLabel<Label, ArgumentTypes...>::type;
+    return std::get<Type>(arguments_);
   }
 
   /// @brief Prints the usage information of this collection of command line arguments as a string
@@ -544,8 +543,8 @@ public:
   /// are printed first, followed by optional ones.
   /// @return The string of text that contains the usage information of this collection of command
   /// line arguments.
-  [[nodiscard]] ::std::string usage() const {
-    return usage(::std::numeric_limits<::std::size_t>::max());
+  [[nodiscard]] std::string usage() const {
+    return usage(std::numeric_limits<std::size_t>::max());
   }
 
   /// @brief Prints the usage information of this collection of command line arguments as a string
@@ -558,24 +557,24 @@ public:
   /// @return The string of text that contains the usage information of this collection of command
   /// line arguments.
   /// @throws std::invalid_argument if the desired line length is zero.
-  [[nodiscard]] ::std::string usage(const ::std::size_t line_length) const {
+  [[nodiscard]] std::string usage(const std::size_t line_length) const {
     validate_line_length(line_length);
-    ::std::string result;
+    std::string result;
     result.append(executable_path_.filename().string());
-    ::std::apply(
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == ::lector::Importance::Required) {
+            if (argument.importance() == lector::Importance::Required) {
               result.push_back(' ');
               result.append(argument.usage());
             }
           }());
         },
         arguments_);
-    ::std::apply(
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == ::lector::Importance::Optional) {
+            if (argument.importance() == lector::Importance::Optional) {
               result.push_back(' ');
               result.append(argument.usage());
             }
@@ -591,8 +590,8 @@ public:
   /// optional ones.
   /// @return The string of text that contains the options information of this collection of command
   /// line arguments.
-  [[nodiscard]] ::std::string options() const {
-    return options(::std::numeric_limits<::std::size_t>::max());
+  [[nodiscard]] std::string options() const {
+    return options(std::numeric_limits<std::size_t>::max());
   }
 
   /// @brief Prints the options information of this collection of command line argument as a string
@@ -605,27 +604,27 @@ public:
   /// @return The string of text that contains the options information of this collection of command
   /// line arguments.
   /// @throws std::invalid_argument if the desired line length is zero.
-  [[nodiscard]] ::std::string options(const ::std::size_t line_length) const {
+  [[nodiscard]] std::string options(const std::size_t line_length) const {
     validate_line_length(line_length);
     // Compute the text formatting dimensions.
-    constexpr ::std::size_t gutter_width{2UL};
-    const ::std::size_t maximum_first_column_width{
-      (line_length - gutter_width) / static_cast<::std::size_t>(2UL)};
-    const ::std::size_t maximum_length_of_keys_with_value_types_{
+    constexpr std::size_t gutter_width{2UL};
+    const std::size_t maximum_first_column_width{
+      (line_length - gutter_width) / static_cast<std::size_t>(2UL)};
+    const std::size_t maximum_length_of_keys_with_value_types_{
       maximum_length_of_keys_with_value_type()};
-    const ::std::size_t first_column_width{
-      ::std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_width)};
-    const ::std::size_t second_column_width{line_length - gutter_width - first_column_width};
+    const std::size_t first_column_width{
+      std::min(maximum_length_of_keys_with_value_types_, maximum_first_column_width)};
+    const std::size_t second_column_width{line_length - gutter_width - first_column_width};
     // Obtain the number of command line arguments.
-    constexpr ::std::size_t argument_count{::std::tuple_size_v<decltype(arguments_)>};
+    constexpr std::size_t argument_count{std::tuple_size_v<decltype(arguments_)>};
     // Iterate through the command line arguments and update the resulting string of text.
-    ::std::string result;
-    ::std::size_t argument_index{0UL};
-    ::std::apply(
+    std::string result;
+    std::size_t argument_index{0UL};
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == ::lector::Importance::Required) {
-              result.append(::lector::combine_and_left_align(
+            if (argument.importance() == lector::Importance::Required) {
+              result.append(lector::combine_and_left_align(
                   argument.keys_with_value_type(), first_column_width, argument.description(),
                   second_column_width));
               ++argument_index;
@@ -636,11 +635,11 @@ public:
           }());
         },
         arguments_);
-    ::std::apply(
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == ::lector::Importance::Optional) {
-              result.append(::lector::combine_and_left_align(
+            if (argument.importance() == lector::Importance::Optional) {
+              result.append(lector::combine_and_left_align(
                   argument.keys_with_value_type(), first_column_width, argument.description(),
                   second_column_width));
               ++argument_index;
@@ -659,8 +658,8 @@ public:
   /// information, description, options information, and notes.
   /// @return The string of text that contains the help information of this collection of command
   /// line arguments.
-  [[nodiscard]] ::std::string help() const {
-    return help(::std::numeric_limits<::std::size_t>::max());
+  [[nodiscard]] std::string help() const {
+    return help(std::numeric_limits<std::size_t>::max());
   }
 
   /// @brief Prints the help information of this collection of command line arguments as a string of
@@ -672,13 +671,13 @@ public:
   /// @return The string of text that contains the help information of this collection of command
   /// line arguments.
   /// @throws std::invalid_argument if the desired line length is zero.
-  [[nodiscard]] ::std::string help(const ::std::size_t line_length) const {
+  [[nodiscard]] std::string help(const std::size_t line_length) const {
     validate_line_length(line_length);
-    ::std::string result;
+    std::string result;
     if (configuration_.title.has_value() && !configuration_.title.value().empty()) {
-      result.append(::lector::wrap_and_left_align(configuration_.title.value(), line_length));
+      result.append(lector::wrap_and_left_align(configuration_.title.value(), line_length));
     }
-    const ::std::string usage_{::lector::wrap_and_left_align(usage(), line_length)};
+    const std::string usage_{lector::wrap_and_left_align(usage(), line_length)};
     if (!usage_.empty()) {
       if (!result.empty()) {
         result.push_back('\n');
@@ -692,9 +691,9 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(::lector::wrap_and_left_align(configuration_.description.value(), line_length));
+      result.append(lector::wrap_and_left_align(configuration_.description.value(), line_length));
     }
-    const ::std::string options_{options(line_length)};
+    const std::string options_{options(line_length)};
     if (!options_.empty()) {
       if (!result.empty()) {
         result.push_back('\n');
@@ -708,7 +707,7 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(::lector::wrap_and_left_align(configuration_.notes.value(), line_length));
+      result.append(lector::wrap_and_left_align(configuration_.notes.value(), line_length));
     }
     return result;
   }
@@ -718,8 +717,8 @@ public:
   /// corresponding parsed value, if any.
   /// @return The string of text that contains the execution of this collection of command line
   /// argument.
-  [[nodiscard]] ::std::string execution() const {
-    return execution(::std::numeric_limits<::std::size_t>::max());
+  [[nodiscard]] std::string execution() const {
+    return execution(std::numeric_limits<std::size_t>::max());
   }
 
   /// @brief Prints the execution of this collection of command line argument as a string of text.
@@ -731,10 +730,10 @@ public:
   /// @return The string of text that contains the execution of this collection of command line
   /// argument.
   /// @throws std::invalid_argument if the desired line length is zero.
-  [[nodiscard]] ::std::string execution(const ::std::size_t line_length) const {
+  [[nodiscard]] std::string execution(const std::size_t line_length) const {
     validate_line_length(line_length);
-    ::std::string printed_execution_arguments;
-    ::std::apply(
+    std::string printed_execution_arguments;
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
             const std::string argument_execution{argument.execution()};
@@ -748,7 +747,7 @@ public:
     if (printed_execution_arguments.empty()) {
       return executable_path_.string();
     }
-    return ::lector::wrap_and_left_align(
+    return lector::wrap_and_left_align(
         executable_path_.string() + " " + printed_execution_arguments, line_length);
   }
 
@@ -756,7 +755,7 @@ private:
   /// @brief Default length to use when wrapping lines when printing usage information, options
   /// information, or help information as a string of text. The actual line length may be longer if
   /// the string of text contains very long words whose lengths exceed the desired line length.
-  static constexpr ::std::size_t default_line_length_{80UL};
+  static constexpr std::size_t default_line_length_{80UL};
 
   /// @brief The best matching argument for a command line argument token during parsing. The best
   /// matching argument is the argument with the longest matching key, and if there are multiple
@@ -767,14 +766,14 @@ private:
   struct BestArgument final {
     /// @brief Index of this argument in the tuple of arguments. Used to identify this argument
     /// during parsing.
-    ::std::size_t index{0UL};
+    std::size_t index{0UL};
 
     /// @brief Length of the longest matching key for this argument. Used to avoid shadowing when
     /// multiple arguments have keys that are prefixes of each other. For example, if one argument
     /// has the key "key" and another argument has the key "key_long", then the argument with the
     /// key "key_long" should be matched for the command line argument "key_long=value", not the
     /// argument with the key "key".
-    ::std::size_t key_length{0UL};
+    std::size_t key_length{0UL};
 
     /// @brief Whether this argument was matched by an inline key of the form "key=value" rather
     /// than a whitespace-separated key-value pair of the form "key value". Used to prefer
@@ -789,9 +788,9 @@ private:
   /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
   /// than zero.
   /// @throws std::invalid_argument if the desired line length is zero.
-  static void validate_line_length(const ::std::size_t line_length) {
-    if (line_length <= static_cast<::std::size_t>(0UL)) {
-      throw ::std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+  static void validate_line_length(const std::size_t line_length) {
+    if (line_length <= static_cast<std::size_t>(0UL)) {
+      throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
     }
   }
 
@@ -814,12 +813,12 @@ private:
   /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
   /// encountered.
   void parse_arguments(const int argc, char* argv[]) {
-    const ::std::size_t count{static_cast<::std::size_t>(argc)};
-    for (::std::size_t argv_index{1UL}; argv_index < count; ++argv_index) {
-      const ::std::string_view token{argv[argv_index]};
+    const std::size_t count{static_cast<std::size_t>(argc)};
+    for (std::size_t argv_index{1UL}; argv_index < count; ++argv_index) {
+      const std::string_view token{argv[argv_index]};
       const BestArgument best_argument{find_best_argument(token)};
-      ::std::size_t current_index{0UL};
-      ::std::apply(
+      std::size_t current_index{0UL};
+      std::apply(
           [&](auto&... argument) {
             (..., [&]() {
               if (current_index == best_argument.index) {
@@ -836,14 +835,14 @@ private:
   /// @param[in] token The command line argument token to match.
   /// @return The best matching argument.
   /// @throws std::invalid_argument if an unknown argument is encountered.
-  [[nodiscard]] BestArgument find_best_argument(const ::std::string_view token) const {
-    ::std::optional<BestArgument> best;
-    ::std::size_t argument_index{0UL};
-    ::std::apply(
+  [[nodiscard]] BestArgument find_best_argument(const std::string_view token) const {
+    std::optional<BestArgument> best;
+    std::size_t argument_index{0UL};
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            for (const ::std::string& argument_key : argument.keys()) {
-              const ::std::optional<BestArgument> exact_match{
+            for (const std::string& argument_key : argument.keys()) {
+              const std::optional<BestArgument> exact_match{
                 try_exact_match(token, argument_index, argument_key)};
               if (exact_match.has_value()) {
                 if (!best.has_value() || exact_match->key_length > best->key_length
@@ -852,7 +851,7 @@ private:
                 }
                 continue;
               }
-              const ::std::optional<BestArgument> inline_match{
+              const std::optional<BestArgument> inline_match{
                 try_inline_match<decltype(argument)>(token, argument_index, argument_key)};
               if (inline_match.has_value()
                   && (!best.has_value() || inline_match->key_length > best->key_length)) {
@@ -864,7 +863,7 @@ private:
         },
         arguments_);
     if (!best.has_value()) {
-      throw ::std::invalid_argument("Unknown argument '" + ::std::string{token} + "'.");
+      throw std::invalid_argument("Unknown argument '" + std::string{token} + "'.");
     }
     return best.value();
   }
@@ -876,13 +875,13 @@ private:
   /// @param[in] argument_key The argument key against which to compare.
   /// @return A populated lector::Arguments::BestArgument data structure if the specified token is
   /// an exact match for the key, or std::nullopt otherwise.
-  [[nodiscard]] static ::std::optional<BestArgument> try_exact_match(
-      const ::std::string_view token, const ::std::size_t argument_index,
-      const ::std::string_view argument_key) noexcept {
+  [[nodiscard]] static std::optional<BestArgument> try_exact_match(
+      const std::string_view token, const std::size_t argument_index,
+      const std::string_view argument_key) noexcept {
     if (token == argument_key) {
       return BestArgument{argument_index, argument_key.size(), false};
     }
-    return ::std::nullopt;
+    return std::nullopt;
   }
 
   /// @brief Checks whether a token contains an inline match of an argument's key of the form
@@ -895,20 +894,20 @@ private:
   /// @return A populated lector::Arguments::BestArgument data structure if the specified token
   /// contains an inline match for the key, or std::nullopt otherwise.
   template <typename Argument>
-  [[nodiscard]] static ::std::optional<BestArgument> try_inline_match(
-      const ::std::string_view token, const ::std::size_t argument_index,
-      const ::std::string_view argument_key) noexcept {
-    using ArgumentType = typename ::std::decay_t<Argument>::ValueType;
+  [[nodiscard]] static std::optional<BestArgument> try_inline_match(
+      const std::string_view token, const std::size_t argument_index,
+      const std::string_view argument_key) noexcept {
+    using ArgumentType = typename std::decay_t<Argument>::ValueType;
     // Inline matching is strictly disabled for boolean arguments because they are key-only flags
     // that do not have values.
-    if constexpr (!::std::is_same_v<ArgumentType, bool>) {
+    if constexpr (!std::is_same_v<ArgumentType, bool>) {
       if (token.size() > argument_key.size()
           && token.compare(0, argument_key.size(), argument_key) == 0
           && token[argument_key.size()] == '=') {
         return BestArgument{argument_index, argument_key.size(), true};
       }
     }
-    return ::std::nullopt;
+    return std::nullopt;
   }
 
   /// @brief Populates an argument with its parsed value. Called by
@@ -925,25 +924,25 @@ private:
   /// @throws std::invalid_argument if the parsed value is invalid for this argument type.
   template <typename Argument>
   static void populate_argument(Argument& argument, const BestArgument& best_argument,
-                                const int argc, char* argv[], ::std::size_t& argv_index) {
+                                const int argc, char* argv[], std::size_t& argv_index) {
     if (argument.parsed_value().has_value()) {
-      throw ::std::invalid_argument(
+      throw std::invalid_argument(
           "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
     }
-    using Type = typename ::std::decay_t<Argument>::ValueType;
-    if constexpr (::std::is_same_v<Type, bool>) {
+    using Type = typename std::decay_t<Argument>::ValueType;
+    if constexpr (std::is_same_v<Type, bool>) {
       // Boolean arguments are key-only flags; their presence implies true.
       argument.set_parsed_value(true);
     } else {
       // This is a non-boolean argument. Extract and parse its value.
-      const ::std::string raw_value{extract_raw_value(
+      const std::string raw_value{extract_raw_value(
           best_argument, argument.longest_key_with_value_type(), argc, argv, argv_index)};
-      const ::std::optional<Type> parsed_value{::lector::parse<Type>(raw_value)};
+      const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
       if (parsed_value.has_value()) {
         argument.set_parsed_value(parsed_value.value());
       } else {
-        throw ::std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                      + argument.longest_key_with_value_type() + "'.");
+        throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                    + argument.longest_key_with_value_type() + "'.");
       }
     }
   }
@@ -961,23 +960,23 @@ private:
   /// @return The extracted raw string value.
   /// @throws std::invalid_argument if the command line arguments are missing the value for this
   /// best argument.
-  [[nodiscard]] static ::std::string extract_raw_value(
+  [[nodiscard]] static std::string extract_raw_value(
       const BestArgument& best_argument,
-      const ::std::string& best_argument_longest_key_with_value_type, const int argc, char* argv[],
-      ::std::size_t& argv_index) {
-    const ::std::string_view token{argv[argv_index]};
+      const std::string& best_argument_longest_key_with_value_type, const int argc, char* argv[],
+      std::size_t& argv_index) {
+    const std::string_view token{argv[argv_index]};
     if (best_argument.is_inline) {
       // The token contains an inline value of the form "key=value". Extract the last portion of the
       // token.
-      return ::std::string{token.substr(best_argument.key_length + 1)};
+      return std::string{token.substr(best_argument.key_length + 1)};
     }
-    if (argv_index + 1 < static_cast<::std::size_t>(argc)) {
+    if (argv_index + 1 < static_cast<std::size_t>(argc)) {
       // The token is a standalone value of the form "key", and the next token is of the form
       // "value". Advance the argv index to consume the next argv element that contains the value.
       ++argv_index;
-      return ::std::string{argv[argv_index]};
+      return std::string{argv[argv_index]};
     }
-    throw ::std::invalid_argument(
+    throw std::invalid_argument(
         "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
   }
 
@@ -985,12 +984,12 @@ private:
   /// the constructor.
   /// @throws std::logic_error if the same key is duplicated across two or more arguments.
   void validate_keys() const {
-    ::std::unordered_set<::std::string> unique_keys;
-    ::std::apply(
+    std::unordered_set<std::string> unique_keys;
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            for (const ::std::string& key : argument.keys()) {
-              const ::std::pair<::std::unordered_set<::std::string>::const_iterator, bool> result{
+            for (const std::string& key : argument.keys()) {
+              const std::pair<std::unordered_set<std::string>::const_iterator, bool> result{
                 unique_keys.insert(key)};
               if (!result.second) {
                 throw std::logic_error("Duplicate key '" + key + "' across two arguments.");
@@ -1005,12 +1004,12 @@ private:
   /// and argv. Called by the lector::Arguments::parse method.
   /// @throws std::invalid_argument if one or more required arguments are missing a parsed value.
   void validate_all_required_arguments_have_parsed_values() const {
-    ::std::apply(
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            if (argument.importance() == ::lector::Importance::Required
+            if (argument.importance() == lector::Importance::Required
                 && !argument.parsed_value().has_value()) {
-              throw ::std::invalid_argument(
+              throw std::invalid_argument(
                   "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }
           }());
@@ -1022,13 +1021,13 @@ private:
   /// arguments in this collection of command line arguments.
   /// @return The maximum length of the printed keys and value type across all arguments in this
   /// collection.
-  [[nodiscard]] ::std::size_t maximum_length_of_keys_with_value_type() const {
-    ::std::size_t maximum_length{0UL};
-    ::std::apply(
+  [[nodiscard]] std::size_t maximum_length_of_keys_with_value_type() const {
+    std::size_t maximum_length{0UL};
+    std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            const ::std::size_t length{::lector::code_points(argument.keys_with_value_type())};
-            maximum_length = ::std::max(maximum_length, length);
+            const std::size_t length{lector::code_points(argument.keys_with_value_type())};
+            maximum_length = std::max(maximum_length, length);
           }());
         },
         arguments_);
@@ -1036,14 +1035,14 @@ private:
   }
 
   /// @brief Configuration of the help information of this collection of command line arguments.
-  ::lector::Configuration configuration_{};
+  lector::Configuration configuration_{};
 
   /// @brief Variadic collection of command line arguments.
-  ::std::tuple<ArgumentTypes...> arguments_;
+  std::tuple<ArgumentTypes...> arguments_;
 
   /// @brief Executable path of this collection of command line arguments. If the command line
   /// arguments have not yet been parsed from argc and argv, this path is empty.
-  ::std::filesystem::path executable_path_;
+  std::filesystem::path executable_path_;
 };
 
 }  // namespace lector
