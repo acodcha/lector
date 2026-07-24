@@ -95,15 +95,15 @@
 <div class="line"> </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1Argument.html#a98298aa6f5932b701d9f810f860946e9">execution</a>() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> std::filesystem::path&amp; output_directory{</div>
+<div class="line">  <span class="keyword">const</span> std::filesystem::path&amp; output_directory_path{</div>
 <div class="line">    arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The output directory is: &quot;</span> &lt;&lt; output_directory &lt;&lt; std::endl;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The output directory is: &quot;</span> &lt;&lt; output_directory_path &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">const</span> std::int32_t iterations{</div>
+<div class="line">  <span class="keyword">const</span> std::int32_t iterations_count{</div>
 <div class="line">    arguments.get&lt;Label::Iterations&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
-<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The number of iterations is: &quot;</span> &lt;&lt; iterations &lt;&lt; std::endl;</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The number of iterations is: &quot;</span> &lt;&lt; iterations_count &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
@@ -261,6 +261,7 @@
 <li><a class="el" href="index.html#user_guide_data_structures">§3.4. Data Structures</a></li>
 <li><a class="el" href="index.html#user_guide_error_checking">§3.5. Error Checking</a></li>
 </ul>
+<p>See also <a href="https://acodcha.github.io/lector">https://acodcha.github.io/lector</a> for the Lector library's complete documentation.</p>
 <p><a class="el" href="index.html">(Back to Top)</a></p>
 <h2><a class="anchor" id="user_guide_arguments"></a>
 §3.1. User Guide: Arguments</h2>
@@ -298,24 +299,29 @@
 <div class="fragment"><div class="line">std::cout &lt;&lt; arguments.help() &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method. For example:</p>
 <div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.execution() &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p>See the <a class="el" href="index.html#user_guide_command_line">§3.2. User Guide: Command Line</a> section for details.</p>
-<p>Individual arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method using the argument's enumeration value as a template. For example:</p>
-<div class="fragment"><div class="line"><span class="keyword">const</span> std::filesystem::path&amp; output_directory{</div>
-<div class="line">  arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">const</span> std::int32_t iterations{</div>
-<div class="line">  arguments.get&lt;Label::Iterations&gt;().parsed_or_default_value()};</div>
-</div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
+</div><!-- fragment --><p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
+<div class="line">  arguments.get&lt;Label::OutputDirectory&gt;()};</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>&amp; iterations{</div>
+<div class="line">  arguments.get&lt;Label::Iterations&gt;()};</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Help, bool&gt;</a>&amp; help{arguments.get&lt;Label::Help&gt;()};</div>
+</div><!-- fragment --><p>Each <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, value type, keys, description, importance,...">lector::Argument</a></code> object exposes a rich public interface. Commonly-used interface members of <code><a class="el" href="classlector_1_1Argument.html" title="A command line argument, including its label, value type, keys, description, importance,...">lector::Argument</a></code> include:</p>
+<ul>
+<li><code><a class="el" href="classlector_1_1Argument.html#a7b92a6101d401f56bf4df946ee659c84" title="Importance of this command line argument. Required arguments must be provided by the user,...">lector::Argument::importance()</a></code> returns either <code><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7ab651efdb98a5d6bd2b3935d0c3f4a5e2" title="The command line argument is required; it must be provided by the user.">lector::Importance::Required</a></code> or <code><a class="el" href="namespacelector.html#a1ed1a054cc4dc6aa8e36ef896dc3f2a7aebb061953c0454b2c8ee7b0ac615ebcd" title="The command line argument is optional; it may or may not be provided by the user.">lector::Importance::Optional</a></code>, as appropriate for the argument.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#addf274cd243a8f481ca674645f71c383" title="Default value of this command line argument. Only relevant for optional non-boolean arguments....">lector::Argument::default_value()</a></code> returns a <code>std::optional</code> that contains the argument's default value, if any.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#a6b4f72f6e6a0fdbf83401981efa8a5cc" title="Parsed value of this command line argument. Set when this command line argument is parsed.">lector::Argument::parsed_value()</a></code> returns a <code>std::optional</code> that contains the argument's value parsed from the command line, if any.</li>
+<li><code><a class="el" href="classlector_1_1Argument.html#af8002396b0305a043ee40764344e7c18" title="Value of this command line argument. Returns the parsed value if it exists; otherwise,...">lector::Argument::parsed_or_default_value()</a></code> returns argument's parsed value if it exists, or its default value otherwise.</li>
+</ul>
+<p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_command_line"></a>
 §3.2. User Guide: Command Line</h2>
-<p>The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage, options, and execution information of your program. The following examples use the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section.</p>
-<p>Display help information via the <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method:</p>
-<div class="fragment"><div class="line">path/to/my_project_main --help</div>
-<div class="line"> </div>
-<div class="line">My Application</div>
+<p>The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section.</p>
+<p>A common use case is to define a <code>--help</code> command line option that uses the <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method to display the help information of the collection of command line arguments:</p>
+<div class="fragment"><div class="line">path/to/my_application --help</div>
+</div><!-- fragment --><div class="fragment"><div class="line">My Application</div>
 <div class="line"> </div>
 <div class="line">Usage:</div>
-<div class="line">my_project_main --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
+<div class="line">my_application --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
 <div class="line"> </div>
 <div class="line">Description of my application.</div>
 <div class="line"> </div>
@@ -325,38 +331,36 @@
 <div class="line">-h, --help                            Display this help information and exit. Optional.</div>
 <div class="line"> </div>
 <div class="line">Additional notes about my application.</div>
-</div><!-- fragment --><p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
-<div class="fragment"><div class="line">path/to/my_project_main --output_directory /some/path --iterations 200</div>
-<div class="line"> </div>
-<div class="line">Execution:</div>
-<div class="line">path/to/my_project_main --output_directory /some/path --iterations 200</div>
+</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a07891828818d1d099171ff61d41f6e1c" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::help(80)</code> would format its output to 80-character lines.</p>
+<p>Display execution information via the <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
+<div class="fragment"><div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
+<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
-</div><!-- fragment --><p>Inline key-value pairs of the form <code>key=value</code> are also supported:</p>
-<div class="fragment"><div class="line">path/to/my_project_main --output_directory=/some/path --iterations=200</div>
-<div class="line"> </div>
-<div class="line">Execution:</div>
-<div class="line">path/to/my_project_main --output_directory /some/path --iterations 200</div>
+</div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a304e6cd9229cc830e44afe6b642918d2" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::execution(80)</code> would format its output to 80-character lines.</p>
+<p>Inline key-value pairs of the form <code>key=value</code> are also supported:</p>
+<div class="fragment"><div class="line">path/to/my_application --output_directory=/some/path --iterations=200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
+<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
-</div><!-- fragment --><p>Arguments can be defined with multiple keys. For example:</p>
-<div class="fragment"><div class="line">path/to/my_project_main -o /some/path -i=200</div>
-<div class="line"> </div>
-<div class="line">Execution:</div>
-<div class="line">path/to/my_project_main --output_directory /some/path --iterations 200</div>
+</div><!-- fragment --><p>Arguments can be defined with multiple keys. For example, the <code>Label::OutputDirectory</code> argument lists the <code>-o</code> and <code>--output_directory</code> keys, and the <code>Label::Iterations</code> argument lists the <code>-i</code> and <code>--iterations</code> keys. Any of these keys can be used on the command line:</p>
+<div class="fragment"><div class="line">path/to/my_application -o /some/path -i=200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
+<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
-</div><!-- fragment --><p>Keys do not need to start with a hyphen (<code>-</code>); keys can be composed of any characters, including equal signs (<code>=</code>). For example, the following definitions are unusual but perfectly valid:</p>
+</div><!-- fragment --><p>Furthermore, keys do not need to start with a hyphen (<code>-</code>) and can be composed of any characters. For example, the following definitions are unusual but valid:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">    {<span class="stringliteral">&quot;o&quot;</span>, <span class="stringliteral">&quot;=o&quot;</span>, <span class="stringliteral">&quot;__out_dir__&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Argument.html">lector::Argument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
 <div class="line">    {<span class="stringliteral">&quot;=i=&quot;</span>, <span class="stringliteral">&quot;_it_&quot;</span>, <span class="stringliteral">&quot;==iterations==&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100}</div>
 <div class="line">};</div>
-</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_project_main __out_dir__ /some/path =i= 200</div>
-<div class="line"> </div>
-<div class="line">Execution:</div>
-<div class="line">path/to/my_project_main __out_dir__ /some/path ==iterations== 200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application __out_dir__ /some/path =i= 200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
+<div class="line">path/to/my_application __out_dir__ /some/path ==iterations== 200</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
 </div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
@@ -548,11 +552,11 @@
 </ul>
 <p>The following checks are performed when parsing command line arguments. These examples use the code from the §1. Introduction section:</p>
 <ul>
-<li>Missing required arguments. For example, <code>path/to/my_project_main --iterations 200</code> throws an exception because the required argument <code>--output_directory &lt;path&gt;</code> is missing.</li>
-<li>Duplicated arguments. For example, <code>path/to/my_project_main --output_directory /tmp --output_directory /home</code> throws an exception because the argument <code>--output_directory &lt;path&gt;</code> is duplicated.</li>
-<li>Invalid argument values. For example, <code>path/to/my_project_main --output_directory /tmp --iterations hello</code> throws an exception because <code>hello</code> is not a valid value for the argument <code>--iterations &lt;number&gt;</code>.</li>
-<li>Arguments missing values. For example, <code>path/to/my_project_main --output_directory /tmp --iterations</code> throws an exception because the argument <code>--iterations &lt;number&gt;</code> is missing its value.</li>
-<li>Unknown arguments. For example, <code>path/to/my_project_main --output_directory /tmp --unknown</code> throws an exception because the argument <code>--unknown</code> is unknown.</li>
+<li>Missing required arguments. For example, <code>path/to/my_application --iterations 200</code> throws an exception because the required argument <code>--output_directory &lt;path&gt;</code> is missing.</li>
+<li>Duplicated arguments. For example, <code>path/to/my_application --output_directory /tmp --output_directory /home</code> throws an exception because the argument <code>--output_directory &lt;path&gt;</code> is duplicated.</li>
+<li>Invalid argument values. For example, <code>path/to/my_application --output_directory /tmp --iterations hello</code> throws an exception because <code>hello</code> is not a valid value for the argument <code>--iterations &lt;number&gt;</code>.</li>
+<li>Arguments missing values. For example, <code>path/to/my_application --output_directory /tmp --iterations</code> throws an exception because the argument <code>--iterations &lt;number&gt;</code> is missing its value.</li>
+<li>Unknown arguments. For example, <code>path/to/my_application --output_directory /tmp --unknown</code> throws an exception because the argument <code>--unknown</code> is unknown.</li>
 </ul>
 <p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h1><a class="anchor" id="developer_guide"></a>

@@ -48,15 +48,15 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 
-  const std::filesystem::path& output_directory{
+  const std::filesystem::path& output_directory_path{
     arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
 
-  std::cout << "The output directory is: " << output_directory << std::endl;
+  std::cout << "The output directory is: " << output_directory_path << std::endl;
 
-  const std::int32_t iterations{
+  const std::int32_t iterations_count{
     arguments.get<Label::Iterations>().parsed_or_default_value()};
 
-  std::cout << "The number of iterations is: " << iterations << std::endl;
+  std::cout << "The number of iterations is: " << iterations_count << std::endl;
 
   return EXIT_SUCCESS;
 }
@@ -260,6 +260,8 @@ This section presents a comprehensive guide for using the Lector library in your
 - [§3.4. Data Structures](#34-user-guide-data-structures)
 - [§3.5. Error Checking](#35-user-guide-error-checking)
 
+See also <https://acodcha.github.io/lector> for the Lector library's complete documentation.
+
 [(Back to Top)](#lector)
 
 ### §3.1. User Guide: Arguments
@@ -320,33 +322,46 @@ Execution information can be obtained via the  `lector::Arguments::execution()` 
 std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 ```
 
-See the [§3.2. Command Line](#32-user-guide-command-line) section for details.
-
-Individual arguments can be fetched via the `lector::Arguments::get()` method using the argument's enumeration value as a template. For example:
+Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 
 ```cpp
-const std::filesystem::path& output_directory{
-  arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
-
-const std::int32_t iterations{
-  arguments.get<Label::Iterations>().parsed_or_default_value()};
+const lector::Argument<Label::OutputDirectory, std::filesystem::path>& output_directory{
+  arguments.get<Label::OutputDirectory>()};
 ```
+
+```cpp
+const lector::Argument<Label::Iterations, std::int32_t>& iterations{
+  arguments.get<Label::Iterations>()};
+```
+
+```cpp
+const lector::Argument<Label::Help, bool>& help{arguments.get<Label::Help>()};
+```
+
+Each `lector::Argument` object exposes a rich public interface. Commonly-used interface members of `lector::Argument` include:
+
+- `lector::Argument::importance()` returns either `lector::Importance::Required` or `lector::Importance::Optional`, as appropriate for the argument.
+- `lector::Argument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
+- `lector::Argument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
+- `lector::Argument::parsed_or_default_value()` returns argument's parsed value if it exists, or its default value otherwise.
 
 [(Back to User Guide)](#3-user-guide)
 
 ### §3.2. User Guide: Command Line
 
-The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage, options, and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
+The Lector library allows you to flexibly run your program from the command line and to conveniently display the usage and execution information of your program. The following examples use the code from the [§1. Introduction](#1-introduction) section.
 
-Display help information via the `lector::Arguments::help()` method:
+A common use case is to define a `--help` command line option that uses the `lector::Arguments::help()` method to display the help information of the collection of command line arguments:
+
+```bash
+path/to/my_application --help
+```
 
 ```text
-path/to/my_project_main --help
-
 My Application
 
 Usage:
-my_project_main --output_directory <path> [--iterations <number>] [--help]
+my_application --output_directory <path> [--iterations <number>] [--help]
 
 Description of my application.
 
@@ -358,40 +373,50 @@ Options:
 Additional notes about my application.
 ```
 
+The `lector::Arguments::help()` method can take an optional line length to format its output. For example, `lector::Arguments::help(80)` would format its output to 80-character lines.
+
 Display execution information via the  `lector::Arguments::execution()` method:
 
-```text
-path/to/my_project_main --output_directory /some/path --iterations 200
+```bash
+path/to/my_application --output_directory /some/path --iterations 200
+```
 
+```text
 Execution:
-path/to/my_project_main --output_directory /some/path --iterations 200
+path/to/my_application --output_directory /some/path --iterations 200
 The output directory is: /some/path
 The number of iterations is: 200
 ```
+
+The `lector::Arguments::execution()` method can take an optional line length to format its output. For example, `lector::Arguments::execution(80)` would format its output to 80-character lines.
 
 Inline key-value pairs of the form `key=value` are also supported:
 
-```text
-path/to/my_project_main --output_directory=/some/path --iterations=200
+```bash
+path/to/my_application --output_directory=/some/path --iterations=200
+```
 
+```text
 Execution:
-path/to/my_project_main --output_directory /some/path --iterations 200
+path/to/my_application --output_directory /some/path --iterations 200
 The output directory is: /some/path
 The number of iterations is: 200
 ```
 
-Arguments can be defined with multiple keys. For example:
+Arguments can be defined with multiple keys. For example, the `Label::OutputDirectory` argument lists the `-o` and `--output_directory` keys, and the `Label::Iterations` argument lists the `-i` and `--iterations` keys. Any of these keys can be used on the command line:
+
+```bash
+path/to/my_application -o /some/path -i=200
+```
 
 ```text
-path/to/my_project_main -o /some/path -i=200
-
 Execution:
-path/to/my_project_main --output_directory /some/path --iterations 200
+path/to/my_application --output_directory /some/path --iterations 200
 The output directory is: /some/path
 The number of iterations is: 200
 ```
 
-Keys do not need to start with a hyphen (`-`); keys can be composed of any characters, including equal signs (`=`). For example, the following definitions are unusual but perfectly valid:
+Furthermore, keys do not need to start with a hyphen (`-`) and can be composed of any characters. For example, the following definitions are unusual but valid:
 
 ```cpp
 lector::Arguments arguments{
@@ -402,11 +427,13 @@ lector::Arguments arguments{
 };
 ```
 
-```text
-path/to/my_project_main __out_dir__ /some/path =i= 200
+```bash
+path/to/my_application __out_dir__ /some/path =i= 200
+```
 
+```text
 Execution:
-path/to/my_project_main __out_dir__ /some/path ==iterations== 200
+path/to/my_application __out_dir__ /some/path ==iterations== 200
 The output directory is: /some/path
 The number of iterations is: 200
 ```
@@ -626,11 +653,11 @@ The following checks are performed when defining command line arguments:
 
 The following checks are performed when parsing command line arguments. These examples use the code from the [§1. Introduction](#1-introduction) section:
 
-- Missing required arguments. For example, `path/to/my_project_main --iterations 200` throws an exception because the required argument `--output_directory <path>` is missing.
-- Duplicated arguments. For example, `path/to/my_project_main --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
-- Invalid argument values. For example, `path/to/my_project_main --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
-- Arguments missing values. For example, `path/to/my_project_main --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
-- Unknown arguments. For example, `path/to/my_project_main --output_directory /tmp --unknown` throws an exception because the argument `--unknown` is unknown.
+- Missing required arguments. For example, `path/to/my_application --iterations 200` throws an exception because the required argument `--output_directory <path>` is missing.
+- Duplicated arguments. For example, `path/to/my_application --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
+- Invalid argument values. For example, `path/to/my_application --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
+- Arguments missing values. For example, `path/to/my_application --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
+- Unknown arguments. For example, `path/to/my_application --output_directory /tmp --unknown` throws an exception because the argument `--unknown` is unknown.
 
 [(Back to User Guide)](#3-user-guide)
 
