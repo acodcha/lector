@@ -3463,12 +3463,12 @@ TEST(Lector, ReadmeSection1Basic) {
     ::std::cout << arguments.help() << ::std::endl;
   } else {
     ::std::cout << "Execution:" << std::endl << arguments.execution() << ::std::endl;
-    const ::std::filesystem::path& output_directory{
+    const ::std::filesystem::path& output_directory_path{
       arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value()};
-    ::std::cout << "The output directory is: " << output_directory << ::std::endl;
-    const ::std::int32_t iterations{
+    ::std::cout << "The output directory is: " << output_directory_path << ::std::endl;
+    const ::std::int32_t iterations_count{
       arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
-    ::std::cout << "The number of iterations is: " << iterations << ::std::endl;
+    ::std::cout << "The number of iterations is: " << iterations_count << ::std::endl;
   }
   EXPECT_FALSE(arguments.get<::test::Label::Help>().parsed_or_default_value());
   const ::std::string expected_usage{
@@ -3517,12 +3517,12 @@ TEST(Lector, ReadmeSection1Help) {
     ::std::cout << arguments.help() << ::std::endl;
   } else {
     ::std::cout << "Execution:" << std::endl << arguments.execution() << ::std::endl;
-    const ::std::filesystem::path& output_directory{
+    const ::std::filesystem::path& output_directory_path{
       arguments.get<::test::Label::OutputDirectory>().parsed_or_default_value()};
-    ::std::cout << "The output directory is: " << output_directory << ::std::endl;
-    const ::std::int32_t iterations{
+    ::std::cout << "The output directory is: " << output_directory_path << ::std::endl;
+    const ::std::int32_t iterations_count{
       arguments.get<::test::Label::Iterations>().parsed_or_default_value()};
-    ::std::cout << "The number of iterations is: " << iterations << ::std::endl;
+    ::std::cout << "The number of iterations is: " << iterations_count << ::std::endl;
   }
   EXPECT_TRUE(arguments.get<::test::Label::Help>().parsed_or_default_value());
   const ::std::string expected_usage{
@@ -3561,7 +3561,8 @@ TEST(Lector, ReadmeSection32) {
         {"=i=", "_it_", "==iterations=="},
     "Number of iterations. Optional. Default 100.", 100)
   };
-  const ::test::Command command{"/path/to/executable", "=o", "/path/to/directory", "_it_", "200"};
+  const ::test::Command command{
+    "/path/to/executable", "__out_dir__", "/path/to/directory", "=i=", "200"};
   arguments.parse(command.argc(), command.argv());
   const ::std::string expected_usage{"executable __out_dir__ <path> [==iterations== <number>]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
