@@ -137,6 +137,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a26eea2188d2bff251878c7af773e2555" id="r_a26eea2188d2bff251878c7af773e2555"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">combine_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
 <tr class="memdesc:a26eea2188d2bff251878c7af773e2555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
 <tr class="separator:a26eea2188d2bff251878c7af773e2555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a112973a754b75482025b50b640621994" id="r_a112973a754b75482025b50b640621994"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a112973a754b75482025b50b640621994">hyphenate</a> (std::string &amp;result, std::string_view &amp;remaining_word, std::size_t &amp;remaining_word_length, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a112973a754b75482025b50b640621994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to process a word at the start of a line. If the word exceeds the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the result, and updates the remaining word and length variables.  <br /></td></tr>
+<tr class="separator:a112973a754b75482025b50b640621994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
 <tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
 <tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -483,13 +486,65 @@ template&lt;typename Type &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_width</td><td>The desired width of the first column. The actual width may be larger if the string of text contains very long words whose lengths exceed the desired column width. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_width</td><td>The desired width of the first column. Very long words whose length exceeds this width are hyphenated. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">second_column_text</td><td>The string of text for the second column. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_width</td><td>The desired width of the second column. The actual width may be larger if the string of text contains very long words whose lengths exceed the desired column width. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_width</td><td>The desired width of the second column. Very long words whose length exceeds this width are hyphenated. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The vector of strings that contains the combined text. </dd></dl>
+
+</div>
+</div>
+<a id="a112973a754b75482025b50b640621994" name="a112973a754b75482025b50b640621994"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a112973a754b75482025b50b640621994">&#9670;&#160;</a></span>hyphenate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t lector::hyphenate </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view &amp;&#160;</td>
+          <td class="paramname"><em>remaining_word</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
+          <td class="paramname"><em>remaining_word_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper function to process a word at the start of a line. If the word exceeds the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the result, and updates the remaining word and length variables. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">result</td><td>The string to append the text to. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">remaining_word</td><td>The remaining portion of the word being processed. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">remaining_word_length</td><td>The number of code points remaining in the word. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The new current line length (0 if a newline was appended, otherwise the length of the word). </dd></dl>
 
 </div>
 </div>
@@ -1605,7 +1660,7 @@ template&lt;typename EnumerationType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1649,7 +1704,7 @@ template&lt;typename EnumerationType &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to left-align and wrap. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. The actual line length may be longer if the string of text contains very long words whose lengths exceed the desired line length. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
   </table>
   </dd>
 </dl>
