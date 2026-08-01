@@ -94,10 +94,10 @@ TEST(Lector, CombineAndLeftAlignTypical) {
 
 TEST(Lector, CombineAndLeftAlignVeryLongWord) {
   EXPECT_EQ(
-      lector::combine_and_left_align("  Very_long_word.  ", 1, "  And this is the second column.  ", 12),
-      "Very_long_word.  And this is\n"
-      "                 the second\n"
-      "                 column.");
+      lector::combine_and_left_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      "Very_lon-  And this is\n"
+      "g_word.    the second\n"
+      "           column.");
 }
 
 TEST(Lector, JoinAndLeftAlignEmpty) {
@@ -224,7 +224,7 @@ TEST(Lector, WrapAndLeftAlignInvalid) {
 TEST(Lector, WrapAndLeftAlignMaximumLineLengthSmall) {
   const std::string expected{"The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog."};
   EXPECT_EQ(lector::wrap_and_left_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
-                                        static_cast<std::size_t>(1UL)),
+                                        static_cast<std::size_t>(5UL)),
             expected);
 }
 
@@ -243,7 +243,8 @@ TEST(Lector, WrapAndLeftAlignUtf8Characters) {
 }
 
 TEST(Lector, WrapAndLeftAlignVeryLongWord) {
-  const std::string expected{"The word\nsupercalifragilisticexpialidocious\nis my favorite word!"};
+  const std::string expected{
+    "The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\nmy\nfavorite\nword!"};
   EXPECT_EQ(lector::wrap_and_left_align(
                 "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
                 static_cast<std::size_t>(10UL)),
@@ -293,7 +294,7 @@ TEST(Lector, WrapToVectorMaximumLineLengthSmall) {
   const std::vector<std::string> expected{
     "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."};
   EXPECT_EQ(lector::wrap("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
-                         static_cast<std::size_t>(1UL)),
+                         static_cast<std::size_t>(5UL)),
             expected);
 }
 
@@ -312,7 +313,7 @@ TEST(Lector, WrapToVectorUtf8Characters) {
 
 TEST(Lector, WrapToVectorVeryLongWord) {
   const std::vector<std::string> expected{
-    "The word", "supercalifragilisticexpialidocious", "is my favorite word!"};
+    "The word", "supercali-", "fragilist-", "icexpiali-", "docious is", "my", "favorite", "word!"};
   EXPECT_EQ(
       lector::wrap("  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
                    static_cast<std::size_t>(10UL)),

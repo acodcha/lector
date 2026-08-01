@@ -125,86 +125,70 @@ namespace lector {
   return longest_word_length;
 }
 
-/// @brief Wraps a string of text to a line length and returns the result as a vector of strings
-/// that contains one string per line.
-/// @param[in] text The string of text to wrap.
-/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
-/// than zero. The actual line length may be longer if the string of text contains very long words
-/// whose lengths exceed the desired line length.
-/// @return The resulting vector of strings that contains one string per line.
-/// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::vector<std::string> wrap(
-    const std::string_view text, const std::size_t line_length) {
-  // Validate the specified maximum line length.
-  if (line_length <= static_cast<std::size_t>(0UL)) {
-    throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+/// @brief Helper function to process a word at the start of a line. If the word exceeds
+/// the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the
+/// result, and updates the remaining word and length variables.
+/// @param[in,out] result The string to append the text to.
+/// @param[in,out] remaining_word The remaining portion of the word being processed.
+/// @param[in,out] remaining_word_length The number of code points remaining in the word.
+/// @param[in] line_length The desired line length to use when wrapping.
+/// @return The new current line length (0 if a newline was appended, otherwise the length of the
+/// word).
+[[nodiscard]] inline std::size_t hyphenate(
+    std::string& result, std::string_view& remaining_word, std::size_t& remaining_word_length,
+    const std::size_t line_length) {
+  // Check for an empty word or a zero line length.
+  if (remaining_word.empty() || line_length == static_cast<std::size_t>(0UL)) {
+    return static_cast<std::size_t>(0UL);
   }
-  // Check if the string of text is empty.
-  if (text.empty()) {
-    return {};
+  // If the word fits within the line length, no hyphen is needed.
+  if (remaining_word_length <= line_length) {
+    result.append(remaining_word);
+    const std::size_t new_line_length{remaining_word_length};
+    remaining_word = std::string_view{};
+    remaining_word_length = 0UL;
+    return new_line_length;
   }
-  // Adjust the specified maximum line length if needed, increasing it to the longest word length if
-  // it is greater than the specified maximum line length.
-  const std::size_t maximum_line_length{std::max(line_length, lector::longest_word_length(text))};
-  // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
-  // distribution.
-  std::vector<std::string> result;
-  result.reserve((text.length() / maximum_line_length) + static_cast<std::size_t>(1UL));
-  // Iterate through the string.
-  std::size_t current_line_length{0UL};
-  std::size_t index{0UL};
-  bool is_first_word{true};
-  while (index < text.length()) {
-    // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
-    // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
-    // character values in std::isspace.
-    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) != 0) {
-      ++index;
+  // The word exceeds the line length, so we must hyphenate it, leaving one character for the
+  // hyphen. If the line limit is 1, we split without a hyphen to avoid an infinite loop.
+  const std::size_t split_cps{line_length > static_cast<std::size_t>(1UL) ?
+                                  line_length - static_cast<std::size_t>(1UL) :
+                                  static_cast<std::size_t>(1UL)};
+  // Find the correct byte boundary for the UTF-8 code points.
+  std::size_t byte_index{0UL};
+  for (std::size_t index{0UL}; index < split_cps && byte_index < remaining_word.length(); ++index) {
+    const unsigned char character{static_cast<unsigned char>(remaining_word[byte_index])};
+    std::size_t code_point_size{1UL};
+    if ((character & 0x80) == 0) {
+      code_point_size = 1UL;
+    } else if ((character & 0xE0) == 0xC0) {
+      code_point_size = 2UL;
+    } else if ((character & 0xF0) == 0xE0) {
+      code_point_size = 3UL;
+    } else if ((character & 0xF8) == 0xF0) {
+      code_point_size = 4UL;
     }
-    // Return if the end of the string has been reached after skipping whitespaces.
-    if (index >= text.length()) {
-      break;
-    }
-    // The index now points to the start of the current word.
-    const std::size_t word_start_index{index};
-    // Find the end of the current word.
-    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) == 0) {
-      ++index;
-    }
-    // Obtain the current word.
-    const std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
-    const std::size_t current_word_length{lector::code_points(current_word)};
-    // Place the word in the result vector.
-    if (is_first_word) {
-      // In this case, this is the first word in the result string, so it can be safely added
-      // without a leading space.
-      result.emplace_back(current_word);
-      current_line_length = current_word_length;
-      is_first_word = false;
-    } else {
-      // In this case, this is not the first word in the result string, so a leading space must be
-      // added. Check if adding a space plus the word would exceed the line limit.
-      if (current_line_length + 1 + current_word_length <= maximum_line_length) {
-        // In this case, the word can be safely added to the current line. Access the current line
-        // via result.back() and append to it.
-        result.back().push_back(' ');
-        result.back().append(current_word);
-        current_line_length += static_cast<std::size_t>(1UL) + current_word_length;
-      } else {
-        // In this case, the word doesn't fit on this line, so push a new line into the vector.
-        result.emplace_back(current_word);
-        current_line_length = current_word_length;
-      }
-    }
+    byte_index += code_point_size;
   }
-  return result;
+  // Prevent overshooting in case of a malformed string.
+  byte_index = std::min(byte_index, remaining_word.length());
+  // Append the chunk, add the hyphen, and drop to the next line.
+  result.append(remaining_word.substr(0, byte_index));
+  if (line_length > static_cast<std::size_t>(1UL)) {
+    result.push_back('-');
+  }
+  result.push_back('\n');
+  // Advance the remaining word segment.
+  remaining_word = remaining_word.substr(byte_index);
+  remaining_word_length -= split_cps;
+  // The line ended with a newline, so the current line length is zero.
+  return static_cast<std::size_t>(0UL);
 }
 
 /// @brief Left-aligns and wraps a string of text to a line length.
 /// @param[in] text The string of text to left-align and wrap.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
-/// than zero. The actual line length may be longer if the string of text contains very long words
-/// whose lengths exceed the desired line length.
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
 /// @return The resulting left-aligned and wrapped text.
 /// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline std::string wrap_and_left_align(
@@ -215,20 +199,19 @@ namespace lector {
   }
   // Check if the string of text is empty.
   if (text.empty()) {
-    return {};
+    return std::string{};
   }
-  // Adjust the specified maximum line length if needed, increasing it to the longest word length if
-  // it is greater than the specified maximum line length.
-  const std::size_t maximum_line_length{std::max(line_length, lector::longest_word_length(text))};
   // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
-  // distribution.
+  // distribution, and account for potential hyphen and newline additions.
   std::string result;
-  result.reserve(
-      text.length() + (text.length() / maximum_line_length) + static_cast<std::size_t>(1UL));
+  const std::size_t estimated_splits{line_length > static_cast<std::size_t>(1UL) ?
+                                         line_length - static_cast<std::size_t>(1UL) :
+                                         static_cast<std::size_t>(1UL)};
+  result.reserve(text.length() + (static_cast<std::size_t>(2UL) * text.length() / estimated_splits)
+                 + static_cast<std::size_t>(1UL));
   // Iterate through the string.
   std::size_t current_line_length{0UL};
   std::size_t index{0UL};
-  bool is_first_word{true};
   while (index < text.length()) {
     // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
     // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
@@ -249,28 +232,68 @@ namespace lector {
     // Obtain the current word.
     const std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
     const std::size_t current_word_length{lector::code_points(current_word)};
-    // Place the word in the result string.
-    if (is_first_word) {
-      // In this case, this is the first word in the result string, so it can be safely added
-      // without a leading space.
-      result.append(current_word);
-      current_line_length = current_word_length;
-      is_first_word = false;
-    } else {
-      // In this case, this is not the first word in the result string, so a leading space must be
-      // added. Check if adding a space plus the word would exceed the line limit.
-      if (current_line_length + 1 + current_word_length <= maximum_line_length) {
-        // In this case, the word can be safely added to the current line.
-        result.push_back(' ');
-        result.append(current_word);
-        current_line_length += static_cast<std::size_t>(1UL) + current_word_length;
+    std::string_view remaining_word{current_word};
+    std::size_t remaining_word_length{current_word_length};
+    // Process the word in chunks if it requires hyphenation.
+    while (!remaining_word.empty()) {
+      if (current_line_length == static_cast<std::size_t>(0UL)) {
+        // In this case, we are at the start of a line (or the very first word).
+        // The hyphenate function inherently checks if it fits, or if it needs to be split.
+        current_line_length =
+            lector::hyphenate(result, remaining_word, remaining_word_length, line_length);
       } else {
-        // In this case, the word doesn't fit on this line, so drop down to the next line.
-        result.push_back('\n');
-        result.append(current_word);
-        current_line_length = current_word_length;
+        // In this case, we are not at the start of a line, so a leading space would be required.
+        // Check if adding a space plus the remaining word would exceed the line limit.
+        if (current_line_length + static_cast<std::size_t>(1UL) + remaining_word_length
+            <= line_length) {
+          // The word can be safely added to the current line.
+          result.push_back(' ');
+          result.append(remaining_word);
+          current_line_length += static_cast<std::size_t>(1UL) + remaining_word_length;
+          remaining_word = std::string_view{};
+        } else {
+          // The word doesn't fit on this line, so drop down to the next line.
+          // The next iteration will pick this up as the start of a line (and evaluate for
+          // hyphenation).
+          result.push_back('\n');
+          current_line_length = 0UL;
+        }
       }
     }
+  }
+  return result;
+}
+
+/// @brief Wraps a string of text to a line length and returns the result as a vector of strings
+/// that contains one string per line.
+/// @param[in] text The string of text to wrap.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The resulting vector of strings that contains one string per line.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::vector<std::string> wrap(
+    const std::string_view text, const std::size_t line_length) {
+  // Validate the specified maximum line length.
+  if (line_length <= static_cast<std::size_t>(0UL)) {
+    throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
+  }
+  // Check if the string of text is empty.
+  if (text.empty()) {
+    return std::vector<std::string>{};
+  }
+  // Generate the wrapped text string with embedded newlines, applying hyphenation rules.
+  const std::string wrapped_text{lector::wrap_and_left_align(text, line_length)};
+
+  // Split the wrapped text string line by line into a vector.
+  std::vector<std::string> result;
+  std::string_view view{wrapped_text};
+  std::size_t pos{0UL};
+  while ((pos = view.find('\n')) != std::string_view::npos) {
+    result.emplace_back(view.substr(0, pos));
+    view.remove_prefix(pos + 1UL);
+  }
+  if (!view.empty()) {
+    result.emplace_back(view);
   }
   return result;
 }
@@ -279,13 +302,11 @@ namespace lector {
 /// that contains one line per string of text, with the lines formatted such that the two columns
 /// are left-aligned and spaced a short distance apart.
 /// @param[in] first_column_text The string of text for the first column.
-/// @param[in] first_column_width The desired width of the first column. The actual width may be
-/// larger if the string of text contains very long words whose lengths exceed the desired column
-/// width.
+/// @param[in] first_column_width The desired width of the first column. Very long words whose
+/// length exceeds this width are hyphenated.
 /// @param[in] second_column_text The string of text for the second column.
-/// @param[in] second_column_width The desired width of the second column. The actual width may be
-/// larger if the string of text contains very long words whose lengths exceed the desired column
-/// width.
+/// @param[in] second_column_width The desired width of the second column. Very long words whose
+/// length exceeds this width are hyphenated.
 /// @return The vector of strings that contains the combined text.
 [[nodiscard]] inline std::string combine_and_left_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
@@ -296,23 +317,13 @@ namespace lector {
   const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};
   const std::vector<std::string> second_column{
     lector::wrap(second_column_text, second_column_width)};
-  // Find the length of the longest line in the first column.
-  std::size_t first_column_longest_line_length{0UL};
-  for (const std::string& line : first_column) {
-    first_column_longest_line_length =
-        std::max(first_column_longest_line_length, lector::code_points(line));
-  }
-  // Determine the actual width of the first column.
-  const std::size_t first_column_actual_width{
-    std::max(first_column_width, first_column_longest_line_length)};
   // Determine the total number of rows required.
   const std::size_t rows{std::max(first_column.size(), second_column.size())};
   // Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of
   // both original input strings, plus the maximum possible padding spaces and newlines per row.
   std::string result;
-  result.reserve(
-      first_column_text.length() + second_column_text.length()
-      + (rows * (first_column_actual_width + gutter_width + static_cast<std::size_t>(1UL))));
+  result.reserve(first_column_text.length() + second_column_text.length()
+                 + (rows * (first_column_width + gutter_width + static_cast<std::size_t>(1UL))));
   // Combine the rows line by line.
   for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
     // Append a newline character for every row after the first to separate them without leaving a
@@ -329,7 +340,7 @@ namespace lector {
     // exhausted, skip this padding to avoid unnecessary trailing whitespace.
     if (row_index < second_column.size()) {
       const std::size_t first_cell_length{lector::code_points(first_cell)};
-      const std::size_t padding{first_column_actual_width + gutter_width - first_cell_length};
+      const std::size_t padding{first_column_width + gutter_width - first_cell_length};
       result.append(padding, ' ');
       result.append(second_column.at(row_index));
     }
