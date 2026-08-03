@@ -26,70 +26,87 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 /// @brief The Lector library's namespace.
 namespace lector {
 
+/// @brief Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8
+/// characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one
+/// byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are
+/// multi-byte characters and consist of a leading byte with a specific binary pattern and one or
+/// more continuation bytes of the binary pattern 10xxxxxx.
+///
+/// 1. One-byte UTF-8 characters are the ASCII characters. Their first bit is 0 and their binary
+///    pattern is therefore 0xxxxxxx.
+///
+/// 2. Two-byte UTF-8 characters have a leading byte with the binary pattern 110xxxxx and one
+///    continuation byte with the binary pattern 10xxxxxx. Together, the two bytes therefore have
+///    the binary pattern 110xxxxx 10xxxxxx.
+///
+/// 3. Three-byte UTF-8 characters have a leading byte with the binary pattern 1110xxxx and two
+///    continuation bytes with the binary pattern 10xxxxxx. Together, the three bytes therefore have
+///    the binary pattern 1110xxxx 10xxxxxx 10xxxxxx.
+///
+/// 4. Four-byte UTF-8 characters have a leading byte with the binary pattern 11110xxx and three
+///    continuation bytes with the binary pattern 10xxxxxx. Together, the four bytes therefore have
+///    the binary pattern 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx.
+/// @param[in] character The character to check.
+/// @return True if the character is a leading byte; false if the character is a continuation byte.
+[[nodiscard]] inline bool is_leading_byte(const char character) {
+  // Cast to an unsigned character to avoid undefined behavior with bitwise operations on signed
+  // characters. The binary pattern 10xxxxxx that identifies a continuation byte ranges from 0x80 to
+  // 0xBF in hexadecimal notation.
+  return (static_cast<unsigned char>(character) & 0xC0) != 0x80;
+}
+
 /// @brief Counts and returns the number of UTF-8 code points in a string of text. The number of
-/// UTF-8 code points is a useful approximation of the number of graphemes in the string.
+/// UTF-8 code points is a useful approximation of the number of graphemes in the string, where
+/// ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.
 /// @param[in] text The string of text whose UTF-8 code points are to be counted.
 /// @return The number of UTF-8 code points in the string of text.
 [[nodiscard]] inline std::size_t code_points(const std::string_view text) {
-  // This function uses an optimized trick for counting UTF-8 code points. It works because of how
-  // UTF-8 is designed at the binary level:
-  // - The ASCII characters all use 1 byte and all start with 0. They are of the form 0xxxxxxx.
-  // - The first byte of a UTF-8 multi-byte character is the lead byte. Lead bytes all start with
-  //   the binary patterns 110xxxxx, 1110xxxx, or 11110xxx; these binary patterns indicate that the
-  //   UTF-8 character is two, three, or four bytes long, respectively.
-  // - The second, third, and fourth bytes of a UTF-8 multi-byte character are continuation bytes.
-  //   These bytes always start with the binary pattern 10xxxxxx, which ranges from 0x80 to 0xBF in
-  //   hexadecimal notation.
-  // Therefore, instead of trying to parse the lead byte and then predicting the number of bytes in
-  // the character, this function simply iterates through the string and ignores any byte that
-  // starts with the binary pattern 10xxxxxx, which indicates a continuation byte, leaving only the
-  // lead bytesto be counted. By only counting the lead bytes, this function perfectly counts the
-  // number of valid code points, treating ASCII characters and UTF-8 multi-byte characters as
-  // exactly one unit of length, which is a good approximation of the number of graphemes in the
-  // string.
   std::size_t count{0UL};
   for (const char character : text) {
-    // Cast to an unsigned character to avoid undefined behavior with bitwise operations on signed
-    // characters. 0xC0 is 11000000 in binary. 0x80 is 10000000 in binary.
-    if ((static_cast<unsigned char>(character) & 0xC0) != 0x80) {
+    if (lector::is_leading_byte(character)) {
       ++count;
     }
   }
   return count;
 }
 
-/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
-/// string of text, with newline characters inserted between the lines, and the lines left-aligned.
-/// @param[in] lines Vector of strings to be joined and left-aligned.
-/// @return The joined and left-aligned string of text.
-[[nodiscard]] inline std::string join_and_left_align(const std::vector<std::string>& lines) {
-  // Handle the empty case immediately to prevent underflow later.
-  if (lines.empty()) {
-    return std::string{};
+/// @brief Finds the exact byte [begin, end) index interval in a string of text where a specified
+/// code point resides.
+/// @param[in] text The string of text to parse.
+/// @param[in] code_point_index The index of the code point in the string of text.
+/// @return A pair that contains the begin and end byte indices of the specified code point. The end
+/// index is the classical C++ "one past the end" index. If the specified code point index is out of
+/// bounds, both returned indices are set to one past the end index of the string, which is the size
+/// of the string.
+[[nodiscard]] inline std::pair<std::size_t, std::size_t> byte_interval(
+    const std::string_view text, const std::size_t code_point_index) {
+  std::size_t current_code_point_index{0UL};
+  std::size_t begin_byte_index{text.size()};
+  for (std::size_t current_byte_index{0UL}; current_byte_index < text.size();
+       ++current_byte_index) {
+    if (lector::is_leading_byte(text.at(current_byte_index))) {
+      if (current_code_point_index == code_point_index) {
+        begin_byte_index = current_byte_index;
+      } else if (current_code_point_index == code_point_index + static_cast<std::size_t>(1UL)) {
+        // In this case, this is the start of the next code point, and therefore the end of the
+        // requested code point.
+        return std::pair<std::size_t, std::size_t>{begin_byte_index, current_byte_index};
+      }
+      ++current_code_point_index;
+    }
   }
-  // Calculate the exact required capacity.
-  std::size_t total_length{0UL};
-  for (const std::string& line : lines) {
-    total_length += line.length();
+  if (begin_byte_index < text.size()) {
+    // In this case, the requested code point is found, but it is the last code point in the string.
+    return std::pair<std::size_t, std::size_t>{begin_byte_index, text.size()};
   }
-  // Add space for the newline separators (one less than the total number of lines).
-  total_length += lines.size() - static_cast<std::size_t>(1UL);
-  // Create and allocate the result.
-  std::string result;
-  result.reserve(total_length);
-  // Append the first line.
-  result.append(lines.front());
-  // Append subsequent lines prefixed by a newline.
-  for (std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
-    result.push_back('\n');
-    result.append(lines.at(line_index));
-  }
-  return result;
+  // In this case, the requested code point index is out of bounds.
+  return std::pair<std::size_t, std::size_t>{text.size(), text.size()};
 }
 
 /// @brief Computes and returns the length of the longest word in a string of text. The length of a
@@ -97,7 +114,7 @@ namespace lector {
 /// @param[in] text The string of text whose longest word length is to be computed.
 /// @return The length of the longest word in the string of text.
 [[nodiscard]] inline std::size_t longest_word_length(const std::string_view text) {
-  std::size_t longest_word_length{0UL};
+  std::size_t current_longest_word_length{0UL};
   std::size_t index{0UL};
   while (index < text.length()) {
     // Skip over any whitespaces.
@@ -120,182 +137,165 @@ namespace lector {
     // Compute the length of the current word.
     const std::size_t current_word_length{lector::code_points(current_word)};
     // Update the longest word length.
-    longest_word_length = std::max(longest_word_length, current_word_length);
+    current_longest_word_length = std::max(current_longest_word_length, current_word_length);
   }
-  return longest_word_length;
+  return current_longest_word_length;
 }
 
-/// @brief Helper function to process a word at the start of a line. If the word exceeds
-/// the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the
-/// result, and updates the remaining word and length variables.
-/// @param[in,out] result The string to append the text to.
-/// @param[in,out] remaining_word The remaining portion of the word being processed.
-/// @param[in,out] remaining_word_length The number of code points remaining in the word.
-/// @param[in] line_length The desired line length to use when wrapping.
-/// @return The new current line length (0 if a newline was appended, otherwise the length of the
-/// word).
-[[nodiscard]] inline std::size_t hyphenate(
-    std::string& result, std::string_view& remaining_word, std::size_t& remaining_word_length,
-    const std::size_t line_length) {
-  // Check for an empty word or a zero line length.
-  if (remaining_word.empty() || line_length == static_cast<std::size_t>(0UL)) {
-    return static_cast<std::size_t>(0UL);
-  }
-  // If the word fits within the line length, no hyphen is needed.
-  if (remaining_word_length <= line_length) {
-    result.append(remaining_word);
-    const std::size_t new_line_length{remaining_word_length};
-    remaining_word = std::string_view{};
-    remaining_word_length = 0UL;
-    return new_line_length;
-  }
-  // The word exceeds the line length, so we must hyphenate it, leaving one character for the
-  // hyphen. If the line limit is 1, we split without a hyphen to avoid an infinite loop.
-  const std::size_t split_cps{line_length > static_cast<std::size_t>(1UL) ?
-                                  line_length - static_cast<std::size_t>(1UL) :
-                                  static_cast<std::size_t>(1UL)};
-  // Find the correct byte boundary for the UTF-8 code points.
-  std::size_t byte_index{0UL};
-  for (std::size_t index{0UL}; index < split_cps && byte_index < remaining_word.length(); ++index) {
-    const unsigned char character{static_cast<unsigned char>(remaining_word[byte_index])};
-    std::size_t code_point_size{1UL};
-    if ((character & 0x80) == 0) {
-      code_point_size = 1UL;
-    } else if ((character & 0xE0) == 0xC0) {
-      code_point_size = 2UL;
-    } else if ((character & 0xF0) == 0xE0) {
-      code_point_size = 3UL;
-    } else if ((character & 0xF8) == 0xF0) {
-      code_point_size = 4UL;
+/// @brief Tokenizes a string of text into a vector of strings of text, where each string in the
+/// vector corresponds to a word in the original string. Words are defined as sequences of
+/// non-whitespace characters, and whitespace characters are used as delimiters. The function does
+/// not modify the original string and returns views into it, so the original string must remain
+/// valid for the lifetime of the returned vector.
+/// @param[in] text The string of text to be tokenized.
+/// @return A vector of strings of text, each corresponding to a word in the original string.
+[[nodiscard]] inline std::vector<std::string_view> tokenize(const std::string_view text) {
+  std::vector<std::string_view> words;
+  std::size_t begin_index{0UL};
+  while (begin_index < text.size()) {
+    while (begin_index < text.size()
+           && std::isspace(static_cast<unsigned char>(text[begin_index])) != 0) {
+      ++begin_index;
     }
-    byte_index += code_point_size;
+    if (begin_index == text.size()) {
+      break;
+    }
+    std::size_t end_index{begin_index};
+    while (
+        end_index < text.size() && std::isspace(static_cast<unsigned char>(text[end_index])) == 0) {
+      ++end_index;
+    }
+    words.push_back(text.substr(begin_index, end_index - begin_index));
+    begin_index = end_index;
   }
-  // Prevent overshooting in case of a malformed string.
-  byte_index = std::min(byte_index, remaining_word.length());
-  // Append the chunk, add the hyphen, and drop to the next line.
-  result.append(remaining_word.substr(0, byte_index));
-  if (line_length > static_cast<std::size_t>(1UL)) {
-    result.push_back('-');
-  }
-  result.push_back('\n');
-  // Advance the remaining word segment.
-  remaining_word = remaining_word.substr(byte_index);
-  remaining_word_length -= split_cps;
-  // The line ended with a newline, so the current line length is zero.
-  return static_cast<std::size_t>(0UL);
+  return words;
 }
 
-/// @brief Left-aligns and wraps a string of text to a line length.
-/// @param[in] text The string of text to left-align and wrap.
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines left-aligned.
+/// @param[in] lines Vector of strings to be joined and left-aligned.
+/// @return The joined and left-aligned string of text.
+[[nodiscard]] inline std::string join_and_left_align(const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Calculate the exact total size.
+  std::size_t total_size{0UL};
+  for (const std::string& line : lines) {
+    total_size += line.size();
+  }
+  // Add space for the newline separators (one less than the total number of lines).
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append the first line.
+  text.append(lines.front());
+  // Append subsequent lines prefixed by a newline.
+  for (std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
+    text.push_back('\n');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
+/// @brief Wraps a string of text to a line length and returns the result as a sequence of strings
+/// of text where each string in the sequence represents one line of text.
+/// @param[in] text The string of text to wrap.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The resulting left-aligned and wrapped text.
+/// @return The resulting sequence of strings of text that contains one string per line.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::string wrap_and_left_align(
+[[nodiscard]] inline std::vector<std::string> wrap(
     const std::string_view text, const std::size_t line_length) {
-  // Validate the specified maximum line length.
+  // Ensure the line length is valid.
   if (line_length <= static_cast<std::size_t>(0UL)) {
     throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
   }
-  // Check if the string of text is empty.
-  if (text.empty()) {
-    return std::string{};
-  }
-  // Pre-allocate memory to avoid multiple reallocations. Assume an average word and space
-  // distribution, and account for potential hyphen and newline additions.
-  std::string result;
-  const std::size_t estimated_splits{line_length > static_cast<std::size_t>(1UL) ?
-                                         line_length - static_cast<std::size_t>(1UL) :
-                                         static_cast<std::size_t>(1UL)};
-  result.reserve(text.length() + (static_cast<std::size_t>(2UL) * text.length() / estimated_splits)
-                 + static_cast<std::size_t>(1UL));
-  // Iterate through the string.
-  std::size_t current_line_length{0UL};
-  std::size_t index{0UL};
-  while (index < text.length()) {
-    // Skip over any whitespaces. This effectively treats consecutive spaces, tabs, and newlines as
-    // one delimiter. Cast to an unsigned character to avoid undefined behavior with negative
-    // character values in std::isspace.
-    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) != 0) {
-      ++index;
-    }
-    // Return if the end of the string has been reached after skipping whitespaces.
-    if (index >= text.length()) {
-      break;
-    }
-    // The index now points to the start of the current word.
-    const std::size_t word_start_index{index};
-    // Find the end of the current word.
-    while (index < text.length() && std::isspace(static_cast<unsigned char>(text[index])) == 0) {
-      ++index;
-    }
-    // Obtain the current word.
-    const std::string_view current_word{text.substr(word_start_index, index - word_start_index)};
-    const std::size_t current_word_length{lector::code_points(current_word)};
-    std::string_view remaining_word{current_word};
-    std::size_t remaining_word_length{current_word_length};
-    // Process the word in chunks if it requires hyphenation.
-    while (!remaining_word.empty()) {
-      if (current_line_length == static_cast<std::size_t>(0UL)) {
-        // In this case, we are at the start of a line (or the very first word).
-        // The hyphenate function inherently checks if it fits, or if it needs to be split.
-        current_line_length =
-            lector::hyphenate(result, remaining_word, remaining_word_length, line_length);
+  // Tokenize the input string of text.
+  const std::vector<std::string_view> words{lector::tokenize(text)};
+  // Process the tokenized input string of text and assemble the wrapped lines.
+  std::vector<std::string> lines;
+  std::string current_line;
+  std::size_t current_line_code_point_size{0UL};
+  for (const std::string_view current_word : words) {
+    // Measure the current word.
+    const std::size_t current_word_code_point_size{lector::code_points(current_word)};
+    const std::size_t space_needed_for_hyphen{
+      (current_line_code_point_size > static_cast<std::size_t>(0UL)) ?
+          static_cast<std::size_t>(1UL) :
+          static_cast<std::size_t>(0UL)};
+    // Check if the current word fits on the current line.
+    if (current_line_code_point_size > static_cast<std::size_t>(0UL)
+        && current_line_code_point_size + current_word_code_point_size + space_needed_for_hyphen
+               <= line_length) {
+      // In this case, the current word fits on the current line.
+      current_line.push_back(' ');
+      current_line.append(current_word);
+      current_line_code_point_size += current_word_code_point_size + space_needed_for_hyphen;
+    } else {
+      // In this case, the current word does not fit on the current line and must be wrapped to the
+      // next line.
+      if (current_line_code_point_size > static_cast<std::size_t>(0UL)) {
+        lines.push_back(std::move(current_line));
+        current_line.clear();
+        current_line_code_point_size = static_cast<std::size_t>(0UL);
+      }
+      // Check if the current word needs to be hyphenated.
+      if (current_word_code_point_size <= line_length) {
+        // In this case, the current word fits completely on an empty line and does not need to be
+        // hyphenated.
+        current_line = current_word;
+        current_line_code_point_size = current_word_code_point_size;
       } else {
-        // In this case, we are not at the start of a line, so a leading space would be required.
-        // Check if adding a space plus the remaining word would exceed the line limit.
-        if (current_line_length + static_cast<std::size_t>(1UL) + remaining_word_length
-            <= line_length) {
-          // The word can be safely added to the current line.
-          result.push_back(' ');
-          result.append(remaining_word);
-          current_line_length += static_cast<std::size_t>(1UL) + remaining_word_length;
-          remaining_word = std::string_view{};
-        } else {
-          // The word doesn't fit on this line, so drop down to the next line.
-          // The next iteration will pick this up as the start of a line (and evaluate for
-          // hyphenation).
-          result.push_back('\n');
-          current_line_length = 0UL;
+        // In this case, the current word is too long and must be hyphenated.
+        std::string_view remaining_word{current_word};
+        std::size_t remaining_code_point_size{current_word_code_point_size};
+        // Iterate until the remaining portion of the current word fits on a line, and repeat as
+        // necessary; a very long word might need to be hyphenated multiple times.
+        while (remaining_code_point_size > line_length) {
+          // If the line_length is 1, no hyphen is used. Otherwise, take "line length - 1" code
+          // points to save 1 character for the hyphen.
+          const std::size_t chunk_code_point_size{line_length == static_cast<std::size_t>(1UL) ?
+                                                      static_cast<std::size_t>(1UL) :
+                                                      line_length - static_cast<std::size_t>(1UL)};
+          const std::size_t split_byte_index{
+            lector::byte_interval(remaining_word, chunk_code_point_size).first};
+          std::string split_line(
+              remaining_word.substr(static_cast<std::size_t>(0UL), split_byte_index));
+          if (line_length > static_cast<std::size_t>(1UL)) {
+            split_line.push_back('-');
+          }
+          lines.push_back(std::move(split_line));
+          remaining_word = remaining_word.substr(split_byte_index);
+          remaining_code_point_size -= chunk_code_point_size;
+        }
+        // The remaining slice of the word seeds the subsequent line.
+        if (remaining_code_point_size > static_cast<std::size_t>(0UL)) {
+          current_line = remaining_word;
+          current_line_code_point_size = remaining_code_point_size;
         }
       }
     }
   }
-  return result;
+  // Push the final built line if it is not empty.
+  if (current_line_code_point_size > static_cast<std::size_t>(0UL)) {
+    lines.push_back(std::move(current_line));
+  }
+  // Return the wrapped lines.
+  return lines;
 }
 
-/// @brief Wraps a string of text to a line length and returns the result as a vector of strings
-/// that contains one string per line.
-/// @param[in] text The string of text to wrap.
+/// @brief Left-aligns and wraps a string of text to a line length.
+/// @param[in] text The string of text to wrap and left-align.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The resulting vector of strings that contains one string per line.
+/// @return The resulting wrapped and left-aligned string of text.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::vector<std::string> wrap(
+[[nodiscard]] inline std::string wrap_and_left_align(
     const std::string_view text, const std::size_t line_length) {
-  // Validate the specified maximum line length.
-  if (line_length <= static_cast<std::size_t>(0UL)) {
-    throw std::invalid_argument("Invalid line length. Must be strictly greater than zero.");
-  }
-  // Check if the string of text is empty.
-  if (text.empty()) {
-    return std::vector<std::string>{};
-  }
-  // Generate the wrapped text string with embedded newlines, applying hyphenation rules.
-  const std::string wrapped_text{lector::wrap_and_left_align(text, line_length)};
-
-  // Split the wrapped text string line by line into a vector.
-  std::vector<std::string> result;
-  std::string_view view{wrapped_text};
-  std::size_t pos{0UL};
-  while ((pos = view.find('\n')) != std::string_view::npos) {
-    result.emplace_back(view.substr(0, pos));
-    view.remove_prefix(pos + 1UL);
-  }
-  if (!view.empty()) {
-    result.emplace_back(view);
-  }
-  return result;
+  return lector::join_and_left_align(lector::wrap(text, line_length));
 }
 
 /// @brief Combines two strings of text, each representing a column, into a single vector of strings
@@ -311,7 +311,7 @@ namespace lector {
 [[nodiscard]] inline std::string combine_and_left_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
-  // Use a minimum gutter width of two spaces.
+  // Use a gutter width of two spaces.
   constexpr std::size_t gutter_width{2UL};
   // Wrap and split both columns.
   const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};

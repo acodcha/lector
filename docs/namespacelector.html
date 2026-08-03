@@ -131,15 +131,18 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a7f5eee673c43ed7cc40376854785fcf9" id="r_a7f5eee673c43ed7cc40376854785fcf9"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::size_t, std::size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7f5eee673c43ed7cc40376854785fcf9">byte_interval</a> (const std::string_view text, const std::size_t code_point_index)</td></tr>
+<tr class="memdesc:a7f5eee673c43ed7cc40376854785fcf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the exact byte [begin, end) index interval in a string of text where a specified code point resides.  <br /></td></tr>
+<tr class="separator:a7f5eee673c43ed7cc40376854785fcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a786b5f0d81bbfa73273d467ccb6cc34b" id="r_a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">code_points</a> (const std::string_view text)</td></tr>
-<tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string.  <br /></td></tr>
+<tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.  <br /></td></tr>
 <tr class="separator:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26eea2188d2bff251878c7af773e2555" id="r_a26eea2188d2bff251878c7af773e2555"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">combine_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
 <tr class="memdesc:a26eea2188d2bff251878c7af773e2555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single vector of strings that contains one line per string of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
 <tr class="separator:a26eea2188d2bff251878c7af773e2555"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112973a754b75482025b50b640621994" id="r_a112973a754b75482025b50b640621994"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a112973a754b75482025b50b640621994">hyphenate</a> (std::string &amp;result, std::string_view &amp;remaining_word, std::size_t &amp;remaining_word_length, const std::size_t line_length)</td></tr>
-<tr class="memdesc:a112973a754b75482025b50b640621994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to process a word at the start of a line. If the word exceeds the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the result, and updates the remaining word and length variables.  <br /></td></tr>
-<tr class="separator:a112973a754b75482025b50b640621994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12fbadda4745d3082c5f7504bd22862a" id="r_a12fbadda4745d3082c5f7504bd22862a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">is_leading_byte</a> (const char character)</td></tr>
+<tr class="memdesc:a12fbadda4745d3082c5f7504bd22862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx.  <br /></td></tr>
+<tr class="separator:a12fbadda4745d3082c5f7504bd22862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
 <tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
 <tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,8 +285,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a2e485bdacc529d35c78a74e95ff5a065"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a2e485bdacc529d35c78a74e95ff5a065">print_enumeration</a> (const EnumerationType value)</td></tr>
 <tr class="memdesc:a2e485bdacc529d35c78a74e95ff5a065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints a value of a specified enumeration type as a string of text. The enumeration type must define a specialization of the <a class="el" href="namespacelector.html#a1323f11a0134e8de8f3d0ed1dd5c4f08" title="Map of canonical printed names to their corresponding values of a specified type.">lector::Names</a> constant for its type.  <br /></td></tr>
 <tr class="separator:a2e485bdacc529d35c78a74e95ff5a065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9603ee0e67412a724ad26f78688d46da" id="r_a9603ee0e67412a724ad26f78688d46da"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string_view &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9603ee0e67412a724ad26f78688d46da">tokenize</a> (const std::string_view text)</td></tr>
+<tr class="memdesc:a9603ee0e67412a724ad26f78688d46da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tokenizes a string of text into a vector of strings of text, where each string in the vector corresponds to a word in the original string. Words are defined as sequences of non-whitespace characters, and whitespace characters are used as delimiters. The function does not modify the original string and returns views into it, so the original string must remain valid for the lifetime of the returned vector.  <br /></td></tr>
+<tr class="separator:a9603ee0e67412a724ad26f78688d46da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3dbae2688050c8117b86b38afdfaaa7" id="r_ad3dbae2688050c8117b86b38afdfaaa7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">wrap</a> (const std::string_view text, const std::size_t line_length)</td></tr>
-<tr class="memdesc:ad3dbae2688050c8117b86b38afdfaaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a vector of strings that contains one string per line.  <br /></td></tr>
+<tr class="memdesc:ad3dbae2688050c8117b86b38afdfaaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a sequence of strings of text where each string in the sequence represents one line of text.  <br /></td></tr>
 <tr class="separator:ad3dbae2688050c8117b86b38afdfaaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bd330c9016a93ce6be338042e52d9c" id="r_a44bd330c9016a93ce6be338042e52d9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">wrap_and_left_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
 <tr class="memdesc:a44bd330c9016a93ce6be338042e52d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
@@ -417,6 +423,44 @@ template&lt;typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a7f5eee673c43ed7cc40376854785fcf9" name="a7f5eee673c43ed7cc40376854785fcf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f5eee673c43ed7cc40376854785fcf9">&#9670;&#160;</a></span>byte_interval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; std::size_t, std::size_t &gt; lector::byte_interval </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>code_point_index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds the exact byte [begin, end) index interval in a string of text where a specified code point resides. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to parse. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">code_point_index</td><td>The index of the code point in the string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A pair that contains the begin and end byte indices of the specified code point. The end index is the classical C++ "one past the end" index. If the specified code point index is out of bounds, both returned indices are set to one past the end index of the string, which is the size of the string. </dd></dl>
+
+</div>
+</div>
 <a id="a786b5f0d81bbfa73273d467ccb6cc34b" name="a786b5f0d81bbfa73273d467ccb6cc34b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a786b5f0d81bbfa73273d467ccb6cc34b">&#9670;&#160;</a></span>code_points()</h2>
 
@@ -433,7 +477,7 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string. </p>
+<p>Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text whose UTF-8 code points are to be counted. </td></tr>
@@ -496,55 +540,36 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a112973a754b75482025b50b640621994" name="a112973a754b75482025b50b640621994"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a112973a754b75482025b50b640621994">&#9670;&#160;</a></span>hyphenate()</h2>
+<a id="a12fbadda4745d3082c5f7504bd22862a" name="a12fbadda4745d3082c5f7504bd22862a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12fbadda4745d3082c5f7504bd22862a">&#9670;&#160;</a></span>is_leading_byte()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::size_t lector::hyphenate </td>
+          <td class="memname">bool lector::is_leading_byte </td>
           <td>(</td>
-          <td class="paramtype">std::string &amp;&#160;</td>
-          <td class="paramname"><em>result</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>character</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::string_view &amp;&#160;</td>
-          <td class="paramname"><em>remaining_word</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::size_t &amp;&#160;</td>
-          <td class="paramname"><em>remaining_word_length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::size_t&#160;</td>
-          <td class="paramname"><em>line_length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Helper function to process a word at the start of a line. If the word exceeds the line length, it is hyphenated. Appends the chunk (and a hyphen, if applicable) to the result, and updates the remaining word and length variables. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx. </p>
+<ol type="1">
+<li>One-byte UTF-8 characters are the ASCII characters. Their first bit is 0 and their binary pattern is therefore 0xxxxxxx.</li>
+<li>Two-byte UTF-8 characters have a leading byte with the binary pattern 110xxxxx and one continuation byte with the binary pattern 10xxxxxx. Together, the two bytes therefore have the binary pattern 110xxxxx 10xxxxxx.</li>
+<li>Three-byte UTF-8 characters have a leading byte with the binary pattern 1110xxxx and two continuation bytes with the binary pattern 10xxxxxx. Together, the three bytes therefore have the binary pattern 1110xxxx 10xxxxxx 10xxxxxx.</li>
+<li>Four-byte UTF-8 characters have a leading byte with the binary pattern 11110xxx and three continuation bytes with the binary pattern 10xxxxxx. Together, the four bytes therefore have the binary pattern 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">result</td><td>The string to append the text to. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">remaining_word</td><td>The remaining portion of the word being processed. </td></tr>
-    <tr><td class="paramdir">[in,out]</td><td class="paramname">remaining_word_length</td><td>The number of code points remaining in the word. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">character</td><td>The character to check. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The new current line length (0 if a newline was appended, otherwise the length of the word). </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the character is a leading byte; false if the character is a continuation byte. </dd></dl>
+</li>
+</ol>
 
 </div>
 </div>
@@ -1630,6 +1655,33 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
+<a id="a9603ee0e67412a724ad26f78688d46da" name="a9603ee0e67412a724ad26f78688d46da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9603ee0e67412a724ad26f78688d46da">&#9670;&#160;</a></span>tokenize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string_view &gt; lector::tokenize </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Tokenizes a string of text into a vector of strings of text, where each string in the vector corresponds to a word in the original string. Words are defined as sequences of non-whitespace characters, and whitespace characters are used as delimiters. The function does not modify the original string and returns views into it, so the original string must remain valid for the lifetime of the returned vector. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to be tokenized. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A vector of strings of text, each corresponding to a word in the original string. </dd></dl>
+
+</div>
+</div>
 <a id="ad3dbae2688050c8117b86b38afdfaaa7" name="ad3dbae2688050c8117b86b38afdfaaa7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3dbae2688050c8117b86b38afdfaaa7">&#9670;&#160;</a></span>wrap()</h2>
 
@@ -1656,7 +1708,7 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Wraps a string of text to a line length and returns the result as a vector of strings that contains one string per line. </p>
+<p>Wraps a string of text to a line length and returns the result as a sequence of strings of text where each string in the sequence represents one line of text. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap. </td></tr>
@@ -1664,7 +1716,7 @@ template&lt;typename EnumerationType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The resulting vector of strings that contains one string per line. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting sequence of strings of text that contains one string per line. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
@@ -1703,12 +1755,12 @@ template&lt;typename EnumerationType &gt; </div>
 <p>Left-aligns and wraps a string of text to a line length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to left-align and wrap. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and left-align. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The resulting left-aligned and wrapped text. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting wrapped and left-aligned string of text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
