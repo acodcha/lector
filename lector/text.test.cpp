@@ -22,9 +22,76 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace {
+
+TEST(Lector, ByteIntervalAscii) {
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{0UL, 1UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(0UL)), expected);
+  }
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{1UL, 2UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(1UL)), expected);
+  }
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{2UL, 3UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(2UL)), expected);
+  }
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{3UL, 3UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(3UL)), expected);
+  }
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{3UL, 3UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(4UL)), expected);
+  }
+  {
+    constexpr std::pair<std::size_t, std::size_t> expected{3UL, 3UL};
+    EXPECT_EQ(lector::byte_interval("Hi!", static_cast<std::size_t>(5UL)), expected);
+  }
+}
+
+TEST(Lector, ByteIntervalEmpty) {
+  constexpr std::pair<std::size_t, std::size_t> expected{0UL, 0UL};
+  EXPECT_EQ(lector::byte_interval("", static_cast<std::size_t>(0UL)), expected);
+  EXPECT_EQ(lector::byte_interval("", static_cast<std::size_t>(1UL)), expected);
+  EXPECT_EQ(lector::byte_interval("", static_cast<std::size_t>(2UL)), expected);
+  EXPECT_EQ(lector::byte_interval("", static_cast<std::size_t>(3UL)), expected);
+}
+
+TEST(Lector, ByteIntervalUtf8) {
+  {
+    const std::pair<std::size_t, std::size_t> expected{0UL, 2UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(0UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{2UL, 3UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(1UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{3UL, 5UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(2UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{5UL, 6UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(3UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{6UL, 6UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(4UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{6UL, 6UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(5UL)), expected);
+  }
+  {
+    const std::pair<std::size_t, std::size_t> expected{6UL, 6UL};
+    EXPECT_EQ(lector::byte_interval("Épée", static_cast<std::size_t>(6UL)), expected);
+  }
+}
 
 TEST(Lector, CodePoints) {
   EXPECT_EQ(lector::code_points(""), static_cast<std::size_t>(0UL));
@@ -41,17 +108,17 @@ TEST(Lector, CodePoints) {
 }
 
 TEST(Lector, CombineAndLeftAlignBothColumnsEmpty) {
-  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 1), "");
-  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 2), "");
-  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 1), "");
-  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 2), "");
+  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 2), std::string{});
 }
 
 TEST(Lector, CombineAndLeftAlignBothColumnsWhitespace) {
-  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 1), "");
-  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 2), "");
-  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 1), "");
-  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 2), "");
+  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 2), std::string{});
 }
 
 TEST(Lector, CombineAndLeftAlignFirstColumnEmpty) {
@@ -98,6 +165,265 @@ TEST(Lector, CombineAndLeftAlignVeryLongWord) {
       "Very_lon-  And this is\n"
       "g_word.    the second\n"
       "           column.");
+}
+
+TEST(Lector, IsLeadingByte) {
+  EXPECT_TRUE(lector::is_leading_byte('\0'));
+  EXPECT_TRUE(lector::is_leading_byte('\x01'));
+  EXPECT_TRUE(lector::is_leading_byte('\x02'));
+  EXPECT_TRUE(lector::is_leading_byte('\x03'));
+  EXPECT_TRUE(lector::is_leading_byte('\x04'));
+  EXPECT_TRUE(lector::is_leading_byte('\x05'));
+  EXPECT_TRUE(lector::is_leading_byte('\x06'));
+  EXPECT_TRUE(lector::is_leading_byte('\x07'));
+  EXPECT_TRUE(lector::is_leading_byte('\x08'));
+  EXPECT_TRUE(lector::is_leading_byte('\t'));
+  EXPECT_TRUE(lector::is_leading_byte('\n'));
+  EXPECT_TRUE(lector::is_leading_byte('\v'));
+  EXPECT_TRUE(lector::is_leading_byte('\f'));
+  EXPECT_TRUE(lector::is_leading_byte('\r'));
+  EXPECT_TRUE(lector::is_leading_byte('\x0E'));
+  EXPECT_TRUE(lector::is_leading_byte('\x0F'));
+  EXPECT_TRUE(lector::is_leading_byte('\x10'));
+  EXPECT_TRUE(lector::is_leading_byte('\x11'));
+  EXPECT_TRUE(lector::is_leading_byte('\x12'));
+  EXPECT_TRUE(lector::is_leading_byte('\x13'));
+  EXPECT_TRUE(lector::is_leading_byte('\x14'));
+  EXPECT_TRUE(lector::is_leading_byte('\x15'));
+  EXPECT_TRUE(lector::is_leading_byte('\x16'));
+  EXPECT_TRUE(lector::is_leading_byte('\x17'));
+  EXPECT_TRUE(lector::is_leading_byte('\x18'));
+  EXPECT_TRUE(lector::is_leading_byte('\x19'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1A'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1B'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1C'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1D'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1E'));
+  EXPECT_TRUE(lector::is_leading_byte('\x1F'));
+  EXPECT_TRUE(lector::is_leading_byte(' '));
+  EXPECT_TRUE(lector::is_leading_byte('!'));
+  EXPECT_TRUE(lector::is_leading_byte('"'));
+  EXPECT_TRUE(lector::is_leading_byte('#'));
+  EXPECT_TRUE(lector::is_leading_byte('$'));
+  EXPECT_TRUE(lector::is_leading_byte('%'));
+  EXPECT_TRUE(lector::is_leading_byte('&'));
+  EXPECT_TRUE(lector::is_leading_byte('\''));
+  EXPECT_TRUE(lector::is_leading_byte('('));
+  EXPECT_TRUE(lector::is_leading_byte(')'));
+  EXPECT_TRUE(lector::is_leading_byte('*'));
+  EXPECT_TRUE(lector::is_leading_byte('+'));
+  EXPECT_TRUE(lector::is_leading_byte(','));
+  EXPECT_TRUE(lector::is_leading_byte('-'));
+  EXPECT_TRUE(lector::is_leading_byte('.'));
+  EXPECT_TRUE(lector::is_leading_byte('/'));
+  EXPECT_TRUE(lector::is_leading_byte('0'));
+  EXPECT_TRUE(lector::is_leading_byte('1'));
+  EXPECT_TRUE(lector::is_leading_byte('2'));
+  EXPECT_TRUE(lector::is_leading_byte('3'));
+  EXPECT_TRUE(lector::is_leading_byte('4'));
+  EXPECT_TRUE(lector::is_leading_byte('5'));
+  EXPECT_TRUE(lector::is_leading_byte('6'));
+  EXPECT_TRUE(lector::is_leading_byte('7'));
+  EXPECT_TRUE(lector::is_leading_byte('8'));
+  EXPECT_TRUE(lector::is_leading_byte('9'));
+  EXPECT_TRUE(lector::is_leading_byte(':'));
+  EXPECT_TRUE(lector::is_leading_byte(';'));
+  EXPECT_TRUE(lector::is_leading_byte('<'));
+  EXPECT_TRUE(lector::is_leading_byte('='));
+  EXPECT_TRUE(lector::is_leading_byte('>'));
+  EXPECT_TRUE(lector::is_leading_byte('?'));
+  EXPECT_TRUE(lector::is_leading_byte('@'));
+  EXPECT_TRUE(lector::is_leading_byte('A'));
+  EXPECT_TRUE(lector::is_leading_byte('B'));
+  EXPECT_TRUE(lector::is_leading_byte('C'));
+  EXPECT_TRUE(lector::is_leading_byte('D'));
+  EXPECT_TRUE(lector::is_leading_byte('E'));
+  EXPECT_TRUE(lector::is_leading_byte('F'));
+  EXPECT_TRUE(lector::is_leading_byte('G'));
+  EXPECT_TRUE(lector::is_leading_byte('H'));
+  EXPECT_TRUE(lector::is_leading_byte('I'));
+  EXPECT_TRUE(lector::is_leading_byte('J'));
+  EXPECT_TRUE(lector::is_leading_byte('K'));
+  EXPECT_TRUE(lector::is_leading_byte('L'));
+  EXPECT_TRUE(lector::is_leading_byte('M'));
+  EXPECT_TRUE(lector::is_leading_byte('N'));
+  EXPECT_TRUE(lector::is_leading_byte('O'));
+  EXPECT_TRUE(lector::is_leading_byte('P'));
+  EXPECT_TRUE(lector::is_leading_byte('Q'));
+  EXPECT_TRUE(lector::is_leading_byte('R'));
+  EXPECT_TRUE(lector::is_leading_byte('S'));
+  EXPECT_TRUE(lector::is_leading_byte('T'));
+  EXPECT_TRUE(lector::is_leading_byte('U'));
+  EXPECT_TRUE(lector::is_leading_byte('V'));
+  EXPECT_TRUE(lector::is_leading_byte('W'));
+  EXPECT_TRUE(lector::is_leading_byte('X'));
+  EXPECT_TRUE(lector::is_leading_byte('Y'));
+  EXPECT_TRUE(lector::is_leading_byte('Z'));
+  EXPECT_TRUE(lector::is_leading_byte('['));
+  EXPECT_TRUE(lector::is_leading_byte('\\'));
+  EXPECT_TRUE(lector::is_leading_byte(']'));
+  EXPECT_TRUE(lector::is_leading_byte('^'));
+  EXPECT_TRUE(lector::is_leading_byte('_'));
+  EXPECT_TRUE(lector::is_leading_byte('`'));
+  EXPECT_TRUE(lector::is_leading_byte('a'));
+  EXPECT_TRUE(lector::is_leading_byte('b'));
+  EXPECT_TRUE(lector::is_leading_byte('c'));
+  EXPECT_TRUE(lector::is_leading_byte('d'));
+  EXPECT_TRUE(lector::is_leading_byte('e'));
+  EXPECT_TRUE(lector::is_leading_byte('f'));
+  EXPECT_TRUE(lector::is_leading_byte('g'));
+  EXPECT_TRUE(lector::is_leading_byte('h'));
+  EXPECT_TRUE(lector::is_leading_byte('i'));
+  EXPECT_TRUE(lector::is_leading_byte('j'));
+  EXPECT_TRUE(lector::is_leading_byte('k'));
+  EXPECT_TRUE(lector::is_leading_byte('l'));
+  EXPECT_TRUE(lector::is_leading_byte('m'));
+  EXPECT_TRUE(lector::is_leading_byte('n'));
+  EXPECT_TRUE(lector::is_leading_byte('o'));
+  EXPECT_TRUE(lector::is_leading_byte('p'));
+  EXPECT_TRUE(lector::is_leading_byte('q'));
+  EXPECT_TRUE(lector::is_leading_byte('r'));
+  EXPECT_TRUE(lector::is_leading_byte('s'));
+  EXPECT_TRUE(lector::is_leading_byte('t'));
+  EXPECT_TRUE(lector::is_leading_byte('u'));
+  EXPECT_TRUE(lector::is_leading_byte('v'));
+  EXPECT_TRUE(lector::is_leading_byte('w'));
+  EXPECT_TRUE(lector::is_leading_byte('x'));
+  EXPECT_TRUE(lector::is_leading_byte('y'));
+  EXPECT_TRUE(lector::is_leading_byte('z'));
+  EXPECT_TRUE(lector::is_leading_byte('{'));
+  EXPECT_TRUE(lector::is_leading_byte('|'));
+  EXPECT_TRUE(lector::is_leading_byte('}'));
+  EXPECT_TRUE(lector::is_leading_byte('~'));
+  EXPECT_TRUE(lector::is_leading_byte('\x7F'));
+  EXPECT_FALSE(lector::is_leading_byte('\x80'));
+  EXPECT_FALSE(lector::is_leading_byte('\x81'));
+  EXPECT_FALSE(lector::is_leading_byte('\x82'));
+  EXPECT_FALSE(lector::is_leading_byte('\x83'));
+  EXPECT_FALSE(lector::is_leading_byte('\x84'));
+  EXPECT_FALSE(lector::is_leading_byte('\x85'));
+  EXPECT_FALSE(lector::is_leading_byte('\x86'));
+  EXPECT_FALSE(lector::is_leading_byte('\x87'));
+  EXPECT_FALSE(lector::is_leading_byte('\x88'));
+  EXPECT_FALSE(lector::is_leading_byte('\x89'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8A'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8B'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8C'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8D'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8E'));
+  EXPECT_FALSE(lector::is_leading_byte('\x8F'));
+  EXPECT_FALSE(lector::is_leading_byte('\x90'));
+  EXPECT_FALSE(lector::is_leading_byte('\x91'));
+  EXPECT_FALSE(lector::is_leading_byte('\x92'));
+  EXPECT_FALSE(lector::is_leading_byte('\x93'));
+  EXPECT_FALSE(lector::is_leading_byte('\x94'));
+  EXPECT_FALSE(lector::is_leading_byte('\x95'));
+  EXPECT_FALSE(lector::is_leading_byte('\x96'));
+  EXPECT_FALSE(lector::is_leading_byte('\x97'));
+  EXPECT_FALSE(lector::is_leading_byte('\x98'));
+  EXPECT_FALSE(lector::is_leading_byte('\x99'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9A'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9B'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9C'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9D'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9E'));
+  EXPECT_FALSE(lector::is_leading_byte('\x9F'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA0'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA1'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA2'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA3'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA4'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA5'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA6'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA7'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA8'));
+  EXPECT_FALSE(lector::is_leading_byte('\xA9'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAA'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAB'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAC'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAD'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAE'));
+  EXPECT_FALSE(lector::is_leading_byte('\xAF'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB0'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB1'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB2'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB3'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB4'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB5'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB6'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB7'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB8'));
+  EXPECT_FALSE(lector::is_leading_byte('\xB9'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBA'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBB'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBC'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBD'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBE'));
+  EXPECT_FALSE(lector::is_leading_byte('\xBF'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC0'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC1'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC2'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC3'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC4'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC5'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC6'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC7'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC8'));
+  EXPECT_TRUE(lector::is_leading_byte('\xC9'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCA'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCB'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCC'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCD'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCE'));
+  EXPECT_TRUE(lector::is_leading_byte('\xCF'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD0'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD1'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD2'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD3'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD4'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD5'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD6'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD7'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD8'));
+  EXPECT_TRUE(lector::is_leading_byte('\xD9'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDA'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDB'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDC'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDD'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDE'));
+  EXPECT_TRUE(lector::is_leading_byte('\xDF'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE0'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE1'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE2'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE3'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE4'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE5'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE6'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE7'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE8'));
+  EXPECT_TRUE(lector::is_leading_byte('\xE9'));
+  EXPECT_TRUE(lector::is_leading_byte('\xEA'));
+  EXPECT_TRUE(lector::is_leading_byte('\xEB'));
+  EXPECT_TRUE(lector::is_leading_byte('\xEC'));
+  EXPECT_TRUE(lector::is_leading_byte('\xED'));
+  EXPECT_TRUE(lector::is_leading_byte('\xEE'));
+  EXPECT_TRUE(lector::is_leading_byte('\xEF'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF0'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF1'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF2'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF3'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF4'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF5'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF6'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF7'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF8'));
+  EXPECT_TRUE(lector::is_leading_byte('\xF9'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFA'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFB'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFC'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFD'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFE'));
+  EXPECT_TRUE(lector::is_leading_byte('\xFF'));
 }
 
 TEST(Lector, JoinAndLeftAlignEmpty) {
@@ -165,18 +491,63 @@ TEST(Lector, LongestWordLengthWhitespaceOnly) {
   EXPECT_EQ(lector::longest_word_length(" \t\n \t\n"), static_cast<std::size_t>(0UL));
 }
 
-TEST(Lector, WrapAndLeftAlignExcessiveWhitespaceEmpty) {
-  EXPECT_EQ(lector::wrap_and_left_align("", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align(" ", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align("  ", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align("\t", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align("\t\t", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align("\n", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align("\n\n", static_cast<std::size_t>(100UL)), "");
-  EXPECT_EQ(lector::wrap_and_left_align(" \t\n \t\n", static_cast<std::size_t>(100UL)), "");
+TEST(Lector, Tokenize) {
+  EXPECT_EQ(lector::tokenize(""), std::vector<std::string_view>{});
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello, world!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("  Hello,    world!   "), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello,\tworld!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("\t\tHello,\t\t\t\tworld!\t\t\t"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello,\vworld!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("\v\vHello,\v\v\v\vworld!\v\v\v"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello,\nworld!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("\n\nHello,\n\n\n\nworld!\n\n\n"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello,\fworld!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("\f\fHello,\f\f\f\fworld!\f\f\f"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("Hello,\rworld!"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize("\r\rHello,\r\r\r\rworld!\r\r\r"), expected);
+  }
+  {
+    const std::vector<std::string_view> expected{"Hello,", "world!"};
+    EXPECT_EQ(lector::tokenize(" \t\v\n\f\rHello, \t\v\n\f\rworld! \t\v\n\f\r"), expected);
+  }
 }
 
-TEST(Lector, WrapAndLeftAlignExcessiveWhitespaceTypical) {
+TEST(Lector, WrapAndLeftAlignExcessiveWhitespace) {
   EXPECT_EQ(lector::wrap_and_left_align("Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
   EXPECT_EQ(lector::wrap_and_left_align("Hello, world! ", static_cast<std::size_t>(100UL)),
@@ -221,11 +592,35 @@ TEST(Lector, WrapAndLeftAlignInvalid) {
       (void)lector::wrap_and_left_align("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapAndLeftAlignMaximumLineLengthSmall) {
+TEST(Lector, WrapAndLeftAlignLineLengthFive) {
   const std::string expected{"The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog."};
   EXPECT_EQ(lector::wrap_and_left_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                         static_cast<std::size_t>(5UL)),
             expected);
+}
+
+TEST(Lector, WrapAndLeftAlignLineLengthFour) {
+  const std::string expected{"Hel-\nlo,\nwor-\nld!"};
+  EXPECT_EQ(
+      lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(4UL)), expected);
+}
+
+TEST(Lector, WrapAndLeftAlignLineLengthOne) {
+  const std::string expected{"H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!"};
+  EXPECT_EQ(
+      lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(1UL)), expected);
+}
+
+TEST(Lector, WrapAndLeftAlignLineLengthThree) {
+  const std::string expected{"He-\nll-\no,\nwo-\nrl-\nd!"};
+  EXPECT_EQ(
+      lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(3UL)), expected);
+}
+
+TEST(Lector, WrapAndLeftAlignLineLengthTwo) {
+  const std::string expected{"H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!"};
+  EXPECT_EQ(
+      lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(2UL)), expected);
 }
 
 TEST(Lector, WrapAndLeftAlignMultipleLines) {
@@ -251,19 +646,18 @@ TEST(Lector, WrapAndLeftAlignVeryLongWord) {
             expected);
 }
 
-TEST(Lector, WrapToVectorExcessiveWhitespaceEmpty) {
-  const std::vector<std::string> expected;
-  EXPECT_EQ(lector::wrap("", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap(" ", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap("  ", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap("\t", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap("\t\t", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap("\n", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap("\n\n", static_cast<std::size_t>(100UL)), expected);
-  EXPECT_EQ(lector::wrap(" \t\n \t\n", static_cast<std::size_t>(100UL)), expected);
+TEST(Lector, WrapAndLeftAlignWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap_and_left_align("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_left_align(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
-TEST(Lector, WrapToVectorExcessiveWhitespaceTypical) {
+TEST(Lector, WrapOnlyExcessiveWhitespace) {
   const std::vector<std::string> expected{"Hello, world!"};
   EXPECT_EQ(lector::wrap("Hello, world!", static_cast<std::size_t>(100UL)), expected);
   EXPECT_EQ(lector::wrap("Hello, world! ", static_cast<std::size_t>(100UL)), expected);
@@ -286,11 +680,11 @@ TEST(Lector, WrapToVectorExcessiveWhitespaceTypical) {
       lector::wrap(" \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)), expected);
 }
 
-TEST(Lector, WrapToVectorInvalid) {
+TEST(Lector, WrapOnlyInvalid) {
   EXPECT_ANY_THROW((void)lector::wrap("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapToVectorMaximumLineLengthSmall) {
+TEST(Lector, WrapOnlyLineLengthFive) {
   const std::vector<std::string> expected{
     "The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."};
   EXPECT_EQ(lector::wrap("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
@@ -298,7 +692,29 @@ TEST(Lector, WrapToVectorMaximumLineLengthSmall) {
             expected);
 }
 
-TEST(Lector, WrapToVectorMultipleLines) {
+TEST(Lector, WrapOnlyLineLengthFour) {
+  const std::vector<std::string> expected{"Hel-", "lo,", "wor-", "ld!"};
+  EXPECT_EQ(lector::wrap("  Hello,  world!  ", static_cast<std::size_t>(4UL)), expected);
+}
+
+TEST(Lector, WrapOnlyLineLengthOne) {
+  const std::vector<std::string> expected{
+    "H", "e", "l", "l", "o", ",", "w", "o", "r", "l", "d", "!"};
+  EXPECT_EQ(lector::wrap("  Hello,  world!  ", static_cast<std::size_t>(1UL)), expected);
+}
+
+TEST(Lector, WrapOnlyLineLengthThree) {
+  const std::vector<std::string> expected{"He-", "ll-", "o,", "wo-", "rl-", "d!"};
+  EXPECT_EQ(lector::wrap("  Hello,  world!  ", static_cast<std::size_t>(3UL)), expected);
+}
+
+TEST(Lector, WrapOnlyLineLengthTwo) {
+  const std::vector<std::string> expected{
+    "H-", "e-", "l-", "l-", "o,", "w-", "o-", "r-", "l-", "d!"};
+  EXPECT_EQ(lector::wrap("  Hello,  world!  ", static_cast<std::size_t>(2UL)), expected);
+}
+
+TEST(Lector, WrapOnlyMultipleLines) {
   const std::vector<std::string> expected{
     "The quick", "brown fox", "jumps over", "the lazy", "dog."};
   EXPECT_EQ(lector::wrap("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
@@ -306,18 +722,29 @@ TEST(Lector, WrapToVectorMultipleLines) {
             expected);
 }
 
-TEST(Lector, WrapToVectorUtf8Characters) {
+TEST(Lector, WrapOnlyUtf8Characters) {
   const std::vector<std::string> expected{"J'ai hâte à", "l'été!"};
   EXPECT_EQ(lector::wrap("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)), expected);
 }
 
-TEST(Lector, WrapToVectorVeryLongWord) {
+TEST(Lector, WrapOnlyVeryLongWord) {
   const std::vector<std::string> expected{
     "The word", "supercali-", "fragilist-", "icexpiali-", "docious is", "my", "favorite", "word!"};
   EXPECT_EQ(
       lector::wrap("  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
                    static_cast<std::size_t>(10UL)),
       expected);
+}
+
+TEST(Lector, WrapOnlyWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap("", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap(" ", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap("  ", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap("\t", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap("\t\t", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap("\n", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap("\n\n", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
+  EXPECT_EQ(lector::wrap(" \t\n", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
 }
 
 }  // namespace
