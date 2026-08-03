@@ -30,6 +30,8 @@ WarningsAsErrors: ''
 CheckOptions:
   - key: modernize-avoid-c-arrays.AllowStringArrays
     value: true
+  - key: readability-function-cognitive-complexity.Threshold
+    value: '35'
 Checks: '
   -abseil-cleanup-ctad,
   -abseil-duration-addition,
