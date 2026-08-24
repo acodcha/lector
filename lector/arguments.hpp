@@ -137,13 +137,26 @@ public:
   /// description, required importance, and no default value.
   Argument() noexcept = default;
 
-  /// @brief Constructor for a required command line argument or a boolean command line argument. No
-  /// default value is needed. Boolean command line arguments are always optional and always default
-  /// to false.
-  /// @param[in] keys The keys that can be used to specify the command line argument.
-  /// @param[in] description The description of the command line argument.
-  /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description)
+  /// @brief Constructor for a required positional command line argument. No default value is
+  /// needed.
+  /// @param[in] description The description of the positional command line argument.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  Argument(const std::string_view description) : description_{description} {
+    if (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument(
+          "Positional boolean arguments are not supported. Use a named boolean argument instead.");
+    }
+    set_boolean_default();
+    validate_description();
+  }
+
+  /// @brief Constructor for a required named command line argument or a named boolean command line
+  /// argument. No default value is needed. Named boolean command line arguments are always optional
+  /// and always default to false.
+  /// @param[in] keys The keys that can be used to specify the named command line argument.
+  /// @param[in] description The description of the named command line argument.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  Argument(const std::initializer_list<std::string> keys, const std::string_view description)
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
@@ -152,13 +165,25 @@ public:
     validate_description();
   }
 
-  /// @brief Constructor for an optional non-boolean command line argument. A default value must be
-  /// provided.
-  /// @param[in] keys The keys that can be used to specify the command line argument.
-  /// @param[in] description The description of the command line argument.
-  /// @param[in] default_value The default value of the command line argument.
-  /// @throws std::invalid_argument if any of the parameters are invalid.
-  Argument(const std::initializer_list<std::string>& keys, const std::string& description,
+  /// @brief Constructor for an optional positional non-boolean command line argument. A default
+  /// value must be provided.
+  /// @param[in] description The description of the optional positional command line argument.
+  /// @param[in] default_value The default value of the optional positional command line argument.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  Argument(const std::string_view description, const Type& default_value)
+    : description_{description}, default_value_{default_value},
+      importance_{lector::Importance::Optional} {
+    validate_description();
+    validate_default_value();
+  }
+
+  /// @brief Constructor for an optional named non-boolean command line argument. A default value
+  /// must be provided.
+  /// @param[in] keys The keys that can be used to specify the optional named command line argument.
+  /// @param[in] description The description of the optional named command line argument.
+  /// @param[in] default_value The default value of the optional named command line argument.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  Argument(const std::initializer_list<std::string> keys, const std::string_view description,
            const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
@@ -226,6 +251,18 @@ public:
     return importance_;
   }
 
+  /// @brief Form of this command line argument. Positional arguments do not define any keys and
+  /// must be specified in a specific order on the command line, while named arguments define one or
+  /// more keys and are specified on the command line by one of their keys. Named arguments can be
+  /// specified in any order on the command line.
+  /// @return The form of this command line argument.
+  [[nodiscard]] lector::Form form() const noexcept {
+    if (keys_.empty()) {
+      return lector::Form::Positional;
+    }
+    return lector::Form::Named;
+  }
+
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
   /// returns the default value.
   /// @return The value of this command line argument.
@@ -252,6 +289,9 @@ public:
   /// a string.
   /// @return The string that contains the longest key and its associated value type.
   [[nodiscard]] std::string longest_key_with_value_type() const {
+    if (keys_.empty()) {
+      return std::string{value_type()};
+    }
     std::string result{longest_key()};
     const std::string type{value_type()};
     if (!type.empty()) {
@@ -265,6 +305,9 @@ public:
   /// @return The string of text that contains the keys and value type of this command line
   /// argument.
   [[nodiscard]] std::string keys_with_value_type() const {
+    if (keys_.empty()) {
+      return std::string{value_type()};
+    }
     std::string result;
     for (std::size_t index{0UL}; index < keys_.size(); ++index) {
       const std::string type{value_type()};
@@ -285,9 +328,6 @@ public:
   /// enclosed in square braces if this command line argument is optional.
   /// @return The string of text that contains the usage information of this command line argument.
   [[nodiscard]] std::string usage() const {
-    if (keys_.empty()) {
-      return std::string{};
-    }
     if (importance() == lector::Importance::Optional) {
       return "[" + longest_key_with_value_type() + "]";
     }
@@ -299,10 +339,14 @@ public:
   /// @return The string of text that contains the options information of this command line
   /// argument.
   [[nodiscard]] std::string options() const {
-    if (keys_.empty() && description_.empty()) {
-      return std::string{};
+    std::string keys_with_value_type_{keys_with_value_type()};
+    if (keys_with_value_type_.empty()) {
+      return description_;
     }
-    return keys_with_value_type() + "  " + description_;
+    if (description_.empty()) {
+      return keys_with_value_type_;
+    }
+    return keys_with_value_type_ + "  " + description_;
   }
 
   /// @brief Prints the execution of this command line argument as a string of text. The execution
@@ -316,6 +360,9 @@ public:
       return "";
     } else {
       if (parsed_value_.has_value()) {
+        if (keys_.empty()) {
+          return lector::print<Type>(parsed_value_.value());
+        }
         return longest_key() + " " + lector::print<Type>(parsed_value_.value());
       }
       return "";
@@ -337,15 +384,15 @@ private:
   /// invalid.
   void validate_keys() const {
     if (keys_.empty()) {
-      throw std::logic_error("All arguments must each have at least one key.");
+      throw std::logic_error("All named arguments must each have at least one key.");
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
         if (longest_key().empty()) {
-          throw std::logic_error("Arguments cannot have empty keys.");
+          throw std::logic_error("Named arguments cannot have empty keys.");
         }
-        throw std::logic_error("Empty key in argument '" + longest_key_with_value_type()
-                               + "'. Arguments cannot have empty keys.");
+        throw std::logic_error("Empty key in named argument '" + longest_key_with_value_type()
+                               + "'. Named arguments cannot have empty keys.");
       }
     }
     const std::size_t keys_size{keys_.size()};
@@ -354,8 +401,8 @@ private:
            ++second) {
         if (keys_[first] == keys_[second]) {
           throw std::logic_error(
-              "Duplicated key '" + keys_[first] + "' in argument '" + longest_key_with_value_type()
-              + "'. Arguments cannot have duplicate keys.");
+              "Duplicated key '" + keys_[first] + "' in named argument '"
+              + longest_key_with_value_type() + "'. Named arguments cannot have duplicate keys.");
         }
       }
     }
@@ -523,6 +570,7 @@ public:
   /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(lector::Configuration&& configuration, ArgumentTypes... arguments)
     : configuration_{std::move(configuration)}, arguments_{std::move(arguments)...} {
+    validate_named();
     validate_keys();
   }
 
@@ -530,6 +578,7 @@ public:
   /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {
+    validate_named();
     validate_keys();
   }
 
@@ -997,6 +1046,21 @@ private:
     }
     throw std::invalid_argument(
         "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
+  }
+
+  /// @brief Validates that all arguments in this collection are named arguments. Called by the
+  /// constructor. Positional arguments are not supported at this time.
+  /// @throws std::logic_error if any argument is not a named argument.
+  void validate_named() const {
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&]() {
+            if (argument.form() != lector::Form::Named) {
+              throw std::logic_error("Only named arguments are supported at this time.");
+            }
+          }());
+        },
+        arguments_);
   }
 
   /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
