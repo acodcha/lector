@@ -199,6 +199,48 @@ namespace lector {
   return text;
 }
 
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines right-aligned.
+/// @param[in] lines Vector of strings to be joined and right-aligned.
+/// @return The joined and right-aligned string of text.
+[[nodiscard]] inline std::string join_and_right_align(const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Compute the line lengths and find the maximum line length.
+  std::vector<std::size_t> line_lengths;
+  line_lengths.reserve(lines.size());
+  std::size_t longest_line_length{0UL};
+  for (const std::string& line : lines) {
+    const std::size_t length{lector::code_points(line)};
+    line_lengths.push_back(length);
+    if (length > longest_line_length) {
+      longest_line_length = length;
+    }
+  }
+  // Compute the exact total byte size.
+  std::size_t total_size{0UL};
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
+    total_size += lines.at(line_index).size() + padding;
+  }
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append lines with padding.
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    if (line_index > 0UL) {
+      text.push_back('\n');
+    }
+    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
+    text.append(padding, ' ');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
 /// @brief Wraps a string of text to a line length and returns the result as a sequence of strings
 /// of text where each string in the sequence represents one line of text.
 /// @param[in] text The string of text to wrap.
@@ -295,6 +337,17 @@ namespace lector {
 [[nodiscard]] inline std::string wrap_and_left_align(
     const std::string_view text, const std::size_t line_length) {
   return lector::join_and_left_align(lector::wrap(text, line_length));
+}
+
+/// @brief Right-aligns and wraps a string of text to a line length.
+/// @param[in] text The string of text to wrap and right-align.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The resulting wrapped and right-aligned string of text.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::string wrap_and_right_align(
+    const std::string_view text, const std::size_t line_length) {
+  return lector::join_and_right_align(lector::wrap(text, line_length));
 }
 
 /// @brief Combines two strings of text, each representing a column, into a single vector of strings

@@ -431,11 +431,32 @@ TEST(Lector, JoinAndLeftAlignEmpty) {
 }
 
 TEST(Lector, JoinAndLeftAlignMultiple) {
-  EXPECT_EQ(lector::join_and_left_align({"  Hello, ", "world!  "}), "  Hello, \nworld!  ");
+  EXPECT_EQ(
+      lector::join_and_left_align({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+      "  Hello!  \n  Hello, world!  \n  Hello again, world!  ");
 }
 
 TEST(Lector, JoinAndLeftAlignSingle) {
   EXPECT_EQ(lector::join_and_left_align({"  Hello, world!  "}), "  Hello, world!  ");
+}
+
+TEST(Lector, JoinAndRightAlignEmpty) {
+  EXPECT_EQ(lector::join_and_right_align({}), "");
+}
+
+TEST(Lector, JoinAndRightAlignMultiple) {
+  EXPECT_EQ(
+      lector::join_and_right_align({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+      "               Hello!  \n        Hello, world!  \n  Hello again, world!  ");
+}
+
+TEST(Lector, JoinAndRightAlignSingle) {
+  EXPECT_EQ(lector::join_and_right_align({"  Hello, world!  "}), "  Hello, world!  ");
+}
+
+TEST(Lector, JoinAndRightAlignUtf8) {
+  EXPECT_EQ(
+      lector::join_and_right_align({"  Château.  ", "  Été.  "}), "  Château.  \n      Été.  ");
 }
 
 TEST(Lector, LongestWordLengthEmpty) {
@@ -655,6 +676,119 @@ TEST(Lector, WrapAndLeftAlignWhitespaceOnly) {
   EXPECT_EQ(lector::wrap_and_left_align("\n", static_cast<std::size_t>(100UL)), std::string{});
   EXPECT_EQ(lector::wrap_and_left_align("\n\n", static_cast<std::size_t>(100UL)), std::string{});
   EXPECT_EQ(lector::wrap_and_left_align(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
+}
+
+TEST(Lector, WrapAndRightAlignExcessiveWhitespace) {
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world! ", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!  ", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align(" Hello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align(" Hello, world! ", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\n", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\nHello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\n\nHello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\t", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\tHello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\t\tHello, world!", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_right_align(
+                " \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)),
+            "Hello, world!");
+}
+
+TEST(Lector, WrapAndRightAlignInvalid) {
+  EXPECT_ANY_THROW(
+      (void)lector::wrap_and_right_align("Hello, world!", static_cast<std::size_t>(0UL)));
+}
+
+TEST(Lector, WrapAndRightAlignLineLengthFive) {
+  const std::string expected{"  The\nquick\nbrown\n  fox\njumps\n over\n  the\n lazy\n dog."};
+  EXPECT_EQ(lector::wrap_and_right_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+                                         static_cast<std::size_t>(5UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndRightAlignLineLengthFour) {
+  const std::string expected{"Hel-\n lo,\nwor-\n ld!"};
+  EXPECT_EQ(
+      lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(4UL)), expected);
+}
+
+TEST(Lector, WrapAndRightAlignLineLengthOne) {
+  const std::string expected{"H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!"};
+  EXPECT_EQ(
+      lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(1UL)), expected);
+}
+
+TEST(Lector, WrapAndRightAlignLineLengthThree) {
+  const std::string expected{"He-\nll-\n o,\nwo-\nrl-\n d!"};
+  EXPECT_EQ(
+      lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(3UL)), expected);
+}
+
+TEST(Lector, WrapAndRightAlignLineLengthTwo) {
+  const std::string expected{"H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!"};
+  EXPECT_EQ(
+      lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(2UL)), expected);
+}
+
+TEST(Lector, WrapAndRightAlignMultipleLines) {
+  const std::string expected{" The quick\n brown fox\njumps over\n  the lazy\n      dog."};
+  EXPECT_EQ(lector::wrap_and_right_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+                                         static_cast<std::size_t>(12UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndRightAlignUtf8Characters) {
+  const std::string expected{"J'ai hâte à\n     l'été!"};
+  EXPECT_EQ(
+      lector::wrap_and_right_align("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
+      expected);
+}
+
+TEST(Lector, WrapAndRightAlignVeryLongWord) {
+  const std::
+      string
+          expected{
+            "  The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n        my\n  favorite\n"
+            "     word!"};
+  EXPECT_EQ(lector::wrap_and_right_align(
+                "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+                static_cast<std::size_t>(10UL)),
+            expected);
+}
+
+TEST(Lector, WrapAndRightAlignWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap_and_right_align("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_right_align(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
 TEST(Lector, WrapOnlyExcessiveWhitespace) {
