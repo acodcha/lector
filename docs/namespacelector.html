@@ -146,6 +146,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
 <tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
 <tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d617d581d3fec7778c9025e89bfce9a" id="r_a9d617d581d3fec7778c9025e89bfce9a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9d617d581d3fec7778c9025e89bfce9a">join_and_right_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:a9d617d581d3fec7778c9025e89bfce9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines right-aligned.  <br /></td></tr>
+<tr class="separator:a9d617d581d3fec7778c9025e89bfce9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b1dde915cb9ead99329697e201ba32f" id="r_a7b1dde915cb9ead99329697e201ba32f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7b1dde915cb9ead99329697e201ba32f">longest_word_length</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a7b1dde915cb9ead99329697e201ba32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
 <tr class="separator:a7b1dde915cb9ead99329697e201ba32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,6 +297,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a44bd330c9016a93ce6be338042e52d9c" id="r_a44bd330c9016a93ce6be338042e52d9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">wrap_and_left_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
 <tr class="memdesc:a44bd330c9016a93ce6be338042e52d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
 <tr class="separator:a44bd330c9016a93ce6be338042e52d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06746346e616da83ce64f0c7c315b218" id="r_a06746346e616da83ce64f0c7c315b218"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a06746346e616da83ce64f0c7c315b218">wrap_and_right_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a06746346e616da83ce64f0c7c315b218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right-aligns and wraps a string of text to a line length.  <br /></td></tr>
+<tr class="separator:a06746346e616da83ce64f0c7c315b218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -597,6 +603,33 @@ template&lt;typename Type &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The joined and left-aligned string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a9d617d581d3fec7778c9025e89bfce9a" name="a9d617d581d3fec7778c9025e89bfce9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d617d581d3fec7778c9025e89bfce9a">&#9670;&#160;</a></span>join_and_right_align()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::join_and_right_align </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines right-aligned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lines</td><td>Vector of strings to be joined and right-aligned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The joined and right-aligned string of text. </dd></dl>
 
 </div>
 </div>
@@ -1761,6 +1794,50 @@ template&lt;typename EnumerationType &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The resulting wrapped and left-aligned string of text. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a06746346e616da83ce64f0c7c315b218" name="a06746346e616da83ce64f0c7c315b218"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06746346e616da83ce64f0c7c315b218">&#9670;&#160;</a></span>wrap_and_right_align()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::wrap_and_right_align </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Right-aligns and wraps a string of text to a line length. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and right-align. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The resulting wrapped and right-aligned string of text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
