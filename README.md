@@ -64,9 +64,9 @@ int main(int argc, char* argv[]) {
 
 The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.
 
-In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, and feature strict error checking.
+In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, can be named (keyed) or positional (keyless), and feature strict error checking.
 
-The Lector library can parse command line arguments as whitespace-separated key-value pairs of the form `key value` or as inline key-value pairs of the form `key=value`. It can also handle keys that contain arbitrary characters.
+The Lector library can parse named command line arguments as whitespace-separated key-value pairs of the form `key value` or as inline key-value pairs of the form `key=value`. It can also handle keys that contain arbitrary characters.
 
 [(Back to Top)](#lector)
 
@@ -272,7 +272,15 @@ The Lector library uses enumeration values to label arguments. For example, the 
 enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
 ```
 
-Defining an argument requires an enumeration value used as a label, a type, one or more keys, a description, and an optional default value. For example, the code from the [§1. Introduction](#1-introduction) section defines the following arguments:
+Defining an argument requires:
+
+- An enumeration value to be used as a label.
+- A value type.
+- A set of keys, if the argument is named rather than positional.
+- A description.
+- A default value, if the argument is optional rather than required.
+
+For example, the code from the [§1. Introduction](#1-introduction) section defines the following arguments:
 
 ```cpp
 lector::Arguments arguments{
@@ -329,6 +337,7 @@ const lector::Argument<Label::Help, bool>& help{arguments.get<Label::Help>()};
 Each `lector::Argument` object exposes a rich public interface. Commonly-used interface members of `lector::Argument` include:
 
 - `lector::Argument::importance()` returns either `lector::Importance::Required` or `lector::Importance::Optional`, as appropriate for the argument.
+- `lector::Argument::form()` returns either `lector::Form::Positional` or `lector::Form::Named`, as appropriate for the argument.
 - `lector::Argument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
 - `lector::Argument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
 - `lector::Argument::parsed_or_default_value()` returns the argument's parsed value if it exists, or its default value otherwise.
@@ -404,7 +413,7 @@ The output directory is: /some/path
 The number of iterations is: 200
 ```
 
-Arguments can be defined with multiple keys. For example, the `Label::OutputDirectory` argument lists the `-o` and `--output_directory` keys, and the `Label::Iterations` argument lists the `-i` and `--iterations` keys. Any of these keys can be used on the command line:
+Named arguments can be defined with multiple keys. For example, the `Label::OutputDirectory` argument lists the `-o` and `--output_directory` keys, and the `Label::Iterations` argument lists the `-i` and `--iterations` keys. Any of these keys can be used on the command line:
 
 ```bash
 path/to/my_application -o /some/path -i=200
@@ -645,7 +654,7 @@ The Lector library performs strict error checking when defining command line arg
 The following checks are performed when defining command line arguments:
 
 - All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Help, bool>{ {"-h"}, "Help." }` and `lector::Argument<Label::Help, bool>{ {"--help"}, "Help." }` throws an exception because both arguments use the same label `Label::Help`.
-- All arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because no keys are defined.
+- All named arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because the set of keys is empty. To define a positional argument, omit the set of keys entirely. For example, `lector::Argument<Label::Iterations, std::int32_t>{ "Iterations." }` defines a positional argument.
 - Arguments cannot have empty keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"", "-i"}, "Iterations." }` throws an exception because the first key is empty.
 - Arguments cannot have duplicate keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i", "-i"}, "Iterations." }` throws an exception because the key `-i` is duplicated.
 - Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::Argument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
@@ -658,7 +667,7 @@ The following checks are performed when parsing command line arguments. These ex
 - Duplicated arguments. For example, `path/to/my_application --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
 - Invalid argument values. For example, `path/to/my_application --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
 - Arguments missing values. For example, `path/to/my_application --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
-- Unknown arguments. For example, `path/to/my_application --output_directory /tmp --unknown` throws an exception because the argument `--unknown` is unknown.
+- Unknown command line tokens. For example, `path/to/my_application --output_directory /tmp --unknown` throws an exception because the token `--unknown` does not match any key of any named argument, and since no positional arguments are defined, it also cannot match the value of any positional argument.
 
 [(Back to User Guide)](#3-user-guide)
 
