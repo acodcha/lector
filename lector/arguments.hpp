@@ -570,7 +570,6 @@ public:
   /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(lector::Configuration&& configuration, ArgumentTypes... arguments)
     : configuration_{std::move(configuration)}, arguments_{std::move(arguments)...} {
-    validate_named();
     validate_keys();
   }
 
@@ -578,7 +577,6 @@ public:
   /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
   explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {
-    validate_named();
     validate_keys();
   }
 
@@ -614,10 +612,15 @@ public:
   /// encountered.
   void parse(const int argc, char* argv[]) {
     parse_executable_path(argc, argv);
-    parse_arguments(argc, argv);
+    const std::vector<std::string_view> positional_tokens{parse_named_arguments(argc, argv)};
+    parse_positional_arguments(positional_tokens);
     validate_all_required_arguments_have_parsed_values();
   }
 
+  /// @brief Returns the configuration of the help information of this collection of command line
+  /// arguments.
+  /// @return The configuration of the help information of this collection of command line
+  /// arguments.
   [[nodiscard]] const lector::Configuration& configuration() const {
     return configuration_;
   }
@@ -873,29 +876,87 @@ private:
     }
   }
 
-  /// @brief Parses the command line arguments from argc and argv, except for the executable path.
-  /// Starts at the second argument in argv. Called by the lector::Arguments::parse method.
+  /// @brief Parses argc and argv, except for the executable path, and attempts to match them to the
+  /// named arguments. Starts at the second argument in argv. Called by the lector::Arguments::parse
+  /// method. Remaining arguments that could not be matched to named arguments are treated as
+  /// positional arguments and returned.
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
+  /// @return Collection of the remaining command line arguments that could not be matched to named
+  /// arguments, which are treated as positional arguments.
   /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
   /// encountered.
-  void parse_arguments(const int argc, char* argv[]) {
+  [[nodiscard]] std::vector<std::string_view> parse_named_arguments(const int argc, char* argv[]) {
+    std::vector<std::string_view> positional_tokens;
     const std::size_t count{static_cast<std::size_t>(argc)};
     for (std::size_t argv_index{1UL}; argv_index < count; ++argv_index) {
       const std::string_view token{argv[argv_index]};
-      const BestArgument best_argument{find_best_argument(token)};
-      std::size_t current_index{0UL};
-      std::apply(
-          [&](auto&... argument) {
-            (..., [&]() {
-              if (current_index == best_argument.index) {
-                populate_argument(argument, best_argument, argc, argv, argv_index);
+      const std::optional<BestArgument> best_argument{find_best_argument(token)};
+      if (best_argument.has_value()) {
+        std::size_t current_index{0UL};
+        std::apply(
+            [&](auto&... argument) {
+              (..., [&]() {
+                if (current_index == best_argument->index) {
+                  populate_argument(argument, best_argument.value(), argc, argv, argv_index);
+                }
+                ++current_index;
+              }());
+            },
+            arguments_);
+      } else {
+        // If no named argument key matches the current argv token, treat it as the value of a
+        // positional argument.
+        positional_tokens.push_back(token);
+      }
+    }
+    return positional_tokens;
+  }
+
+  /// @brief Parses the remaining command line arguments that could not be matched to named
+  /// arguments as positional arguments. Called by the lector::Arguments::parse method.
+  /// @param[in] positional_tokens Collection of the remaining command line arguments that could not
+  /// be matched to named arguments, which are treated as positional arguments.
+  /// @throws std::invalid_argument if too many positional arguments are provided or if a positional
+  /// argument cannot be parsed.
+  void parse_positional_arguments(const std::vector<std::string_view>& positional_tokens) {
+    std::size_t token_index{0UL};
+    std::apply(
+        [&](auto&... argument) {
+          (..., [&]() {
+            if (argument.form() == lector::Form::Positional) {
+              if (token_index < positional_tokens.size()) {
+                using Type = typename std::decay_t<decltype(argument)>::ValueType;
+                const std::string raw_value{positional_tokens[token_index]};
+                const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
+                if (parsed_value.has_value()) {
+                  argument.set_parsed_value(parsed_value.value());
+                } else {
+                  throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                              + argument.longest_key_with_value_type() + "'.");
+                }
+                ++token_index;
               }
-              ++current_index;
-            }());
-          },
-          arguments_);
+            }
+          }());
+        },
+        arguments_);
+    // Check that all tokens have been matched.
+    if (token_index < positional_tokens.size()) {
+      const std::size_t unexpected_count{positional_tokens.size() - token_index};
+      std::string unexpected_tokens;
+      for (std::size_t unexpected_token_index{token_index};
+           unexpected_token_index < positional_tokens.size(); ++unexpected_token_index) {
+        if (unexpected_token_index > token_index) {
+          unexpected_tokens.append(", ");
+        }
+        unexpected_tokens.push_back('\'');
+        unexpected_tokens.append(std::string{positional_tokens[unexpected_token_index]});
+        unexpected_tokens.push_back('\'');
+      }
+      throw std::invalid_argument(std::to_string(unexpected_count)
+                                  + " unexpected command line tokens: " + unexpected_tokens + ".");
     }
   }
 
@@ -903,7 +964,7 @@ private:
   /// @param[in] token The command line argument token to match.
   /// @return The best matching argument.
   /// @throws std::invalid_argument if an unknown argument is encountered.
-  [[nodiscard]] BestArgument find_best_argument(const std::string_view token) const {
+  [[nodiscard]] std::optional<BestArgument> find_best_argument(const std::string_view token) const {
     std::optional<BestArgument> best;
     std::size_t argument_index{0UL};
     std::apply(
@@ -930,10 +991,7 @@ private:
           }());
         },
         arguments_);
-    if (!best.has_value()) {
-      throw std::invalid_argument("Unknown argument '" + std::string{token} + "'.");
-    }
-    return best.value();
+    return best;
   }
 
   /// @brief Checks whether a token is the exact match of an argument's key. Called by
@@ -979,7 +1037,7 @@ private:
   }
 
   /// @brief Populates an argument with its parsed value. Called by
-  /// lector::Arguments::parse_arguments().
+  /// lector::Arguments::parse_named_arguments().
   /// @tparam Argument The type of the argument to be populated.
   /// @param[in,out] argument The argument to be populated.
   /// @param[in] best_argument The lector::Arguments::BestArgument data structure that corresponds
@@ -1046,21 +1104,6 @@ private:
     }
     throw std::invalid_argument(
         "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
-  }
-
-  /// @brief Validates that all arguments in this collection are named arguments. Called by the
-  /// constructor. Positional arguments are not supported at this time.
-  /// @throws std::logic_error if any argument is not a named argument.
-  void validate_named() const {
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&]() {
-            if (argument.form() != lector::Form::Named) {
-              throw std::logic_error("Only named arguments are supported at this time.");
-            }
-          }());
-        },
-        arguments_);
   }
 
   /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
