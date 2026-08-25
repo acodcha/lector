@@ -215,9 +215,7 @@ namespace lector {
   for (const std::string& line : lines) {
     const std::size_t length{lector::code_points(line)};
     line_lengths.push_back(length);
-    if (length > longest_line_length) {
-      longest_line_length = length;
-    }
+    longest_line_length = std::max(length, longest_line_length);
   }
   // Compute the exact total byte size.
   std::size_t total_size{0UL};
