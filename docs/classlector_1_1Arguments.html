@@ -83,14 +83,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38bb5f03f8d65f461cebcb8b9f8ee05b" id="r_a38bb5f03f8d65f461cebcb8b9f8ee05b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a38bb5f03f8d65f461cebcb8b9f8ee05b">Arguments</a> (<a class="el" href="classlector_1_1Arguments.html">lector::Arguments</a>&lt; ArgumentTypes... &gt; &amp;&amp;) noexcept=default</td></tr>
 <tr class="memdesc:a38bb5f03f8d65f461cebcb8b9f8ee05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor. Constructs a collection of command line argument by moving another one.  <br /></td></tr>
 <tr class="separator:a38bb5f03f8d65f461cebcb8b9f8ee05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec713e72358ffe79889eb5abcb39d8ee" id="r_aec713e72358ffe79889eb5abcb39d8ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aec713e72358ffe79889eb5abcb39d8ee">Arguments</a> (<a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp;&amp;configuration, ArgumentTypes... arguments)</td></tr>
+<tr class="memitem:aec713e72358ffe79889eb5abcb39d8ee" id="r_aec713e72358ffe79889eb5abcb39d8ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aec713e72358ffe79889eb5abcb39d8ee">Arguments</a> (<a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp;&amp;<a class="el" href="classlector_1_1Arguments.html#a49d1aa15b1c13c690b42ed856ed285af">configuration</a>, ArgumentTypes... arguments)</td></tr>
 <tr class="memdesc:aec713e72358ffe79889eb5abcb39d8ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compile-time check that all arguments have unique labels.  <br /></td></tr>
 <tr class="separator:aec713e72358ffe79889eb5abcb39d8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84bc57a2c9b835ad7711184dd02a9764" id="r_a84bc57a2c9b835ad7711184dd02a9764"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a84bc57a2c9b835ad7711184dd02a9764">~Arguments</a> () noexcept=default</td></tr>
 <tr class="memdesc:a84bc57a2c9b835ad7711184dd02a9764"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. Destroys this collection of command line arguments.  <br /></td></tr>
 <tr class="separator:a84bc57a2c9b835ad7711184dd02a9764"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49d1aa15b1c13c690b42ed856ed285af" id="r_a49d1aa15b1c13c690b42ed856ed285af"><td class="memItemLeft" align="right" valign="top"><a id="a49d1aa15b1c13c690b42ed856ed285af" name="a49d1aa15b1c13c690b42ed856ed285af"></a>
-const <a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>configuration</b> () const</td></tr>
+<tr class="memitem:a49d1aa15b1c13c690b42ed856ed285af" id="r_a49d1aa15b1c13c690b42ed856ed285af"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a49d1aa15b1c13c690b42ed856ed285af">configuration</a> () const</td></tr>
+<tr class="memdesc:a49d1aa15b1c13c690b42ed856ed285af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the configuration of the help information of this collection of command line arguments.  <br /></td></tr>
 <tr class="separator:a49d1aa15b1c13c690b42ed856ed285af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3626b15a0a14c953385f7092dc06ad78" id="r_a3626b15a0a14c953385f7092dc06ad78"><td class="memItemLeft" align="right" valign="top">const std::filesystem::path &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a3626b15a0a14c953385f7092dc06ad78">executable_path</a> () const</td></tr>
 <tr class="memdesc:a3626b15a0a14c953385f7092dc06ad78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the executable path of this collection of command line arguments. If the command line arguments have not yet been parsed from argc and argv, this path is empty.  <br /></td></tr>
@@ -315,6 +315,28 @@ template&lt;typename... ArgumentTypes&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a49d1aa15b1c13c690b42ed856ed285af" name="a49d1aa15b1c13c690b42ed856ed285af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49d1aa15b1c13c690b42ed856ed285af">&#9670;&#160;</a></span>configuration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ArgumentTypes&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structlector_1_1Configuration.html">lector::Configuration</a> &amp; <a class="el" href="classlector_1_1Arguments.html">lector::Arguments</a>&lt; ArgumentTypes &gt;::configuration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the configuration of the help information of this collection of command line arguments. </p>
+<dl class="section return"><dt>Returns</dt><dd>The configuration of the help information of this collection of command line arguments. </dd></dl>
+
+</div>
+</div>
 <a id="a3626b15a0a14c953385f7092dc06ad78" name="a3626b15a0a14c953385f7092dc06ad78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3626b15a0a14c953385f7092dc06ad78">&#9670;&#160;</a></span>executable_path()</h2>
 
