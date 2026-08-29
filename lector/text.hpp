@@ -170,6 +170,32 @@ namespace lector {
   return words;
 }
 
+/// @brief Pads a string of text from the left with spaces to reach a specified length. If the
+/// string of text is longer than the specified length, it is unchanged.
+/// @param[in] text The string of text to pad from the left.
+/// @param[in] length The desired length of the padded string.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_left(const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string(text);
+  }
+  return std::string(length - text_length, ' ') + std::string{text};
+}
+
+/// @brief Pads a string of text from the right with spaces to reach a specified length. If the
+/// string of text is longer than the specified length, it is unchanged.
+/// @param[in] text The string of text to pad from the right.
+/// @param[in] length The desired length of the padded string.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_right(const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string(text);
+  }
+  return std::string{text} + std::string(length - text_length, ' ');
+}
+
 /// @brief Joins a vector of strings where each string corresponds to a line of text into a single
 /// string of text, with newline characters inserted between the lines, and the lines left-aligned.
 /// @param[in] lines Vector of strings to be joined and left-aligned.
