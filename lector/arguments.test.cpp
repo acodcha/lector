@@ -3873,6 +3873,115 @@ TEST(Lector, ArgumentValidate) {
   EXPECT_ANY_THROW(test::create_invalid_boolean_argument_with_a_default_value());
 }
 
+TEST(Lector, ArityParseEnumeration) {
+  static_assert(lector::parse_enumeration<lector::Arity>("") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Arity>("Hello, world!") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Arity>("UnKnOwN") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Arity>("SiNgLe") == std::nullopt);
+  static_assert(lector::parse_enumeration<lector::Arity>("RePeAtEd") == std::nullopt);
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("SINGLE")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("Single")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("single")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("REPEATED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("Repeated")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+  {
+    constexpr std::optional<lector::Arity> parsed{
+      lector::parse_enumeration<lector::Arity>("repeated")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+}
+
+TEST(Lector, ArityParseGeneral) {
+  EXPECT_EQ(lector::parse<lector::Arity>(""), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Arity>("Hello, world!"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Arity>("UnKnOwN"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Arity>("SiNgLe"), std::nullopt);
+  EXPECT_EQ(lector::parse<lector::Arity>("RePeAtEd"), std::nullopt);
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("UNKNOWN")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("Unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("unknown")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("SINGLE")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("Single")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("single")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("REPEATED")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("Repeated")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+  {
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("repeated")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Repeated);
+  }
+}
+
+TEST(Lector, ArityPrintEnumeration) {
+  EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Unknown), "Unknown");
+  EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Single), "Single");
+  EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Repeated), "Repeated");
+}
+
+TEST(Lector, ArityPrintGeneral) {
+  EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Unknown), "Unknown");
+  EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Single), "Single");
+  EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Repeated), "Repeated");
+}
+
 TEST(Lector, FormParseEnumeration) {
   static_assert(lector::parse_enumeration<lector::Form>("") == std::nullopt);
   static_assert(lector::parse_enumeration<lector::Form>("Hello, world!") == std::nullopt);
