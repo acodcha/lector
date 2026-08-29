@@ -348,16 +348,17 @@ namespace lector {
   return lector::join_and_right_align(lector::wrap(text, line_length));
 }
 
-/// @brief Combines two strings of text, each representing a column, into a single vector of strings
-/// that contains one line per string of text, with the lines formatted such that the two columns
-/// are left-aligned and spaced a short distance apart.
+/// @brief Combines two strings of text, each representing a column, into a single string that
+/// contains newline-separated lines of text, with the lines formatted such that the two columns are
+/// left-aligned and spaced a short distance apart.
 /// @param[in] first_column_text The string of text for the first column.
 /// @param[in] first_column_width The desired width of the first column. Very long words whose
 /// length exceeds this width are hyphenated.
 /// @param[in] second_column_text The string of text for the second column.
 /// @param[in] second_column_width The desired width of the second column. Very long words whose
 /// length exceeds this width are hyphenated.
-/// @return The vector of strings that contains the combined text.
+/// @return The string that contains the combined text.
+/// @throws std::invalid_argument if either desired column width is zero.
 [[nodiscard]] inline std::string combine_and_left_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
@@ -381,18 +382,87 @@ namespace lector {
     if (row_index > static_cast<std::size_t>(0UL)) {
       result.push_back('\n');
     }
-    // Grab the string for column 1 if it exists on this row; otherwise, use an empty string.
+    // Grab the string for the first column if it exists on this row; otherwise, use an empty
+    // string.
     const std::string_view first_cell{
       row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
                                         std::string_view{}};
     result.append(first_cell);
-    // If column 2 has text on this row, pad column 1 and append column 2. Otherwise, if column 2 is
-    // exhausted, skip this padding to avoid unnecessary trailing whitespace.
+    // If the second column has text on this row, pad the first column and append the second column.
+    // Otherwise, if the second column is exhausted, skip this padding to avoid unnecessary trailing
+    // whitespace.
     if (row_index < second_column.size()) {
       const std::size_t first_cell_length{lector::code_points(first_cell)};
       const std::size_t padding{first_column_width + gutter_width - first_cell_length};
       result.append(padding, ' ');
       result.append(second_column.at(row_index));
+    }
+  }
+  return result;
+}
+
+/// @brief Combines two strings of text, each representing a column, into a single string that
+/// contains newline-separated lines of text, with the lines formatted such that the two columns are
+/// right-aligned and spaced a short distance apart.
+/// @param[in] first_column_text The string of text for the first column.
+/// @param[in] first_column_width The desired width of the first column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @param[in] second_column_text The string of text for the second column.
+/// @param[in] second_column_width The desired width of the second column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @return The string that contains the combined text.
+/// @throws std::invalid_argument if either desired column width is zero.
+[[nodiscard]] inline std::string combine_and_right_align(
+    const std::string_view first_column_text, const std::size_t first_column_width,
+    const std::string_view second_column_text, const std::size_t second_column_width) {
+  // Use a gutter width of two spaces.
+  constexpr std::size_t gutter_width{2UL};
+  // Wrap and split both columns.
+  const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};
+  const std::vector<std::string> second_column{
+    lector::wrap(second_column_text, second_column_width)};
+  // Determine the total number of rows required.
+  const std::size_t rows{std::max(first_column.size(), second_column.size())};
+  // Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of
+  // both original input strings, plus the maximum possible padding spaces and newlines per row.
+  std::string result;
+  result.reserve(first_column_text.length() + second_column_text.length()
+                 + (rows
+                    * (first_column_width + gutter_width + second_column_width
+                       + static_cast<std::size_t>(1UL))));
+  // Combine the rows line by line.
+  for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
+    // Append a newline character for every row after the first to separate them without leaving a
+    // trailing newline at the very end of the string.
+    if (row_index > static_cast<std::size_t>(0UL)) {
+      result.push_back('\n');
+    }
+    // Grab the string for the first column if it exists on this row; otherwise, use an empty
+    // string.
+    const std::string_view first_cell{
+      row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
+                                        std::string_view{}};
+    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    // Calculate leading padding. The ternary operator protects against size_t underflow in the
+    // extremely unlikely event a cell exceeds the column width.
+    const std::size_t first_cell_padding{
+      first_column_width > first_cell_length ? first_column_width - first_cell_length :
+                                               static_cast<std::size_t>(0UL)};
+    // Right-align the first column by prepending the required padding.
+    result.append(first_cell_padding, ' ');
+    result.append(first_cell);
+    // If the second column has text on this row, append the gutter, pad the second column, and
+    // append it. Otherwise, if the second column is exhausted, skip this padding to avoid
+    // unnecessary trailing whitespace.
+    if (row_index < second_column.size()) {
+      const std::string_view second_cell{second_column.at(row_index)};
+      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_padding{
+        second_column_width > second_cell_length ? second_column_width - second_cell_length :
+                                                   static_cast<std::size_t>(0UL)};
+      result.append(gutter_width, ' ');
+      result.append(second_cell_padding, ' ');
+      result.append(second_cell);
     }
   }
   return result;
