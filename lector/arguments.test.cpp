@@ -1,6 +1,6 @@
 // Copyright © 2026, Alexandre Coderre-Chabot.
 
-// This file is part of Lector (https://github.com/acodcha/::lector), a C++ library for parsing
+// This file is part of Lector (https://github.com/acodcha/lector), a C++ library for parsing
 // command line arguments. Lector is licensed under the MIT License (https://mit-license.org).
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
@@ -543,7 +543,7 @@ static_assert(!lector::AreUnique<test::Label::Shape, test::Label::Shape>::value)
 static_assert(
     !lector::AreUnique<test::Label::Shape, test::Label::Iterations, test::Label::Shape>::value);
 
-TEST(Lector, ArgumentsDuplicatedArgumentInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentInlineNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{
@@ -551,7 +551,7 @@ TEST(Lector, ArgumentsDuplicatedArgumentInlineNoConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicatedArgumentInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -560,7 +560,7 @@ TEST(Lector, ArgumentsDuplicatedArgumentInlineWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicatedArgumentMixedNoConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentMixedNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{
@@ -568,7 +568,7 @@ TEST(Lector, ArgumentsDuplicatedArgumentMixedNoConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicatedArgumentMixedWithConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentMixedWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -577,7 +577,7 @@ TEST(Lector, ArgumentsDuplicatedArgumentMixedWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicatedArgumentWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentWhitespaceNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{
@@ -585,7 +585,7 @@ TEST(Lector, ArgumentsDuplicatedArgumentWhitespaceNoConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicatedArgumentWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicatedArgumentWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -594,18 +594,18 @@ TEST(Lector, ArgumentsDuplicatedArgumentWhitespaceWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsDuplicateKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicateKeysNoConfiguration) {
   EXPECT_ANY_THROW(lector::Arguments(test::create_argument_iterations_optional_named(),
                                      test::create_argument_iterations_again_invalid()));
 }
 
-TEST(Lector, ArgumentsDuplicateKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionDuplicateKeysWithConfiguration) {
   EXPECT_ANY_THROW(lector::Arguments(
       test::create_configuration(), test::create_argument_iterations_optional_named(),
       test::create_argument_iterations_again_invalid()));
 }
 
-TEST(Lector, ArgumentsEmptyExecutableOnlyNoConfiguration) {
+TEST(Lector, ArgumentCollectionEmptyExecutableOnlyNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -620,7 +620,7 @@ TEST(Lector, ArgumentsEmptyExecutableOnlyNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsEmptyExecutableOnlyWithConfiguration) {
+TEST(Lector, ArgumentCollectionEmptyExecutableOnlyWithConfiguration) {
   lector::Arguments arguments{test::create_configuration()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -638,7 +638,7 @@ TEST(Lector, ArgumentsEmptyExecutableOnlyWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsEmptyNoExecutableNoConfiguration) {
+TEST(Lector, ArgumentCollectionEmptyNoExecutableNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
@@ -649,7 +649,7 @@ TEST(Lector, ArgumentsEmptyNoExecutableNoConfiguration) {
   EXPECT_TRUE(arguments.execution().empty());
 }
 
-TEST(Lector, ArgumentsEmptyNoExecutableWithConfiguration) {
+TEST(Lector, ArgumentCollectionEmptyNoExecutableWithConfiguration) {
   lector::Arguments arguments{test::create_configuration()};
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
@@ -664,14 +664,14 @@ TEST(Lector, ArgumentsEmptyNoExecutableWithConfiguration) {
   EXPECT_TRUE(arguments.execution().empty());
 }
 
-TEST(Lector, ArgumentsExtraTokenNoConfiguration) {
+TEST(Lector, ArgumentCollectionExtraTokenNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_positional(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "200", "300", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsExtraTokenWithConfiguration) {
+TEST(Lector, ArgumentCollectionExtraTokenWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_positional(),
     test::create_argument_help_named()};
@@ -679,14 +679,14 @@ TEST(Lector, ArgumentsExtraTokenWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentNamedInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentNamedInlineNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--iterations=Hello", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentNamedInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentNamedInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -694,14 +694,14 @@ TEST(Lector, ArgumentsInvalidValueForArgumentNamedInlineWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentNamedWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentNamedWhitespaceNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--iterations", "Hello", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentNamedWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentNamedWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -709,14 +709,14 @@ TEST(Lector, ArgumentsInvalidValueForArgumentNamedWhitespaceWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentPositionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentPositionalNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_positional(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "Hello", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsInvalidValueForArgumentPositionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionInvalidValueForArgumentPositionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_positional(),
     test::create_argument_help_named()};
@@ -724,14 +724,14 @@ TEST(Lector, ArgumentsInvalidValueForArgumentPositionalWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingArgumentRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentRequiredNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingArgumentRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_help_named()};
@@ -739,7 +739,7 @@ TEST(Lector, ArgumentsMissingArgumentRequiredWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingArgumentOptionalInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentOptionalInlineNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--output=/path/to/output"};
@@ -752,7 +752,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalInlineNoConfiguration) {
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
-TEST(Lector, ArgumentsMissingArgumentOptionalInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentOptionalInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_help_named()};
@@ -766,7 +766,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalInlineWithConfiguration) {
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
-TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentOptionalWhitespaceNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--output", "/path/to/output"};
@@ -779,7 +779,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceNoConfiguration) {
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
-TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingArgumentOptionalWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_help_named()};
@@ -793,14 +793,14 @@ TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceWithConfiguration) {
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentFirstNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentFirstNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--iterations", "--help"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentFirstWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentFirstWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -808,20 +808,20 @@ TEST(Lector, ArgumentsMissingValueArgumentFirstWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentLastNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentLastNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentLastWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentLastWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentMiddleInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentMiddleInlineNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -830,7 +830,7 @@ TEST(Lector, ArgumentsMissingValueArgumentMiddleInlineNoConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentMiddleInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentMiddleInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -839,7 +839,7 @@ TEST(Lector, ArgumentsMissingValueArgumentMiddleInlineWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentMiddleWhitespaceNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -848,7 +848,7 @@ TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespaceNoConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionMissingValueArgumentMiddleWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -857,7 +857,7 @@ TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespaceWithConfiguration) {
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsNoExecutableNoArgumentsNoConfiguration) {
+TEST(Lector, ArgumentCollectionNoExecutableNoArgumentsNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
@@ -868,7 +868,7 @@ TEST(Lector, ArgumentsNoExecutableNoArgumentsNoConfiguration) {
   EXPECT_TRUE(arguments.execution().empty());
 }
 
-TEST(Lector, ArgumentsNoExecutableNoArgumentsWithConfiguration) {
+TEST(Lector, ArgumentCollectionNoExecutableNoArgumentsWithConfiguration) {
   lector::Arguments arguments{test::create_configuration()};
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
@@ -883,33 +883,33 @@ TEST(Lector, ArgumentsNoExecutableNoArgumentsWithConfiguration) {
   EXPECT_TRUE(arguments.execution().empty());
 }
 
-TEST(Lector, ArgumentsUnknownArgumentInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionUnknownArgumentInlineNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations=200", "--unknown"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsUnknownArgumentInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionUnknownArgumentInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations=200", "--unknown"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsUnknownArgumentWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionUnknownArgumentWhitespaceNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations", "200", "--unknown"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsUnknownArgumentWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionUnknownArgumentWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable", "--iterations", "200", "--unknown"};
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
 }
 
-TEST(Lector, ArgumentsValidConfusingInlineShortLongLongNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingInlineShortLongLongNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_short(), test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key=200=200"};
@@ -935,7 +935,7 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLongNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingInlineShortLongLongWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingInlineShortLongLongWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_short(),
                               test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key=200=200"};
@@ -964,7 +964,7 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLongWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingInlineLongShortLongNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingInlineLongShortLongNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_long(), test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key=200=200"};
@@ -990,7 +990,7 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLongNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingInlineLongShortLongWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingInlineLongShortLongWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_long(),
                               test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key=200=200"};
@@ -1019,7 +1019,7 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLongWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceShortLongLongNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_short(), test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key=200", "200"};
@@ -1045,7 +1045,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceShortLongLongWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_short(),
                               test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key=200", "200"};
@@ -1074,7 +1074,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceShortLongShortNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_short(), test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key", "200"};
@@ -1100,7 +1100,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceShortLongShortWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_short(),
                               test::create_argument_confusing_long()};
   const test::Command command{"/path/to/executable", "--key", "200"};
@@ -1129,7 +1129,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceLongShortLongNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_long(), test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key=200", "200"};
@@ -1155,7 +1155,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceLongShortLongWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_long(),
                               test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key=200", "200"};
@@ -1184,7 +1184,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key=200 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceLongShortShortNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_confusing_long(), test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key", "200"};
@@ -1210,7 +1210,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
 }
 
-TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidConfusingWhitespaceLongShortShortWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_confusing_long(),
                               test::create_argument_confusing_short()};
   const test::Command command{"/path/to/executable", "--key", "200"};
@@ -1239,7 +1239,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
 }
 
-TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualHelpNotSpecifiedNoConfiguration) {
   lector::Arguments arguments{test::create_argument_help_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1259,7 +1259,7 @@ TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualHelpNotSpecifiedWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1282,7 +1282,7 @@ TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualHelpSpecifiedNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualHelpSpecifiedNoConfiguration) {
   lector::Arguments arguments{test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--help"};
   arguments.parse(command.argc(), command.argv());
@@ -1303,7 +1303,7 @@ TEST(Lector, ArgumentsValidIndividualHelpSpecifiedNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --help");
 }
 
-TEST(Lector, ArgumentsValidIndividualHelpSpecifiedWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualHelpSpecifiedWithConfiguration) {
   lector::Arguments arguments{test::create_configuration(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--help"};
   arguments.parse(command.argc(), command.argv());
@@ -1327,7 +1327,7 @@ TEST(Lector, ArgumentsValidIndividualHelpSpecifiedWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --help");
 }
 
-TEST(Lector, ArgumentsValidIndividualIterationsOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualIterationsOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1346,7 +1346,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualIterationsOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualIterationsOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1369,7 +1369,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualIterationsRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualIterationsRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_required_named()};
   const test::Command command{"/path/to/executable", "--iterations", "200"};
   arguments.parse(command.argc(), command.argv());
@@ -1390,7 +1390,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsRequiredNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200");
 }
 
-TEST(Lector, ArgumentsValidIndividualIterationsRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualIterationsRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_required_named()};
   const test::Command command{"/path/to/executable", "--iterations", "200"};
@@ -1415,7 +1415,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsRequiredWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200");
 }
 
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualOutputDirectoryOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_output_directory_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1434,7 +1434,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualOutputDirectoryOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1457,7 +1457,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualOutputDirectoryRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_output_directory_required_named()};
   const test::Command command{"/path/to/executable", "--output", "/path/to/output"};
   arguments.parse(command.argc(), command.argv());
@@ -1478,7 +1478,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output");
 }
 
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualOutputDirectoryRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named()};
   const test::Command command{"/path/to/executable", "--output", "/path/to/output"};
@@ -1503,7 +1503,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output");
 }
 
-TEST(Lector, ArgumentsValidIndividualPointOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualPointOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_point_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1522,7 +1522,7 @@ TEST(Lector, ArgumentsValidIndividualPointOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualPointOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualPointOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_point_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1545,7 +1545,7 @@ TEST(Lector, ArgumentsValidIndividualPointOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualPointRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualPointRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_point_required_named()};
   const test::Command command{"/path/to/executable", "--point", "4.0 5.0 6.0"};
   arguments.parse(command.argc(), command.argv());
@@ -1566,7 +1566,7 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --point 4 5 6");
 }
 
-TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualPointRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_point_required_named()};
   const test::Command command{"/path/to/executable", "--point", "4.0 5.0 6.0"};
@@ -1591,7 +1591,7 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --point 4 5 6");
 }
 
-TEST(Lector, ArgumentsValidIndividualShapeOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualShapeOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_shape_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1610,7 +1610,7 @@ TEST(Lector, ArgumentsValidIndividualShapeOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualShapeOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualShapeOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1633,7 +1633,7 @@ TEST(Lector, ArgumentsValidIndividualShapeOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualShapeRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualShapeRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_shape_required_named()};
   const test::Command command{"/path/to/executable", "--shape", "triangle"};
   arguments.parse(command.argc(), command.argv());
@@ -1654,7 +1654,7 @@ TEST(Lector, ArgumentsValidIndividualShapeRequiredNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --shape Triangle");
 }
 
-TEST(Lector, ArgumentsValidIndividualShapeRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualShapeRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named()};
   const test::Command command{"/path/to/executable", "--shape", "triangle"};
@@ -1679,7 +1679,7 @@ TEST(Lector, ArgumentsValidIndividualShapeRequiredWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --shape Triangle");
 }
 
-TEST(Lector, ArgumentsValidIndividualTitleOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualTitleOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_title_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1698,7 +1698,7 @@ TEST(Lector, ArgumentsValidIndividualTitleOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualTitleOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualTitleOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_title_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1721,7 +1721,7 @@ TEST(Lector, ArgumentsValidIndividualTitleOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualTitleRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualTitleRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_title_required_named()};
   const test::Command command{"/path/to/executable", "--title", "Some Other Report"};
   arguments.parse(command.argc(), command.argv());
@@ -1742,7 +1742,7 @@ TEST(Lector, ArgumentsValidIndividualTitleRequiredNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --title Some Other Report");
 }
 
-TEST(Lector, ArgumentsValidIndividualTitleRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualTitleRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_title_required_named()};
   const test::Command command{"/path/to/executable", "--title", "Some Other Report"};
@@ -1767,7 +1767,7 @@ TEST(Lector, ArgumentsValidIndividualTitleRequiredWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --title Some Other Report");
 }
 
-TEST(Lector, ArgumentsValidIndividualToleranceOptionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualToleranceOptionalNoConfiguration) {
   lector::Arguments arguments{test::create_argument_tolerance_optional_named()};
   const test::Command command{"/path/to/executable"};
   arguments.parse(command.argc(), command.argv());
@@ -1786,7 +1786,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceOptionalNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualToleranceOptionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualToleranceOptionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_tolerance_optional_named()};
   const test::Command command{"/path/to/executable"};
@@ -1809,7 +1809,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceOptionalWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable");
 }
 
-TEST(Lector, ArgumentsValidIndividualToleranceRequiredNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualToleranceRequiredNoConfiguration) {
   lector::Arguments arguments{test::create_argument_tolerance_required_named()};
   const test::Command command{"/path/to/executable", "--tolerance", "0.015625"};
   arguments.parse(command.argc(), command.argv());
@@ -1831,7 +1831,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceRequiredNoConfiguration) {
             "/path/to/executable --tolerance " + lector::print<double>(test::OneOverSixtyFour));
 }
 
-TEST(Lector, ArgumentsValidIndividualToleranceRequiredWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidIndividualToleranceRequiredWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_tolerance_required_named()};
   const test::Command command{"/path/to/executable", "--tolerance", "0.015625"};
@@ -1857,7 +1857,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceRequiredWithConfiguration) {
             "/path/to/executable --tolerance " + lector::print<double>(test::OneOverSixtyFour));
 }
 
-TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyInlineLongKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -1898,7 +1898,7 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyInlineLongKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -1942,7 +1942,7 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyInlineShortKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -1983,7 +1983,7 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyInlineShortKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2027,7 +2027,7 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyMixedLongKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2068,7 +2068,7 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyMixedLongKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2112,7 +2112,7 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyMixedShortKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2153,7 +2153,7 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyMixedShortKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2197,7 +2197,7 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyPositionalNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_positional(),
     test::create_argument_output_directory_required_positional(),
@@ -2237,7 +2237,7 @@ TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
       arguments.execution(), "/path/to/executable Circle /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyPositionalWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_positional(),
     test::create_argument_output_directory_required_positional(),
@@ -2280,7 +2280,7 @@ TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
       arguments.execution(), "/path/to/executable Circle /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyWhitespaceLongKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2321,7 +2321,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyWhitespaceLongKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2365,7 +2365,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyWhitespaceShortKeysNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2406,7 +2406,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidManyWhitespaceShortKeysWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_shape_required_named(),
     test::create_argument_output_directory_required_named(),
@@ -2450,7 +2450,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
             "/path/to/executable --shape Circle --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralIterationsIterationsAgainNoConfiguration) {
   lector::Arguments arguments{test::create_argument_iterations_optional_named(),
                               test::create_argument_iterations_again_valid()};
   const test::Command command{"/path/to/executable", "--iterations", "200", "--iter", "200"};
@@ -2478,7 +2478,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --iter 200");
 }
 
-TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralIterationsIterationsAgainWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_iterations_again_valid()};
@@ -2510,7 +2510,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --iter 200");
 }
 
-TEST(Lector, ArgumentsValidSeveralIterationsHelpNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralIterationsHelpNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--iterations", "200", "--help"};
@@ -2537,7 +2537,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralIterationsHelpWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralIterationsHelpWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_iterations_optional_named(),
     test::create_argument_help_named()};
@@ -2568,7 +2568,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralOutputDirectoryHelpNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(), test::create_argument_help_named()};
   const test::Command command{"/path/to/executable", "--output", "/path/to/output", "--help"};
@@ -2596,7 +2596,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpNoConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralOutputDirectoryHelpWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_help_named()};
@@ -2628,7 +2628,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --output /path/to/output --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpNoConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralOutputDirectoryIterationsHelpNoConfiguration) {
   lector::Arguments arguments{
     test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -2663,7 +2663,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpNoConfiguration) 
             "/path/to/executable --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpWithConfiguration) {
+TEST(Lector, ArgumentCollectionValidSeveralOutputDirectoryIterationsHelpWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_output_directory_required_named(),
     test::create_argument_iterations_optional_named(), test::create_argument_help_named()};
@@ -2701,7 +2701,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpWithConfiguration
             "/path/to/executable --output /path/to/output --iterations 200 --help");
 }
 
-TEST(Lector, ArgumentsWeirdLongInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdLongInlineNoConfiguration) {
   lector::Arguments arguments{test::create_argument_weird_optional_named()};
   const test::Command command{"/path/to/executable", "==weird=key=200"};
   arguments.parse(command.argc(), command.argv());
@@ -2711,7 +2711,7 @@ TEST(Lector, ArgumentsWeirdLongInlineNoConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdLongInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdLongInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_weird_optional_named()};
   const test::Command command{"/path/to/executable", "==weird=key=200"};
@@ -2722,7 +2722,7 @@ TEST(Lector, ArgumentsWeirdLongInlineWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdLongWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdLongWhitespaceNoConfiguration) {
   lector::Arguments arguments{test::create_argument_weird_optional_named()};
   const test::Command command{"/path/to/executable", "==weird=key", "200"};
   arguments.parse(command.argc(), command.argv());
@@ -2732,7 +2732,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespaceNoConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdLongWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdLongWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_weird_optional_named()};
   const test::Command command{"/path/to/executable", "==weird=key", "200"};
@@ -2743,7 +2743,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespaceWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdShortInlineNoConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdShortInlineNoConfiguration) {
   lector::Arguments arguments{test::create_argument_weird_required_named()};
   const test::Command command{"/path/to/executable", "=w=k=200"};
   arguments.parse(command.argc(), command.argv());
@@ -2753,7 +2753,7 @@ TEST(Lector, ArgumentsWeirdShortInlineNoConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdShortInlineWithConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdShortInlineWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_weird_required_named()};
   const test::Command command{"/path/to/executable", "=w=k=200"};
@@ -2764,7 +2764,7 @@ TEST(Lector, ArgumentsWeirdShortInlineWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdShortWhitespaceNoConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdShortWhitespaceNoConfiguration) {
   lector::Arguments arguments{test::create_argument_weird_required_named()};
   const test::Command command{"/path/to/executable", "=w=k", "200"};
   arguments.parse(command.argc(), command.argv());
@@ -2774,7 +2774,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespaceNoConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentsWeirdShortWhitespaceWithConfiguration) {
+TEST(Lector, ArgumentCollectionWeirdShortWhitespaceWithConfiguration) {
   lector::Arguments arguments{
     test::create_configuration(), test::create_argument_weird_required_named()};
   const test::Command command{"/path/to/executable", "=w=k", "200"};
@@ -2785,7 +2785,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespaceWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentConstructorCopy) {
+TEST(Lector, ArgumentSingleConstructorCopy) {
   const lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -2794,6 +2794,7 @@ TEST(Lector, ArgumentConstructorCopy) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -2808,6 +2809,7 @@ TEST(Lector, ArgumentConstructorCopy) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -2822,6 +2824,7 @@ TEST(Lector, ArgumentConstructorCopy) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -2833,7 +2836,7 @@ TEST(Lector, ArgumentConstructorCopy) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentConstructorMove) {
+TEST(Lector, ArgumentSingleConstructorMove) {
   lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -2842,6 +2845,7 @@ TEST(Lector, ArgumentConstructorMove) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -2856,6 +2860,7 @@ TEST(Lector, ArgumentConstructorMove) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -2870,6 +2875,7 @@ TEST(Lector, ArgumentConstructorMove) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -2881,13 +2887,14 @@ TEST(Lector, ArgumentConstructorMove) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentConstructorNormalHelpDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalHelpDefault) {
   const lector::Argument<test::Label::Help, bool> argument;
   EXPECT_EQ(argument.label(), test::Label::Help);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_TRUE(argument.keys_with_value_type().empty());
@@ -2897,7 +2904,7 @@ TEST(Lector, ArgumentConstructorNormalHelpDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalHelpOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalNamed) {
   const lector::Argument<test::Label::Help, bool> argument{test::create_argument_help_named()};
   EXPECT_EQ(argument.label(), test::Label::Help);
   const std::vector<std::string> expected_keys{"-h", "--help"};
@@ -2905,6 +2912,7 @@ TEST(Lector, ArgumentConstructorNormalHelpOptionalNamed) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2915,17 +2923,18 @@ TEST(Lector, ArgumentConstructorNormalHelpOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalHelpOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalPositional) {
   EXPECT_ANY_THROW((void)test::create_argument_help_positional());
 }
 
-TEST(Lector, ArgumentConstructorNormalIterationsDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalIterationsDefault) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument;
   EXPECT_EQ(argument.label(), test::Label::Iterations);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -2935,7 +2944,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalIterationsOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalNamed) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2944,6 +2953,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsOptionalNamed) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2954,7 +2964,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalIterationsOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalPositional) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2962,6 +2972,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsOptionalPositional) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2972,7 +2983,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalIterationsRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredNamed) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2981,6 +2992,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsRequiredNamed) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
@@ -2990,7 +3002,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalIterationsRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredPositional) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2998,6 +3010,7 @@ TEST(Lector, ArgumentConstructorNormalIterationsRequiredPositional) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -3007,13 +3020,14 @@ TEST(Lector, ArgumentConstructorNormalIterationsRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalOutputDirectoryDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryDefault) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument;
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
@@ -3023,7 +3037,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalNamed) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3032,6 +3046,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalNamed) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path("/some/path"));
@@ -3043,7 +3058,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalPositional) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3051,6 +3066,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalPositional) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path("/some/path"));
@@ -3062,7 +3078,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredNamed) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_required_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3071,6 +3087,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredNamed) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output <path>");
@@ -3080,7 +3097,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredPositional) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3088,6 +3105,7 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredPositional) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
@@ -3097,13 +3115,14 @@ TEST(Lector, ArgumentConstructorNormalOutputDirectoryRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalPointDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalPointDefault) {
   const lector::Argument<test::Label::Point, test::Point> argument;
   EXPECT_EQ(argument.label(), test::Label::Point);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3113,7 +3132,7 @@ TEST(Lector, ArgumentConstructorNormalPointDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalPointOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalPointOptionalNamed) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3122,6 +3141,7 @@ TEST(Lector, ArgumentConstructorNormalPointOptionalNamed) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3132,7 +3152,7 @@ TEST(Lector, ArgumentConstructorNormalPointOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalPointOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalPointOptionalPositional) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3140,6 +3160,7 @@ TEST(Lector, ArgumentConstructorNormalPointOptionalPositional) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3150,7 +3171,7 @@ TEST(Lector, ArgumentConstructorNormalPointOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalPointRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalPointRequiredNamed) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3159,6 +3180,7 @@ TEST(Lector, ArgumentConstructorNormalPointRequiredNamed) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
@@ -3168,7 +3190,7 @@ TEST(Lector, ArgumentConstructorNormalPointRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalPointRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalPointRequiredPositional) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3176,6 +3198,7 @@ TEST(Lector, ArgumentConstructorNormalPointRequiredPositional) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3185,13 +3208,14 @@ TEST(Lector, ArgumentConstructorNormalPointRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalShapeDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalShapeDefault) {
   const lector::Argument<test::Label::Shape, test::Shape> argument;
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3201,7 +3225,7 @@ TEST(Lector, ArgumentConstructorNormalShapeDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalShapeOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalNamed) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3210,6 +3234,7 @@ TEST(Lector, ArgumentConstructorNormalShapeOptionalNamed) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3220,7 +3245,7 @@ TEST(Lector, ArgumentConstructorNormalShapeOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalShapeOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalPositional) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3228,6 +3253,7 @@ TEST(Lector, ArgumentConstructorNormalShapeOptionalPositional) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3238,7 +3264,7 @@ TEST(Lector, ArgumentConstructorNormalShapeOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalShapeRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredNamed) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3247,6 +3273,7 @@ TEST(Lector, ArgumentConstructorNormalShapeRequiredNamed) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
@@ -3256,7 +3283,7 @@ TEST(Lector, ArgumentConstructorNormalShapeRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalShapeRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredPositional) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3264,6 +3291,7 @@ TEST(Lector, ArgumentConstructorNormalShapeRequiredPositional) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3273,13 +3301,14 @@ TEST(Lector, ArgumentConstructorNormalShapeRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalTitleDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalTitleDefault) {
   const lector::Argument<test::Label::Title, std::string> argument;
   EXPECT_EQ(argument.label(), test::Label::Title);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
@@ -3289,7 +3318,7 @@ TEST(Lector, ArgumentConstructorNormalTitleDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalTitleOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalNamed) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3298,6 +3327,7 @@ TEST(Lector, ArgumentConstructorNormalTitleOptionalNamed) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3308,7 +3338,7 @@ TEST(Lector, ArgumentConstructorNormalTitleOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalTitleOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalPositional) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3316,6 +3346,7 @@ TEST(Lector, ArgumentConstructorNormalTitleOptionalPositional) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3326,7 +3357,7 @@ TEST(Lector, ArgumentConstructorNormalTitleOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalTitleRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredNamed) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3335,6 +3366,7 @@ TEST(Lector, ArgumentConstructorNormalTitleRequiredNamed) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
@@ -3344,7 +3376,7 @@ TEST(Lector, ArgumentConstructorNormalTitleRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalTitleRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredPositional) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3352,6 +3384,7 @@ TEST(Lector, ArgumentConstructorNormalTitleRequiredPositional) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
@@ -3361,13 +3394,14 @@ TEST(Lector, ArgumentConstructorNormalTitleRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalToleranceDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalToleranceDefault) {
   const lector::Argument<test::Label::Tolerance, double> argument;
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3377,7 +3411,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalToleranceOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalNamed) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3386,6 +3420,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceOptionalNamed) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3396,7 +3431,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalToleranceOptionalPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalPositional) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3404,6 +3439,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceOptionalPositional) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3414,7 +3450,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalToleranceRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredNamed) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3423,6 +3459,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceRequiredNamed) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
@@ -3432,7 +3469,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalToleranceRequiredPositional) {
+TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredPositional) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3440,6 +3477,7 @@ TEST(Lector, ArgumentConstructorNormalToleranceRequiredPositional) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3449,13 +3487,14 @@ TEST(Lector, ArgumentConstructorNormalToleranceRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalWeirdDefault) {
+TEST(Lector, ArgumentSingleConstructorNormalWeirdDefault) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument;
   EXPECT_EQ(argument.label(), test::Label::Weird);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -3465,7 +3504,7 @@ TEST(Lector, ArgumentConstructorNormalWeirdDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentConstructorNormalWeirdOptionalNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalWeirdOptionalNamed) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument{
     test::create_argument_weird_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Weird);
@@ -3474,6 +3513,7 @@ TEST(Lector, ArgumentConstructorNormalWeirdOptionalNamed) {
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3484,7 +3524,7 @@ TEST(Lector, ArgumentConstructorNormalWeirdOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentConstructorNormalWeirdRequiredNamed) {
+TEST(Lector, ArgumentSingleConstructorNormalWeirdRequiredNamed) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument{
     test::create_argument_weird_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Weird);
@@ -3493,6 +3533,7 @@ TEST(Lector, ArgumentConstructorNormalWeirdRequiredNamed) {
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
@@ -3502,7 +3543,7 @@ TEST(Lector, ArgumentConstructorNormalWeirdRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentOperatorCopyAssignment) {
+TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   const lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3511,6 +3552,7 @@ TEST(Lector, ArgumentOperatorCopyAssignment) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -3525,6 +3567,7 @@ TEST(Lector, ArgumentOperatorCopyAssignment) {
   EXPECT_TRUE(second.description().empty());
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
@@ -3537,6 +3580,7 @@ TEST(Lector, ArgumentOperatorCopyAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -3551,6 +3595,7 @@ TEST(Lector, ArgumentOperatorCopyAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -3562,7 +3607,7 @@ TEST(Lector, ArgumentOperatorCopyAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentOperatorMoveAssignment) {
+TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3571,6 +3616,7 @@ TEST(Lector, ArgumentOperatorMoveAssignment) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -3585,6 +3631,7 @@ TEST(Lector, ArgumentOperatorMoveAssignment) {
   EXPECT_TRUE(second.description().empty());
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
@@ -3597,6 +3644,7 @@ TEST(Lector, ArgumentOperatorMoveAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -3611,6 +3659,7 @@ TEST(Lector, ArgumentOperatorMoveAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Single);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -3622,7 +3671,7 @@ TEST(Lector, ArgumentOperatorMoveAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSetParsedValueHelp) {
+TEST(Lector, ArgumentSingleSetParsedValueHelp) {
   lector::Argument<test::Label::Help, bool> argument{test::create_argument_help_named()};
   EXPECT_EQ(argument.label(), test::Label::Help);
   const std::vector<std::string> expected_keys{"-h", "--help"};
@@ -3630,6 +3679,7 @@ TEST(Lector, ArgumentSetParsedValueHelp) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3644,6 +3694,7 @@ TEST(Lector, ArgumentSetParsedValueHelp) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<bool>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && !default_value_again.value());
   const std::optional<bool>& parsed_value{argument.parsed_value()};
@@ -3655,7 +3706,7 @@ TEST(Lector, ArgumentSetParsedValueHelp) {
   EXPECT_EQ(argument.execution(), "--help");
 }
 
-TEST(Lector, ArgumentSetParsedValuePoint) {
+TEST(Lector, ArgumentSingleSetParsedValuePoint) {
   lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3664,6 +3715,7 @@ TEST(Lector, ArgumentSetParsedValuePoint) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3678,6 +3730,7 @@ TEST(Lector, ArgumentSetParsedValuePoint) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Point>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == test::FirstPoint);
   const std::optional<test::Point>& parsed_value{argument.parsed_value()};
@@ -3689,7 +3742,7 @@ TEST(Lector, ArgumentSetParsedValuePoint) {
   EXPECT_EQ(argument.execution(), "--point 4 5 6");
 }
 
-TEST(Lector, ArgumentSetParsedValueShape) {
+TEST(Lector, ArgumentSingleSetParsedValueShape) {
   lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3698,6 +3751,7 @@ TEST(Lector, ArgumentSetParsedValueShape) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3712,6 +3766,7 @@ TEST(Lector, ArgumentSetParsedValueShape) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<test::Shape>& default_value_again{argument.default_value()};
   EXPECT_TRUE(
       default_value_again.has_value() && default_value_again.value() == test::Shape::Circle);
@@ -3724,7 +3779,7 @@ TEST(Lector, ArgumentSetParsedValueShape) {
   EXPECT_EQ(argument.execution(), "--shape Square");
 }
 
-TEST(Lector, ArgumentSetParsedValueOutputDirectory) {
+TEST(Lector, ArgumentSingleSetParsedValueOutputDirectory) {
   lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3733,6 +3788,7 @@ TEST(Lector, ArgumentSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path{"/some/path"});
@@ -3748,6 +3804,7 @@ TEST(Lector, ArgumentSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::filesystem::path>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value()
               && default_value_again.value() == std::filesystem::path{"/some/path"});
@@ -3761,7 +3818,7 @@ TEST(Lector, ArgumentSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.execution(), "--output /another/path");
 }
 
-TEST(Lector, ArgumentSetParsedValueTolerance) {
+TEST(Lector, ArgumentSingleSetParsedValueTolerance) {
   lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3770,6 +3827,7 @@ TEST(Lector, ArgumentSetParsedValueTolerance) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3784,6 +3842,7 @@ TEST(Lector, ArgumentSetParsedValueTolerance) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<double>& default_value_again{argument.default_value()};
   EXPECT_TRUE(
       default_value_again.has_value() && default_value_again.value() == test::OneOverThirtyTwo);
@@ -3796,7 +3855,7 @@ TEST(Lector, ArgumentSetParsedValueTolerance) {
   EXPECT_EQ(argument.execution(), "--tolerance 0.0156250000000000000");
 }
 
-TEST(Lector, ArgumentSetParsedValueIterations) {
+TEST(Lector, ArgumentSingleSetParsedValueIterations) {
   lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -3805,6 +3864,7 @@ TEST(Lector, ArgumentSetParsedValueIterations) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3819,6 +3879,7 @@ TEST(Lector, ArgumentSetParsedValueIterations) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::int32_t>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == test::OneHundred);
   const std::optional<std::int32_t>& parsed_value{argument.parsed_value()};
@@ -3830,7 +3891,7 @@ TEST(Lector, ArgumentSetParsedValueIterations) {
   EXPECT_EQ(argument.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSetParsedValueTitle) {
+TEST(Lector, ArgumentSingleSetParsedValueTitle) {
   lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3839,6 +3900,7 @@ TEST(Lector, ArgumentSetParsedValueTitle) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3853,6 +3915,7 @@ TEST(Lector, ArgumentSetParsedValueTitle) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Single);
   const std::optional<std::string>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == "My Report");
   const std::optional<std::string>& parsed_value{argument.parsed_value()};
@@ -3864,7 +3927,7 @@ TEST(Lector, ArgumentSetParsedValueTitle) {
   EXPECT_EQ(argument.execution(), "--title Some Other Report");
 }
 
-TEST(Lector, ArgumentValidate) {
+TEST(Lector, ArgumentSingleValidate) {
   EXPECT_ANY_THROW(test::create_invalid_argument_with_all_empty_keys());
   EXPECT_ANY_THROW(test::create_invalid_argument_with_an_empty_key());
   EXPECT_ANY_THROW(test::create_invalid_argument_with_duplicate_keys());

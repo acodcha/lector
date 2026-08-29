@@ -105,6 +105,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4df68d641d278e62e78580051cd8173b" id="r_a4df68d641d278e62e78580051cd8173b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a4df68d641d278e62e78580051cd8173b">~Argument</a> () noexcept=default</td></tr>
 <tr class="memdesc:a4df68d641d278e62e78580051cd8173b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. Destroys this command line argument.  <br /></td></tr>
 <tr class="separator:a4df68d641d278e62e78580051cd8173b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c32c9f3cabacbb8163a4266086fab1" id="r_a54c32c9f3cabacbb8163a4266086fab1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a54c32c9f3cabacbb8163a4266086fab1">arity</a> () const noexcept</td></tr>
+<tr class="memdesc:a54c32c9f3cabacbb8163a4266086fab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arity of this command line argument. Singular arguments can only appear once on the command line, whereas repeated arguments can appear multiple times.  <br /></td></tr>
+<tr class="separator:a54c32c9f3cabacbb8163a4266086fab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0291aadd85b231b6cf04255dc78114bc" id="r_a0291aadd85b231b6cf04255dc78114bc"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; Type &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a0291aadd85b231b6cf04255dc78114bc">default_value</a> () const noexcept</td></tr>
 <tr class="memdesc:a0291aadd85b231b6cf04255dc78114bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value of this command line argument. Only relevant for optional non-boolean arguments. Set at construction.  <br /></td></tr>
 <tr class="separator:a0291aadd85b231b6cf04255dc78114bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,10 +118,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:acad8e1d10f8825d95cec5a1f38bcb513"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the execution of this command line argument as a string of text. The execution consists of this command line argument's longest key and parsed value, if any.  <br /></td></tr>
 <tr class="separator:acad8e1d10f8825d95cec5a1f38bcb513"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad05b6d7433efe8ac17992c4235083c11" id="r_ad05b6d7433efe8ac17992c4235083c11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908">lector::Form</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#ad05b6d7433efe8ac17992c4235083c11">form</a> () const noexcept</td></tr>
-<tr class="memdesc:ad05b6d7433efe8ac17992c4235083c11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Form of this command line argument. Positional arguments do not define any keys and must be specified in a specific order on the command line, while named arguments define one or more keys and are specified on the command line by one of their keys. Named arguments can be specified in any order on the command line.  <br /></td></tr>
+<tr class="memdesc:ad05b6d7433efe8ac17992c4235083c11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Form of this command line argument. Positional arguments do not define any keys and must be specified in a specific order on the command line, whereas named arguments define one or more keys and are specified on the command line by one of their keys. Named arguments can be specified in any order on the command line.  <br /></td></tr>
 <tr class="separator:ad05b6d7433efe8ac17992c4235083c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44949901f3653784dcab539fe5574e25" id="r_a44949901f3653784dcab539fe5574e25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">lector::Importance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a44949901f3653784dcab539fe5574e25">importance</a> () const noexcept</td></tr>
-<tr class="memdesc:a44949901f3653784dcab539fe5574e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of this command line argument. Required arguments must be provided by the user, while optional arguments may or may not be provided by the user. Set at construction.  <br /></td></tr>
+<tr class="memdesc:a44949901f3653784dcab539fe5574e25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of this command line argument. Required arguments must be provided by the user, whereas optional arguments may or may not be provided by the user. Set at construction.  <br /></td></tr>
 <tr class="separator:a44949901f3653784dcab539fe5574e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08dc8341f33dce914cb00bcd5b1c58b9" id="r_a08dc8341f33dce914cb00bcd5b1c58b9"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Argument.html#a08dc8341f33dce914cb00bcd5b1c58b9">keys</a> () const noexcept</td></tr>
 <tr class="memdesc:a08dc8341f33dce914cb00bcd5b1c58b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keys that can be used to specify this command line argument. Set at construction.  <br /></td></tr>
@@ -463,6 +466,36 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a54c32c9f3cabacbb8163a4266086fab1" name="a54c32c9f3cabacbb8163a4266086fab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54c32c9f3cabacbb8163a4266086fab1">&#9670;&#160;</a></span>arity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;auto LabelValue, typename Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a> <a class="el" href="classlector_1_1Argument.html">lector::Argument</a>&lt; LabelValue, Type &gt;::arity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arity of this command line argument. Singular arguments can only appear once on the command line, whereas repeated arguments can appear multiple times. </p>
+<dl class="section return"><dt>Returns</dt><dd>The arity of this command line argument. </dd></dl>
+
+</div>
+</div>
 <a id="a0291aadd85b231b6cf04255dc78114bc" name="a0291aadd85b231b6cf04255dc78114bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0291aadd85b231b6cf04255dc78114bc">&#9670;&#160;</a></span>default_value()</h2>
 
@@ -570,7 +603,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Form of this command line argument. Positional arguments do not define any keys and must be specified in a specific order on the command line, while named arguments define one or more keys and are specified on the command line by one of their keys. Named arguments can be specified in any order on the command line. </p>
+<p>Form of this command line argument. Positional arguments do not define any keys and must be specified in a specific order on the command line, whereas named arguments define one or more keys and are specified on the command line by one of their keys. Named arguments can be specified in any order on the command line. </p>
 <dl class="section return"><dt>Returns</dt><dd>The form of this command line argument. </dd></dl>
 
 </div>
@@ -600,7 +633,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Importance of this command line argument. Required arguments must be provided by the user, while optional arguments may or may not be provided by the user. Set at construction. </p>
+<p>Importance of this command line argument. Required arguments must be provided by the user, whereas optional arguments may or may not be provided by the user. Set at construction. </p>
 <dl class="section return"><dt>Returns</dt><dd>The importance of this command line argument. </dd></dl>
 
 </div>

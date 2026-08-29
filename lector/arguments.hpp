@@ -286,22 +286,29 @@ public:
   }
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  /// user, whereas optional arguments may or may not be provided by the user. Set at construction.
   /// @return The importance of this command line argument.
   [[nodiscard]] lector::Importance importance() const noexcept {
     return importance_;
   }
 
   /// @brief Form of this command line argument. Positional arguments do not define any keys and
-  /// must be specified in a specific order on the command line, while named arguments define one or
-  /// more keys and are specified on the command line by one of their keys. Named arguments can be
-  /// specified in any order on the command line.
+  /// must be specified in a specific order on the command line, whereas named arguments define one
+  /// or more keys and are specified on the command line by one of their keys. Named arguments can
+  /// be specified in any order on the command line.
   /// @return The form of this command line argument.
   [[nodiscard]] lector::Form form() const noexcept {
     if (keys_.empty()) {
       return lector::Form::Positional;
     }
     return lector::Form::Named;
+  }
+
+  /// @brief Arity of this command line argument. Singular arguments can only appear once on the
+  /// command line, whereas repeated arguments can appear multiple times.
+  /// @return The arity of this command line argument.
+  [[nodiscard]] lector::Arity arity() const noexcept {
+    return lector::Arity::Single;
   }
 
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
@@ -520,7 +527,7 @@ private:
   std::optional<Type> parsed_value_;
 
   /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, while optional arguments may or may not be provided by the user. Set at construction.
+  /// user, whereas optional arguments may or may not be provided by the user. Set at construction.
   lector::Importance importance_{lector::Importance::Required};
 };
 
