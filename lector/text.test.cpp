@@ -167,6 +167,66 @@ TEST(Lector, CombineAndLeftAlignVeryLongWord) {
       "           column.");
 }
 
+TEST(Lector, CombineAndRightAlignBothColumnsEmpty) {
+  EXPECT_EQ(lector::combine_and_right_align("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("", 2, "", 2), std::string{});
+}
+
+TEST(Lector, CombineAndRightAlignBothColumnsWhitespace) {
+  EXPECT_EQ(lector::combine_and_right_align("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::combine_and_right_align("  ", 2, "  ", 2), std::string{});
+}
+
+TEST(Lector, CombineAndRightAlignFirstColumnEmpty) {
+  EXPECT_EQ(lector::combine_and_right_align("", 10, "  And this is the second column.  ", 12),
+            "             And this is\n"
+            "              the second\n"
+            "                 column.");
+}
+
+TEST(Lector, CombineAndRightAlignFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::combine_and_right_align(
+                "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
+            "               This is the first column.   And this is\n"
+            "                                            the second\n"
+            "                                               column.");
+}
+
+TEST(Lector, CombineAndRightAlignFirstColumnShort) {
+  EXPECT_EQ(lector::combine_and_right_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
+            "    Hello.   And this is\n"
+            "              the second\n"
+            "                 column.");
+}
+
+TEST(Lector, CombineAndRightAlignFirstColumnWhitespace) {
+  EXPECT_EQ(lector::combine_and_right_align("    ", 10, "  And this is the second column.  ", 12),
+            "             And this is\n"
+            "              the second\n"
+            "                 column.");
+}
+
+TEST(Lector, CombineAndRightAlignTypical) {
+  EXPECT_EQ(lector::combine_and_right_align(
+                "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
+            " This is   And this is\n"
+            "     the    the second\n"
+            "   first       column.\n"
+            " column.");
+}
+
+TEST(Lector, CombineAndRightAlignVeryLongWord) {
+  EXPECT_EQ(
+      lector::combine_and_right_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      "Very_lon-   And this is\n"
+      "  g_word.    the second\n"
+      "                column.");
+}
+
 TEST(Lector, IsLeadingByte) {
   EXPECT_TRUE(lector::is_leading_byte('\0'));
   EXPECT_TRUE(lector::is_leading_byte('\x01'));

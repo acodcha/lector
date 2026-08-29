@@ -411,16 +411,16 @@
 <div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespacelector.html#a9d617d581d3fec7778c9025e89bfce9a">lector::join_and_right_align</a>(<a class="code hl_function" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">lector::wrap</a>(text, line_length));</div>
 <div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>}</div>
 <div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span><span class="comment"></span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">/// @brief Combines two strings of text, each representing a column, into a single vector of strings</span></div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">/// that contains one line per string of text, with the lines formatted such that the two columns</span></div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">/// are left-aligned and spaced a short distance apart.</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="comment">/// @brief Combines two strings of text, each representing a column, into a single string that</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="comment">/// contains newline-separated lines of text, with the lines formatted such that the two columns are</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span><span class="comment">/// left-aligned and spaced a short distance apart.</span></div>
 <div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="comment">/// @param[in] first_column_text The string of text for the first column.</span></div>
 <div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span><span class="comment">/// @param[in] first_column_width The desired width of the first column. Very long words whose</span></div>
 <div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="comment">/// length exceeds this width are hyphenated.</span></div>
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="comment">/// @param[in] second_column_text The string of text for the second column.</span></div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="comment">/// @param[in] second_column_width The desired width of the second column. Very long words whose</span></div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span><span class="comment">/// length exceeds this width are hyphenated.</span></div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="comment">/// @return The vector of strings that contains the combined text.</span></div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="comment">/// @return The string that contains the combined text.</span></div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">  361</a></span><span class="comment"></span>[[nodiscard]] <span class="keyword">inline</span> std::string <a class="code hl_function" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">combine_and_left_align</a>(</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keyword">const</span> std::string_view first_column_text, <span class="keyword">const</span> std::size_t first_column_width,</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keyword">const</span> std::string_view second_column_text, <span class="keyword">const</span> std::size_t second_column_width) {</div>
@@ -444,30 +444,99 @@
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    <span class="keywordflow">if</span> (row_index &gt; <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(0UL)) {</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>      result.push_back(<span class="charliteral">&#39;\n&#39;</span>);</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    }</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="comment">// Grab the string for column 1 if it exists on this row; otherwise, use an empty string.</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keyword">const</span> std::string_view first_cell{</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>      row_index &lt; first_column.size() ? std::string_view{first_column.at(row_index)} :</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>                                        std::string_view{}};</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    result.append(first_cell);</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    <span class="comment">// If column 2 has text on this row, pad column 1 and append column 2. Otherwise, if column 2 is</span></div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="comment">// exhausted, skip this padding to avoid unnecessary trailing whitespace.</span></div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="keywordflow">if</span> (row_index &lt; second_column.size()) {</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>      <span class="keyword">const</span> std::size_t first_cell_length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(first_cell)};</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>      <span class="keyword">const</span> std::size_t padding{first_column_width + gutter_width - first_cell_length};</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      result.append(padding, <span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      result.append(second_column.at(row_index));</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    }</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>  }</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>}</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>}  <span class="comment">// namespace lector</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="preprocessor">#endif  </span><span class="comment">// LECTOR_TEXT_HPP</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="comment">// Grab the string for the first column if it exists on this row; otherwise, use an empty</span></div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="comment">// string.</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    <span class="keyword">const</span> std::string_view first_cell{</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>      row_index &lt; first_column.size() ? std::string_view{first_column.at(row_index)} :</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>                                        std::string_view{}};</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>    result.append(first_cell);</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>    <span class="comment">// If the second column has text on this row, pad the first column and append the second column.</span></div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    <span class="comment">// Otherwise, if the second column is exhausted, skip this padding to avoid unnecessary trailing</span></div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>    <span class="comment">// whitespace.</span></div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    <span class="keywordflow">if</span> (row_index &lt; second_column.size()) {</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>      <span class="keyword">const</span> std::size_t first_cell_length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(first_cell)};</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>      <span class="keyword">const</span> std::size_t padding{first_column_width + gutter_width - first_cell_length};</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>      result.append(padding, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>      result.append(second_column.at(row_index));</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    }</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>  }</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>}</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span><span class="comment"></span> </div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="comment">/// @brief Combines two strings of text, each representing a column, into a single string that</span></div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span><span class="comment">/// contains newline-separated lines of text, with the lines formatted such that the two columns are</span></div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span><span class="comment">/// right-aligned and spaced a short distance apart.</span></div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span><span class="comment">/// @param[in] first_column_text The string of text for the first column.</span></div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span><span class="comment">/// @param[in] first_column_width The desired width of the first column. Very long words whose</span></div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span><span class="comment">/// length exceeds this width are hyphenated.</span></div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span><span class="comment">/// @param[in] second_column_text The string of text for the second column.</span></div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span><span class="comment">/// @param[in] second_column_width The desired width of the second column. Very long words whose</span></div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span><span class="comment">/// length exceeds this width are hyphenated.</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="comment">/// @return The string that contains the combined text.</span></div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno"><a class="line" href="namespacelector.html#a4120fb2c00829dfd11f4d0e78b875c2d">  413</a></span><span class="comment"></span>[[nodiscard]] <span class="keyword">inline</span> std::string <a class="code hl_function" href="namespacelector.html#a4120fb2c00829dfd11f4d0e78b875c2d">combine_and_right_align</a>(</div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keyword">const</span> std::string_view first_column_text, <span class="keyword">const</span> std::size_t first_column_width,</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    <span class="keyword">const</span> std::string_view second_column_text, <span class="keyword">const</span> std::size_t second_column_width) {</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>  <span class="comment">// Use a gutter width of two spaces.</span></div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>  <span class="keyword">constexpr</span> std::size_t gutter_width{2UL};</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>  <span class="comment">// Wrap and split both columns.</span></div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>  <span class="keyword">const</span> std::vector&lt;std::string&gt; first_column{<a class="code hl_function" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">lector::wrap</a>(first_column_text, first_column_width)};</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>  <span class="keyword">const</span> std::vector&lt;std::string&gt; second_column{</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    <a class="code hl_function" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">lector::wrap</a>(second_column_text, second_column_width)};</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  <span class="comment">// Determine the total number of rows required.</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>  <span class="keyword">const</span> std::size_t rows{std::max(first_column.size(), second_column.size())};</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="comment">// Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of</span></div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  <span class="comment">// both original input strings, plus the maximum possible padding spaces and newlines per row.</span></div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>  std::string result;</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>  result.reserve(first_column_text.length() + second_column_text.length()</div>
+<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span>                 + (rows</div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span>                    * (first_column_width + gutter_width + second_column_width</div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                       + <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(1UL))));</div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>  <span class="comment">// Combine the rows line by line.</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>  <span class="keywordflow">for</span> (std::size_t row_index{0UL}; row_index &lt; rows; ++row_index) {</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>    <span class="comment">// Append a newline character for every row after the first to separate them without leaving a</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    <span class="comment">// trailing newline at the very end of the string.</span></div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>    <span class="keywordflow">if</span> (row_index &gt; <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(0UL)) {</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>      result.push_back(<span class="charliteral">&#39;\n&#39;</span>);</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span>    }</div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span>    <span class="comment">// Grab the string for the first column if it exists on this row; otherwise, use an empty</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span>    <span class="comment">// string.</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span>    <span class="keyword">const</span> std::string_view first_cell{</div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span>      row_index &lt; first_column.size() ? std::string_view{first_column.at(row_index)} :</div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span>                                        std::string_view{}};</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    <span class="keyword">const</span> std::size_t first_cell_length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(first_cell)};</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>    <span class="comment">// Calculate leading padding. The ternary operator protects against size_t underflow in the</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    <span class="comment">// extremely unlikely event a cell exceeds the column width.</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span>    <span class="keyword">const</span> std::size_t first_cell_padding{</div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span>      first_column_width &gt; first_cell_length ? first_column_width - first_cell_length :</div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span>                                               <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(0UL)};</div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span>    <span class="comment">// Right-align the first column by prepending the required padding.</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span>    result.append(first_cell_padding, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span>    result.append(first_cell);</div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span>    <span class="comment">// If the second column has text on this row, append the gutter, pad the second column, and</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    <span class="comment">// append it. Otherwise, if the second column is exhausted, skip this padding to avoid</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>    <span class="comment">// unnecessary trailing whitespace.</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    <span class="keywordflow">if</span> (row_index &lt; second_column.size()) {</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span>      <span class="keyword">const</span> std::string_view second_cell{second_column.at(row_index)};</div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span>      <span class="keyword">const</span> std::size_t second_cell_length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(second_cell)};</div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span>      <span class="keyword">const</span> std::size_t second_cell_padding{</div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span>        second_column_width &gt; second_cell_length ? second_column_width - second_cell_length :</div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span>                                                   <span class="keyword">static_cast&lt;</span>std::size_t<span class="keyword">&gt;</span>(0UL)};</div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span>      result.append(gutter_width, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>      result.append(second_cell_padding, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>      result.append(second_cell);</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>    }</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>  }</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>}</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span> </div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>}  <span class="comment">// namespace lector</span></div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span> </div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="preprocessor">#endif  </span><span class="comment">// LECTOR_TEXT_HPP</span></div>
 <div class="ttc" id="anamespacelector_html"><div class="ttname"><a href="namespacelector.html">lector</a></div><div class="ttdoc">The Lector library's namespace.</div><div class="ttdef"><b>Definition</b> arguments.hpp:45</div></div>
 <div class="ttc" id="anamespacelector_html_a06746346e616da83ce64f0c7c315b218"><div class="ttname"><a href="namespacelector.html#a06746346e616da83ce64f0c7c315b218">lector::wrap_and_right_align</a></div><div class="ttdeci">std::string wrap_and_right_align(const std::string_view text, const std::size_t line_length)</div><div class="ttdoc">Right-aligns and wraps a string of text to a line length.</div><div class="ttdef"><b>Definition</b> text.hpp:346</div></div>
 <div class="ttc" id="anamespacelector_html_a12fbadda4745d3082c5f7504bd22862a"><div class="ttname"><a href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">lector::is_leading_byte</a></div><div class="ttdeci">bool is_leading_byte(const char character)</div><div class="ttdoc">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters meas...</div><div class="ttdef"><b>Definition</b> text.hpp:56</div></div>
-<div class="ttc" id="anamespacelector_html_a26eea2188d2bff251878c7af773e2555"><div class="ttname"><a href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">lector::combine_and_left_align</a></div><div class="ttdeci">std::string combine_and_left_align(const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</div><div class="ttdoc">Combines two strings of text, each representing a column, into a single vector of strings that contai...</div><div class="ttdef"><b>Definition</b> text.hpp:361</div></div>
+<div class="ttc" id="anamespacelector_html_a26eea2188d2bff251878c7af773e2555"><div class="ttname"><a href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">lector::combine_and_left_align</a></div><div class="ttdeci">std::string combine_and_left_align(const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</div><div class="ttdoc">Combines two strings of text, each representing a column, into a single string that contains newline-...</div><div class="ttdef"><b>Definition</b> text.hpp:361</div></div>
+<div class="ttc" id="anamespacelector_html_a4120fb2c00829dfd11f4d0e78b875c2d"><div class="ttname"><a href="namespacelector.html#a4120fb2c00829dfd11f4d0e78b875c2d">lector::combine_and_right_align</a></div><div class="ttdeci">std::string combine_and_right_align(const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</div><div class="ttdoc">Combines two strings of text, each representing a column, into a single string that contains newline-...</div><div class="ttdef"><b>Definition</b> text.hpp:413</div></div>
 <div class="ttc" id="anamespacelector_html_a44bd330c9016a93ce6be338042e52d9c"><div class="ttname"><a href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">lector::wrap_and_left_align</a></div><div class="ttdeci">std::string wrap_and_left_align(const std::string_view text, const std::size_t line_length)</div><div class="ttdoc">Left-aligns and wraps a string of text to a line length.</div><div class="ttdef"><b>Definition</b> text.hpp:335</div></div>
 <div class="ttc" id="anamespacelector_html_a786b5f0d81bbfa73273d467ccb6cc34b"><div class="ttname"><a href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a></div><div class="ttdeci">std::size_t code_points(const std::string_view text)</div><div class="ttdoc">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code poin...</div><div class="ttdef"><b>Definition</b> text.hpp:68</div></div>
 <div class="ttc" id="anamespacelector_html_a7b1dde915cb9ead99329697e201ba32f"><div class="ttname"><a href="namespacelector.html#a7b1dde915cb9ead99329697e201ba32f">lector::longest_word_length</a></div><div class="ttdeci">std::size_t longest_word_length(const std::string_view text)</div><div class="ttdoc">Computes and returns the length of the longest word in a string of text. The length of a word is meas...</div><div class="ttdef"><b>Definition</b> text.hpp:115</div></div>
