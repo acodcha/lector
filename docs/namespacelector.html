@@ -155,6 +155,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a7b1dde915cb9ead99329697e201ba32f" id="r_a7b1dde915cb9ead99329697e201ba32f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7b1dde915cb9ead99329697e201ba32f">longest_word_length</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a7b1dde915cb9ead99329697e201ba32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
 <tr class="separator:a7b1dde915cb9ead99329697e201ba32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade6c1cb2d4ae667cc7a6c40d91eb1f84" id="r_ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ade6c1cb2d4ae667cc7a6c40d91eb1f84">pad_left</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text from the left with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged.  <br /></td></tr>
+<tr class="separator:ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab138a6909b13b7e659c94330d276d840" id="r_ab138a6909b13b7e659c94330d276d840"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab138a6909b13b7e659c94330d276d840">pad_right</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:ab138a6909b13b7e659c94330d276d840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text from the right with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged.  <br /></td></tr>
+<tr class="separator:ab138a6909b13b7e659c94330d276d840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a575d367a2203a7a0e48459c552af78b2" id="r_a575d367a2203a7a0e48459c552af78b2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a575d367a2203a7a0e48459c552af78b2"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; bool &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a575d367a2203a7a0e48459c552af78b2">parse</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a575d367a2203a7a0e48459c552af78b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a boolean value. For example, the string of text "true" returns the boolean value true.  <br /></td></tr>
@@ -724,6 +730,82 @@ template&lt;typename Type &gt; </div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The length of the longest word in the string of text. </dd></dl>
+
+</div>
+</div>
+<a id="ade6c1cb2d4ae667cc7a6c40d91eb1f84" name="ade6c1cb2d4ae667cc7a6c40d91eb1f84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade6c1cb2d4ae667cc7a6c40d91eb1f84">&#9670;&#160;</a></span>pad_left()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::pad_left </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pads a string of text from the left with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad from the left. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The desired length of the padded string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The padded string of text. </dd></dl>
+
+</div>
+</div>
+<a id="ab138a6909b13b7e659c94330d276d840" name="ab138a6909b13b7e659c94330d276d840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab138a6909b13b7e659c94330d276d840">&#9670;&#160;</a></span>pad_right()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::pad_right </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pads a string of text from the right with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad from the right. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The desired length of the padded string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The padded string of text. </dd></dl>
 
 </div>
 </div>

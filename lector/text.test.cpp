@@ -572,6 +572,76 @@ TEST(Lector, LongestWordLengthWhitespaceOnly) {
   EXPECT_EQ(lector::longest_word_length(" \t\n \t\n"), static_cast<std::size_t>(0UL));
 }
 
+TEST(Lector, PadLeftEmpty) {
+  EXPECT_EQ(lector::pad_left("", 0), "");
+  EXPECT_EQ(lector::pad_left("", 1), " ");
+  EXPECT_EQ(lector::pad_left("", 2), "  ");
+  EXPECT_EQ(lector::pad_left("", 3), "   ");
+}
+
+TEST(Lector, PadLeftLengthLong) {
+  EXPECT_EQ(lector::pad_left("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 14), " Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 15), "  Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 16), "   Hello, world!");
+}
+
+TEST(Lector, PadLeftLengthShort) {
+  EXPECT_EQ(lector::pad_left("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_left("Hello, world!", 3), "Hello, world!");
+}
+
+TEST(Lector, PadLeftUtf8) {
+  EXPECT_EQ(lector::pad_left("château", 10), "   château");
+  EXPECT_EQ(lector::pad_left("été", 10), "       été");
+  EXPECT_EQ(lector::pad_left("œuf", 10), "       œuf");
+  EXPECT_EQ(lector::pad_left("こんにちは", 10), "     こんにちは");
+}
+
+TEST(Lector, PadLeftWhitespace) {
+  EXPECT_EQ(lector::pad_left("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_left("\t", 10), "         \t");
+  EXPECT_EQ(lector::pad_left("\n", 10), "         \n");
+  EXPECT_EQ(lector::pad_left(" \t\n \t\n", 10), "     \t\n \t\n");
+}
+
+TEST(Lector, PadRightEmpty) {
+  EXPECT_EQ(lector::pad_right("", 0), "");
+  EXPECT_EQ(lector::pad_right("", 1), " ");
+  EXPECT_EQ(lector::pad_right("", 2), "  ");
+  EXPECT_EQ(lector::pad_right("", 3), "   ");
+}
+
+TEST(Lector, PadRightLengthLong) {
+  EXPECT_EQ(lector::pad_right("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 14), "Hello, world! ");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 15), "Hello, world!  ");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 16), "Hello, world!   ");
+}
+
+TEST(Lector, PadRightLengthShort) {
+  EXPECT_EQ(lector::pad_right("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_right("Hello, world!", 3), "Hello, world!");
+}
+
+TEST(Lector, PadRightUtf8) {
+  EXPECT_EQ(lector::pad_right("château", 10), "château   ");
+  EXPECT_EQ(lector::pad_right("été", 10), "été       ");
+  EXPECT_EQ(lector::pad_right("œuf", 10), "œuf       ");
+  EXPECT_EQ(lector::pad_right("こんにちは", 10), "こんにちは     ");
+}
+
+TEST(Lector, PadRightWhitespace) {
+  EXPECT_EQ(lector::pad_right("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_right("\t", 10), "\t         ");
+  EXPECT_EQ(lector::pad_right("\n", 10), "\n         ");
+  EXPECT_EQ(lector::pad_right(" \t\n \t\n", 10), " \t\n \t\n    ");
+}
+
 TEST(Lector, Tokenize) {
   EXPECT_EQ(lector::tokenize(""), std::vector<std::string_view>{});
   {
