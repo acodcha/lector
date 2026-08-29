@@ -108,6 +108,16 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:aa459a76b8ab2c0ebfed6d60bf774cfcc" id="r_aa459a76b8ab2c0ebfed6d60bf774cfcc"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">Arity</a> : std::int8_t { <br />
+&#160;&#160;<a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcca88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a> = 0
+, <br />
+&#160;&#160;<a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcca66ba162102bbf6ae31b522aec561735e">Single</a> = 1
+, <br />
+&#160;&#160;<a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcca7f7309d5a83099309ac04dcb795ad0ce">Repeated</a> = 2
+<br />
+ }</td></tr>
+<tr class="memdesc:aa459a76b8ab2c0ebfed6d60bf774cfcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arity of a command line argument.  <a href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">More...</a><br /></td></tr>
+<tr class="separator:aa459a76b8ab2c0ebfed6d60bf774cfcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f99245bf38da4acec3e654c955c908" id="r_a89f99245bf38da4acec3e654c955c908"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908">Form</a> : std::int8_t { <br />
 &#160;&#160;<a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908a88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a> = 0
 , <br />
@@ -373,6 +383,38 @@ template&lt;typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="aa459a76b8ab2c0ebfed6d60bf774cfcc" name="aa459a76b8ab2c0ebfed6d60bf774cfcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa459a76b8ab2c0ebfed6d60bf774cfcc">&#9670;&#160;</a></span>Arity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a> : std::int8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Arity of a command line argument. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aa459a76b8ab2c0ebfed6d60bf774cfcca88183b946cc5f0e8c96b2e66e1c74a7e" name="aa459a76b8ab2c0ebfed6d60bf774cfcca88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc"><p>Unknown, unspecified, or invalid command line argument arity. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa459a76b8ab2c0ebfed6d60bf774cfcca66ba162102bbf6ae31b522aec561735e" name="aa459a76b8ab2c0ebfed6d60bf774cfcca66ba162102bbf6ae31b522aec561735e"></a>Single&#160;</td><td class="fielddoc"><p>The command line argument has singular arity; it can only appear once on the command line. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aa459a76b8ab2c0ebfed6d60bf774cfcca7f7309d5a83099309ac04dcb795ad0ce" name="aa459a76b8ab2c0ebfed6d60bf774cfcca7f7309d5a83099309ac04dcb795ad0ce"></a>Repeated&#160;</td><td class="fielddoc"><p>The command line argument has repeated arity; it can appear multiple times on the command line. If the argument is a named repeated argument, each appearance must include both its key and its value. If the argument is a positional repeated argument, its multiple values must appear in an uninterrupted sequence. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a89f99245bf38da4acec3e654c955c908" name="a89f99245bf38da4acec3e654c955c908"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89f99245bf38da4acec3e654c955c908">&#9670;&#160;</a></span>Form</h2>
 

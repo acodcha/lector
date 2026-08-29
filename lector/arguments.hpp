@@ -43,6 +43,48 @@
 /// @brief The Lector library's namespace.
 namespace lector {
 
+/// @brief Arity of a command line argument.
+enum class Arity : std::int8_t {
+  /// @brief Unknown, unspecified, or invalid command line argument arity.
+  Unknown = 0,
+
+  /// @brief The command line argument has singular arity; it can only appear once on the command
+  /// line.
+  Single = 1,
+
+  /// @brief The command line argument has repeated arity; it can appear multiple times on the
+  /// command line. If the argument is a named repeated argument, each appearance must include both
+  /// its key and its value. If the argument is a positional repeated argument, its multiple values
+  /// must appear in an uninterrupted sequence.
+  Repeated = 2,
+};
+
+/// @brief Specialization of the lector::Names constant for the lector::Arity enumeration.
+template <>
+inline constexpr std::array<lector::Name<lector::Arity>, 3> Names<lector::Arity>{
+  {
+   {lector::Arity::Unknown, "Unknown"},
+   {lector::Arity::Single, "Single"},
+   {lector::Arity::Repeated, "Repeated"},
+   }
+};
+
+/// @brief Specialization of the lector::Spellings constant for the lector::Arity enumeration.
+template <>
+inline constexpr std::array<lector::Spelling<lector::Arity>, 9> Spellings<lector::Arity>{
+  {
+   {"Unknown", lector::Arity::Unknown},
+   {"Single", lector::Arity::Single},
+   {"Repeated", lector::Arity::Repeated},
+   {"unknown", lector::Arity::Unknown},
+   {"single", lector::Arity::Single},
+   {"repeated", lector::Arity::Repeated},
+   {"UNKNOWN", lector::Arity::Unknown},
+   {"SINGLE", lector::Arity::Single},
+   {"REPEATED", lector::Arity::Repeated},
+   }
+};
+
 /// @brief Form of a command line argument.
 enum class Form : std::int8_t {
   /// @brief Unknown, unspecified, or invalid command line argument form.
