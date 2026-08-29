@@ -358,6 +358,7 @@ namespace lector {
 /// @param[in] second_column_width The desired width of the second column. Very long words whose
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the combined text.
+/// @throws std::invalid_argument if either desired column width is zero.
 [[nodiscard]] inline std::string combine_and_left_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
@@ -410,6 +411,7 @@ namespace lector {
 /// @param[in] second_column_width The desired width of the second column. Very long words whose
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the combined text.
+/// @throws std::invalid_argument if either desired column width is zero.
 [[nodiscard]] inline std::string combine_and_right_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
