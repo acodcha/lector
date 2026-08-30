@@ -147,12 +147,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a786b5f0d81bbfa73273d467ccb6cc34b" id="r_a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">code_points</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.  <br /></td></tr>
 <tr class="separator:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26eea2188d2bff251878c7af773e2555" id="r_a26eea2188d2bff251878c7af773e2555"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a26eea2188d2bff251878c7af773e2555">combine_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a26eea2188d2bff251878c7af773e2555"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
-<tr class="separator:a26eea2188d2bff251878c7af773e2555"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4120fb2c00829dfd11f4d0e78b875c2d" id="r_a4120fb2c00829dfd11f4d0e78b875c2d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4120fb2c00829dfd11f4d0e78b875c2d">combine_and_right_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a4120fb2c00829dfd11f4d0e78b875c2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart.  <br /></td></tr>
-<tr class="separator:a4120fb2c00829dfd11f4d0e78b875c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9484c2b5b7e57f4e8aa9b2380bfd0e76" id="r_a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9484c2b5b7e57f4e8aa9b2380bfd0e76">collate_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
+<tr class="separator:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bf0153785e48f2ff2b2f6eb975f2b49" id="r_a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7bf0153785e48f2ff2b2f6eb975f2b49">collate_and_right_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart.  <br /></td></tr>
+<tr class="separator:a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12fbadda4745d3082c5f7504bd22862a" id="r_a12fbadda4745d3082c5f7504bd22862a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">is_leading_byte</a> (const char character)</td></tr>
 <tr class="memdesc:a12fbadda4745d3082c5f7504bd22862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx.  <br /></td></tr>
 <tr class="separator:a12fbadda4745d3082c5f7504bd22862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -545,14 +545,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a26eea2188d2bff251878c7af773e2555" name="a26eea2188d2bff251878c7af773e2555"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26eea2188d2bff251878c7af773e2555">&#9670;&#160;</a></span>combine_and_left_align()</h2>
+<a id="a9484c2b5b7e57f4e8aa9b2380bfd0e76" name="a9484c2b5b7e57f4e8aa9b2380bfd0e76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9484c2b5b7e57f4e8aa9b2380bfd0e76">&#9670;&#160;</a></span>collate_and_left_align()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::combine_and_left_align </td>
+          <td class="memname">std::string lector::collate_and_left_align </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -583,7 +583,7 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Combines two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart. </p>
+<p>Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
@@ -593,7 +593,7 @@ template&lt;typename Type &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The string that contains the combined text. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The string that contains the collated text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if either desired column width is zero. </td></tr>
@@ -603,14 +603,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a4120fb2c00829dfd11f4d0e78b875c2d" name="a4120fb2c00829dfd11f4d0e78b875c2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4120fb2c00829dfd11f4d0e78b875c2d">&#9670;&#160;</a></span>combine_and_right_align()</h2>
+<a id="a7bf0153785e48f2ff2b2f6eb975f2b49" name="a7bf0153785e48f2ff2b2f6eb975f2b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bf0153785e48f2ff2b2f6eb975f2b49">&#9670;&#160;</a></span>collate_and_right_align()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::combine_and_right_align </td>
+          <td class="memname">std::string lector::collate_and_right_align </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -641,7 +641,7 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Combines two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart. </p>
+<p>Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
@@ -651,7 +651,7 @@ template&lt;typename Type &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The string that contains the combined text. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The string that contains the collated text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if either desired column width is zero. </td></tr>

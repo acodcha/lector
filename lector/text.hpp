@@ -374,7 +374,7 @@ namespace lector {
   return lector::join_and_right_align(lector::wrap(text, line_length));
 }
 
-/// @brief Combines two strings of text, each representing a column, into a single string that
+/// @brief Collates two strings of text, each representing a column, into a single string that
 /// contains newline-separated lines of text, with the lines formatted such that the two columns are
 /// left-aligned and spaced a short distance apart.
 /// @param[in] first_column_text The string of text for the first column.
@@ -383,9 +383,9 @@ namespace lector {
 /// @param[in] second_column_text The string of text for the second column.
 /// @param[in] second_column_width The desired width of the second column. Very long words whose
 /// length exceeds this width are hyphenated.
-/// @return The string that contains the combined text.
+/// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string combine_and_left_align(
+[[nodiscard]] inline std::string collate_and_left_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
@@ -401,7 +401,7 @@ namespace lector {
   std::string result;
   result.reserve(first_column_text.length() + second_column_text.length()
                  + (rows * (first_column_width + gutter_width + static_cast<std::size_t>(1UL))));
-  // Combine the rows line by line.
+  // Collate the rows line by line.
   for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
     // Append a newline character for every row after the first to separate them without leaving a
     // trailing newline at the very end of the string.
@@ -427,7 +427,7 @@ namespace lector {
   return result;
 }
 
-/// @brief Combines two strings of text, each representing a column, into a single string that
+/// @brief Collates two strings of text, each representing a column, into a single string that
 /// contains newline-separated lines of text, with the lines formatted such that the two columns are
 /// right-aligned and spaced a short distance apart.
 /// @param[in] first_column_text The string of text for the first column.
@@ -436,9 +436,9 @@ namespace lector {
 /// @param[in] second_column_text The string of text for the second column.
 /// @param[in] second_column_width The desired width of the second column. Very long words whose
 /// length exceeds this width are hyphenated.
-/// @return The string that contains the combined text.
+/// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string combine_and_right_align(
+[[nodiscard]] inline std::string collate_and_right_align(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
@@ -456,7 +456,7 @@ namespace lector {
                  + (rows
                     * (first_column_width + gutter_width + second_column_width
                        + static_cast<std::size_t>(1UL))));
-  // Combine the rows line by line.
+  // Collate the rows line by line.
   for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
     // Append a newline character for every row after the first to separate them without leaving a
     // trailing newline at the very end of the string.

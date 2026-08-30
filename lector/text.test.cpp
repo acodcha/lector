@@ -107,51 +107,51 @@ TEST(Lector, CodePoints) {
   EXPECT_EQ(lector::code_points("こんにちは"), static_cast<std::size_t>(5UL));
 }
 
-TEST(Lector, CombineAndLeftAlignBothColumnsEmpty) {
-  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndLeftAlignBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_left_align("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CombineAndLeftAlignBothColumnsWhitespace) {
-  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_left_align("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndLeftAlignBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_left_align("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_left_align("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CombineAndLeftAlignFirstColumnEmpty) {
-  EXPECT_EQ(lector::combine_and_left_align("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndLeftAlignFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_left_align("", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CombineAndLeftAlignFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::combine_and_left_align(
+TEST(Lector, CollateAndLeftAlignFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_left_align(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "This is the first column.                 And this is\n"
             "                                          the second\n"
             "                                          column.");
 }
 
-TEST(Lector, CombineAndLeftAlignFirstColumnShort) {
-  EXPECT_EQ(lector::combine_and_left_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndLeftAlignFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_left_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "Hello.      And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CombineAndLeftAlignFirstColumnWhitespace) {
-  EXPECT_EQ(lector::combine_and_left_align("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndLeftAlignFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_left_align("    ", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CombineAndLeftAlignTypical) {
-  EXPECT_EQ(lector::combine_and_left_align(
+TEST(Lector, CollateAndLeftAlignTypical) {
+  EXPECT_EQ(lector::collate_and_left_align(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             "This is   And this is\n"
             "the       the second\n"
@@ -159,59 +159,59 @@ TEST(Lector, CombineAndLeftAlignTypical) {
             "column.");
 }
 
-TEST(Lector, CombineAndLeftAlignVeryLongWord) {
+TEST(Lector, CollateAndLeftAlignVeryLongWord) {
   EXPECT_EQ(
-      lector::combine_and_left_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_left_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-  And this is\n"
       "g_word.    the second\n"
       "           column.");
 }
 
-TEST(Lector, CombineAndRightAlignBothColumnsEmpty) {
-  EXPECT_EQ(lector::combine_and_right_align("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndRightAlignBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_right_align("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CombineAndRightAlignBothColumnsWhitespace) {
-  EXPECT_EQ(lector::combine_and_right_align("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::combine_and_right_align("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndRightAlignBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_right_align("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_right_align("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CombineAndRightAlignFirstColumnEmpty) {
-  EXPECT_EQ(lector::combine_and_right_align("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndRightAlignFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_right_align("", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CombineAndRightAlignFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::combine_and_right_align(
+TEST(Lector, CollateAndRightAlignFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_right_align(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "               This is the first column.   And this is\n"
             "                                            the second\n"
             "                                               column.");
 }
 
-TEST(Lector, CombineAndRightAlignFirstColumnShort) {
-  EXPECT_EQ(lector::combine_and_right_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndRightAlignFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_right_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "    Hello.   And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CombineAndRightAlignFirstColumnWhitespace) {
-  EXPECT_EQ(lector::combine_and_right_align("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndRightAlignFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_right_align("    ", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CombineAndRightAlignTypical) {
-  EXPECT_EQ(lector::combine_and_right_align(
+TEST(Lector, CollateAndRightAlignTypical) {
+  EXPECT_EQ(lector::collate_and_right_align(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             " This is   And this is\n"
             "     the    the second\n"
@@ -219,9 +219,9 @@ TEST(Lector, CombineAndRightAlignTypical) {
             " column.");
 }
 
-TEST(Lector, CombineAndRightAlignVeryLongWord) {
+TEST(Lector, CollateAndRightAlignVeryLongWord) {
   EXPECT_EQ(
-      lector::combine_and_right_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_right_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-   And this is\n"
       "  g_word.    the second\n"
       "                column.");
