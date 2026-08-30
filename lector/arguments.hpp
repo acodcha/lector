@@ -759,7 +759,7 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&]() {
-            result.append(lector::combine_and_left_align(
+            result.append(lector::collate_and_left_align(
                 argument.keys_with_value_type(), first_column_width, argument.description(),
                 second_column_width));
             ++argument_index;
