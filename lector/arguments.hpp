@@ -52,11 +52,11 @@ enum class Arity : std::int8_t {
   /// line.
   Single = 1,
 
-  /// @brief The command line argument has repeated arity; it can appear multiple times on the
-  /// command line. If the argument is a named repeated argument, each appearance must include both
-  /// its key and its value. If the argument is a positional repeated argument, its multiple values
-  /// must appear in an uninterrupted sequence.
-  Repeated = 2,
+  /// @brief The command line argument has repeatable arity; it can appear multiple times on the
+  /// command line. If the argument is a named repeatable argument, each appearance must include
+  /// both its key and its value. If the argument is a positional repeatable argument, its multiple
+  /// values must appear in an uninterrupted sequence.
+  Repeatable = 2,
 };
 
 /// @brief Specialization of the lector::Names constant for the lector::Arity enumeration.
@@ -65,7 +65,7 @@ inline constexpr std::array<lector::Name<lector::Arity>, 3> Names<lector::Arity>
   {
    {lector::Arity::Unknown, "Unknown"},
    {lector::Arity::Single, "Single"},
-   {lector::Arity::Repeated, "Repeated"},
+   {lector::Arity::Repeatable, "Repeatable"},
    }
 };
 
@@ -75,13 +75,13 @@ inline constexpr std::array<lector::Spelling<lector::Arity>, 9> Spellings<lector
   {
    {"Unknown", lector::Arity::Unknown},
    {"Single", lector::Arity::Single},
-   {"Repeated", lector::Arity::Repeated},
+   {"Repeatable", lector::Arity::Repeatable},
    {"unknown", lector::Arity::Unknown},
    {"single", lector::Arity::Single},
-   {"repeated", lector::Arity::Repeated},
+   {"repeatable", lector::Arity::Repeatable},
    {"UNKNOWN", lector::Arity::Unknown},
    {"SINGLE", lector::Arity::Single},
-   {"REPEATED", lector::Arity::Repeated},
+   {"REPEATABLE", lector::Arity::Repeatable},
    }
 };
 
@@ -305,7 +305,7 @@ public:
   }
 
   /// @brief Arity of this command line argument. Singular arguments can only appear once on the
-  /// command line, whereas repeated arguments can appear multiple times.
+  /// command line, whereas repeatable arguments can appear multiple times.
   /// @return The arity of this command line argument.
   [[nodiscard]] lector::Arity arity() const noexcept {
     return lector::Arity::Single;
