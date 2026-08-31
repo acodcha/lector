@@ -2785,7 +2785,7 @@ TEST(Lector, ArgumentCollectionWeirdShortWhitespaceWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentSingleConstructorCopy) {
+TEST(Lector, ArgumentSingularConstructorCopy) {
   const lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -2794,7 +2794,7 @@ TEST(Lector, ArgumentSingleConstructorCopy) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Single);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -2809,7 +2809,7 @@ TEST(Lector, ArgumentSingleConstructorCopy) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -2824,7 +2824,7 @@ TEST(Lector, ArgumentSingleConstructorCopy) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -2836,7 +2836,7 @@ TEST(Lector, ArgumentSingleConstructorCopy) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingleConstructorMove) {
+TEST(Lector, ArgumentSingularConstructorMove) {
   lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -2845,7 +2845,7 @@ TEST(Lector, ArgumentSingleConstructorMove) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Single);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -2860,7 +2860,7 @@ TEST(Lector, ArgumentSingleConstructorMove) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -2875,7 +2875,7 @@ TEST(Lector, ArgumentSingleConstructorMove) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -2887,14 +2887,14 @@ TEST(Lector, ArgumentSingleConstructorMove) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalHelpDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalHelpDefault) {
   const lector::Argument<test::Label::Help, bool> argument;
   EXPECT_EQ(argument.label(), test::Label::Help);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_TRUE(argument.keys_with_value_type().empty());
@@ -2904,7 +2904,7 @@ TEST(Lector, ArgumentSingleConstructorNormalHelpDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalHelpOptionalNamed) {
   const lector::Argument<test::Label::Help, bool> argument{test::create_argument_help_named()};
   EXPECT_EQ(argument.label(), test::Label::Help);
   const std::vector<std::string> expected_keys{"-h", "--help"};
@@ -2912,7 +2912,7 @@ TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalNamed) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2923,18 +2923,18 @@ TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalHelpOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalHelpOptionalPositional) {
   EXPECT_ANY_THROW((void)test::create_argument_help_positional());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalIterationsDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalIterationsDefault) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument;
   EXPECT_EQ(argument.label(), test::Label::Iterations);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -2944,7 +2944,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalIterationsOptionalNamed) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2953,7 +2953,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalNamed) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2964,7 +2964,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalIterationsOptionalPositional) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2972,7 +2972,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalPositional) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -2983,7 +2983,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalIterationsRequiredNamed) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -2992,7 +2992,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredNamed) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
@@ -3002,7 +3002,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalIterationsRequiredPositional) {
   const lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -3010,7 +3010,7 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredPositional) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -3020,14 +3020,14 @@ TEST(Lector, ArgumentSingleConstructorNormalIterationsRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalOutputDirectoryDefault) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument;
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
@@ -3037,7 +3037,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalOutputDirectoryOptionalNamed) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3046,7 +3046,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalNamed) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path("/some/path"));
@@ -3058,7 +3058,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalOutputDirectoryOptionalPositional) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3066,7 +3066,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalPositional) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path("/some/path"));
@@ -3078,7 +3078,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalOutputDirectoryRequiredNamed) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_required_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3087,7 +3087,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredNamed) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output <path>");
@@ -3097,7 +3097,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalOutputDirectoryRequiredPositional) {
   const lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3105,7 +3105,7 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredPositional) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
@@ -3115,14 +3115,14 @@ TEST(Lector, ArgumentSingleConstructorNormalOutputDirectoryRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalPointDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalPointDefault) {
   const lector::Argument<test::Label::Point, test::Point> argument;
   EXPECT_EQ(argument.label(), test::Label::Point);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3132,7 +3132,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalPointOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalPointOptionalNamed) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3141,7 +3141,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointOptionalNamed) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3152,7 +3152,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalPointOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalPointOptionalPositional) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3160,7 +3160,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointOptionalPositional) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3171,7 +3171,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalPointRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalPointRequiredNamed) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3180,7 +3180,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointRequiredNamed) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
@@ -3190,7 +3190,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalPointRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalPointRequiredPositional) {
   const lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3198,7 +3198,7 @@ TEST(Lector, ArgumentSingleConstructorNormalPointRequiredPositional) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3208,14 +3208,14 @@ TEST(Lector, ArgumentSingleConstructorNormalPointRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalShapeDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalShapeDefault) {
   const lector::Argument<test::Label::Shape, test::Shape> argument;
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3225,7 +3225,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalShapeOptionalNamed) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3234,7 +3234,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalNamed) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3245,7 +3245,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalShapeOptionalPositional) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3253,7 +3253,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalPositional) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3264,7 +3264,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalShapeRequiredNamed) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3273,7 +3273,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredNamed) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
@@ -3283,7 +3283,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalShapeRequiredPositional) {
   const lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3291,7 +3291,7 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredPositional) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3301,14 +3301,14 @@ TEST(Lector, ArgumentSingleConstructorNormalShapeRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalTitleDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalTitleDefault) {
   const lector::Argument<test::Label::Title, std::string> argument;
   EXPECT_EQ(argument.label(), test::Label::Title);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
@@ -3318,7 +3318,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalTitleOptionalNamed) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3327,7 +3327,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalNamed) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3338,7 +3338,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalTitleOptionalPositional) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3346,7 +3346,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalPositional) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3357,7 +3357,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalTitleRequiredNamed) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3366,7 +3366,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredNamed) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
@@ -3376,7 +3376,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalTitleRequiredPositional) {
   const lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3384,7 +3384,7 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredPositional) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
@@ -3394,14 +3394,14 @@ TEST(Lector, ArgumentSingleConstructorNormalTitleRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalToleranceDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalToleranceDefault) {
   const lector::Argument<test::Label::Tolerance, double> argument;
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3411,7 +3411,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalToleranceOptionalNamed) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3420,7 +3420,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalNamed) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3431,7 +3431,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalToleranceOptionalPositional) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_positional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3439,7 +3439,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalPositional) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3450,7 +3450,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceOptionalPositional) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalToleranceRequiredNamed) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3459,7 +3459,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredNamed) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
@@ -3469,7 +3469,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredPositional) {
+TEST(Lector, ArgumentSingularConstructorNormalToleranceRequiredPositional) {
   const lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_required_positional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3477,7 +3477,7 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredPositional) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
@@ -3487,14 +3487,14 @@ TEST(Lector, ArgumentSingleConstructorNormalToleranceRequiredPositional) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalWeirdDefault) {
+TEST(Lector, ArgumentSingularConstructorNormalWeirdDefault) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument;
   EXPECT_EQ(argument.label(), test::Label::Weird);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
@@ -3504,7 +3504,7 @@ TEST(Lector, ArgumentSingleConstructorNormalWeirdDefault) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalWeirdOptionalNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalWeirdOptionalNamed) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument{
     test::create_argument_weird_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Weird);
@@ -3513,7 +3513,7 @@ TEST(Lector, ArgumentSingleConstructorNormalWeirdOptionalNamed) {
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3524,7 +3524,7 @@ TEST(Lector, ArgumentSingleConstructorNormalWeirdOptionalNamed) {
   EXPECT_TRUE(argument.execution().empty());
 }
 
-TEST(Lector, ArgumentSingleConstructorNormalWeirdRequiredNamed) {
+TEST(Lector, ArgumentSingularConstructorNormalWeirdRequiredNamed) {
   const lector::Argument<test::Label::Weird, std::int32_t> argument{
     test::create_argument_weird_required_named()};
   EXPECT_EQ(argument.label(), test::Label::Weird);
@@ -3533,7 +3533,7 @@ TEST(Lector, ArgumentSingleConstructorNormalWeirdRequiredNamed) {
   EXPECT_EQ(argument.description(), "Weird argument.");
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
@@ -3543,7 +3543,7 @@ TEST(Lector, ArgumentSingleConstructorNormalWeirdRequiredNamed) {
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
 
-TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
+TEST(Lector, ArgumentSingularOperatorCopyAssignment) {
   const lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3552,7 +3552,7 @@ TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Single);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -3567,7 +3567,7 @@ TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   EXPECT_TRUE(second.description().empty());
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
@@ -3580,7 +3580,7 @@ TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -3595,7 +3595,7 @@ TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -3607,7 +3607,7 @@ TEST(Lector, ArgumentSingleOperatorCopyAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
+TEST(Lector, ArgumentSingularOperatorMoveAssignment) {
   lector::Argument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3616,7 +3616,7 @@ TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   EXPECT_EQ(first.description(), "Number of iterations.");
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Single);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& first_default_value{first.default_value()};
   EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
   EXPECT_EQ(first.parsed_value(), std::nullopt);
@@ -3631,7 +3631,7 @@ TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   EXPECT_TRUE(second.description().empty());
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
@@ -3644,7 +3644,7 @@ TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& second_default_value{second.default_value()};
   EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -3659,7 +3659,7 @@ TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   EXPECT_EQ(second.description(), "Number of iterations.");
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Single);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t> second_default_value_again{second.default_value()};
   EXPECT_TRUE(second_default_value_again.has_value()
               && second_default_value_again.value() == test::OneHundred);
@@ -3671,7 +3671,7 @@ TEST(Lector, ArgumentSingleOperatorMoveAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueHelp) {
+TEST(Lector, ArgumentSingularSetParsedValueHelp) {
   lector::Argument<test::Label::Help, bool> argument{test::create_argument_help_named()};
   EXPECT_EQ(argument.label(), test::Label::Help);
   const std::vector<std::string> expected_keys{"-h", "--help"};
@@ -3679,7 +3679,7 @@ TEST(Lector, ArgumentSingleSetParsedValueHelp) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<bool>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && !default_value.value());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3694,7 +3694,7 @@ TEST(Lector, ArgumentSingleSetParsedValueHelp) {
   EXPECT_EQ(argument.description(), "Display this help information and exit. Optional.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<bool>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && !default_value_again.value());
   const std::optional<bool>& parsed_value{argument.parsed_value()};
@@ -3706,7 +3706,7 @@ TEST(Lector, ArgumentSingleSetParsedValueHelp) {
   EXPECT_EQ(argument.execution(), "--help");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValuePoint) {
+TEST(Lector, ArgumentSingularSetParsedValuePoint) {
   lector::Argument<test::Label::Point, test::Point> argument{
     test::create_argument_point_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Point);
@@ -3715,7 +3715,7 @@ TEST(Lector, ArgumentSingleSetParsedValuePoint) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Point>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::FirstPoint);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3730,7 +3730,7 @@ TEST(Lector, ArgumentSingleSetParsedValuePoint) {
   EXPECT_EQ(argument.description(), "Starting point.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Point>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == test::FirstPoint);
   const std::optional<test::Point>& parsed_value{argument.parsed_value()};
@@ -3742,7 +3742,7 @@ TEST(Lector, ArgumentSingleSetParsedValuePoint) {
   EXPECT_EQ(argument.execution(), "--point 4 5 6");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueShape) {
+TEST(Lector, ArgumentSingularSetParsedValueShape) {
   lector::Argument<test::Label::Shape, test::Shape> argument{
     test::create_argument_shape_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
@@ -3751,7 +3751,7 @@ TEST(Lector, ArgumentSingleSetParsedValueShape) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Shape>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::Shape::Circle);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3766,7 +3766,7 @@ TEST(Lector, ArgumentSingleSetParsedValueShape) {
   EXPECT_EQ(argument.description(), "Favorite shape.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<test::Shape>& default_value_again{argument.default_value()};
   EXPECT_TRUE(
       default_value_again.has_value() && default_value_again.value() == test::Shape::Circle);
@@ -3779,7 +3779,7 @@ TEST(Lector, ArgumentSingleSetParsedValueShape) {
   EXPECT_EQ(argument.execution(), "--shape Square");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueOutputDirectory) {
+TEST(Lector, ArgumentSingularSetParsedValueOutputDirectory) {
   lector::Argument<test::Label::OutputDirectory, std::filesystem::path> argument{
     test::create_argument_output_directory_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::OutputDirectory);
@@ -3788,7 +3788,7 @@ TEST(Lector, ArgumentSingleSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::filesystem::path>& default_value{argument.default_value()};
   EXPECT_TRUE(
       default_value.has_value() && default_value.value() == std::filesystem::path{"/some/path"});
@@ -3804,7 +3804,7 @@ TEST(Lector, ArgumentSingleSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.description(), "Output directory.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::filesystem::path>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value()
               && default_value_again.value() == std::filesystem::path{"/some/path"});
@@ -3818,7 +3818,7 @@ TEST(Lector, ArgumentSingleSetParsedValueOutputDirectory) {
   EXPECT_EQ(argument.execution(), "--output /another/path");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueTolerance) {
+TEST(Lector, ArgumentSingularSetParsedValueTolerance) {
   lector::Argument<test::Label::Tolerance, double> argument{
     test::create_argument_tolerance_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
@@ -3827,7 +3827,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTolerance) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<double>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3842,7 +3842,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTolerance) {
   EXPECT_EQ(argument.description(), "Tolerance value.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<double>& default_value_again{argument.default_value()};
   EXPECT_TRUE(
       default_value_again.has_value() && default_value_again.value() == test::OneOverThirtyTwo);
@@ -3855,7 +3855,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTolerance) {
   EXPECT_EQ(argument.execution(), "--tolerance 0.0156250000000000000");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueIterations) {
+TEST(Lector, ArgumentSingularSetParsedValueIterations) {
   lector::Argument<test::Label::Iterations, std::int32_t> argument{
     test::create_argument_iterations_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Iterations);
@@ -3864,7 +3864,7 @@ TEST(Lector, ArgumentSingleSetParsedValueIterations) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == test::OneHundred);
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3879,7 +3879,7 @@ TEST(Lector, ArgumentSingleSetParsedValueIterations) {
   EXPECT_EQ(argument.description(), "Number of iterations.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::int32_t>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == test::OneHundred);
   const std::optional<std::int32_t>& parsed_value{argument.parsed_value()};
@@ -3891,7 +3891,7 @@ TEST(Lector, ArgumentSingleSetParsedValueIterations) {
   EXPECT_EQ(argument.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingleSetParsedValueTitle) {
+TEST(Lector, ArgumentSingularSetParsedValueTitle) {
   lector::Argument<test::Label::Title, std::string> argument{
     test::create_argument_title_optional_named()};
   EXPECT_EQ(argument.label(), test::Label::Title);
@@ -3900,7 +3900,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTitle) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::string>& default_value{argument.default_value()};
   EXPECT_TRUE(default_value.has_value() && default_value.value() == "My Report");
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -3915,7 +3915,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTitle) {
   EXPECT_EQ(argument.description(), "Report title.");
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Single);
+  EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   const std::optional<std::string>& default_value_again{argument.default_value()};
   EXPECT_TRUE(default_value_again.has_value() && default_value_again.value() == "My Report");
   const std::optional<std::string>& parsed_value{argument.parsed_value()};
@@ -3927,7 +3927,7 @@ TEST(Lector, ArgumentSingleSetParsedValueTitle) {
   EXPECT_EQ(argument.execution(), "--title Some Other Report");
 }
 
-TEST(Lector, ArgumentSingleValidate) {
+TEST(Lector, ArgumentSingularValidate) {
   EXPECT_ANY_THROW(test::create_invalid_argument_with_all_empty_keys());
   EXPECT_ANY_THROW(test::create_invalid_argument_with_an_empty_key());
   EXPECT_ANY_THROW(test::create_invalid_argument_with_duplicate_keys());
@@ -3959,18 +3959,18 @@ TEST(Lector, ArityParseEnumeration) {
   }
   {
     constexpr std::optional<lector::Arity> parsed{
-      lector::parse_enumeration<lector::Arity>("SINGLE")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+      lector::parse_enumeration<lector::Arity>("SINGULAR")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
     constexpr std::optional<lector::Arity> parsed{
-      lector::parse_enumeration<lector::Arity>("Single")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+      lector::parse_enumeration<lector::Arity>("Singular")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
     constexpr std::optional<lector::Arity> parsed{
-      lector::parse_enumeration<lector::Arity>("single")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+      lector::parse_enumeration<lector::Arity>("singular")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
     constexpr std::optional<lector::Arity> parsed{
@@ -4008,16 +4008,16 @@ TEST(Lector, ArityParseGeneral) {
     EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Unknown);
   }
   {
-    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("SINGLE")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("SINGULAR")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
-    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("Single")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("Singular")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
-    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("single")};
-    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Single);
+    const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("singular")};
+    EXPECT_TRUE(parsed.has_value() && parsed.value() == lector::Arity::Singular);
   }
   {
     const std::optional<lector::Arity> parsed{lector::parse<lector::Arity>("REPEATABLE")};
@@ -4035,13 +4035,13 @@ TEST(Lector, ArityParseGeneral) {
 
 TEST(Lector, ArityPrintEnumeration) {
   EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Unknown), "Unknown");
-  EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Single), "Single");
+  EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Singular), "Singular");
   EXPECT_EQ(lector::print_enumeration<lector::Arity>(lector::Arity::Repeatable), "Repeatable");
 }
 
 TEST(Lector, ArityPrintGeneral) {
   EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Unknown), "Unknown");
-  EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Single), "Single");
+  EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Singular), "Singular");
   EXPECT_EQ(lector::print<lector::Arity>(lector::Arity::Repeatable), "Repeatable");
 }
 
