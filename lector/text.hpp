@@ -265,6 +265,100 @@ namespace lector {
   return text;
 }
 
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines
+/// centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one
+/// space towards the left.
+/// @param[in] lines Vector of strings to be joined and centre-aligned.
+/// @return The joined and centre-aligned string of text.
+[[nodiscard]] inline std::string join_and_centre_align_with_left_bias(
+    const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Compute the line lengths and find the maximum line length.
+  std::vector<std::size_t> line_lengths;
+  line_lengths.reserve(lines.size());
+  std::size_t longest_line_length{0UL};
+  for (const std::string& line : lines) {
+    const std::size_t length{lector::code_points(line)};
+    line_lengths.push_back(length);
+    longest_line_length = std::max(length, longest_line_length);
+  }
+  // Compute the exact total byte size.
+  std::size_t total_size{0UL};
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    const std::size_t total_padding{longest_line_length - line_lengths.at(line_index)};
+    // Bias left. When the total number of padding spaces is odd, integer division rounds down,
+    // giving one less padding space to the left.
+    const std::size_t left_padding{total_padding / 2UL};
+    total_size += lines.at(line_index).size() + left_padding;
+  }
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append lines with padding.
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    if (line_index > 0UL) {
+      text.push_back('\n');
+    }
+    const std::size_t total_padding{longest_line_length - line_lengths.at(line_index)};
+    const std::size_t left_padding{total_padding / 2UL};
+    text.append(left_padding, ' ');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines
+/// centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one
+/// space towards the right.
+/// @param[in] lines Vector of strings to be joined and centre-aligned.
+/// @return The joined and centre-aligned string of text.
+[[nodiscard]] inline std::string join_and_centre_align_with_right_bias(
+    const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Compute the line lengths and find the maximum line length.
+  std::vector<std::size_t> line_lengths;
+  line_lengths.reserve(lines.size());
+  std::size_t longest_line_length{0UL};
+  for (const std::string& line : lines) {
+    const std::size_t length{lector::code_points(line)};
+    line_lengths.push_back(length);
+    longest_line_length = std::max(length, longest_line_length);
+  }
+  // Compute the exact total byte size.
+  std::size_t total_size{0UL};
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    const std::size_t total_padding{longest_line_length - line_lengths.at(line_index)};
+    // Bias right. When the total number of padding spaces is odd, adding one more space before
+    // performing the integer division rounds it up, giving one more padding space to the left.
+    const std::size_t left_padding{(total_padding + 1UL) / 2UL};
+    total_size += lines.at(line_index).size() + left_padding;
+  }
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append lines with padding.
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    if (line_index > 0UL) {
+      text.push_back('\n');
+    }
+    const std::size_t total_padding{longest_line_length - line_lengths.at(line_index)};
+    const std::size_t left_padding{(total_padding + 1UL) / 2UL};
+    text.append(left_padding, ' ');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
 /// @brief Wraps a string of text to a line length and returns the result as a sequence of strings
 /// of text where each string in the sequence represents one line of text.
 /// @param[in] text The string of text to wrap.
@@ -469,8 +563,8 @@ namespace lector {
       row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
                                         std::string_view{}};
     const std::size_t first_cell_length{lector::code_points(first_cell)};
-    // Calculate leading padding. The ternary operator protects against size_t underflow in the
-    // extremely unlikely event a cell exceeds the column width.
+    // Calculate the leading padding. The ternary operator protects against std::size_t underflow in
+    // the extremely unlikely event a cell exceeds the column width.
     const std::size_t first_cell_padding{
       first_column_width > first_cell_length ? first_column_width - first_cell_length :
                                                static_cast<std::size_t>(0UL)};
@@ -488,6 +582,152 @@ namespace lector {
                                                    static_cast<std::size_t>(0UL)};
       result.append(gutter_width, ' ');
       result.append(second_cell_padding, ' ');
+      result.append(second_cell);
+    }
+  }
+  return result;
+}
+
+/// @brief Collates two strings of text, each representing a column, into a single string that
+/// contains newline-separated lines of text, with the lines formatted such that the two columns are
+/// centre-aligned and spaced a short distance apart. If the total required centre-aligning padding
+/// is odd, the text is biased by one space towards the left.
+/// @param[in] first_column_text The string of text for the first column.
+/// @param[in] first_column_width The desired width of the first column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @param[in] second_column_text The string of text for the second column.
+/// @param[in] second_column_width The desired width of the second column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @return The string that contains the collated text.
+/// @throws std::invalid_argument if either desired column width is zero.
+[[nodiscard]] inline std::string collate_and_centre_align_with_left_bias(
+    const std::string_view first_column_text, const std::size_t first_column_width,
+    const std::string_view second_column_text, const std::size_t second_column_width) {
+  // Use a gutter width of two spaces.
+  constexpr std::size_t gutter_width{2UL};
+  // Wrap and split both columns.
+  const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};
+  const std::vector<std::string> second_column{
+    lector::wrap(second_column_text, second_column_width)};
+  // Determine the total number of rows required.
+  const std::size_t rows{std::max(first_column.size(), second_column.size())};
+  // Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of
+  // both original input strings, plus the maximum possible padding spaces and newlines per row.
+  std::string result;
+  result.reserve(first_column_text.length() + second_column_text.length()
+                 + (rows
+                    * (first_column_width + gutter_width + second_column_width
+                       + static_cast<std::size_t>(1UL))));
+  // Collate the rows line by line.
+  for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
+    // Append a newline character for every row after the first to separate them without leaving a
+    // trailing newline at the very end of the string.
+    if (row_index > static_cast<std::size_t>(0UL)) {
+      result.push_back('\n');
+    }
+    // Grab the string for the first column if it exists on this row; otherwise, use an empty
+    // string.
+    const std::string_view first_cell{
+      row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
+                                        std::string_view{}};
+    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    // Calculate the total padding. The ternary operator protects against std::size_t underflow in
+    // the extremely unlikely event a cell exceeds the column width.
+    const std::size_t first_cell_total_padding{
+      first_column_width > first_cell_length ? first_column_width - first_cell_length :
+                                               static_cast<std::size_t>(0UL)};
+    // Bias left. When the total number of padding spaces is odd, integer division rounds down,
+    // giving one less padding space to the left.
+    const std::size_t first_cell_left_padding{first_cell_total_padding / 2UL};
+    const std::size_t first_cell_right_padding{first_cell_total_padding - first_cell_left_padding};
+    // Append the left padding and the first cell.
+    result.append(first_cell_left_padding, ' ');
+    result.append(first_cell);
+    // If the second column has text on this row, calculate its padding, append the central padding
+    // (first cell right padding + gutter + second cell left padding), and append the second cell.
+    if (row_index < second_column.size()) {
+      const std::string_view second_cell{second_column.at(row_index)};
+      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_total_padding{
+        second_column_width > second_cell_length ? second_column_width - second_cell_length :
+                                                   static_cast<std::size_t>(0UL)};
+      const std::size_t second_cell_left_padding{second_cell_total_padding / 2UL};
+      const std::size_t central_padding{
+        first_cell_right_padding + gutter_width + second_cell_left_padding};
+      result.append(central_padding, ' ');
+      result.append(second_cell);
+    }
+  }
+  return result;
+}
+
+/// @brief Collates two strings of text, each representing a column, into a single string that
+/// contains newline-separated lines of text, with the lines formatted such that the two columns are
+/// centre-aligned and spaced a short distance apart. If the total required centre-aligning padding
+/// is odd, the text is biased by one space towards the right.
+/// @param[in] first_column_text The string of text for the first column.
+/// @param[in] first_column_width The desired width of the first column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @param[in] second_column_text The string of text for the second column.
+/// @param[in] second_column_width The desired width of the second column. Very long words whose
+/// length exceeds this width are hyphenated.
+/// @return The string that contains the collated text.
+/// @throws std::invalid_argument if either desired column width is zero.
+[[nodiscard]] inline std::string collate_and_centre_align_with_right_bias(
+    const std::string_view first_column_text, const std::size_t first_column_width,
+    const std::string_view second_column_text, const std::size_t second_column_width) {
+  // Use a gutter width of two spaces.
+  constexpr std::size_t gutter_width{2UL};
+  // Wrap and split both columns.
+  const std::vector<std::string> first_column{lector::wrap(first_column_text, first_column_width)};
+  const std::vector<std::string> second_column{
+    lector::wrap(second_column_text, second_column_width)};
+  // Determine the total number of rows required.
+  const std::size_t rows{std::max(first_column.size(), second_column.size())};
+  // Pre-allocate memory for the result. A safe and highly efficient upper bound is the byte size of
+  // both original input strings, plus the maximum possible padding spaces and newlines per row.
+  std::string result;
+  result.reserve(first_column_text.length() + second_column_text.length()
+                 + (rows
+                    * (first_column_width + gutter_width + second_column_width
+                       + static_cast<std::size_t>(1UL))));
+  // Collate the rows line by line.
+  for (std::size_t row_index{0UL}; row_index < rows; ++row_index) {
+    // Append a newline character for every row after the first to separate them without leaving a
+    // trailing newline at the very end of the string.
+    if (row_index > static_cast<std::size_t>(0UL)) {
+      result.push_back('\n');
+    }
+    // Grab the string for the first column if it exists on this row; otherwise, use an empty
+    // string.
+    const std::string_view first_cell{
+      row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
+                                        std::string_view{}};
+    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    // Calculate the total padding. The ternary operator protects against std::size_t underflow in
+    // the extremely unlikely event a cell exceeds the column width.
+    const std::size_t first_cell_total_padding{
+      first_column_width > first_cell_length ? first_column_width - first_cell_length :
+                                               static_cast<std::size_t>(0UL)};
+    // Bias right. When the total number of padding spaces is odd, adding one more space before
+    // performing the integer division rounds it up, giving one more padding space to the left.
+    const std::size_t first_cell_left_padding{(first_cell_total_padding + 1UL) / 2UL};
+    const std::size_t first_cell_right_padding{first_cell_total_padding - first_cell_left_padding};
+    // Append the left padding and the first cell.
+    result.append(first_cell_left_padding, ' ');
+    result.append(first_cell);
+    // If the second column has text on this row, calculate its padding, append the central padding
+    // (first cell right padding + gutter + second cell left padding), and append the second cell.
+    if (row_index < second_column.size()) {
+      const std::string_view second_cell{second_column.at(row_index)};
+      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_total_padding{
+        second_column_width > second_cell_length ? second_column_width - second_cell_length :
+                                                   static_cast<std::size_t>(0UL)};
+      const std::size_t second_cell_left_padding{(second_cell_total_padding + 1UL) / 2UL};
+      const std::size_t central_padding{
+        first_cell_right_padding + gutter_width + second_cell_left_padding};
+      result.append(central_padding, ' ');
       result.append(second_cell);
     }
   }

@@ -107,6 +107,126 @@ TEST(Lector, CodePoints) {
   EXPECT_EQ(lector::code_points("こんにちは"), static_cast<std::size_t>(5UL));
 }
 
+TEST(Lector, CollateAndCentreAlignWithLeftBiasBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 2, "", 2), std::string{});
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 2, "  ", 2), std::string{});
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 10, "  And this is the second column.  ", 12),
+            "            And this is\n"
+            "             the second\n"
+            "              column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias(
+                "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
+            "       This is the first column.          And this is\n"
+            "                                           the second\n"
+            "                                            column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  Hello.  ", 10, "  And this is the second column.  ", 12),
+            "  Hello.    And this is\n"
+            "             the second\n"
+            "              column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("    ", 10, "  And this is the second column.  ", 12),
+            "            And this is\n"
+            "             the second\n"
+            "              column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasTypical) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias(
+                "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
+            "This is   And this is\n"
+            "  the      the second\n"
+            " first      column.\n"
+            "column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithLeftBiasVeryLongWord) {
+  EXPECT_EQ(
+      lector::collate_and_centre_align_with_left_bias("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      "Very_lon-  And this is\n"
+      " g_word.    the second\n"
+      "             column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 2, "", 2), std::string{});
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 2, "  ", 2), std::string{});
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 10, "  And this is the second column.  ", 12),
+            "             And this is\n"
+            "             the second\n"
+            "               column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias(
+                "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
+            "        This is the first column.          And this is\n"
+            "                                           the second\n"
+            "                                             column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  Hello.  ", 10, "  And this is the second column.  ", 12),
+            "  Hello.     And this is\n"
+            "             the second\n"
+            "               column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("    ", 10, "  And this is the second column.  ", 12),
+            "             And this is\n"
+            "             the second\n"
+            "               column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasTypical) {
+  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias(
+                "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
+            " This is   And this is\n"
+            "   the     the second\n"
+            "  first      column.\n"
+            " column.");
+}
+
+TEST(Lector, CollateAndCentreAlignWithRightBiasVeryLongWord) {
+  EXPECT_EQ(
+      lector::collate_and_centre_align_with_right_bias("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      "Very_lon-   And this is\n"
+      " g_word.    the second\n"
+      "              column.");
+}
+
 TEST(Lector, CollateAndLeftAlignBothColumnsEmpty) {
   EXPECT_EQ(lector::collate_and_left_align("", 1, "", 1), std::string{});
   EXPECT_EQ(lector::collate_and_left_align("", 1, "", 2), std::string{});
@@ -486,8 +606,48 @@ TEST(Lector, IsLeadingByte) {
   EXPECT_TRUE(lector::is_leading_byte('\xFF'));
 }
 
+TEST(Lector, JoinAndCentreAlignWithLeftBiasEmpty) {
+  EXPECT_EQ(lector::join_and_centre_align_with_left_bias(std::vector<std::string>{}), "");
+}
+
+TEST(Lector, JoinAndCentreAlignWithLeftBiasMultiple) {
+  EXPECT_EQ(lector::join_and_centre_align_with_left_bias(
+                {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+            "        Hello!  \n     Hello, world!  \n  Hello again, world!  ");
+}
+
+TEST(Lector, JoinAndCentreAlignWithLeftBiasSingle) {
+  EXPECT_EQ(
+      lector::join_and_centre_align_with_left_bias({"  Hello, world!  "}), "  Hello, world!  ");
+}
+
+TEST(Lector, JoinAndCentreAlignWithLeftBiasUtf8) {
+  EXPECT_EQ(lector::join_and_centre_align_with_left_bias({"  Château.  ", "  Épée.  "}),
+            "  Château.  \n   Épée.  ");
+}
+
+TEST(Lector, JoinAndCentreAlignWithRightBiasEmpty) {
+  EXPECT_EQ(lector::join_and_centre_align_with_right_bias(std::vector<std::string>{}), "");
+}
+
+TEST(Lector, JoinAndCentreAlignWithRightBiasMultiple) {
+  EXPECT_EQ(lector::join_and_centre_align_with_right_bias(
+                {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+            "         Hello!  \n     Hello, world!  \n  Hello again, world!  ");
+}
+
+TEST(Lector, JoinAndCentreAlignWithRightBiasSingle) {
+  EXPECT_EQ(
+      lector::join_and_centre_align_with_right_bias({"  Hello, world!  "}), "  Hello, world!  ");
+}
+
+TEST(Lector, JoinAndCentreAlignWithRightBiasUtf8) {
+  EXPECT_EQ(lector::join_and_centre_align_with_right_bias({"  Château.  ", "  Épée.  "}),
+            "  Château.  \n    Épée.  ");
+}
+
 TEST(Lector, JoinAndLeftAlignEmpty) {
-  EXPECT_EQ(lector::join_and_left_align({}), "");
+  EXPECT_EQ(lector::join_and_left_align(std::vector<std::string>{}), "");
 }
 
 TEST(Lector, JoinAndLeftAlignMultiple) {
@@ -500,8 +660,12 @@ TEST(Lector, JoinAndLeftAlignSingle) {
   EXPECT_EQ(lector::join_and_left_align({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
+TEST(Lector, JoinAndLeftAlignUtf8) {
+  EXPECT_EQ(lector::join_and_left_align({"  Château.  ", "  Épée.  "}), "  Château.  \n  Épée.  ");
+}
+
 TEST(Lector, JoinAndRightAlignEmpty) {
-  EXPECT_EQ(lector::join_and_right_align({}), "");
+  EXPECT_EQ(lector::join_and_right_align(std::vector<std::string>{}), "");
 }
 
 TEST(Lector, JoinAndRightAlignMultiple) {
@@ -516,7 +680,7 @@ TEST(Lector, JoinAndRightAlignSingle) {
 
 TEST(Lector, JoinAndRightAlignUtf8) {
   EXPECT_EQ(
-      lector::join_and_right_align({"  Château.  ", "  Été.  "}), "  Château.  \n      Été.  ");
+      lector::join_and_right_align({"  Château.  ", "  Épée.  "}), "  Château.  \n     Épée.  ");
 }
 
 TEST(Lector, LongestWordLengthEmpty) {
