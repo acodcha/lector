@@ -105,9 +105,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa4a8adccb25cf9209f99695060cab7fb" id="r_aa4a8adccb25cf9209f99695060cab7fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#aa4a8adccb25cf9209f99695060cab7fb">~SingularArgument</a> () noexcept=default</td></tr>
 <tr class="memdesc:aa4a8adccb25cf9209f99695060cab7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. Destroys this singular command line argument.  <br /></td></tr>
 <tr class="separator:aa4a8adccb25cf9209f99695060cab7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a042760279eaf1f4a4d8e5da382648282" id="r_a042760279eaf1f4a4d8e5da382648282"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a042760279eaf1f4a4d8e5da382648282">arity</a> () const noexcept</td></tr>
-<tr class="memdesc:a042760279eaf1f4a4d8e5da382648282"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arity of this command line argument. A singular argument can only appear once on the command line, whereas a repeatable argument can appear multiple times.  <br /></td></tr>
-<tr class="separator:a042760279eaf1f4a4d8e5da382648282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86c4f1178a3789152bdb8da1f91def0d" id="r_a86c4f1178a3789152bdb8da1f91def0d"><td class="memItemLeft" align="right" valign="top">const std::optional&lt; Type &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a86c4f1178a3789152bdb8da1f91def0d">default_value</a> () const noexcept</td></tr>
 <tr class="memdesc:a86c4f1178a3789152bdb8da1f91def0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default value of this singular command line argument if it is optional and non-boolean, or std::nullopt otherwise. Set at construction.  <br /></td></tr>
 <tr class="separator:a86c4f1178a3789152bdb8da1f91def0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +153,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a45c207eedbe46910712b92fbffabca55" id="r_a45c207eedbe46910712b92fbffabca55"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a45c207eedbe46910712b92fbffabca55">arity</a> () noexcept</td></tr>
+<tr class="memdesc:a45c207eedbe46910712b92fbffabca55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arity of this command line argument. A singular argument can only appear once on the command line, whereas a repeatable argument can appear multiple times.  <br /></td></tr>
+<tr class="separator:a45c207eedbe46910712b92fbffabca55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7664dd20918d7e9e61b4e85f292c3743" id="r_a7664dd20918d7e9e61b4e85f292c3743"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a7664dd20918d7e9e61b4e85f292c3743">label</a> () noexcept</td></tr>
 <tr class="memdesc:a7664dd20918d7e9e61b4e85f292c3743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Label of this command line argument. Used to uniquely identify this command line argument in a collection of command line arguments. Set at construction.  <br /></td></tr>
 <tr class="separator:a7664dd20918d7e9e61b4e85f292c3743"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -466,8 +466,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a042760279eaf1f4a4d8e5da382648282" name="a042760279eaf1f4a4d8e5da382648282"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a042760279eaf1f4a4d8e5da382648282">&#9670;&#160;</a></span>arity()</h2>
+<a id="a45c207eedbe46910712b92fbffabca55" name="a45c207eedbe46910712b92fbffabca55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45c207eedbe46910712b92fbffabca55">&#9670;&#160;</a></span>arity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,15 +478,15 @@ template&lt;auto LabelValue, typename Type &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a> <a class="el" href="classlector_1_1SingularArgument.html">lector::SingularArgument</a>&lt; LabelValue, Type &gt;::arity </td>
+          <td class="memname">static <a class="el" href="namespacelector.html#aa459a76b8ab2c0ebfed6d60bf774cfcc">lector::Arity</a> <a class="el" href="classlector_1_1SingularArgument.html">lector::SingularArgument</a>&lt; LabelValue, Type &gt;::arity </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -906,6 +906,12 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>The parsed value to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if a parsed value has already been set for this singular command line argument. </td></tr>
   </table>
   </dd>
 </dl>
