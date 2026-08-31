@@ -147,6 +147,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a786b5f0d81bbfa73273d467ccb6cc34b" id="r_a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">code_points</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.  <br /></td></tr>
 <tr class="separator:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13be2fe87e4ad2b5698d33c452798270" id="r_a13be2fe87e4ad2b5698d33c452798270"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a13be2fe87e4ad2b5698d33c452798270">collate_and_centre_align_with_left_bias</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:a13be2fe87e4ad2b5698d33c452798270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:a13be2fe87e4ad2b5698d33c452798270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ba1c5a2bd87ab319a5ec14a1ae9fb30" id="r_a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4ba1c5a2bd87ab319a5ec14a1ae9fb30">collate_and_centre_align_with_right_bias</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9484c2b5b7e57f4e8aa9b2380bfd0e76" id="r_a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9484c2b5b7e57f4e8aa9b2380bfd0e76">collate_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
 <tr class="memdesc:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
 <tr class="separator:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,6 +162,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a12fbadda4745d3082c5f7504bd22862a" id="r_a12fbadda4745d3082c5f7504bd22862a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">is_leading_byte</a> (const char character)</td></tr>
 <tr class="memdesc:a12fbadda4745d3082c5f7504bd22862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx.  <br /></td></tr>
 <tr class="separator:a12fbadda4745d3082c5f7504bd22862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfc62d097d03e81a8b2cb30a53a5a4cc" id="r_abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#abfc62d097d03e81a8b2cb30a53a5a4cc">join_and_centre_align_with_left_bias</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a612d0a58ac6777bea0a55f9727330016" id="r_a612d0a58ac6777bea0a55f9727330016"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a612d0a58ac6777bea0a55f9727330016">join_and_centre_align_with_right_bias</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:a612d0a58ac6777bea0a55f9727330016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:a612d0a58ac6777bea0a55f9727330016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
 <tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
 <tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -545,6 +557,122 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
+<a id="a13be2fe87e4ad2b5698d33c452798270" name="a13be2fe87e4ad2b5698d33c452798270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13be2fe87e4ad2b5698d33c452798270">&#9670;&#160;</a></span>collate_and_centre_align_with_left_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::collate_and_centre_align_with_left_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>first_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>first_column_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>second_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>second_column_width</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_width</td><td>The desired width of the first column. Very long words whose length exceeds this width are hyphenated. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_text</td><td>The string of text for the second column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_width</td><td>The desired width of the second column. Very long words whose length exceeds this width are hyphenated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string that contains the collated text. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if either desired column width is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4ba1c5a2bd87ab319a5ec14a1ae9fb30" name="a4ba1c5a2bd87ab319a5ec14a1ae9fb30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ba1c5a2bd87ab319a5ec14a1ae9fb30">&#9670;&#160;</a></span>collate_and_centre_align_with_right_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::collate_and_centre_align_with_right_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>first_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>first_column_width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>second_column_text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>second_column_width</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_text</td><td>The string of text for the first column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">first_column_width</td><td>The desired width of the first column. Very long words whose length exceeds this width are hyphenated. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_text</td><td>The string of text for the second column. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">second_column_width</td><td>The desired width of the second column. Very long words whose length exceeds this width are hyphenated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string that contains the collated text. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if either desired column width is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9484c2b5b7e57f4e8aa9b2380bfd0e76" name="a9484c2b5b7e57f4e8aa9b2380bfd0e76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9484c2b5b7e57f4e8aa9b2380bfd0e76">&#9670;&#160;</a></span>collate_and_left_align()</h2>
 
@@ -691,6 +819,60 @@ template&lt;typename Type &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>True if the character is a leading byte; false if the character is a continuation byte. </dd></dl>
 </li>
 </ol>
+
+</div>
+</div>
+<a id="abfc62d097d03e81a8b2cb30a53a5a4cc" name="abfc62d097d03e81a8b2cb30a53a5a4cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfc62d097d03e81a8b2cb30a53a5a4cc">&#9670;&#160;</a></span>join_and_centre_align_with_left_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::join_and_centre_align_with_left_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lines</td><td>Vector of strings to be joined and centre-aligned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The joined and centre-aligned string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a612d0a58ac6777bea0a55f9727330016" name="a612d0a58ac6777bea0a55f9727330016"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a612d0a58ac6777bea0a55f9727330016">&#9670;&#160;</a></span>join_and_centre_align_with_right_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::join_and_centre_align_with_right_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>lines</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">lines</td><td>Vector of strings to be joined and centre-aligned. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The joined and centre-aligned string of text. </dd></dl>
 
 </div>
 </div>
