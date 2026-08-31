@@ -50,7 +50,7 @@ enum class Arity : std::int8_t {
 
   /// @brief The command line argument has singular arity; it can only appear once on the command
   /// line.
-  Single = 1,
+  Singular = 1,
 
   /// @brief The command line argument has repeatable arity; it can appear multiple times on the
   /// command line. If the argument is a named repeatable argument, each appearance must include
@@ -64,7 +64,7 @@ template <>
 inline constexpr std::array<lector::Name<lector::Arity>, 3> Names<lector::Arity>{
   {
    {lector::Arity::Unknown, "Unknown"},
-   {lector::Arity::Single, "Single"},
+   {lector::Arity::Singular, "Singular"},
    {lector::Arity::Repeatable, "Repeatable"},
    }
 };
@@ -74,13 +74,13 @@ template <>
 inline constexpr std::array<lector::Spelling<lector::Arity>, 9> Spellings<lector::Arity>{
   {
    {"Unknown", lector::Arity::Unknown},
-   {"Single", lector::Arity::Single},
+   {"Singular", lector::Arity::Singular},
    {"Repeatable", lector::Arity::Repeatable},
    {"unknown", lector::Arity::Unknown},
-   {"single", lector::Arity::Single},
+   {"singular", lector::Arity::Singular},
    {"repeatable", lector::Arity::Repeatable},
    {"UNKNOWN", lector::Arity::Unknown},
-   {"SINGLE", lector::Arity::Single},
+   {"SINGULAR", lector::Arity::Singular},
    {"REPEATABLE", lector::Arity::Repeatable},
    }
 };
@@ -308,7 +308,7 @@ public:
   /// command line, whereas repeatable arguments can appear multiple times.
   /// @return The arity of this command line argument.
   [[nodiscard]] lector::Arity arity() const noexcept {
-    return lector::Arity::Single;
+    return lector::Arity::Singular;
   }
 
   /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
