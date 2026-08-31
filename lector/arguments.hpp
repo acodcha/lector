@@ -317,7 +317,7 @@ public:
   /// @brief Arity of this command line argument. A singular argument can only appear once on the
   /// command line, whereas a repeatable argument can appear multiple times.
   /// @return The arity of this command line argument.
-  [[nodiscard]] lector::Arity arity() const noexcept {
+  [[nodiscard]] static lector::Arity arity() noexcept {
     return lector::Arity::Singular;
   }
 
@@ -339,7 +339,12 @@ public:
 
   /// @brief Sets the parsed value of this singular command line argument.
   /// @param[in] value The parsed value to set.
+  /// @throws std::logic_error if a parsed value has already been set for this singular command line
+  /// argument.
   void set_parsed_value(const Type& value) {
+    if (parsed_value_.has_value()) {
+      throw std::logic_error("A singular argument cannot have more than one parsed value.");
+    }
     parsed_value_ = value;
   }
 
@@ -417,7 +422,7 @@ public:
       if (parsed_value_.has_value() && parsed_value_.value()) {
         return longest_key();
       }
-      return "";
+      return std::string{};
     } else {
       if (parsed_value_.has_value()) {
         if (keys_.empty()) {
@@ -425,7 +430,7 @@ public:
         }
         return longest_key() + " " + lector::print<Type>(parsed_value_.value());
       }
-      return "";
+      return std::string{};
     }
   }
 
@@ -513,7 +518,7 @@ private:
   /// @throws std::logic_error if this command line argument has no keys.
   [[nodiscard]] const std::string& longest_key() const {
     if (keys_.empty()) {
-      throw std::logic_error("All arguments must each have at least one key.");
+      throw std::logic_error("A named argument must have at least one key.");
     }
     std::size_t longest_key_index{0UL};
     for (std::size_t index{1UL}; index < keys_.size(); ++index) {
@@ -539,6 +544,357 @@ private:
   /// @brief Parsed value of this singular command line argument. Set when this argument is parsed
   /// from the command line.
   std::optional<Type> parsed_value_;
+
+  /// @brief Importance of this command line argument. A required argument must be provided by the
+  /// user on the command line, whereas an optional argument may or may not be provided by the user
+  /// on the command line. Set at construction.
+  lector::Importance importance_{lector::Importance::Required};
+};
+
+/// @brief A repeatable command line argument.
+/// @tparam LabelValue Value of this command line argument's label. The label is used to uniquely
+/// identify this command line argument in a collection of command line arguments.
+/// @tparam Type The type of the value stored in this command line argument.
+template <auto LabelValue, typename Type>
+class RepeatableArgument final {
+public:
+  static_assert(!std::is_same_v<Type, bool>, "Repeated boolean arguments are not supported.");
+
+  using ValueType = Type;
+
+  /// @brief Default constructor. Initializes the repeatable command line argument with no keys, an
+  /// empty description, required importance, and no default values.
+  RepeatableArgument() noexcept = default;
+
+  /// @brief Constructor for a required positional repeatable command line argument. No default
+  /// values are needed.
+  /// @param[in] description The description of the required positional repeatable command line
+  /// argument.
+  /// @throws std::invalid_argument if the description is empty.
+  RepeatableArgument(const std::string_view description) : description_{description} {
+    validate_description();
+  }
+
+  /// @brief Constructor for a required named repeatable command line argument. No default values
+  /// are needed.
+  /// @param[in] keys The keys that can be used to specify the named command line argument.
+  /// @param[in] description The description of the named command line argument.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  RepeatableArgument(
+      const std::initializer_list<std::string> keys, const std::string_view description)
+    : keys_{keys}, description_{description} {
+    validate_keys();
+    validate_description();
+  }
+
+  /// @brief Constructor for an optional positional repeatable command line argument.
+  /// @param[in] description The description of the optional positional repeatable command line
+  /// argument.
+  /// @param[in] default_values The default values of the optional positional repeatable command
+  /// line argument, if any.
+  /// @throws std::invalid_argument if the description or default values are empty.
+  RepeatableArgument(const std::string_view description, const std::vector<Type>& default_values)
+    : description_{description}, default_values_{default_values},
+      importance_{lector::Importance::Optional} {
+    validate_description();
+  }
+
+  /// @brief Constructor for an optional named repeatable command line argument.
+  /// @param[in] keys The keys that can be used to specify the optional named repeatable command
+  /// line argument.
+  /// @param[in] description The description of the optional named repeatable command line argument.
+  /// @param[in] default_values The default values of the optional named repeatable command line
+  /// argument, if any.
+  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  RepeatableArgument(const std::initializer_list<std::string> keys,
+                     const std::string_view description, const std::vector<Type>& default_values)
+    : keys_{keys}, description_{description}, default_values_{default_values},
+      importance_{lector::Importance::Optional} {
+    validate_keys();
+    validate_description();
+  }
+
+  /// @brief Destructor. Destroys this repeatable command line argument.
+  ~RepeatableArgument() noexcept = default;
+
+  /// @brief Copy constructor. Constructs a repeatable command line argument by copying another one.
+  RepeatableArgument(const lector::RepeatableArgument<LabelValue, Type>&) = default;
+
+  /// @brief Copy assignment operator. Assigns this repeatable command line argument by copying
+  /// another one.
+  /// @return This repeatable command line argument after the assignment.
+  lector::RepeatableArgument<LabelValue, Type>& operator=(
+      const lector::RepeatableArgument<LabelValue, Type>&) = default;
+
+  /// @brief Move constructor. Constructs a repeatable command line argument by moving another one.
+  RepeatableArgument(lector::RepeatableArgument<LabelValue, Type>&&) noexcept = default;
+
+  /// @brief Move assignment operator. Assigns this repeatable command line argument by moving
+  /// another one.
+  /// @return This repeatable command line argument after the assignment.
+  lector::RepeatableArgument<LabelValue, Type>& operator=(
+      lector::RepeatableArgument<LabelValue, Type>&&) noexcept = default;
+
+  /// @brief Label of this command line argument. Used to uniquely identify this command line
+  /// argument in a collection of command line arguments. Set at construction.
+  /// @return The label of this command line argument.
+  [[nodiscard]] static constexpr auto label() noexcept {
+    return LabelValue;
+  }
+
+  /// @brief Keys that can be used to specify this argument on the command line if it is a named
+  /// argument, or an empty collection if this argument is a positional argument. Set at
+  /// construction.
+  /// @return The keys that can be used to specify this command line argument.
+  [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
+    return keys_;
+  }
+
+  /// @brief Description of this command line argument. Set at construction.
+  /// @return The description of this command line argument.
+  [[nodiscard]] std::string_view description() const noexcept {
+    return description_;
+  }
+
+  /// @brief Default values of this repeatable command line argument. Set at construction.
+  /// @return The default values of this repeatable command line argument.
+  [[nodiscard]] const std::vector<Type>& default_values() const noexcept {
+    return default_values_;
+  }
+
+  /// @brief Parsed values of this repeatable command line argument. Set when this argument is
+  /// parsed from the command line.
+  /// @return The parsed values of this repeatable command line argument.
+  [[nodiscard]] const std::vector<Type>& parsed_values() const noexcept {
+    return parsed_values_;
+  }
+
+  /// @brief Importance of this command line argument. A required argument must be provided by the
+  /// user on the command line, whereas an optional argument may or may not be provided by the user
+  /// on the command line. Set at construction.
+  /// @return The importance of this command line argument.
+  [[nodiscard]] lector::Importance importance() const noexcept {
+    return importance_;
+  }
+
+  /// @brief Form of this command line argument. A positional argument does not define any keys and
+  /// must be specified in a specific order on the command line, whereas a named argument defines
+  /// one or more keys and is specified on the command line by one of its keys. Named arguments can
+  /// be specified in any order on the command line.
+  /// @return The form of this command line argument.
+  [[nodiscard]] lector::Form form() const noexcept {
+    if (keys_.empty()) {
+      return lector::Form::Positional;
+    }
+    return lector::Form::Named;
+  }
+
+  /// @brief Arity of this command line argument. A repeatable argument can only appear once on the
+  /// command line, whereas a repeatable argument can appear multiple times.
+  /// @return The arity of this command line argument.
+  [[nodiscard]] static lector::Arity arity() noexcept {
+    return lector::Arity::Repeatable;
+  }
+
+  /// @brief Values of this repeatable command line argument. Returns the parsed values if they
+  /// exist; otherwise, returns the default values.
+  /// @return The values of this repeatable command line argument.
+  [[nodiscard]] const std::vector<Type>& parsed_or_default_values() const {
+    if (!parsed_values_.empty()) {
+      return parsed_values_;
+    }
+    return default_values_;
+  }
+
+  /// @brief Inserts an additional parsed value into this repeatable command line argument.
+  /// @param[in] value The parsed value to insert.
+  void set_parsed_value(const Type& value) {
+    parsed_values_.push_back(value);
+  }
+
+  /// @brief Prints the longest key of this command line argument with its associated value type as
+  /// a string of text.
+  /// @return The string of text that contains the longest key of this command line argument with
+  /// its associated value type.
+  [[nodiscard]] std::string longest_key_with_value_type() const {
+    if (keys_.empty()) {
+      return std::string{value_type()};
+    }
+    std::string result{longest_key()};
+    const std::string type{value_type()};
+    if (!type.empty()) {
+      result.push_back(' ');
+      result.append(type);
+    }
+    return result;
+  }
+
+  /// @brief Prints the keys and value type of this command line argument as a string of text.
+  /// @return The string of text that contains the keys and value type of this command line
+  /// argument.
+  [[nodiscard]] std::string keys_with_value_type() const {
+    if (keys_.empty()) {
+      return std::string{value_type()};
+    }
+    std::string result;
+    for (std::size_t index{0UL}; index < keys_.size(); ++index) {
+      const std::string type{value_type()};
+      result.append(keys_.at(index));
+      if (!type.empty()) {
+        result.push_back(' ');
+        result.append(type);
+      }
+      if (index + 1 < keys_.size()) {
+        result.append(", ");
+      }
+    }
+    return result;
+  }
+
+  /// @brief Prints the usage information of this command line argument as a string of text. The
+  /// usage information consists of this command line argument's longest key and value type,
+  /// enclosed in square braces if this command line argument is optional.
+  /// @return The string of text that contains the usage information of this command line argument.
+  [[nodiscard]] std::string usage() const {
+    if (importance() == lector::Importance::Optional) {
+      return "[" + longest_key_with_value_type() + "]";
+    }
+    return longest_key_with_value_type();
+  }
+
+  /// @brief Prints the options information of this command line argument as a string of text. The
+  /// options information consists of this command line argument's keys, value type, and
+  /// description.
+  /// @return The string of text that contains the options information of this command line
+  /// argument.
+  [[nodiscard]] std::string options() const {
+    std::string keys_with_value_type_{keys_with_value_type()};
+    if (keys_with_value_type_.empty()) {
+      return description_;
+    }
+    if (description_.empty()) {
+      return keys_with_value_type_;
+    }
+    return keys_with_value_type_ + "  " + description_;
+  }
+
+  /// @brief Prints the execution of this command line argument as a string of text. The execution
+  /// consists of this command line argument's longest key and parsed values, if any.
+  /// @return The string of text that contains the execution of this command line argument.
+  [[nodiscard]] std::string execution() const {
+    if (!parsed_values_.empty()) {
+      if (keys_.empty()) {
+        std::string result;
+        for (const Type& parsed_value : parsed_values_) {
+          if (!result.empty()) {
+            result.push_back(' ');
+          }
+          result.append(lector::print<Type>(parsed_value));
+        }
+        return result;
+      }
+      std::string result;
+      for (const Type& parsed_value : parsed_values_) {
+        if (!result.empty()) {
+          result.push_back(' ');
+        }
+        result.append(longest_key());
+        result.push_back(' ');
+        result.append(lector::print<Type>(parsed_value));
+      }
+      return result;
+    }
+    return std::string{};
+  }
+
+private:
+  /// @brief Validates the keys of this command line argument. Called by constructors where keys are
+  /// specified.
+  /// @throws std::logic_error if the keys are missing or invalid.
+  void validate_keys() const {
+    if (keys_.empty()) {
+      throw std::logic_error("All named arguments must each have at least one key.");
+    }
+    for (const std::string& key : keys_) {
+      if (key.empty()) {
+        if (longest_key().empty()) {
+          throw std::logic_error("Named arguments cannot have empty keys.");
+        }
+        throw std::logic_error("Empty key in named argument '" + longest_key_with_value_type()
+                               + "'. Named arguments cannot have empty keys.");
+      }
+    }
+    const std::size_t keys_size{keys_.size()};
+    for (std::size_t first{0UL}; first < keys_size; ++first) {
+      for (std::size_t second{first + static_cast<std::size_t>(1UL)}; second < keys_size;
+           ++second) {
+        if (keys_[first] == keys_[second]) {
+          throw std::logic_error(
+              "Duplicated key '" + keys_[first] + "' in named argument '"
+              + longest_key_with_value_type() + "'. Named arguments cannot have duplicate keys.");
+        }
+      }
+    }
+  };
+
+  /// @brief Validates the description of this command line argument. Called by all constructors.
+  /// @throws std::logic_error if the description of this command line argument is empty.
+  void validate_description() const {
+    if (description_.empty()) {
+      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+                             + "'. All arguments must have descriptions.");
+    }
+  };
+
+  /// @brief Prints the value type of this command line argument as a string of text.
+  /// @return The string of text that contains the value type of this command line argument.
+  [[nodiscard]] constexpr std::string_view value_type() const {
+    if constexpr (std::is_same_v<Type, bool>) {
+      return "";
+    } else if constexpr (std::numeric_limits<Type>::is_integer) {
+      return "<number>";
+    } else if constexpr (std::is_floating_point_v<Type>) {
+      return "<value>";
+    } else if constexpr (
+        std::is_same_v<Type, std::string> || std::is_same_v<Type, std::string_view>) {
+      return "<text>";
+    } else if constexpr (std::is_same_v<Type, std::filesystem::path>) {
+      return "<path>";
+    } else {
+      return "<value>";
+    }
+  }
+
+  /// @brief Returns the longest key of this command line argument.
+  /// @return The longest key of this command line argument.
+  /// @throws std::logic_error if this command line argument has no keys.
+  [[nodiscard]] const std::string& longest_key() const {
+    if (keys_.empty()) {
+      throw std::logic_error("A named argument must have at least one key.");
+    }
+    std::size_t longest_key_index{0UL};
+    for (std::size_t index{1UL}; index < keys_.size(); ++index) {
+      if (keys_[index].size() > keys_[longest_key_index].size()) {
+        longest_key_index = index;
+      }
+    }
+    return keys_[longest_key_index];
+  }
+
+  /// @brief Keys that can be used to specify this argument on the command line if it is a named
+  /// argument, or an empty collection if this argument is a positional argument. Set at
+  /// construction.
+  std::vector<std::string> keys_;
+
+  /// @brief Description of this command line argument. Set at construction.
+  std::string description_;
+
+  /// @brief Default values of this repeatable command line argument. Set at construction.
+  std::vector<Type> default_values_;
+
+  /// @brief Parsed values of this repeatable command line argument. Set when this argument is
+  /// parsed from the command line.
+  std::vector<Type> parsed_values_;
 
   /// @brief Importance of this command line argument. A required argument must be provided by the
   /// user on the command line, whereas an optional argument may or may not be provided by the user
