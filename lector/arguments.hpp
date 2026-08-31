@@ -164,25 +164,25 @@ inline constexpr std::array<lector::Spelling<lector::Importance>, 9> Spellings<l
    }
 };
 
-/// @brief A command line argument, including its label, value type, keys, description, importance,
-/// default value, and parsed value.
+/// @brief A singular command line argument.
 /// @tparam LabelValue Value of this command line argument's label. The label is used to uniquely
 /// identify this command line argument in a collection of command line arguments.
 /// @tparam Type The type of the value stored in this command line argument.
 template <auto LabelValue, typename Type>
-class Argument final {
+class SingularArgument final {
 public:
   using ValueType = Type;
 
-  /// @brief Default constructor. Initializes the command line argument with no keys, an empty
-  /// description, required importance, and no default value.
-  Argument() noexcept = default;
+  /// @brief Default constructor. Initializes the singular command line argument with no keys, an
+  /// empty description, required importance, and no default value.
+  SingularArgument() noexcept = default;
 
-  /// @brief Constructor for a required positional command line argument. No default value is
-  /// needed.
-  /// @param[in] description The description of the positional command line argument.
-  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  Argument(const std::string_view description) : description_{description} {
+  /// @brief Constructor for a required positional singular command line argument. No default value
+  /// is needed.
+  /// @param[in] description The description of the required positional singular command line
+  /// argument.
+  /// @throws std::invalid_argument if the description is empty.
+  SingularArgument(const std::string_view description) : description_{description} {
     if (std::is_same_v<Type, bool>) {
       throw std::invalid_argument(
           "Positional boolean arguments are not supported. Use a named boolean argument instead.");
@@ -191,13 +191,14 @@ public:
     validate_description();
   }
 
-  /// @brief Constructor for a required named command line argument or a named boolean command line
-  /// argument. No default value is needed. Named boolean command line arguments are always optional
-  /// and always default to false.
+  /// @brief Constructor for a required named singular command line argument or a named boolean
+  /// singular command line argument. No default value is needed. Named boolean singular command
+  /// line arguments are always optional and always default to false.
   /// @param[in] keys The keys that can be used to specify the named command line argument.
   /// @param[in] description The description of the named command line argument.
   /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  Argument(const std::initializer_list<std::string> keys, const std::string_view description)
+  SingularArgument(
+      const std::initializer_list<std::string> keys, const std::string_view description)
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
@@ -206,26 +207,30 @@ public:
     validate_description();
   }
 
-  /// @brief Constructor for an optional positional non-boolean command line argument. A default
-  /// value must be provided.
-  /// @param[in] description The description of the optional positional command line argument.
-  /// @param[in] default_value The default value of the optional positional command line argument.
-  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  Argument(const std::string_view description, const Type& default_value)
+  /// @brief Constructor for an optional positional non-boolean singular command line argument. A
+  /// default value must be provided.
+  /// @param[in] description The description of the optional positional singular command line
+  /// argument.
+  /// @param[in] default_value The default value of the optional positional singular command line
+  /// argument.
+  /// @throws std::invalid_argument if the description is empty.
+  SingularArgument(const std::string_view description, const Type& default_value)
     : description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
     validate_description();
     validate_default_value();
   }
 
-  /// @brief Constructor for an optional named non-boolean command line argument. A default value
-  /// must be provided.
-  /// @param[in] keys The keys that can be used to specify the optional named command line argument.
-  /// @param[in] description The description of the optional named command line argument.
-  /// @param[in] default_value The default value of the optional named command line argument.
+  /// @brief Constructor for an optional named non-boolean singular command line argument. A default
+  /// value must be provided.
+  /// @param[in] keys The keys that can be used to specify the optional named singular command line
+  /// argument.
+  /// @param[in] description The description of the optional named singular command line argument.
+  /// @param[in] default_value The default value of the optional named singular command line
+  /// argument.
   /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  Argument(const std::initializer_list<std::string> keys, const std::string_view description,
-           const Type& default_value)
+  SingularArgument(const std::initializer_list<std::string> keys,
+                   const std::string_view description, const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
     validate_keys();
@@ -233,33 +238,37 @@ public:
     validate_default_value();
   }
 
-  /// @brief Destructor. Destroys this command line argument.
-  ~Argument() noexcept = default;
+  /// @brief Destructor. Destroys this singular command line argument.
+  ~SingularArgument() noexcept = default;
 
-  /// @brief Copy constructor. Constructs a command line argument by copying another one.
-  Argument(const lector::Argument<LabelValue, Type>&) = default;
+  /// @brief Copy constructor. Constructs a singular command line argument by copying another one.
+  SingularArgument(const lector::SingularArgument<LabelValue, Type>&) = default;
 
-  /// @brief Copy assignment operator. Assigns this command line argument by copying another one.
-  /// @return This command line argument after the assignment.
-  lector::Argument<LabelValue, Type>& operator=(
-      const lector::Argument<LabelValue, Type>&) = default;
+  /// @brief Copy assignment operator. Assigns this singular command line argument by copying
+  /// another one.
+  /// @return This singular command line argument after the assignment.
+  lector::SingularArgument<LabelValue, Type>& operator=(
+      const lector::SingularArgument<LabelValue, Type>&) = default;
 
-  /// @brief Move constructor. Constructs a command line argument by moving another one.
-  Argument(lector::Argument<LabelValue, Type>&&) noexcept = default;
+  /// @brief Move constructor. Constructs a singular command line argument by moving another one.
+  SingularArgument(lector::SingularArgument<LabelValue, Type>&&) noexcept = default;
 
-  /// @brief Move assignment operator. Assigns this command line argument by moving another one.
-  /// @return This command line argument after the assignment.
-  lector::Argument<LabelValue, Type>& operator=(
-      lector::Argument<LabelValue, Type>&&) noexcept = default;
+  /// @brief Move assignment operator. Assigns this singular command line argument by moving another
+  /// one.
+  /// @return This singular command line argument after the assignment.
+  lector::SingularArgument<LabelValue, Type>& operator=(
+      lector::SingularArgument<LabelValue, Type>&&) noexcept = default;
 
   /// @brief Label of this command line argument. Used to uniquely identify this command line
-  /// argument. Set at construction.
+  /// argument in a collection of command line arguments. Set at construction.
   /// @return The label of this command line argument.
   [[nodiscard]] static constexpr auto label() noexcept {
     return LabelValue;
   }
 
-  /// @brief Keys that can be used to specify this command line argument. Set at construction.
+  /// @brief Keys that can be used to specify this argument on the command line if it is a named
+  /// argument, or an empty collection if this argument is a positional argument. Set at
+  /// construction.
   /// @return The keys that can be used to specify this command line argument.
   [[nodiscard]] const std::vector<std::string>& keys() const noexcept {
     return keys_;
@@ -271,30 +280,31 @@ public:
     return description_;
   }
 
-  /// @brief Default value of this command line argument. Only relevant for optional non-boolean
-  /// arguments. Set at construction.
-  /// @return The default value of this command line argument.
+  /// @brief Default value of this singular command line argument if it is optional and non-boolean,
+  /// or std::nullopt otherwise. Set at construction.
+  /// @return The default value of this singular command line argument.
   [[nodiscard]] const std::optional<Type>& default_value() const noexcept {
     return default_value_;
   }
 
-  /// @brief Parsed value of this command line argument. Set when this command line argument is
-  /// parsed.
-  /// @return The parsed value of this command line argument.
+  /// @brief Parsed value of this singular command line argument. Set when this argument is parsed
+  /// from the command line.
+  /// @return The parsed value of this singular command line argument.
   [[nodiscard]] const std::optional<Type>& parsed_value() const noexcept {
     return parsed_value_;
   }
 
-  /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, whereas optional arguments may or may not be provided by the user. Set at construction.
+  /// @brief Importance of this command line argument. A required argument must be provided by the
+  /// user on the command line, whereas an optional argument may or may not be provided by the user
+  /// on the command line. Set at construction.
   /// @return The importance of this command line argument.
   [[nodiscard]] lector::Importance importance() const noexcept {
     return importance_;
   }
 
-  /// @brief Form of this command line argument. Positional arguments do not define any keys and
-  /// must be specified in a specific order on the command line, whereas named arguments define one
-  /// or more keys and are specified on the command line by one of their keys. Named arguments can
+  /// @brief Form of this command line argument. A positional argument does not define any keys and
+  /// must be specified in a specific order on the command line, whereas a named argument defines
+  /// one or more keys and is specified on the command line by one of its keys. Named arguments can
   /// be specified in any order on the command line.
   /// @return The form of this command line argument.
   [[nodiscard]] lector::Form form() const noexcept {
@@ -304,18 +314,18 @@ public:
     return lector::Form::Named;
   }
 
-  /// @brief Arity of this command line argument. Singular arguments can only appear once on the
-  /// command line, whereas repeatable arguments can appear multiple times.
+  /// @brief Arity of this command line argument. A singular argument can only appear once on the
+  /// command line, whereas a repeatable argument can appear multiple times.
   /// @return The arity of this command line argument.
   [[nodiscard]] lector::Arity arity() const noexcept {
     return lector::Arity::Singular;
   }
 
-  /// @brief Value of this command line argument. Returns the parsed value if it exists; otherwise,
-  /// returns the default value.
-  /// @return The value of this command line argument.
-  /// @throws std::logic_error if this command line argument is missing both its parsed value and
-  /// its default value.
+  /// @brief Value of this singular command line argument. Returns the parsed value if it exists;
+  /// otherwise, returns the default value.
+  /// @return The value of this singular command line argument.
+  /// @throws std::logic_error if this singular command line argument is missing both its parsed
+  /// value and its default value. Cannot occur in practice due to checks done at construction.
   [[nodiscard]] const Type& parsed_or_default_value() const {
     if (parsed_value_.has_value()) {
       return parsed_value_.value();
@@ -327,15 +337,16 @@ public:
         "No parsed or default value for argument '" + longest_key_with_value_type() + "'.");
   }
 
-  /// @brief Sets the parsed value of this command line argument.
+  /// @brief Sets the parsed value of this singular command line argument.
   /// @param[in] value The parsed value to set.
   void set_parsed_value(const Type& value) {
     parsed_value_ = value;
   }
 
   /// @brief Prints the longest key of this command line argument with its associated value type as
-  /// a string.
-  /// @return The string that contains the longest key and its associated value type.
+  /// a string of text.
+  /// @return The string of text that contains the longest key of this command line argument with
+  /// its associated value type.
   [[nodiscard]] std::string longest_key_with_value_type() const {
     if (keys_.empty()) {
       return std::string{value_type()};
@@ -383,7 +394,8 @@ public:
   }
 
   /// @brief Prints the options information of this command line argument as a string of text. The
-  /// options information consist of this command line argument's keys, value type, and description.
+  /// options information consists of this command line argument's keys, value type, and
+  /// description.
   /// @return The string of text that contains the options information of this command line
   /// argument.
   [[nodiscard]] std::string options() const {
@@ -427,9 +439,9 @@ private:
     }
   }
 
-  /// @brief Validates the keys of this command line argument. Called by both constructors.
-  /// @throws std::logic_error if this command line argument has no keys or if any of its keys are
-  /// invalid.
+  /// @brief Validates the keys of this command line argument. Called by constructors where keys are
+  /// specified.
+  /// @throws std::logic_error if the keys are missing or invalid.
   void validate_keys() const {
     if (keys_.empty()) {
       throw std::logic_error("All named arguments must each have at least one key.");
@@ -456,8 +468,8 @@ private:
     }
   };
 
-  /// @brief Validates the description of this command line argument. Called by both constructors.
-  /// @throws std::logic_error if this command line argument's description is empty.
+  /// @brief Validates the description of this command line argument. Called by all constructors.
+  /// @throws std::logic_error if the description of this command line argument is empty.
   void validate_description() const {
     if (description_.empty()) {
       throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
@@ -465,8 +477,8 @@ private:
     }
   };
 
-  /// @brief Validates the default value of this command line argument. Called by the constructor
-  /// that specifies a default value.
+  /// @brief Validates the default value of this command line argument. Called by constructors where
+  /// a default value is specified.
   /// @throws std::logic_error if this command line argument is boolean but specifies a default
   /// value.
   constexpr void validate_default_value() const {
@@ -478,7 +490,7 @@ private:
   }
 
   /// @brief Prints the value type of this command line argument as a string of text.
-  /// @return The string of text that contains the value type.
+  /// @return The string of text that contains the value type of this command line argument.
   [[nodiscard]] constexpr std::string_view value_type() const {
     if constexpr (std::is_same_v<Type, bool>) {
       return "";
@@ -512,22 +524,25 @@ private:
     return keys_[longest_key_index];
   }
 
-  /// @brief Keys that can be used to specify this command line argument. Set at construction.
+  /// @brief Keys that can be used to specify this argument on the command line if it is a named
+  /// argument, or an empty collection if this argument is a positional argument. Set at
+  /// construction.
   std::vector<std::string> keys_;
 
   /// @brief Description of this command line argument. Set at construction.
   std::string description_;
 
-  /// @brief Default value of this command line argument. Only relevant for optional non-boolean
-  /// arguments. Set at construction.
+  /// @brief Default value of this singular command line argument if it is optional and non-boolean,
+  /// or std::nullopt otherwise. Set at construction.
   std::optional<Type> default_value_;
 
-  /// @brief Parsed value of this command line argument. Set when this command line argument is
-  /// parsed.
+  /// @brief Parsed value of this singular command line argument. Set when this argument is parsed
+  /// from the command line.
   std::optional<Type> parsed_value_;
 
-  /// @brief Importance of this command line argument. Required arguments must be provided by the
-  /// user, whereas optional arguments may or may not be provided by the user. Set at construction.
+  /// @brief Importance of this command line argument. A required argument must be provided by the
+  /// user on the command line, whereas an optional argument may or may not be provided by the user
+  /// on the command line. Set at construction.
   lector::Importance importance_{lector::Importance::Required};
 };
 
@@ -569,8 +584,8 @@ struct FindArgumentByLabel;
 /// @tparam ...OtherArgumentTypes The variadic list of argument types in the collection of command
 /// line arguments, excluding the command line argument to extract.
 template <auto Label, typename Type, typename... OtherArgumentTypes>
-struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTypes...> {
-  using type = lector::Argument<Label, Type>;
+struct FindArgumentByLabel<Label, lector::SingularArgument<Label, Type>, OtherArgumentTypes...> {
+  using type = lector::SingularArgument<Label, Type>;
 };
 
 /// @brief Type trait specialization used to extract a command line argument from a collection of
@@ -582,7 +597,7 @@ struct FindArgumentByLabel<Label, lector::Argument<Label, Type>, OtherArgumentTy
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
-struct FindArgumentByLabel<Label, lector::Argument<OtherLabel, OtherType>,
+struct FindArgumentByLabel<Label, lector::SingularArgument<OtherLabel, OtherType>,
                            RemainingArgumentTypes...>
     final {
   using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
@@ -1060,18 +1075,19 @@ private:
 
   /// @brief Checks whether a token contains an inline match of an argument's key of the form
   /// "key=value". Called by lector::Arguments::find_best_argument().
-  /// @tparam Argument The type of the argument that has the key to be used in the comparison.
+  /// @tparam SingularArgument The type of the argument that has the key to be used in the
+  /// comparison.
   /// @param[in] token The token to check.
   /// @param[in] argument_index The index of the argument that has the key to be used in the
   /// comparison.
   /// @param[in] argument_key The argument key against which to compare.
   /// @return A populated lector::Arguments::BestArgument data structure if the specified token
   /// contains an inline match for the key, or std::nullopt otherwise.
-  template <typename Argument>
+  template <typename SingularArgument>
   [[nodiscard]] static std::optional<BestArgument> try_inline_match(
       const std::string_view token, const std::size_t argument_index,
       const std::string_view argument_key) noexcept {
-    using ArgumentType = typename std::decay_t<Argument>::ValueType;
+    using ArgumentType = typename std::decay_t<SingularArgument>::ValueType;
     // Inline matching is strictly disabled for boolean arguments because they are key-only flags
     // that do not have values.
     if constexpr (!std::is_same_v<ArgumentType, bool>) {
@@ -1086,7 +1102,7 @@ private:
 
   /// @brief Populates an argument with its parsed value. Called by
   /// lector::Arguments::parse_named_arguments().
-  /// @tparam Argument The type of the argument to be populated.
+  /// @tparam SingularArgument The type of the argument to be populated.
   /// @param[in,out] argument The argument to be populated.
   /// @param[in] best_argument The lector::Arguments::BestArgument data structure that corresponds
   /// to the argument to be populated.
@@ -1096,14 +1112,14 @@ private:
   /// @param[in,out] argv_index The index of the argument in the array of C-string command line
   /// arguments whose value is to be extracted and used to populate the argument.
   /// @throws std::invalid_argument if the parsed value is invalid for this argument type.
-  template <typename Argument>
-  static void populate_argument(Argument& argument, const BestArgument& best_argument,
+  template <typename SingularArgument>
+  static void populate_argument(SingularArgument& argument, const BestArgument& best_argument,
                                 const int argc, char* argv[], std::size_t& argv_index) {
     if (argument.parsed_value().has_value()) {
       throw std::invalid_argument(
           "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
     }
-    using Type = typename std::decay_t<Argument>::ValueType;
+    using Type = typename std::decay_t<SingularArgument>::ValueType;
     if constexpr (std::is_same_v<Type, bool>) {
       // Boolean arguments are key-only flags; their presence implies true.
       argument.set_parsed_value(true);
