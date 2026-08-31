@@ -31,11 +31,11 @@ int main(int argc, char* argv[]) {
       "My Application",
       "Description of my application.",
       "Additional notes about my application."},
-    lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+    lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
       {"-o", "--output_directory"}, "Output directory. Required."},
-    lector::Argument<Label::Iterations, std::int32_t>{
+    lector::SingularArgument<Label::Iterations, std::int32_t>{
       {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
-    lector::Argument<Label::Help, bool>{
+    lector::SingularArgument<Label::Help, bool>{
       {"-h", "--help"}, "Display this help information and exit. Optional."}
   };
 
@@ -105,12 +105,12 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::Argument` and `lector::Arguments` classes and the `lector::Configuration` data structure, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
+- The file `<lector/arguments.hpp>` defines the `lector::SingularArgument` and `lector::Arguments` classes and the `lector::Configuration` data structure, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
 - The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 - The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
 - The file `<lector/text.hpp>` defines general-purpose utilities for manipulating strings of text; these utilities are used by the `lector::Arguments` class.
 
-All of the Lector library's contents are cleanly encapsulated within the `lector::` namespace.
+All of the Lector library's contents are neatly encapsulated within the `lector::` namespace.
 
 [(Back to Top)](#lector)
 
@@ -288,11 +288,11 @@ lector::Arguments arguments{
     "My Application",
     "Description of my application.",
     "Additional notes about my application."},
-  lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
     {"-o", "--output_directory"}, "Output directory. Required."},
-  lector::Argument<Label::Iterations, std::int32_t>{
+  lector::SingularArgument<Label::Iterations, std::int32_t>{
     {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
-  lector::Argument<Label::Help, bool>{
+  lector::SingularArgument<Label::Help, bool>{
     {"-h", "--help"}, "Display this help information and exit. Optional."}
 };
 ```
@@ -321,26 +321,26 @@ This populates all arguments with their parsed values and performs strict error 
 Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 
 ```cpp
-const lector::Argument<Label::OutputDirectory, std::filesystem::path>& output_directory{
+const lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>& output_directory{
   arguments.get<Label::OutputDirectory>()};
 ```
 
 ```cpp
-const lector::Argument<Label::Iterations, std::int32_t>& iterations{
+const lector::SingularArgument<Label::Iterations, std::int32_t>& iterations{
   arguments.get<Label::Iterations>()};
 ```
 
 ```cpp
-const lector::Argument<Label::Help, bool>& help{arguments.get<Label::Help>()};
+const lector::SingularArgument<Label::Help, bool>& help{arguments.get<Label::Help>()};
 ```
 
-Each `lector::Argument` object exposes a rich public interface. Commonly-used interface members of `lector::Argument` include:
+Each `lector::SingularArgument` object exposes a rich public interface. Commonly-used interface members of `lector::SingularArgument` include:
 
-- `lector::Argument::importance()` returns either `lector::Importance::Required` or `lector::Importance::Optional`, as appropriate for the argument.
-- `lector::Argument::form()` returns either `lector::Form::Positional` or `lector::Form::Named`, as appropriate for the argument.
-- `lector::Argument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
-- `lector::Argument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
-- `lector::Argument::parsed_or_default_value()` returns the argument's parsed value if it exists, or its default value otherwise.
+- `lector::SingularArgument::importance()` returns either `lector::Importance::Required` or `lector::Importance::Optional`, as appropriate for the argument.
+- `lector::SingularArgument::form()` returns either `lector::Form::Positional` or `lector::Form::Named`, as appropriate for the argument.
+- `lector::SingularArgument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
+- `lector::SingularArgument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
+- `lector::SingularArgument::parsed_or_default_value()` returns the argument's parsed value if it exists, or its default value otherwise.
 
 [(Back to User Guide)](#3-user-guide)
 
@@ -430,9 +430,9 @@ Furthermore, keys do not need to start with a hyphen (`-`) and can be composed o
 
 ```cpp
 lector::Arguments arguments{
-  lector::Argument<Label::OutputDirectory, std::filesystem::path>{
+  lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
     {"o", "=o", "__out_dir__"}, "Output directory. Required."},
-  lector::Argument<Label::Iterations, std::int32_t>{
+  lector::SingularArgument<Label::Iterations, std::int32_t>{
     {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100}
 };
 ```
@@ -541,7 +541,7 @@ enum class Label : std::int8_t {FavoriteShape};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
-    lector::Argument<Label::FavoriteShape, my_project::Shape>{
+    lector::SingularArgument<Label::FavoriteShape, my_project::Shape>{
       {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle}
   };
 
@@ -630,7 +630,7 @@ enum class Label : std::int8_t {FavoritePoint};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
-    lector::Argument<Label::FavoritePoint, my_project::Point>{
+    lector::SingularArgument<Label::FavoritePoint, my_project::Point>{
       {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{} }
   };
 
@@ -653,13 +653,13 @@ The Lector library performs strict error checking when defining command line arg
 
 The following checks are performed when defining command line arguments:
 
-- All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Help, bool>{ {"-h"}, "Help." }` and `lector::Argument<Label::Help, bool>{ {"--help"}, "Help." }` throws an exception because both arguments use the same label `Label::Help`.
-- All named arguments must each have at least one key. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because the set of keys is empty. To define a positional argument, omit the set of keys entirely. For example, `lector::Argument<Label::Iterations, std::int32_t>{ "Iterations." }` defines a positional argument.
-- Arguments cannot have empty keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"", "-i"}, "Iterations." }` throws an exception because the first key is empty.
-- Arguments cannot have duplicate keys. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i", "-i"}, "Iterations." }` throws an exception because the key `-i` is duplicated.
-- Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::Argument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
-- All arguments must have descriptions. For example, `lector::Argument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
-- Boolean arguments are always false by default and cannot specify default values. For example, `lector::Argument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
+- All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help." }` and `lector::SingularArgument<Label::Help, bool>{ {"--help"}, "Help." }` throws an exception because both arguments use the same label `Label::Help`.
+- All named arguments must each have at least one key. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because the set of keys is empty. To define a positional argument, omit the set of keys entirely. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ "Iterations." }` defines a positional argument.
+- Arguments cannot have empty keys. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"", "-i"}, "Iterations." }` throws an exception because the first key is empty.
+- Arguments cannot have duplicate keys. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i", "-i"}, "Iterations." }` throws an exception because the key `-i` is duplicated.
+- Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::SingularArgument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
+- All arguments must have descriptions. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
+- Boolean arguments are always false by default and cannot specify default values. For example, `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
 
 The following checks are performed when parsing command line arguments. These examples use the code from the [§1. Introduction](#1-introduction) section:
 
