@@ -181,13 +181,10 @@ public:
   /// is needed.
   /// @param[in] description The description of the required positional singular command line
   /// argument.
-  /// @throws std::invalid_argument if the description is empty.
+  /// @throws std::invalid_argument if this argument's type is boolean or if its description is
+  /// empty.
   SingularArgument(const std::string_view description) : description_{description} {
-    if (std::is_same_v<Type, bool>) {
-      throw std::invalid_argument(
-          "Positional boolean arguments are not supported. Use a named boolean argument instead.");
-    }
-    set_boolean_default();
+    validate_type_is_non_boolean_due_to_no_keys();
     validate_description();
   }
 
@@ -202,7 +199,7 @@ public:
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
-    set_boolean_default();
+    set_default_value_to_false_if_boolean();
     validate_keys();
     validate_description();
   }
@@ -213,12 +210,13 @@ public:
   /// argument.
   /// @param[in] default_value The default value of the optional positional singular command line
   /// argument.
-  /// @throws std::invalid_argument if the description is empty.
+  /// @throws std::invalid_argument if this argument's type is boolean or if its description is
+  /// empty.
   SingularArgument(const std::string_view description, const Type& default_value)
     : description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
+    validate_type_is_non_boolean_due_to_specified_default_value();
     validate_description();
-    validate_default_value();
   }
 
   /// @brief Constructor for an optional named non-boolean singular command line argument. A default
@@ -228,14 +226,15 @@ public:
   /// @param[in] description The description of the optional named singular command line argument.
   /// @param[in] default_value The default value of the optional named singular command line
   /// argument.
-  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  /// @throws std::invalid_argument if this argument's type is boolean, if its keys are invalid, or
+  /// if its description is empty.
   SingularArgument(const std::initializer_list<std::string> keys,
                    const std::string_view description, const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
+    validate_type_is_non_boolean_due_to_specified_default_value();
     validate_keys();
     validate_description();
-    validate_default_value();
   }
 
   /// @brief Destructor. Destroys this singular command line argument.
@@ -435,17 +434,33 @@ public:
   }
 
 private:
-  /// @brief If this command line argument is a boolean argument, sets its default value to false.
-  /// Called by the constructor that does not specify a default value. Boolean arguments are always
-  /// optional and always default to false.
-  void set_boolean_default() {
+  /// @brief If this command line argument is boolean, sets its default value to false. Boolean
+  /// command line arguments are always optional and always default to false.
+  void set_default_value_to_false_if_boolean() {
     if constexpr (std::is_same_v<Type, bool>) {
       default_value_ = false;
     }
   }
 
-  /// @brief Validates the keys of this command line argument. Called by constructors where keys are
-  /// specified.
+  /// @brief Validates that this command line argument is not boolean. Called by constructors that
+  /// do not take keys. Boolean command line arguments must specify one or more keys.
+  void validate_type_is_non_boolean_due_to_no_keys() const {
+    if (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument("Boolean arguments must specify one or more keys.");
+    }
+  }
+
+  /// @brief Validates that this command line argument is not boolean. Called by constructors that
+  /// take default values. Boolean command line arguments are always optional and always default to
+  /// false, so they cannot specify default values.
+  void validate_type_is_non_boolean_due_to_specified_default_value() const {
+    if constexpr (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument(
+          "Boolean arguments cannot specify default values; they are always false by default.");
+    }
+  }
+
+  /// @brief Validates the keys of this command line argument.
   /// @throws std::logic_error if the keys are missing or invalid.
   void validate_keys() const {
     if (keys_.empty()) {
@@ -473,7 +488,7 @@ private:
     }
   };
 
-  /// @brief Validates the description of this command line argument. Called by all constructors.
+  /// @brief Validates the description of this command line argument.
   /// @throws std::logic_error if the description of this command line argument is empty.
   void validate_description() const {
     if (description_.empty()) {
@@ -481,18 +496,6 @@ private:
                              + "'. All arguments must have descriptions.");
     }
   };
-
-  /// @brief Validates the default value of this command line argument. Called by constructors where
-  /// a default value is specified.
-  /// @throws std::logic_error if this command line argument is boolean but specifies a default
-  /// value.
-  constexpr void validate_default_value() const {
-    if constexpr (std::is_same_v<Type, bool>) {
-      throw std::logic_error(
-          "Specified default value for boolean argument '" + longest_key_with_value_type()
-          + "'. Boolean arguments are always false by default and cannot specify default values.");
-    }
-  }
 
   /// @brief Prints the value type of this command line argument as a string of text.
   /// @return The string of text that contains the value type of this command line argument.
@@ -570,46 +573,55 @@ public:
   /// values are needed.
   /// @param[in] description The description of the required positional repeatable command line
   /// argument.
-  /// @throws std::invalid_argument if the description is empty.
+  /// @throws std::invalid_argument if this argument's type is boolean or if its description is
+  /// empty.
   RepeatableArgument(const std::string_view description) : description_{description} {
+    validate_type_is_non_boolean_due_to_no_keys();
     validate_description();
   }
 
-  /// @brief Constructor for a required named repeatable command line argument. No default values
-  /// are needed.
+  /// @brief Constructor for a required named repeatable command line argument or an optional named
+  /// boolean repeatable command line argument. No default value is needed. Named boolean repeatable
+  /// command line arguments are always optional and always default to false.
   /// @param[in] keys The keys that can be used to specify the named command line argument.
   /// @param[in] description The description of the named command line argument.
   /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
   RepeatableArgument(
       const std::initializer_list<std::string> keys, const std::string_view description)
-    : keys_{keys}, description_{description} {
+    : keys_{keys}, description_{description},
+      importance_{
+        std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
     validate_keys();
     validate_description();
   }
 
-  /// @brief Constructor for an optional positional repeatable command line argument.
+  /// @brief Constructor for an optional positional non-boolean repeatable command line argument.
   /// @param[in] description The description of the optional positional repeatable command line
   /// argument.
   /// @param[in] default_values The default values of the optional positional repeatable command
   /// line argument, if any.
-  /// @throws std::invalid_argument if the description or default values are empty.
+  /// @throws std::invalid_argument if this argument's type is boolean or if its description is
+  /// empty.
   RepeatableArgument(const std::string_view description, const std::vector<Type>& default_values)
     : description_{description}, default_values_{default_values},
       importance_{lector::Importance::Optional} {
+    validate_type_is_non_boolean_due_to_specified_default_values();
     validate_description();
   }
 
-  /// @brief Constructor for an optional named repeatable command line argument.
+  /// @brief Constructor for an optional named non-boolean repeatable command line argument.
   /// @param[in] keys The keys that can be used to specify the optional named repeatable command
   /// line argument.
   /// @param[in] description The description of the optional named repeatable command line argument.
   /// @param[in] default_values The default values of the optional named repeatable command line
   /// argument, if any.
-  /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
+  /// @throws std::invalid_argument if this argument's type is boolean, if its keys are invalid, or
+  /// if its description is empty.
   RepeatableArgument(const std::initializer_list<std::string> keys,
                      const std::string_view description, const std::vector<Type>& default_values)
     : keys_{keys}, description_{description}, default_values_{default_values},
       importance_{lector::Importance::Optional} {
+    validate_type_is_non_boolean_due_to_specified_default_values();
     validate_keys();
     validate_description();
   }
@@ -782,34 +794,65 @@ public:
   /// consists of this command line argument's longest key and parsed values, if any.
   /// @return The string of text that contains the execution of this command line argument.
   [[nodiscard]] std::string execution() const {
-    if (!parsed_values_.empty()) {
-      if (keys_.empty()) {
+    if constexpr (std::is_same_v<Type, bool>) {
+      if (!parsed_values_.empty()) {
         std::string result;
         for (const Type& parsed_value : parsed_values_) {
           if (!result.empty()) {
             result.push_back(' ');
           }
+          result.append(longest_key());
+        }
+        return result;
+      }
+      return std::string{};
+    } else {
+      if (!parsed_values_.empty()) {
+        if (keys_.empty()) {
+          std::string result;
+          for (const Type& parsed_value : parsed_values_) {
+            if (!result.empty()) {
+              result.push_back(' ');
+            }
+            result.append(lector::print<Type>(parsed_value));
+          }
+          return result;
+        }
+        std::string result;
+        for (const Type& parsed_value : parsed_values_) {
+          if (!result.empty()) {
+            result.push_back(' ');
+          }
+          result.append(longest_key());
+          result.push_back(' ');
           result.append(lector::print<Type>(parsed_value));
         }
         return result;
       }
-      std::string result;
-      for (const Type& parsed_value : parsed_values_) {
-        if (!result.empty()) {
-          result.push_back(' ');
-        }
-        result.append(longest_key());
-        result.push_back(' ');
-        result.append(lector::print<Type>(parsed_value));
-      }
-      return result;
+      return std::string{};
     }
-    return std::string{};
   }
 
 private:
-  /// @brief Validates the keys of this command line argument. Called by constructors where keys are
-  /// specified.
+  /// @brief Validates that this command line argument is not boolean. Called by constructors that
+  /// do not take keys. Boolean command line arguments must specify one or more keys.
+  void validate_type_is_non_boolean_due_to_no_keys() const {
+    if (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument("Boolean arguments must specify one or more keys.");
+    }
+  }
+
+  /// @brief Validates that this command line argument is not boolean. Called by constructors that
+  /// take default values. Boolean command line arguments are always optional and always default to
+  /// false, so they cannot specify default values.
+  void validate_type_is_non_boolean_due_to_specified_default_values() const {
+    if constexpr (std::is_same_v<Type, bool>) {
+      throw std::invalid_argument(
+          "Boolean arguments cannot specify default values; they are always false by default.");
+    }
+  }
+
+  /// @brief Validates the keys of this command line argument.
   /// @throws std::logic_error if the keys are missing or invalid.
   void validate_keys() const {
     if (keys_.empty()) {
@@ -837,7 +880,7 @@ private:
     }
   };
 
-  /// @brief Validates the description of this command line argument. Called by all constructors.
+  /// @brief Validates the description of this command line argument.
   /// @throws std::logic_error if the description of this command line argument is empty.
   void validate_description() const {
     if (description_.empty()) {
