@@ -24,7 +24,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <filesystem>
-#include <initializer_list>
 #include <limits>
 #include <optional>
 #include <stdexcept>
@@ -194,8 +193,7 @@ public:
   /// @param[in] keys The keys that can be used to specify the named command line argument.
   /// @param[in] description The description of the named command line argument.
   /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  SingularArgument(
-      const std::initializer_list<std::string> keys, const std::string_view description)
+  SingularArgument(const std::vector<std::string> keys, const std::string_view description)
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
@@ -228,8 +226,8 @@ public:
   /// argument.
   /// @throws std::invalid_argument if this argument's type is boolean, if its keys are invalid, or
   /// if its description is empty.
-  SingularArgument(const std::initializer_list<std::string> keys,
-                   const std::string_view description, const Type& default_value)
+  SingularArgument(const std::vector<std::string> keys, const std::string_view description,
+                   const Type& default_value)
     : keys_{keys}, description_{description}, default_value_{default_value},
       importance_{lector::Importance::Optional} {
     validate_type_is_non_boolean_due_to_specified_default_value();
@@ -586,8 +584,7 @@ public:
   /// @param[in] keys The keys that can be used to specify the named command line argument.
   /// @param[in] description The description of the named command line argument.
   /// @throws std::invalid_argument if the keys are invalid or if the description is empty.
-  RepeatableArgument(
-      const std::initializer_list<std::string> keys, const std::string_view description)
+  RepeatableArgument(const std::vector<std::string> keys, const std::string_view description)
     : keys_{keys}, description_{description},
       importance_{
         std::is_same_v<Type, bool> ? lector::Importance::Optional : lector::Importance::Required} {
@@ -617,8 +614,8 @@ public:
   /// argument, if any.
   /// @throws std::invalid_argument if this argument's type is boolean, if its keys are invalid, or
   /// if its description is empty.
-  RepeatableArgument(const std::initializer_list<std::string> keys,
-                     const std::string_view description, const std::vector<Type>& default_values)
+  RepeatableArgument(const std::vector<std::string> keys, const std::string_view description,
+                     const std::vector<Type>& default_values)
     : keys_{keys}, description_{description}, default_values_{default_values},
       importance_{lector::Importance::Optional} {
     validate_type_is_non_boolean_due_to_specified_default_values();
