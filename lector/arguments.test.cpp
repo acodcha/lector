@@ -2870,7 +2870,7 @@ TEST(Lector, ArgumentCollectionWeirdShortWhitespaceWithConfiguration) {
   EXPECT_TRUE(parsed_weird.has_value() && parsed_weird.value() == test::TwoHundred);
 }
 
-TEST(Lector, ArgumentRepeatableConstructorCopy) {
+TEST(Lector, ArgumentRepeatableBuiltinCopyConstructor) {
   const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_repeatable_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -2949,185 +2949,7 @@ TEST(Lector, ArgumentRepeatableConstructorCopy) {
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
 
-TEST(Lector, ArgumentRepeatableConstructorMove) {
-  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> first{
-    test::create_argument_repeatable_iterations_optional_named()};
-  EXPECT_EQ(first.label(), test::Label::Iterations);
-  const std::vector<std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(first.keys(), expected_keys);
-  EXPECT_EQ(first.description(), "Number of iterations.");
-  EXPECT_EQ(first.importance(), lector::Importance::Optional);
-  EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(first.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
-  EXPECT_TRUE(first.parsed_values().empty());
-  ASSERT_EQ(first.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
-  EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
-  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
-  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(first.execution().empty());
-  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second{std::move(first)};
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
-  EXPECT_TRUE(second.parsed_values().empty());
-  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
-  EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(second.execution().empty());
-  second.set_parsed_value(test::ThreeHundred);
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
-  ASSERT_EQ(second.parsed_values().size(), static_cast<std::size_t>(1UL));
-  EXPECT_EQ(second.parsed_values().at(0), test::ThreeHundred);
-  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
-  EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_EQ(second.execution(), "--iterations 300");
-  second.set_parsed_value(test::FourHundred);
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
-  ASSERT_EQ(second.parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.parsed_values().at(0), test::ThreeHundred);
-  EXPECT_EQ(second.parsed_values().at(1), test::FourHundred);
-  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
-  EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
-}
-
-TEST(Lector, ArgumentRepeatableConstructorNormalIterationsDefault) {
-  const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument;
-  EXPECT_EQ(argument.label(), test::Label::Iterations);
-  EXPECT_TRUE(argument.keys().empty());
-  EXPECT_TRUE(argument.description().empty());
-  EXPECT_EQ(argument.importance(), lector::Importance::Required);
-  EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
-  EXPECT_TRUE(argument.default_values().empty());
-  EXPECT_TRUE(argument.parsed_values().empty());
-  EXPECT_TRUE(argument.parsed_or_default_values().empty());
-  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
-  EXPECT_EQ(argument.options(), "<number>");
-  EXPECT_TRUE(argument.execution().empty());
-}
-
-TEST(Lector, ArgumentRepeatableConstructorNormalIterationsOptionalNamed) {
-  const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
-    test::create_argument_repeatable_iterations_optional_named()};
-  EXPECT_EQ(argument.label(), test::Label::Iterations);
-  const std::vector<std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Number of iterations.");
-  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
-  EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
-  EXPECT_TRUE(argument.parsed_values().empty());
-  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
-  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
-  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "[--iterations <number>]");
-  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(argument.execution().empty());
-}
-
-TEST(Lector, ArgumentRepeatableConstructorNormalIterationsOptionalPositional) {
-  const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
-    test::create_argument_repeatable_iterations_optional_positional()};
-  EXPECT_EQ(argument.label(), test::Label::Iterations);
-  EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Number of iterations.");
-  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
-  EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
-  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
-  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
-  EXPECT_TRUE(argument.parsed_values().empty());
-  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
-  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
-  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "[<number>]");
-  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
-  EXPECT_TRUE(argument.execution().empty());
-}
-
-TEST(Lector, ArgumentRepeatableConstructorNormalIterationsRequiredNamed) {
-  const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
-    test::create_argument_repeatable_iterations_required_named()};
-  EXPECT_EQ(argument.label(), test::Label::Iterations);
-  const std::vector<std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(argument.keys(), expected_keys);
-  EXPECT_EQ(argument.description(), "Number of iterations.");
-  EXPECT_EQ(argument.importance(), lector::Importance::Required);
-  EXPECT_EQ(argument.form(), lector::Form::Named);
-  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
-  EXPECT_TRUE(argument.default_values().empty());
-  EXPECT_TRUE(argument.parsed_values().empty());
-  EXPECT_TRUE(argument.parsed_or_default_values().empty());
-  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "--iterations <number>");
-  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(argument.execution().empty());
-}
-
-TEST(Lector, ArgumentRepeatableConstructorNormalIterationsRequiredPositional) {
-  const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
-    test::create_argument_repeatable_iterations_required_positional()};
-  EXPECT_EQ(argument.label(), test::Label::Iterations);
-  EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Number of iterations.");
-  EXPECT_EQ(argument.importance(), lector::Importance::Required);
-  EXPECT_EQ(argument.form(), lector::Form::Positional);
-  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
-  EXPECT_TRUE(argument.default_values().empty());
-  EXPECT_TRUE(argument.parsed_values().empty());
-  EXPECT_TRUE(argument.parsed_or_default_values().empty());
-  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
-  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
-  EXPECT_TRUE(argument.execution().empty());
-}
-
-TEST(Lector, ArgumentRepeatableOperatorCopyAssignment) {
+TEST(Lector, ArgumentRepeatableBuiltinCopyAssignmentOperator) {
   const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_repeatable_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3220,7 +3042,86 @@ TEST(Lector, ArgumentRepeatableOperatorCopyAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
 
-TEST(Lector, ArgumentRepeatableOperatorMoveAssignment) {
+TEST(Lector, ArgumentRepeatableBuiltinMoveConstructor) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> first{
+    test::create_argument_repeatable_iterations_optional_named()};
+  EXPECT_EQ(first.label(), test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), lector::Importance::Optional);
+  EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(first.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
+  EXPECT_TRUE(first.parsed_values().empty());
+  ASSERT_EQ(first.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
+  EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
+  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(first.execution().empty());
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second{std::move(first)};
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
+  EXPECT_TRUE(second.parsed_values().empty());
+  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
+  EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(test::ThreeHundred);
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
+  ASSERT_EQ(second.parsed_values().size(), static_cast<std::size_t>(1UL));
+  EXPECT_EQ(second.parsed_values().at(0), test::ThreeHundred);
+  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
+  EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(second.execution(), "--iterations 300");
+  second.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
+  ASSERT_EQ(second.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(second.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
+}
+
+TEST(Lector, ArgumentRepeatableBuiltinMoveAssignmentOperator) {
   const lector::RepeatableArgument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_repeatable_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3313,7 +3214,204 @@ TEST(Lector, ArgumentRepeatableOperatorMoveAssignment) {
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
 
-TEST(Lector, ArgumentSingularConstructorCopy) {
+TEST(Lector, ArgumentRepeatableNormalIterationsDefault) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument;
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_TRUE(argument.description().empty());
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  EXPECT_TRUE(argument.parsed_values().empty());
+  EXPECT_TRUE(argument.parsed_or_default_values().empty());
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.options(), "<number>");
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(test::ThreeHundred);
+  argument.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_TRUE(argument.description().empty());
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.options(), "<number>");
+  EXPECT_EQ(argument.execution(), "300 400");
+}
+
+TEST(Lector, ArgumentRepeatableNormalIterationsOptionalNamed) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
+    test::create_argument_repeatable_iterations_optional_named()};
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
+  EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
+  EXPECT_TRUE(argument.parsed_values().empty());
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(argument.usage(), "[--iterations <number>]");
+  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(test::ThreeHundred);
+  argument.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
+  EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
+  ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(argument.usage(), "[--iterations <number>]");
+  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(argument.execution(), "--iterations 300 --iterations 400");
+}
+
+TEST(Lector, ArgumentRepeatableNormalIterationsOptionalPositional) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
+    test::create_argument_repeatable_iterations_optional_positional()};
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
+  EXPECT_TRUE(argument.parsed_values().empty());
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "[<number>]");
+  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(test::ThreeHundred);
+  argument.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Optional);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
+  EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
+  ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "[<number>]");
+  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
+  EXPECT_EQ(argument.execution(), "300 400");
+}
+
+TEST(Lector, ArgumentRepeatableNormalIterationsRequiredNamed) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
+    test::create_argument_repeatable_iterations_required_named()};
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  EXPECT_TRUE(argument.parsed_values().empty());
+  EXPECT_TRUE(argument.parsed_or_default_values().empty());
+  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(argument.usage(), "--iterations <number>");
+  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(test::ThreeHundred);
+  argument.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_EQ(argument.keys(), expected_keys);
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Named);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(argument.usage(), "--iterations <number>");
+  EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(argument.execution(), "--iterations 300 --iterations 400");
+}
+
+TEST(Lector, ArgumentRepeatableNormalIterationsRequiredPositional) {
+  lector::RepeatableArgument<test::Label::Iterations, std::int32_t> argument{
+    test::create_argument_repeatable_iterations_required_positional()};
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  EXPECT_TRUE(argument.parsed_values().empty());
+  EXPECT_TRUE(argument.parsed_or_default_values().empty());
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
+  EXPECT_TRUE(argument.execution().empty());
+  argument.set_parsed_value(test::ThreeHundred);
+  argument.set_parsed_value(test::FourHundred);
+  EXPECT_EQ(argument.label(), test::Label::Iterations);
+  EXPECT_TRUE(argument.keys().empty());
+  EXPECT_EQ(argument.description(), "Number of iterations.");
+  EXPECT_EQ(argument.importance(), lector::Importance::Required);
+  EXPECT_EQ(argument.form(), lector::Form::Positional);
+  EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.default_values().empty());
+  ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_values().at(1), test::FourHundred);
+  ASSERT_EQ(argument.parsed_or_default_values().size(), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
+  EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
+  EXPECT_EQ(argument.keys_with_value_type(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
+  EXPECT_EQ(argument.execution(), "300 400");
+}
+
+TEST(Lector, ArgumentSingularBuiltinCopyConstructor) {
   const lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_singular_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3364,7 +3462,71 @@ TEST(Lector, ArgumentSingularConstructorCopy) {
   EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
-TEST(Lector, ArgumentSingularConstructorMove) {
+TEST(Lector, ArgumentSingularBuiltinCopyAssignmentOperator) {
+  const lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
+    test::create_argument_singular_iterations_optional_named()};
+  EXPECT_EQ(first.label(), test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), lector::Importance::Optional);
+  EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
+  EXPECT_EQ(first.parsed_value(), std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), test::OneHundred);
+  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(first.execution().empty());
+  lector::SingularArgument<test::Label::Iterations, std::int32_t> second;
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_TRUE(second.keys().empty());
+  EXPECT_TRUE(second.description().empty());
+  EXPECT_EQ(second.importance(), lector::Importance::Required);
+  EXPECT_EQ(second.form(), lector::Form::Positional);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_EQ(second.default_value(), std::nullopt);
+  EXPECT_EQ(second.parsed_value(), std::nullopt);
+  EXPECT_EQ(second.keys_with_value_type(), "<number>");
+  EXPECT_EQ(second.usage(), "<number>");
+  EXPECT_EQ(second.options(), "<number>");
+  EXPECT_TRUE(second.execution().empty());
+  second = first;
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
+  EXPECT_EQ(second.parsed_value(), std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), test::OneHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(test::TwoHundred);
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == test::OneHundred);
+  const std::optional<std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(second.execution(), "--iterations 200");
+}
+
+TEST(Lector, ArgumentSingularBuiltinMoveConstructor) {
   lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
     test::create_argument_singular_iterations_optional_named()};
   EXPECT_EQ(first.label(), test::Label::Iterations);
@@ -3383,6 +3545,70 @@ TEST(Lector, ArgumentSingularConstructorMove) {
   EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(first.execution().empty());
   lector::SingularArgument<test::Label::Iterations, std::int32_t> second{std::move(first)};
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t>& second_default_value{second.default_value()};
+  EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
+  EXPECT_EQ(second.parsed_value(), std::nullopt);
+  EXPECT_EQ(second.parsed_or_default_value(), test::OneHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(second.execution().empty());
+  second.set_parsed_value(test::TwoHundred);
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_EQ(second.keys(), expected_keys);
+  EXPECT_EQ(second.description(), "Number of iterations.");
+  EXPECT_EQ(second.importance(), lector::Importance::Optional);
+  EXPECT_EQ(second.form(), lector::Form::Named);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t> second_default_value_again{second.default_value()};
+  EXPECT_TRUE(second_default_value_again.has_value()
+              && second_default_value_again.value() == test::OneHundred);
+  const std::optional<std::int32_t> second_parsed_value{second.parsed_value()};
+  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == test::TwoHundred);
+  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_EQ(second.execution(), "--iterations 200");
+}
+
+TEST(Lector, ArgumentSingularBuiltinMoveAssignmentOperator) {
+  lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
+    test::create_argument_singular_iterations_optional_named()};
+  EXPECT_EQ(first.label(), test::Label::Iterations);
+  const std::vector<std::string> expected_keys{"-i", "--iterations"};
+  EXPECT_EQ(first.keys(), expected_keys);
+  EXPECT_EQ(first.description(), "Number of iterations.");
+  EXPECT_EQ(first.importance(), lector::Importance::Optional);
+  EXPECT_EQ(first.form(), lector::Form::Named);
+  EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  const std::optional<std::int32_t>& first_default_value{first.default_value()};
+  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
+  EXPECT_EQ(first.parsed_value(), std::nullopt);
+  EXPECT_EQ(first.parsed_or_default_value(), test::OneHundred);
+  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
+  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
+  EXPECT_TRUE(first.execution().empty());
+  lector::SingularArgument<test::Label::Iterations, std::int32_t> second;
+  EXPECT_EQ(second.label(), test::Label::Iterations);
+  EXPECT_TRUE(second.keys().empty());
+  EXPECT_TRUE(second.description().empty());
+  EXPECT_EQ(second.importance(), lector::Importance::Required);
+  EXPECT_EQ(second.form(), lector::Form::Positional);
+  EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_EQ(second.default_value(), std::nullopt);
+  EXPECT_EQ(second.parsed_value(), std::nullopt);
+  EXPECT_EQ(second.keys_with_value_type(), "<number>");
+  EXPECT_EQ(second.usage(), "<number>");
+  EXPECT_EQ(second.options(), "<number>");
+  EXPECT_TRUE(second.execution().empty());
+  second = std::move(first);
   EXPECT_EQ(second.label(), test::Label::Iterations);
   EXPECT_EQ(second.keys(), expected_keys);
   EXPECT_EQ(second.description(), "Number of iterations.");
@@ -4070,134 +4296,6 @@ TEST(Lector, ArgumentSingularConstructorNormalWeirdRequiredNamed) {
   EXPECT_EQ(argument.options(), "=w=k <number>, ==weird=key <number>  Weird argument.");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
-}
-
-TEST(Lector, ArgumentSingularOperatorCopyAssignment) {
-  const lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
-    test::create_argument_singular_iterations_optional_named()};
-  EXPECT_EQ(first.label(), test::Label::Iterations);
-  const std::vector<std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(first.keys(), expected_keys);
-  EXPECT_EQ(first.description(), "Number of iterations.");
-  EXPECT_EQ(first.importance(), lector::Importance::Optional);
-  EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t>& first_default_value{first.default_value()};
-  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
-  EXPECT_EQ(first.parsed_value(), std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), test::OneHundred);
-  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
-  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(first.execution().empty());
-  lector::SingularArgument<test::Label::Iterations, std::int32_t> second;
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_TRUE(second.keys().empty());
-  EXPECT_TRUE(second.description().empty());
-  EXPECT_EQ(second.importance(), lector::Importance::Required);
-  EXPECT_EQ(second.form(), lector::Form::Positional);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  EXPECT_EQ(second.default_value(), std::nullopt);
-  EXPECT_EQ(second.parsed_value(), std::nullopt);
-  EXPECT_EQ(second.keys_with_value_type(), "<number>");
-  EXPECT_EQ(second.usage(), "<number>");
-  EXPECT_EQ(second.options(), "<number>");
-  EXPECT_TRUE(second.execution().empty());
-  second = first;
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t>& second_default_value{second.default_value()};
-  EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
-  EXPECT_EQ(second.parsed_value(), std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), test::OneHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(second.execution().empty());
-  second.set_parsed_value(test::TwoHundred);
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t> second_default_value_again{second.default_value()};
-  EXPECT_TRUE(second_default_value_again.has_value()
-              && second_default_value_again.value() == test::OneHundred);
-  const std::optional<std::int32_t> second_parsed_value{second.parsed_value()};
-  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == test::TwoHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_EQ(second.execution(), "--iterations 200");
-}
-
-TEST(Lector, ArgumentSingularOperatorMoveAssignment) {
-  lector::SingularArgument<test::Label::Iterations, std::int32_t> first{
-    test::create_argument_singular_iterations_optional_named()};
-  EXPECT_EQ(first.label(), test::Label::Iterations);
-  const std::vector<std::string> expected_keys{"-i", "--iterations"};
-  EXPECT_EQ(first.keys(), expected_keys);
-  EXPECT_EQ(first.description(), "Number of iterations.");
-  EXPECT_EQ(first.importance(), lector::Importance::Optional);
-  EXPECT_EQ(first.form(), lector::Form::Named);
-  EXPECT_EQ(first.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t>& first_default_value{first.default_value()};
-  EXPECT_TRUE(first_default_value.has_value() && first_default_value.value() == test::OneHundred);
-  EXPECT_EQ(first.parsed_value(), std::nullopt);
-  EXPECT_EQ(first.parsed_or_default_value(), test::OneHundred);
-  EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
-  EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(first.execution().empty());
-  lector::SingularArgument<test::Label::Iterations, std::int32_t> second;
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_TRUE(second.keys().empty());
-  EXPECT_TRUE(second.description().empty());
-  EXPECT_EQ(second.importance(), lector::Importance::Required);
-  EXPECT_EQ(second.form(), lector::Form::Positional);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  EXPECT_EQ(second.default_value(), std::nullopt);
-  EXPECT_EQ(second.parsed_value(), std::nullopt);
-  EXPECT_EQ(second.keys_with_value_type(), "<number>");
-  EXPECT_EQ(second.usage(), "<number>");
-  EXPECT_EQ(second.options(), "<number>");
-  EXPECT_TRUE(second.execution().empty());
-  second = std::move(first);
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t>& second_default_value{second.default_value()};
-  EXPECT_TRUE(second_default_value.has_value() && second_default_value.value() == test::OneHundred);
-  EXPECT_EQ(second.parsed_value(), std::nullopt);
-  EXPECT_EQ(second.parsed_or_default_value(), test::OneHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_TRUE(second.execution().empty());
-  second.set_parsed_value(test::TwoHundred);
-  EXPECT_EQ(second.label(), test::Label::Iterations);
-  EXPECT_EQ(second.keys(), expected_keys);
-  EXPECT_EQ(second.description(), "Number of iterations.");
-  EXPECT_EQ(second.importance(), lector::Importance::Optional);
-  EXPECT_EQ(second.form(), lector::Form::Named);
-  EXPECT_EQ(second.arity(), lector::Arity::Singular);
-  const std::optional<std::int32_t> second_default_value_again{second.default_value()};
-  EXPECT_TRUE(second_default_value_again.has_value()
-              && second_default_value_again.value() == test::OneHundred);
-  const std::optional<std::int32_t> second_parsed_value{second.parsed_value()};
-  EXPECT_TRUE(second_parsed_value.has_value() && second_parsed_value.value() == test::TwoHundred);
-  EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
-  EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
-  EXPECT_EQ(second.execution(), "--iterations 200");
 }
 
 TEST(Lector, ArgumentSingularSetParsedValueHelp) {
