@@ -1160,7 +1160,7 @@ public:
     result.append(executable_path_.filename().string());
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             result.push_back(' ');
             result.append(argument.usage());
           }());
@@ -1205,7 +1205,7 @@ public:
     std::size_t argument_index{0UL};
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             result.append(lector::collate_and_left_align(
                 argument.keys_with_value_type(), first_column_width, argument.description(),
                 second_column_width));
@@ -1301,7 +1301,7 @@ public:
     std::string printed_execution_arguments;
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             const std::string argument_execution{argument.execution()};
             if (!printed_execution_arguments.empty() && !argument_execution.empty()) {
               printed_execution_arguments.push_back(' ');
@@ -1392,7 +1392,7 @@ private:
         std::size_t current_index{0UL};
         std::apply(
             [&](auto&... argument) {
-              (..., [&]() {
+              (..., [&] {
                 if (current_index == best_argument->index) {
                   populate_argument(argument, best_argument.value(), argc, argv, argv_index);
                 }
@@ -1419,7 +1419,7 @@ private:
     std::size_t token_index{0UL};
     std::apply(
         [&](auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             if (argument.form() == lector::Form::Positional) {
               if (token_index < positional_tokens.size()) {
                 using Type = typename std::decay_t<decltype(argument)>::ValueType;
@@ -1464,7 +1464,7 @@ private:
     std::size_t argument_index{0UL};
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             for (const std::string& argument_key : argument.keys()) {
               const std::optional<BestArgument> exact_match{
                 try_exact_match(token, argument_index, argument_key)};
@@ -1609,7 +1609,7 @@ private:
     std::unordered_set<std::string> unique_keys;
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             for (const std::string& key : argument.keys()) {
               const std::pair<std::unordered_set<std::string>::const_iterator, bool> result{
                 unique_keys.insert(key)};
@@ -1628,7 +1628,7 @@ private:
   void validate_all_required_arguments_have_parsed_values() const {
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             if (argument.importance() == lector::Importance::Required
                 && !argument.parsed_value().has_value()) {
               throw std::invalid_argument(
@@ -1647,7 +1647,7 @@ private:
     std::size_t maximum_length{0UL};
     std::apply(
         [&](const auto&... argument) {
-          (..., [&]() {
+          (..., [&] {
             const std::size_t length{lector::code_points(argument.keys_with_value_type())};
             maximum_length = std::max(maximum_length, length);
           }());
