@@ -390,7 +390,7 @@ path/to/my_application --help
 My Application
 
 Usage:
-my_application <text> --output_directory <path> [--iterations <number>] [--help]
+my_application [<text>] --output_directory <path> [--iterations <number>] [--help]
 
 Description of my application.
 
