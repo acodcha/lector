@@ -430,7 +430,7 @@ Checks: '
   readability-static-definition-in-anonymous-namespace,
   readability-string-compare,
   readability-suspicious-call-argument,
-  readability-trailing-comma,
+  -readability-trailing-comma,
   readability-uniqueptr-delete-release,
   readability-uppercase-literal-suffix,
   readability-use-anyofallof,
