@@ -337,6 +337,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ad3dbae2688050c8117b86b38afdfaaa7" id="r_ad3dbae2688050c8117b86b38afdfaaa7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">wrap</a> (const std::string_view text, const std::size_t line_length)</td></tr>
 <tr class="memdesc:ad3dbae2688050c8117b86b38afdfaaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a sequence of strings of text where each string in the sequence represents one line of text.  <br /></td></tr>
 <tr class="separator:ad3dbae2688050c8117b86b38afdfaaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cfcc25878fd904057d85482b8c16174" id="r_a8cfcc25878fd904057d85482b8c16174"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8cfcc25878fd904057d85482b8c16174">wrap_and_centre_align_with_left_bias</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a8cfcc25878fd904057d85482b8c16174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:a8cfcc25878fd904057d85482b8c16174"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64713e8d68898f37f4a4e1be900dc36" id="r_af64713e8d68898f37f4a4e1be900dc36"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af64713e8d68898f37f4a4e1be900dc36">wrap_and_centre_align_with_right_bias</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:af64713e8d68898f37f4a4e1be900dc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:af64713e8d68898f37f4a4e1be900dc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44bd330c9016a93ce6be338042e52d9c" id="r_a44bd330c9016a93ce6be338042e52d9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">wrap_and_left_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
 <tr class="memdesc:a44bd330c9016a93ce6be338042e52d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
 <tr class="separator:a44bd330c9016a93ce6be338042e52d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2227,7 +2233,95 @@ template&lt;typename EnumerationType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The resulting sequence of strings of text that contains one string per line. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The sequence of strings of text that contains one string per line. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8cfcc25878fd904057d85482b8c16174" name="a8cfcc25878fd904057d85482b8c16174"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cfcc25878fd904057d85482b8c16174">&#9670;&#160;</a></span>wrap_and_centre_align_with_left_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::wrap_and_centre_align_with_left_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and centre-align. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped and centre-aligned string of text. </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af64713e8d68898f37f4a4e1be900dc36" name="af64713e8d68898f37f4a4e1be900dc36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64713e8d68898f37f4a4e1be900dc36">&#9670;&#160;</a></span>wrap_and_centre_align_with_right_bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::wrap_and_centre_align_with_right_bias </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>line_length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and centre-align. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">line_length</td><td>The desired line length to use when wrapping. Must be strictly greater than zero. Very long words whose lengths exceed this line length are hyphenated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped and centre-aligned string of text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
@@ -2271,7 +2365,7 @@ template&lt;typename EnumerationType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The resulting wrapped and left-aligned string of text. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped and left-aligned string of text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
@@ -2315,7 +2409,7 @@ template&lt;typename EnumerationType &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The resulting wrapped and right-aligned string of text. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The wrapped and right-aligned string of text. </dd></dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
