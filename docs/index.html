@@ -70,7 +70,7 @@
 <div class="line"><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;lector/arguments.hpp&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">enum class</span> Label : std::int8_t {OutputDirectory, Iterations, Help};</div>
+<div class="line"><span class="keyword">enum class</span> Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[]) {</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
@@ -78,6 +78,8 @@
 <div class="line">      <span class="stringliteral">&quot;My Application&quot;</span>,</div>
 <div class="line">      <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">      <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
+<div class="line">    <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;test::Label::Tokens, std::string&gt;</a>{</div>
+<div class="line">      <span class="stringliteral">&quot;List of tokens. Optional. Default &#39;Hi&#39;.&quot;</span>, std::vector&lt;std::string&gt;{<span class="stringliteral">&quot;Hi&quot;</span>}},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">      {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
@@ -95,6 +97,14 @@
 <div class="line"> </div>
 <div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">execution</a>() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
+<div class="line">  <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; tokens{</div>
+<div class="line">    arguments.get&lt;test::Label::Tokens&gt;().parsed_or_default_values()};</div>
+<div class="line">  std::cout &lt;&lt; <span class="stringliteral">&quot;The tokens are:&quot;</span>;</div>
+<div class="line">  <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string&amp; token : tokens) {</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; token;</div>
+<div class="line">  }</div>
+<div class="line">  std::cout &lt;&lt; std::endl;</div>
+<div class="line"> </div>
 <div class="line">  <span class="keyword">const</span> std::filesystem::path&amp; output_directory_path{</div>
 <div class="line">    arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
 <div class="line"> </div>
@@ -107,12 +117,13 @@
 <div class="line"> </div>
 <div class="line">  <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:1057</div></div>
+<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:1087</div></div>
+<div class="ttc" id="aclasslector_1_1RepeatableArgument_html"><div class="ttname"><a href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument</a></div><div class="ttdoc">A repeatable command line argument.</div><div class="ttdef"><b>Definition</b> arguments.hpp:588</div></div>
 <div class="ttc" id="aclasslector_1_1SingularArgument_html"><div class="ttname"><a href="classlector_1_1SingularArgument.html">lector::SingularArgument</a></div><div class="ttdoc">A singular command line argument.</div><div class="ttdef"><b>Definition</b> arguments.hpp:171</div></div>
-<div class="ttc" id="aclasslector_1_1SingularArgument_html_aea7e43c6012d99a94e8cacba660a3f5e"><div class="ttname"><a href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">lector::SingularArgument::execution</a></div><div class="ttdeci">std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:422</div></div>
-<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:982</div></div>
+<div class="ttc" id="aclasslector_1_1SingularArgument_html_aea7e43c6012d99a94e8cacba660a3f5e"><div class="ttname"><a href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">lector::SingularArgument::execution</a></div><div class="ttdeci">std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:428</div></div>
+<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:995</div></div>
 </div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
-<p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, can be named (keyed) or positional (keyless), and feature strict error checking.</p>
+<p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be singular or repeatable, can be named (keyed) or positional (keyless), can be declared as required or optional, and feature strict error checking.</p>
 <p>The Lector library can parse named command line arguments as whitespace-separated key-value pairs of the form <code>key value</code> or as inline key-value pairs of the form <code>key=value</code>. It can also handle keys that contain arbitrary characters.</p>
 <p><a class="el" href="index.html">(Back to Top)</a></p>
 <h1><a class="anchor" id="configuration"></a>
@@ -266,7 +277,7 @@
 <h2><a class="anchor" id="user_guide_arguments"></a>
 §3.1. User Guide: Arguments</h2>
 <p>The Lector library uses enumeration values to label arguments. For example, the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section defines the following enumeration:</p>
-<div class="fragment"><div class="line"><span class="keyword">enum class</span> Label : std::int8_t {OutputDirectory, Iterations, Help};</div>
+<div class="fragment"><div class="line"><span class="keyword">enum class</span> Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};</div>
 </div><!-- fragment --><p>Defining an argument requires:</p>
 <ul>
 <li>An enumeration value to be used as a label.</li>
@@ -281,6 +292,8 @@
 <div class="line">    <span class="stringliteral">&quot;My Application&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
+<div class="line">  <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;test::Label::Tokens, std::string&gt;</a>{</div>
+<div class="line">    <span class="stringliteral">&quot;List of tokens. Optional. Default &#39;Hi&#39;.&quot;</span>, std::vector&lt;std::string&gt;{<span class="stringliteral">&quot;Hi&quot;</span>}},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">    {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
@@ -304,7 +317,9 @@
 <div class="fragment"><div class="line">arguments.parse(argc, argv);</div>
 </div><!-- fragment --><p>This populates all arguments with their parsed values and performs strict error checking. See the <a class="el" href="index.html#user_guide_error_checking">§3.5. User Guide: Error Checking</a> section for details.</p>
 <p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
-<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;Label::Tokens, std::string&gt;</a>&amp; tokens{</div>
+<div class="line">  arguments.get&lt;Label::Tokens&gt;()};</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
 <div class="line">  arguments.get&lt;Label::OutputDirectory&gt;()};</div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>&amp; iterations{</div>
 <div class="line">  arguments.get&lt;Label::Iterations&gt;()};</div>
@@ -316,6 +331,14 @@
 <li><code><a class="el" href="classlector_1_1SingularArgument.html#a86c4f1178a3789152bdb8da1f91def0d" title="Default value of this singular command line argument if it is optional and non-boolean,...">lector::SingularArgument::default_value()</a></code> returns a <code>std::optional</code> that contains the argument's default value, if any.</li>
 <li><code><a class="el" href="classlector_1_1SingularArgument.html#a46f24b8fb25ad8b5ed009062feca1262" title="Parsed value of this singular command line argument. Set when this argument is parsed from the comman...">lector::SingularArgument::parsed_value()</a></code> returns a <code>std::optional</code> that contains the argument's value parsed from the command line, if any.</li>
 <li><code><a class="el" href="classlector_1_1SingularArgument.html#a7231abb36b932cbd35c7fa87b6929be3" title="Value of this singular command line argument. Returns the parsed value if it exists; otherwise,...">lector::SingularArgument::parsed_or_default_value()</a></code> returns the argument's parsed value if it exists, or its default value otherwise.</li>
+</ul>
+<p>Each <code><a class="el" href="classlector_1_1RepeatableArgument.html" title="A repeatable command line argument.">lector::RepeatableArgument</a></code> object exposes a similar interface:</p>
+<ul>
+<li><code><a class="el" href="classlector_1_1RepeatableArgument.html#aed18617e4a9abbefcc8868e062c999db" title="Importance of this command line argument. A required argument must be provided by the user on the com...">lector::RepeatableArgument::importance()</a></code> as above.</li>
+<li><code><a class="el" href="classlector_1_1RepeatableArgument.html#abae460df93a05ba2cc14086ef6c970f4" title="Form of this command line argument. A positional argument does not define any keys and must be specif...">lector::RepeatableArgument::form()</a></code> as above.</li>
+<li><code><a class="el" href="classlector_1_1RepeatableArgument.html#a0cf8c8e7714bf714b12d22ddd91f9cbd" title="Default values of this repeatable command line argument. Set at construction.">lector::RepeatableArgument::default_values()</a></code> returns a <code>std::vector</code> that contains the argument's default values, if any.</li>
+<li><code><a class="el" href="classlector_1_1RepeatableArgument.html#aa437061d859182bb634243d27c6ac0f5" title="Parsed values of this repeatable command line argument. Set when this argument is parsed from the com...">lector::RepeatableArgument::parsed_values()</a></code> returns a <code>std::vector</code> that contains the argument's values parsed from the command line, if any.</li>
+<li><code><a class="el" href="classlector_1_1RepeatableArgument.html#a684cb824fcac11c83d65b89223b1d9e2" title="Values of this repeatable command line argument. Returns the parsed values if they exist; otherwise,...">lector::RepeatableArgument::parsed_or_default_values()</a></code> returns the argument's parsed values if any exist, or its default values otherwise.</li>
 </ul>
 <p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_command_line"></a>
@@ -330,11 +353,12 @@
 </div><!-- fragment --><div class="fragment"><div class="line">My Application</div>
 <div class="line"> </div>
 <div class="line">Usage:</div>
-<div class="line">my_application --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
+<div class="line">my_application &lt;text&gt; --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
 <div class="line"> </div>
 <div class="line">Description of my application.</div>
 <div class="line"> </div>
 <div class="line">Options:</div>
+<div class="line">&lt;text&gt;                                List of tokens. Optional. Default &#39;Hi&#39;.</div>
 <div class="line">-o &lt;path&gt;, --output_directory &lt;path&gt;  Output directory. Required.</div>
 <div class="line">-i &lt;number&gt;, --iterations &lt;number&gt;    Number of iterations. Optional. Default 100.</div>
 <div class="line">-h, --help                            Display this help information and exit. Optional.</div>
@@ -344,34 +368,40 @@
 <p>The <code><a class="el" href="classlector_1_1Arguments.html#ac1209dcdea1615ecc085404f30870359" title="Prints the usage information of this collection of command line arguments as a string of text....">lector::Arguments::usage()</a></code> and <code><a class="el" href="classlector_1_1Arguments.html#a23d8933b7c15472a645c1815f16a99bd" title="Prints the options information of this collection of command line argument as a string of text....">lector::Arguments::options()</a></code> methods are similar to the <code><a class="el" href="classlector_1_1Arguments.html#a697a5f3156d4ed75dc7d0fa6371295b0" title="Prints the help information of this collection of command line arguments as a string of text....">lector::Arguments::help()</a></code> method, but only display the usage and options portions of the full help information, respectively. They can also take optional line lengths to format their output.</p>
 <p>Execution information can be obtained via the <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method:</p>
 <div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.execution() &lt;&lt; std::endl;</div>
-</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application Hello World --output_directory /some/path --iterations 200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
-<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+<div class="line">path/to/my_application Hello World --output_directory /some/path --iterations 200</div>
+<div class="line">The tokens are: Hello World</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
 </div><!-- fragment --><p>The <code><a class="el" href="classlector_1_1Arguments.html#a7e2670331a3df8df97028c243788653c" title="Prints the execution of this collection of command line argument as a string of text....">lector::Arguments::execution()</a></code> method can take an optional line length to format its output. For example, <code>lector::Arguments::execution(80)</code> would format its output to 80-character lines.</p>
 <p>Inline key-value pairs of the form <code>key=value</code> are also supported:</p>
-<div class="fragment"><div class="line">path/to/my_application --output_directory=/some/path --iterations=200</div>
+<div class="fragment"><div class="line">path/to/my_application Hello World --output_directory=/some/path --iterations=200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
-<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+<div class="line">path/to/my_application Hello World --output_directory /some/path --iterations 200</div>
+<div class="line">The tokens are: Hello World</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
 </div><!-- fragment --><p>Named arguments can be defined with multiple keys. For example, the <code>Label::OutputDirectory</code> argument lists the <code>-o</code> and <code>--output_directory</code> keys, and the <code>Label::Iterations</code> argument lists the <code>-i</code> and <code>--iterations</code> keys. Any of these keys can be used on the command line:</p>
-<div class="fragment"><div class="line">path/to/my_application -o /some/path -i=200</div>
+<div class="fragment"><div class="line">path/to/my_application Hello World -o /some/path -i=200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
-<div class="line">path/to/my_application --output_directory /some/path --iterations 200</div>
+<div class="line">path/to/my_application Hello World --output_directory /some/path --iterations 200</div>
+<div class="line">The tokens are: Hello World</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
 </div><!-- fragment --><p>Furthermore, keys do not need to start with a hyphen (<code>-</code>) and can be composed of any characters. For example, the following definitions are unusual but valid:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
+<div class="line">  <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;test::Label::Tokens, std::string&gt;</a>{</div>
+<div class="line">    <span class="stringliteral">&quot;List of tokens. Optional. Default &#39;Hi&#39;.&quot;</span>, std::vector&lt;std::string&gt;{<span class="stringliteral">&quot;Hi&quot;</span>}},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">    {<span class="stringliteral">&quot;o&quot;</span>, <span class="stringliteral">&quot;=o&quot;</span>, <span class="stringliteral">&quot;__out_dir__&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">  <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
-<div class="line">    {<span class="stringliteral">&quot;=i=&quot;</span>, <span class="stringliteral">&quot;_it_&quot;</span>, <span class="stringliteral">&quot;==iterations==&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100}</div>
+<div class="line">    {<span class="stringliteral">&quot;=i=&quot;</span>, <span class="stringliteral">&quot;_it_&quot;</span>, <span class="stringliteral">&quot;==iter==&quot;</span>}, <span class="stringliteral">&quot;Number of iterations. Optional. Default 100.&quot;</span>, 100}</div>
 <div class="line">};</div>
-</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application __out_dir__ /some/path =i= 200</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application Hello World __out_dir__ /some/path =i= 200</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Execution:</div>
-<div class="line">path/to/my_application __out_dir__ /some/path ==iterations== 200</div>
+<div class="line">path/to/my_application Hello World __out_dir__ /some/path ==iter== 200</div>
+<div class="line">The tokens are: Hello World</div>
 <div class="line">The output directory is: /some/path</div>
 <div class="line">The number of iterations is: 200</div>
 </div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>

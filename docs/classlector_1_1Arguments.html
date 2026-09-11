@@ -182,7 +182,14 @@ template&lt;typename... ArgumentTypes&gt; </div>
 <p>Compile-time check that all arguments have unique labels. </p>
 <p>Constructor. Constructs a collection of command line arguments from a configuration data structure and a variadic list of command line arguments. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">configuration</td><td>The configuration data structure. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">...arguments</td><td>The variadic list of command line arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if the command line arguments are invalid. </td></tr>
   </table>
   </dd>
 </dl>
@@ -219,6 +226,12 @@ template&lt;typename... ArgumentTypes&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">...arguments</td><td>The variadic list of command line arguments. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::logic_error</td><td>if the command line arguments are invalid. </td></tr>
   </table>
   </dd>
 </dl>

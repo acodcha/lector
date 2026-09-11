@@ -23,7 +23,7 @@ The following example illustrates the use of the Lector library:
 #include <filesystem>
 #include <lector/arguments.hpp>
 
-enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
+enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
 
 int main(int argc, char* argv[]) {
   lector::Arguments arguments{
@@ -31,6 +31,8 @@ int main(int argc, char* argv[]) {
       "My Application",
       "Description of my application.",
       "Additional notes about my application."},
+    lector::RepeatableArgument<test::Label::Tokens, std::string>{
+      "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
       {"-o", "--output_directory"}, "Output directory. Required."},
     lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -48,6 +50,14 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 
+  const std::vector<std::string>& tokens{
+    arguments.get<test::Label::Tokens>().parsed_or_default_values()};
+  std::cout << "The tokens are:";
+  for (const std::string& token : tokens) {
+    std::cout << " " << token;
+  }
+  std::cout << std::endl;
+
   const std::filesystem::path& output_directory_path{
     arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
 
@@ -64,7 +74,7 @@ int main(int argc, char* argv[]) {
 
 The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.
 
-In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be declared as required or optional, can be named (keyed) or positional (keyless), and feature strict error checking.
+In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be singular or repeatable, can be named (keyed) or positional (keyless), can be declared as required or optional, and feature strict error checking.
 
 The Lector library can parse named command line arguments as whitespace-separated key-value pairs of the form `key value` or as inline key-value pairs of the form `key=value`. It can also handle keys that contain arbitrary characters.
 
@@ -269,7 +279,7 @@ See also <https://acodcha.github.io/lector> for the Lector library's complete do
 The Lector library uses enumeration values to label arguments. For example, the code from the [§1. Introduction](#1-introduction) section defines the following enumeration:
 
 ```cpp
-enum class Label : std::int8_t {OutputDirectory, Iterations, Help};
+enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
 ```
 
 Defining an argument requires:
@@ -288,6 +298,8 @@ lector::Arguments arguments{
     "My Application",
     "Description of my application.",
     "Additional notes about my application."},
+  lector::RepeatableArgument<test::Label::Tokens, std::string>{
+    "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
   lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
     {"-o", "--output_directory"}, "Output directory. Required."},
   lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -321,6 +333,11 @@ This populates all arguments with their parsed values and performs strict error 
 Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 
 ```cpp
+const lector::RepeatableArgument<Label::Tokens, std::string>& tokens{
+  arguments.get<Label::Tokens>()};
+```
+
+```cpp
 const lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>& output_directory{
   arguments.get<Label::OutputDirectory>()};
 ```
@@ -341,6 +358,14 @@ Each `lector::SingularArgument` object exposes a rich public interface. Commonly
 - `lector::SingularArgument::default_value()` returns a `std::optional` that contains the argument's default value, if any.
 - `lector::SingularArgument::parsed_value()` returns a `std::optional` that contains the argument's value parsed from the command line, if any.
 - `lector::SingularArgument::parsed_or_default_value()` returns the argument's parsed value if it exists, or its default value otherwise.
+
+Each `lector::RepeatableArgument` object exposes a similar interface:
+
+- `lector::RepeatableArgument::importance()` as above.
+- `lector::RepeatableArgument::form()` as above.
+- `lector::RepeatableArgument::default_values()` returns a `std::vector` that contains the argument's default values, if any.
+- `lector::RepeatableArgument::parsed_values()` returns a `std::vector` that contains the argument's values parsed from the command line, if any.
+- `lector::RepeatableArgument::parsed_or_default_values()` returns the argument's parsed values if any exist, or its default values otherwise.
 
 [(Back to User Guide)](#3-user-guide)
 
@@ -365,11 +390,12 @@ path/to/my_application --help
 My Application
 
 Usage:
-my_application --output_directory <path> [--iterations <number>] [--help]
+my_application <text> --output_directory <path> [--iterations <number>] [--help]
 
 Description of my application.
 
 Options:
+<text>                                List of tokens. Optional. Default 'Hi'.
 -o <path>, --output_directory <path>  Output directory. Required.
 -i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
 -h, --help                            Display this help information and exit. Optional.
@@ -388,12 +414,13 @@ std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 ```
 
 ```bash
-path/to/my_application --output_directory /some/path --iterations 200
+path/to/my_application Hello World --output_directory /some/path --iterations 200
 ```
 
 ```text
 Execution:
-path/to/my_application --output_directory /some/path --iterations 200
+path/to/my_application Hello World --output_directory /some/path --iterations 200
+The tokens are: Hello World
 The output directory is: /some/path
 The number of iterations is: 200
 ```
@@ -403,12 +430,13 @@ The `lector::Arguments::execution()` method can take an optional line length to 
 Inline key-value pairs of the form `key=value` are also supported:
 
 ```bash
-path/to/my_application --output_directory=/some/path --iterations=200
+path/to/my_application Hello World --output_directory=/some/path --iterations=200
 ```
 
 ```text
 Execution:
-path/to/my_application --output_directory /some/path --iterations 200
+path/to/my_application Hello World --output_directory /some/path --iterations 200
+The tokens are: Hello World
 The output directory is: /some/path
 The number of iterations is: 200
 ```
@@ -416,12 +444,13 @@ The number of iterations is: 200
 Named arguments can be defined with multiple keys. For example, the `Label::OutputDirectory` argument lists the `-o` and `--output_directory` keys, and the `Label::Iterations` argument lists the `-i` and `--iterations` keys. Any of these keys can be used on the command line:
 
 ```bash
-path/to/my_application -o /some/path -i=200
+path/to/my_application Hello World -o /some/path -i=200
 ```
 
 ```text
 Execution:
-path/to/my_application --output_directory /some/path --iterations 200
+path/to/my_application Hello World --output_directory /some/path --iterations 200
+The tokens are: Hello World
 The output directory is: /some/path
 The number of iterations is: 200
 ```
@@ -430,20 +459,23 @@ Furthermore, keys do not need to start with a hyphen (`-`) and can be composed o
 
 ```cpp
 lector::Arguments arguments{
+  lector::RepeatableArgument<test::Label::Tokens, std::string>{
+    "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
   lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
     {"o", "=o", "__out_dir__"}, "Output directory. Required."},
   lector::SingularArgument<Label::Iterations, std::int32_t>{
-    {"=i=", "_it_", "==iterations=="}, "Number of iterations. Optional. Default 100.", 100}
+    {"=i=", "_it_", "==iter=="}, "Number of iterations. Optional. Default 100.", 100}
 };
 ```
 
 ```bash
-path/to/my_application __out_dir__ /some/path =i= 200
+path/to/my_application Hello World __out_dir__ /some/path =i= 200
 ```
 
 ```text
 Execution:
-path/to/my_application __out_dir__ /some/path ==iterations== 200
+path/to/my_application Hello World __out_dir__ /some/path ==iter== 200
+The tokens are: Hello World
 The output directory is: /some/path
 The number of iterations is: 200
 ```

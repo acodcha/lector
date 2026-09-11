@@ -279,6 +279,12 @@ public:
     return default_value_;
   }
 
+  /// @brief Returns whether this singular command line argument has a parsed value.
+  /// @return True if this singular command line argument has a parsed value; false if it does not.
+  [[nodiscard]] bool has_parsed_value() const noexcept {
+    return parsed_value_.has_value();
+  }
+
   /// @brief Parsed value of this singular command line argument. Set when this argument is parsed
   /// from the command line.
   /// @return The parsed value of this singular command line argument.
@@ -684,6 +690,13 @@ public:
     return default_values_;
   }
 
+  /// @brief Returns whether this repeatable command line argument has a parsed value.
+  /// @return True if this repeatable command line argument has a parsed value; false if it does
+  /// not.
+  [[nodiscard]] bool has_parsed_value() const noexcept {
+    return !parsed_values_.empty();
+  }
+
   /// @brief Parsed values of this repeatable command line argument. Set when this argument is
   /// parsed from the command line.
   /// @return The parsed values of this repeatable command line argument.
@@ -1008,31 +1021,48 @@ public:
 template <auto Label, typename... ArgumentTypes>
 struct FindArgumentByLabel;
 
-/// @brief Type trait specialization used to extract a command line argument from a collection of
-/// command line arguments, using its Label, its type, and the types of the remaining command line
-/// arguments in the collection.
+/// @brief Helper to provide short-circuit evaluation for lector::FindArgumentByLabel.
 /// @tparam Label The label of the command line argument to extract.
-/// @tparam Type The type of the command line argument to extract.
-/// @tparam ...OtherArgumentTypes The variadic list of argument types in the collection of command
-/// line arguments, excluding the command line argument to extract.
-template <auto Label, typename Type, typename... OtherArgumentTypes>
-struct FindArgumentByLabel<Label, lector::SingularArgument<Label, Type>, OtherArgumentTypes...> {
-  using type = lector::SingularArgument<Label, Type>;
+/// @tparam Match Whether the command line argument was found or not.
+/// @tparam FirstArgument The type of the command line argument to extract.
+/// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
+/// command line arguments, excluding the command line argument to extract.
+template <auto Label, bool Match, typename FirstArgument, typename... RemainingArgumentTypes>
+struct FindArgumentHelper;
+
+/// @brief True branch of the short-circuit evaluation helper. The command line argument has been
+/// found and will now be returned; the remaining command line arguments do not need to be searched.
+/// @tparam Label The label of the command line argument to extract.
+/// @tparam FirstArgument The type of the command line argument to extract.
+/// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
+/// command line arguments, excluding the command line argument to extract.
+template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
+struct FindArgumentHelper<Label, true, FirstArgument, RemainingArgumentTypes...> {
+  using type = FirstArgument;
+};
+
+/// @brief False branch of the short-circuit evaluation helper. The command line argument has not
+/// yet been found and the remaining command line arguments should be searched.
+/// @tparam Label The label of the command line argument to extract.
+/// @tparam FirstArgument The type of the command line argument to extract.
+/// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
+/// command line arguments, excluding the command line argument to extract.
+template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
+struct FindArgumentHelper<Label, false, FirstArgument, RemainingArgumentTypes...> {
+  using type = typename FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
 /// @brief Type trait specialization used to extract a command line argument from a collection of
 /// command line arguments, using its Label and the types of the remaining command line arguments in
 /// the collection.
 /// @tparam Label The label of the command line argument to extract.
-/// @tparam OtherLabel The label of the command line argument to compare against.
-/// @tparam OtherType The type of the command line argument to compare against.
+/// @tparam FirstArgument The type of the command line argument to extract.
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
-template <auto Label, auto OtherLabel, typename OtherType, typename... RemainingArgumentTypes>
-struct FindArgumentByLabel<Label, lector::SingularArgument<OtherLabel, OtherType>,
-                           RemainingArgumentTypes...>
-    final {
-  using type = typename lector::FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
+template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
+struct FindArgumentByLabel<Label, FirstArgument, RemainingArgumentTypes...> {
+  using type = typename FindArgumentHelper<Label, (FirstArgument::label() == Label), FirstArgument,
+                                           RemainingArgumentTypes...>::type;
 };
 
 /// @brief Data structure that validates at compilation time that a specified variadic list of types
@@ -1062,16 +1092,21 @@ public:
 
   /// @brief Constructor. Constructs a collection of command line arguments from a configuration
   /// data structure and a variadic list of command line arguments.
+  /// @param[in] configuration The configuration data structure.
   /// @param[in] ...arguments The variadic list of command line arguments.
+  /// @throws std::logic_error if the command line arguments are invalid.
   explicit Arguments(lector::Configuration&& configuration, ArgumentTypes... arguments)
     : configuration_{std::move(configuration)}, arguments_{std::move(arguments)...} {
+    validate_positional_arguments();
     validate_keys();
   }
 
   /// @brief Constructor. Constructs a collection of command line arguments from a variadic list of
   /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
+  /// @throws std::logic_error if the command line arguments are invalid.
   explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {
+    validate_positional_arguments();
     validate_keys();
   }
 
@@ -1416,43 +1451,43 @@ private:
   /// @throws std::invalid_argument if too many positional arguments are provided or if a positional
   /// argument cannot be parsed.
   void parse_positional_arguments(const std::vector<std::string_view>& positional_tokens) {
-    std::size_t token_index{0UL};
+    std::size_t positional_token_index{0UL};
     std::apply(
         [&](auto&... argument) {
           (..., [&] {
             if (argument.form() == lector::Form::Positional) {
-              if (token_index < positional_tokens.size()) {
-                using Type = typename std::decay_t<decltype(argument)>::ValueType;
-                const std::string raw_value{positional_tokens[token_index]};
-                const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
-                if (parsed_value.has_value()) {
-                  argument.set_parsed_value(parsed_value.value());
-                } else {
-                  throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                              + argument.longest_key_with_value_type() + "'.");
+              using Type = typename std::decay_t<decltype(argument)>::ValueType;
+              if (argument.arity() == lector::Arity::Singular) {
+                if (positional_token_index < positional_tokens.size()) {
+                  const std::string raw_value{positional_tokens[positional_token_index]};
+                  const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
+                  if (parsed_value.has_value()) {
+                    argument.set_parsed_value(parsed_value.value());
+                  } else {
+                    throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                                + argument.longest_key_with_value_type() + "'.");
+                  }
+                  ++positional_token_index;
                 }
-                ++token_index;
+              } else {
+                // Repeatable arity: consume all remaining tokens.
+                while (positional_token_index < positional_tokens.size()) {
+                  const std::string raw_value{positional_tokens[positional_token_index]};
+                  const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
+                  if (parsed_value.has_value()) {
+                    argument.set_parsed_value(parsed_value.value());
+                  } else {
+                    throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
+                                                + argument.longest_key_with_value_type() + "'.");
+                  }
+                  ++positional_token_index;
+                }
               }
             }
           }());
         },
         arguments_);
-    // Check that all tokens have been matched.
-    if (token_index < positional_tokens.size()) {
-      const std::size_t unexpected_count{positional_tokens.size() - token_index};
-      std::string unexpected_tokens;
-      for (std::size_t unexpected_token_index{token_index};
-           unexpected_token_index < positional_tokens.size(); ++unexpected_token_index) {
-        if (unexpected_token_index > token_index) {
-          unexpected_tokens.append(", ");
-        }
-        unexpected_tokens.push_back('\'');
-        unexpected_tokens.append(std::string{positional_tokens[unexpected_token_index]});
-        unexpected_tokens.push_back('\'');
-      }
-      throw std::invalid_argument(std::to_string(unexpected_count)
-                                  + " unexpected command line tokens: " + unexpected_tokens + ".");
-    }
+    validate_all_positional_tokens_matched(positional_tokens, positional_token_index);
   }
 
   /// @brief Finds the best matching argument for a command line argument token.
@@ -1534,7 +1569,7 @@ private:
 
   /// @brief Populates an argument with its parsed value. Called by
   /// lector::Arguments::parse_named_arguments().
-  /// @tparam SingularArgument The type of the argument to be populated.
+  /// @tparam ArgumentType The type of the argument to be populated.
   /// @param[in,out] argument The argument to be populated.
   /// @param[in] best_argument The lector::Arguments::BestArgument data structure that corresponds
   /// to the argument to be populated.
@@ -1544,14 +1579,10 @@ private:
   /// @param[in,out] argv_index The index of the argument in the array of C-string command line
   /// arguments whose value is to be extracted and used to populate the argument.
   /// @throws std::invalid_argument if the parsed value is invalid for this argument type.
-  template <typename SingularArgument>
-  static void populate_argument(SingularArgument& argument, const BestArgument& best_argument,
+  template <typename ArgumentType>
+  static void populate_argument(ArgumentType& argument, const BestArgument& best_argument,
                                 const int argc, char* argv[], std::size_t& argv_index) {
-    if (argument.parsed_value().has_value()) {
-      throw std::invalid_argument(
-          "Duplicated argument '" + argument.longest_key_with_value_type() + "'.");
-    }
-    using Type = typename std::decay_t<SingularArgument>::ValueType;
+    using Type = typename std::decay_t<ArgumentType>::ValueType;
     if constexpr (std::is_same_v<Type, bool>) {
       // Boolean arguments are key-only flags; their presence implies true.
       argument.set_parsed_value(true);
@@ -1602,6 +1633,30 @@ private:
         "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
   }
 
+  /// @brief Validates that this collection of command line arguments does not mix a repeated
+  /// positional command line argument with other positional arguments.
+  void validate_positional_arguments() const {
+    bool has_repeated_positional_argument{false};
+    std::size_t positional_argument_count{0UL};
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&] {
+            if (argument.form() == lector::Form::Positional) {
+              ++positional_argument_count;
+              if (argument.arity() == lector::Arity::Repeatable) {
+                has_repeated_positional_argument = true;
+              }
+            }
+          }());
+        },
+        arguments_);
+    if (has_repeated_positional_argument
+        && positional_argument_count >= static_cast<std::size_t>(2UL)) {
+      throw std::logic_error(
+          "A repeated positional argument cannot be mixed with any other positional arguments.");
+    }
+  }
+
   /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
   /// the constructor.
   /// @throws std::logic_error if the same key is duplicated across two or more arguments.
@@ -1630,13 +1685,40 @@ private:
         [&](const auto&... argument) {
           (..., [&] {
             if (argument.importance() == lector::Importance::Required
-                && !argument.parsed_value().has_value()) {
+                && !argument.has_parsed_value()) {
               throw std::invalid_argument(
                   "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }
           }());
         },
         arguments_);
+  }
+
+  /// @brief Validates that all raw positional tokens have been consumed by positional command line
+  /// arguments.
+  /// @param[in] positional_tokens The raw positional command line tokens.
+  /// @param[in] positional_token_index The parsed index in the collection of raw positional command
+  /// line tokens.
+  /// @throws std::invalid_argument if any raw positional command line tokens were not consumed by
+  /// positional command line arguments.
+  void validate_all_positional_tokens_matched(
+      const std::vector<std::string_view>& positional_tokens,
+      const std::size_t positional_token_index) {
+    if (positional_token_index < positional_tokens.size()) {
+      const std::size_t unexpected_count{positional_tokens.size() - positional_token_index};
+      std::string unexpected_tokens;
+      for (std::size_t unexpected_token_index{positional_token_index};
+           unexpected_token_index < positional_tokens.size(); ++unexpected_token_index) {
+        if (unexpected_token_index > positional_token_index) {
+          unexpected_tokens.append(", ");
+        }
+        unexpected_tokens.push_back('\'');
+        unexpected_tokens.append(std::string{positional_tokens[unexpected_token_index]});
+        unexpected_tokens.push_back('\'');
+      }
+      throw std::invalid_argument(std::to_string(unexpected_count)
+                                  + " unexpected command line tokens: " + unexpected_tokens + ".");
+    }
   }
 
   /// @brief Computes and returns the maximum length of the printed keys and value type across all

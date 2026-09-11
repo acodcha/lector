@@ -145,6 +145,7 @@ namespace {
 
 /// @brief Labels of the command line arguments used for testing.
 enum class Label : std::int8_t {
+  Tokens,
   Title,
   OutputDirectory,
   Shape,
@@ -6760,6 +6761,9 @@ TEST(Lector, TutorialSection1Basic) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
+    lector::RepeatableArgument<test::Label::Tokens, std::string>(
+        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
     lector::SingularArgument<test::Label::Iterations, std::int32_t>(
@@ -6770,13 +6774,20 @@ TEST(Lector, TutorialSection1Basic) {
     "Display this help information and exit. Optional.")
   };
   const test::Command command{
-    {"/path/to/executable", "-o", "/path/to/directory", "-i", "200"}
+    {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200"}
   };
   arguments.parse(command.argc(), command.argv());
   if (arguments.get<test::Label::Help>().parsed_or_default_value()) {
     std::cout << arguments.help() << std::endl;
   } else {
     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
+    const std::vector<std::string>& tokens{
+      arguments.get<test::Label::Tokens>().parsed_or_default_values()};
+    std::cout << "The tokens are:";
+    for (const std::string& token : tokens) {
+      std::cout << " " << token;
+    }
+    std::cout << std::endl;
     const std::filesystem::path& output_directory_path{
       arguments.get<test::Label::OutputDirectory>().parsed_or_default_value()};
     std::cout << "The output directory is: " << output_directory_path << std::endl;
@@ -6786,12 +6797,13 @@ TEST(Lector, TutorialSection1Basic) {
   }
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<text>] --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
+    "<text>                                List of tokens. Optional. Default 'Hi'.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."
@@ -6807,8 +6819,9 @@ TEST(Lector, TutorialSection1Basic) {
     "Additional notes about my application."
   };
   EXPECT_EQ(arguments.help(), expected_help);
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --output_directory /path/to/directory --iterations 200");
+  EXPECT_EQ(
+      arguments.execution(),
+      "/path/to/executable Hello World --output_directory /path/to/directory --iterations 200");
 }
 
 TEST(Lector, TutorialSection1Help) {
@@ -6816,6 +6829,9 @@ TEST(Lector, TutorialSection1Help) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
+    lector::RepeatableArgument<test::Label::Tokens, std::string>(
+        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
     lector::SingularArgument<test::Label::Iterations, std::int32_t>(
@@ -6826,13 +6842,20 @@ TEST(Lector, TutorialSection1Help) {
     "Display this help information and exit. Optional.")
   };
   const test::Command command{
-    {"/path/to/executable", "-o", "/path/to/directory", "-i", "200", "-h"}
+    {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   if (arguments.get<test::Label::Help>().parsed_or_default_value()) {
     std::cout << arguments.help() << std::endl;
   } else {
     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
+    const std::vector<std::string>& tokens{
+      arguments.get<test::Label::Tokens>().parsed_or_default_values()};
+    std::cout << "The tokens are:";
+    for (const std::string& token : tokens) {
+      std::cout << " " << token;
+    }
+    std::cout << std::endl;
     const std::filesystem::path& output_directory_path{
       arguments.get<test::Label::OutputDirectory>().parsed_or_default_value()};
     std::cout << "The output directory is: " << output_directory_path << std::endl;
@@ -6842,12 +6865,13 @@ TEST(Lector, TutorialSection1Help) {
   }
   EXPECT_TRUE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<text>] --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
+    "<text>                                List of tokens. Optional. Default 'Hi'.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."
@@ -6864,7 +6888,8 @@ TEST(Lector, TutorialSection1Help) {
   };
   EXPECT_EQ(arguments.help(), expected_help);
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --output_directory /path/to/directory --iterations 200 --help");
+            "/path/to/executable Hello World --output_directory /path/to/directory --iterations "
+            "200 --help");
 }
 
 TEST(Lector, TutorialSection3Subsection2) {
@@ -6872,25 +6897,28 @@ TEST(Lector, TutorialSection3Subsection2) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
+    lector::RepeatableArgument<test::Label::Tokens, std::string>(
+        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"o", "=o", "__out_dir__"}, "Output directory. Required."},
     lector::SingularArgument<test::Label::Iterations, std::int32_t>(
-        {"=i=", "_it_", "==iterations=="},
+        {"=i=", "_it_", "==iter=="},
     "Number of iterations. Optional. Default 100.", 100)
   };
   const test::Command command{
-    {"/path/to/executable", "__out_dir__", "/path/to/directory", "=i=", "200"}
+    {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i=", "200"}
   };
   arguments.parse(command.argc(), command.argv());
-  const std::string expected_usage{"executable __out_dir__ <path> [==iterations== <number>]"};
+  const std::string expected_usage{"executable [<text>] __out_dir__ <path> [==iter== <number>]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "o <path>, =o <path>, __out_dir__ <path>               Output directory. Required.\n"
-    "=i= <number>, _it_ <number>, ==iterations== <number>  Number of iterations. Optional. Default "
-    "100."
+    "<text>                                          List of tokens. Optional. Default 'Hi'.\n"
+    "o <path>, =o <path>, __out_dir__ <path>         Output directory. Required.\n"
+    "=i= <number>, _it_ <number>, ==iter== <number>  Number of iterations. Optional. Default 100."
   };
   EXPECT_EQ(arguments.options(), expected_options);
   const std::string expected_help{
@@ -6904,7 +6932,7 @@ TEST(Lector, TutorialSection3Subsection2) {
   };
   EXPECT_EQ(arguments.help(), expected_help);
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable __out_dir__ /path/to/directory ==iterations== 200");
+            "/path/to/executable Hello World __out_dir__ /path/to/directory ==iter== 200");
 }
 
 TEST(Lector, TutorialSection3Subsection3) {
