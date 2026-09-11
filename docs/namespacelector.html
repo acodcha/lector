@@ -85,11 +85,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait used to extract a command line argument from a collection of command line arguments, using only its Label. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, lector::SingularArgument&lt; Label, Type &gt;, OtherArgumentTypes... &gt;</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait specialization used to extract a command line argument from a collection of command line arguments, using its Label, its type, and the types of the remaining command line arguments in the collection. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, lector::SingularArgument&lt; OtherLabel, OtherType &gt;, RemainingArgumentTypes... &gt;</b></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait specialization used to extract a command line argument from a collection of command line arguments, using its Label and the types of the remaining command line arguments in the collection. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to provide short-circuit evaluation for lector::FindArgumentByLabel. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper&lt; Label, false, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">False branch of the short-circuit evaluation helper. The command line argument has not yet been found and the remaining command line arguments should be searched. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper&lt; Label, true, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">True branch of the short-circuit evaluation helper. The command line argument has been found and will now be returned; the remaining command line arguments do not need to be searched. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html">RepeatableArgument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A repeatable command line argument.  <a href="classlector_1_1RepeatableArgument.html#details">More...</a><br /></td></tr>

@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4bb8d6ff2b5d34d8f9e79966845f4d0" id="r_af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908">lector::Form</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#af4bb8d6ff2b5d34d8f9e79966845f4d0">form</a> () const noexcept</td></tr>
 <tr class="memdesc:af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Form of this command line argument. A positional argument does not define any keys and must be specified in a specific order on the command line, whereas a named argument defines one or more keys and is specified on the command line by one of its keys. Named arguments can be specified in any order on the command line.  <br /></td></tr>
 <tr class="separator:af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21bed50882e3e4f4eeab22fdb91d61b5" id="r_a21bed50882e3e4f4eeab22fdb91d61b5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a21bed50882e3e4f4eeab22fdb91d61b5">has_parsed_value</a> () const noexcept</td></tr>
+<tr class="memdesc:a21bed50882e3e4f4eeab22fdb91d61b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether this singular command line argument has a parsed value.  <br /></td></tr>
+<tr class="separator:a21bed50882e3e4f4eeab22fdb91d61b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab2a3789e465c104ed50290ed88eb8ff" id="r_aab2a3789e465c104ed50290ed88eb8ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">lector::Importance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#aab2a3789e465c104ed50290ed88eb8ff">importance</a> () const noexcept</td></tr>
 <tr class="memdesc:aab2a3789e465c104ed50290ed88eb8ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of this command line argument. A required argument must be provided by the user on the command line, whereas an optional argument may or may not be provided by the user on the command line. Set at construction.  <br /></td></tr>
 <tr class="separator:aab2a3789e465c104ed50290ed88eb8ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -613,6 +616,36 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 <p>Form of this command line argument. A positional argument does not define any keys and must be specified in a specific order on the command line, whereas a named argument defines one or more keys and is specified on the command line by one of its keys. Named arguments can be specified in any order on the command line. </p>
 <dl class="section return"><dt>Returns</dt><dd>The form of this command line argument. </dd></dl>
+
+</div>
+</div>
+<a id="a21bed50882e3e4f4eeab22fdb91d61b5" name="a21bed50882e3e4f4eeab22fdb91d61b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21bed50882e3e4f4eeab22fdb91d61b5">&#9670;&#160;</a></span>has_parsed_value()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;auto LabelValue, typename Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classlector_1_1SingularArgument.html">lector::SingularArgument</a>&lt; LabelValue, Type &gt;::has_parsed_value </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns whether this singular command line argument has a parsed value. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if this singular command line argument has a parsed value; false if it does not. </dd></dl>
 
 </div>
 </div>
