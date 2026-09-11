@@ -425,7 +425,7 @@ namespace lector {
 /// @param[in] text The string of text to wrap.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The resulting sequence of strings of text that contains one string per line.
+/// @return The sequence of strings of text that contains one string per line.
 /// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline std::vector<std::string> wrap(
     const std::string_view text, const std::size_t line_length) {
@@ -511,7 +511,7 @@ namespace lector {
 /// @param[in] text The string of text to wrap and left-align.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The resulting wrapped and left-aligned string of text.
+/// @return The wrapped and left-aligned string of text.
 /// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline std::string wrap_and_left_align(
     const std::string_view text, const std::size_t line_length) {
@@ -522,11 +522,35 @@ namespace lector {
 /// @param[in] text The string of text to wrap and right-align.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The resulting wrapped and right-aligned string of text.
+/// @return The wrapped and right-aligned string of text.
 /// @throws std::invalid_argument if the desired line length is zero.
 [[nodiscard]] inline std::string wrap_and_right_align(
     const std::string_view text, const std::size_t line_length) {
   return lector::join_and_right_align(lector::wrap(text, line_length));
+}
+
+/// @brief Centre-aligns and wraps a string of text to a line length. If the total required
+/// centre-aligning padding is odd, the text is biased by one space towards the left.
+/// @param[in] text The string of text to wrap and centre-align.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The wrapped and centre-aligned string of text.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::string wrap_and_centre_align_with_left_bias(
+    const std::string_view text, const std::size_t line_length) {
+  return lector::join_and_centre_align_with_left_bias(lector::wrap(text, line_length));
+}
+
+/// @brief Centre-aligns and wraps a string of text to a line length. If the total required
+/// centre-aligning padding is odd, the text is biased by one space towards the right.
+/// @param[in] text The string of text to wrap and centre-align.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The wrapped and centre-aligned string of text.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::string wrap_and_centre_align_with_right_bias(
+    const std::string_view text, const std::size_t line_length) {
+  return lector::join_and_centre_align_with_right_bias(lector::wrap(text, line_length));
 }
 
 /// @brief Collates two strings of text, each representing a column, into a single string that
