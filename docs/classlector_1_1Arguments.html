@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:afe0bb3fe97252c72f6126c1efac2ec2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the options information of this collection of command line argument as a string of text. The options information consists of the list of each command line argument's keys, value type, and description. Lines are wrapped.  <br /></td></tr>
 <tr class="separator:afe0bb3fe97252c72f6126c1efac2ec2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba7afe06f29efef5f7337fe93c3b1eba" id="r_aba7afe06f29efef5f7337fe93c3b1eba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba">parse</a> (const int argc, char *argv[])</td></tr>
-<tr class="memdesc:aba7afe06f29efef5f7337fe93c3b1eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses argc and argv to populate the parsed values of the command line arguments in this collection.  <br /></td></tr>
+<tr class="memdesc:aba7afe06f29efef5f7337fe93c3b1eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses argc and argv to populate the parsed values of the command line arguments in this collection. This method should be called before calling the <a class="el" href="classlector_1_1Arguments.html#a809d9d85b067adf117c721d85f509d97" title="Validates that all required arguments have each successfully parsed a value from the command line....">validate()</a> method.  <br /></td></tr>
 <tr class="separator:aba7afe06f29efef5f7337fe93c3b1eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1209dcdea1615ecc085404f30870359" id="r_ac1209dcdea1615ecc085404f30870359"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#ac1209dcdea1615ecc085404f30870359">usage</a> () const</td></tr>
 <tr class="memdesc:ac1209dcdea1615ecc085404f30870359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments.  <br /></td></tr>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e6d3fb52acfe3eab582b1d519fbf2eb" id="r_a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a1e6d3fb52acfe3eab582b1d519fbf2eb">usage</a> (const std::size_t line_length) const</td></tr>
 <tr class="memdesc:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Lines are wrapped.  <br /></td></tr>
 <tr class="separator:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a809d9d85b067adf117c721d85f509d97" id="r_a809d9d85b067adf117c721d85f509d97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a809d9d85b067adf117c721d85f509d97">validate</a> () const</td></tr>
+<tr class="memdesc:a809d9d85b067adf117c721d85f509d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method.  <br /></td></tr>
+<tr class="separator:a809d9d85b067adf117c721d85f509d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename... ArgumentTypes&gt;<br />
@@ -663,7 +666,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Parses argc and argv to populate the parsed values of the command line arguments in this collection. </p>
+<p>Parses argc and argv to populate the parsed values of the command line arguments in this collection. This method should be called before calling the <a class="el" href="classlector_1_1Arguments.html#a809d9d85b067adf117c721d85f509d97" title="Validates that all required arguments have each successfully parsed a value from the command line....">validate()</a> method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">argc</td><td>The number of command line arguments, including the executable path. </td></tr>
@@ -731,6 +734,33 @@ template&lt;typename... ArgumentTypes&gt; </div>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if the desired line length is zero. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a809d9d85b067adf117c721d85f509d97" name="a809d9d85b067adf117c721d85f509d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a809d9d85b067adf117c721d85f509d97">&#9670;&#160;</a></span>validate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... ArgumentTypes&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classlector_1_1Arguments.html">lector::Arguments</a>&lt; ArgumentTypes &gt;::validate </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method. </p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::invalid_argument</td><td>if any required arguments are lacking parsed values. </td></tr>
   </table>
   </dd>
 </dl>

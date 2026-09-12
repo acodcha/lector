@@ -95,6 +95,8 @@
 <div class="line">        <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">    }</div>
 <div class="line"> </div>
+<div class="line">    arguments.validate();</div>
+<div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Execution:&quot;</span> &lt;&lt; std::endl &lt;&lt; arguments.<a class="code hl_function" href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">execution</a>() &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; tokens{</div>
@@ -122,7 +124,7 @@
 <div class="ttc" id="aclasslector_1_1SingularArgument_html"><div class="ttname"><a href="classlector_1_1SingularArgument.html">lector::SingularArgument</a></div><div class="ttdoc">A singular command line argument.</div><div class="ttdef"><b>Definition</b> arguments.hpp:171</div></div>
 <div class="ttc" id="aclasslector_1_1SingularArgument_html_aea7e43c6012d99a94e8cacba660a3f5e"><div class="ttname"><a href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">lector::SingularArgument::execution</a></div><div class="ttdeci">std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:428</div></div>
 <div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:999</div></div>
-</div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
+</div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, validates that all required arguments have parsed values, prints the execution information, and obtains and prints the parsed arguments.</p>
 <p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be singular or repeatable, can be named (keyed) or positional (keyless), can be declared as required or optional, and feature strict error checking.</p>
 <p>The Lector library can parse named command line arguments as whitespace-separated key-value pairs of the form <code>key value</code> or as inline key-value pairs of the form <code>key=value</code>. It can also handle keys that contain arbitrary characters.</p>
 <p><a class="el" href="index.html">(Back to Top)</a></p>
@@ -313,10 +315,17 @@
 <li>Enumerations: See the <a class="el" href="index.html#user_guide_enumerations">§3.3. User Guide: Enumerations</a> section.</li>
 <li>Data Structures: See the <a class="el" href="index.html#user_guide_data_structures">§3.4. User Guide: Data Structures</a> section.</li>
 </ul>
-<p>Once all arguments have been defined, the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection.">lector::Arguments::parse()</a></code> method can be used to parse <code>argc</code> and <code>argv</code>. For example:</p>
+<p>Once all arguments have been defined, the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">lector::Arguments::parse()</a></code> method can be used to parse <code>argc</code> and <code>argv</code>. For example:</p>
 <div class="fragment"><div class="line">arguments.parse(argc, argv);</div>
 </div><!-- fragment --><p>This populates all arguments with their parsed values and performs strict error checking. See the <a class="el" href="index.html#user_guide_error_checking">§3.5. User Guide: Error Checking</a> section for details.</p>
-<p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
+<p>If any command line arguments require special consideration, such as typical <code>--version</code> or <code>--help</code> flags, they should be handled first. For example:</p>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span> (arguments.get&lt;Label::Help&gt;().parsed_or_default_value()) {</div>
+<div class="line">    std::cout &lt;&lt; arguments.help() &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>Once special cases have been handled, validate that all required arguments have parsed values with:</p>
+<div class="fragment"><div class="line">arguments.validate();</div>
+</div><!-- fragment --><p>Individual command line arguments can be fetched via the <code><a class="el" href="classlector_1_1Arguments.html#ab3dc9fc170984a26f6676c231d081f79" title="Returns a specified command line argument from this collection.">lector::Arguments::get()</a></code> method, using their labels as template parameters. For example:</p>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;Label::Tokens, std::string&gt;</a>&amp; tokens{</div>
 <div class="line">    arguments.get&lt;Label::Tokens&gt;()};</div>
 </div><!-- fragment --><div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>&amp; output_directory{</div>
@@ -581,7 +590,7 @@
 <h2><a class="anchor" id="user_guide_error_checking"></a>
 §3.5. User Guide: Error Checking</h2>
 <p>The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line.</p>
-<p>The following checks are performed when defining command line arguments:</p>
+<p>The following checks are performed when defining command line arguments in the <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> constructor:</p>
 <ul>
 <li>All arguments must have unique labels. For example, a <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> constructed from <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::Help, bool&gt;{ {"-h"}, "Help." }</code> and <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::Help, bool&gt;{ {"--help"}, "Help." }</code> throws an exception because both arguments use the same label <code>Label::Help</code>.</li>
 <li>All named arguments must each have at least one key. For example, <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::Iterations, std::int32_t&gt;{ {}, "Iterations." }</code> throws an exception because the set of keys is empty. To define a positional argument, omit the set of keys entirely. For example, <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::Iterations, std::int32_t&gt;{ "Iterations." }</code> defines a positional argument.</li>
@@ -592,14 +601,14 @@
 <li>Boolean arguments are always false by default and cannot specify default values. For example, <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::Help, bool&gt;{ {"-h"}, "Help.", true }</code> throws an exception because <code>true</code> was specified as a default value.</li>
 <li>A repeatable positional argument cannot be mixed with other positional arguments. For example, a <code><a class="el" href="classlector_1_1Arguments.html" title="A collection of command line arguments that can be parsed from argc and argv.">lector::Arguments</a></code> constructed from <code><a class="el" href="classlector_1_1RepeatableArgument.html" title="A repeatable command line argument.">lector::RepeatableArgument</a>&lt;Label::Tokens&gt;{"List of tokens."}</code> and <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a>&lt;Label::OutputDirectory&gt;{"Output directory."}</code> throws an exception because the first is repeatable and both are positional.</li>
 </ul>
-<p>The following checks are performed when parsing command line arguments. These examples use the code from the §1. Introduction section:</p>
+<p>The following checks are performed when parsing command line arguments with the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">lector::Arguments::parse()</a></code> method. These examples use the code from the §1. Introduction section:</p>
 <ul>
-<li>Missing required arguments. For example, <code>path/to/my_application --iterations 200</code> throws an exception because the required argument <code>--output_directory &lt;path&gt;</code> is missing.</li>
 <li>Duplicated arguments. For example, <code>path/to/my_application --output_directory /tmp --output_directory /home</code> throws an exception because the argument <code>--output_directory &lt;path&gt;</code> is duplicated.</li>
 <li>Invalid argument values. For example, <code>path/to/my_application --output_directory /tmp --iterations hello</code> throws an exception because <code>hello</code> is not a valid value for the argument <code>--iterations &lt;number&gt;</code>.</li>
 <li>Arguments missing values. For example, <code>path/to/my_application --output_directory /tmp --iterations</code> throws an exception because the argument <code>--iterations &lt;number&gt;</code> is missing its value.</li>
 <li>Unknown command line tokens. For example, if the <code>Label::Tokens</code> argument was not defined, <code>path/to/my_application --output_directory /tmp --unknown</code> would throw an exception because the token <code>--unknown</code> would not match any key of any named argument, and since no positional arguments would be defined, it also would not match the value of any positional argument.</li>
 </ul>
+<p>Finally, the <code><a class="el" href="classlector_1_1Arguments.html#a809d9d85b067adf117c721d85f509d97" title="Validates that all required arguments have each successfully parsed a value from the command line....">lector::Arguments::validate()</a></code> method checks for missing required arguments. For example, with <code>path/to/my_application --iterations 200</code>, this method throws an exception because the required argument <code>--output_directory &lt;path&gt;</code> is missing.</p>
 <p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h1><a class="anchor" id="developer_guide"></a>
 §4. Developer Guide</h1>
