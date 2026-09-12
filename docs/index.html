@@ -117,11 +117,11 @@
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:1087</div></div>
+<div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:1091</div></div>
 <div class="ttc" id="aclasslector_1_1RepeatableArgument_html"><div class="ttname"><a href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument</a></div><div class="ttdoc">A repeatable command line argument.</div><div class="ttdef"><b>Definition</b> arguments.hpp:588</div></div>
 <div class="ttc" id="aclasslector_1_1SingularArgument_html"><div class="ttname"><a href="classlector_1_1SingularArgument.html">lector::SingularArgument</a></div><div class="ttdoc">A singular command line argument.</div><div class="ttdef"><b>Definition</b> arguments.hpp:171</div></div>
 <div class="ttc" id="aclasslector_1_1SingularArgument_html_aea7e43c6012d99a94e8cacba660a3f5e"><div class="ttname"><a href="classlector_1_1SingularArgument.html#aea7e43c6012d99a94e8cacba660a3f5e">lector::SingularArgument::execution</a></div><div class="ttdeci">std::string execution() const</div><div class="ttdoc">Prints the execution of this command line argument as a string of text. The execution consists of thi...</div><div class="ttdef"><b>Definition</b> arguments.hpp:428</div></div>
-<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:995</div></div>
+<div class="ttc" id="astructlector_1_1Configuration_html"><div class="ttname"><a href="structlector_1_1Configuration.html">lector::Configuration</a></div><div class="ttdoc">Configuration of the help information of a collection of command line arguments.</div><div class="ttdef"><b>Definition</b> arguments.hpp:999</div></div>
 </div><!-- fragment --><p>The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line <code>argc</code> and <code>argv</code> variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.</p>
 <p>In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be singular or repeatable, can be named (keyed) or positional (keyless), can be declared as required or optional, and feature strict error checking.</p>
 <p>The Lector library can parse named command line arguments as whitespace-separated key-value pairs of the form <code>key value</code> or as inline key-value pairs of the form <code>key=value</code>. It can also handle keys that contain arbitrary characters.</p>
@@ -353,7 +353,7 @@
 </div><!-- fragment --><div class="fragment"><div class="line">My Application</div>
 <div class="line"> </div>
 <div class="line">Usage:</div>
-<div class="line">my_application [&lt;text&gt;] --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
+<div class="line">my_application [&lt;text&gt;] ... --output_directory &lt;path&gt; [--iterations &lt;number&gt;] [--help]</div>
 <div class="line"> </div>
 <div class="line">Description of my application.</div>
 <div class="line"> </div>
