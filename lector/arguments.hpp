@@ -1138,7 +1138,7 @@ public:
       lector::Arguments<ArgumentTypes...>&&) noexcept = default;
 
   /// @brief Parses argc and argv to populate the parsed values of the command line arguments in
-  /// this collection.
+  /// this collection. This method should be called before calling the validate() method.
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
@@ -1148,7 +1148,25 @@ public:
     parse_executable_path(argc, argv);
     const std::vector<std::string_view> positional_tokens{parse_named_arguments(argc, argv)};
     parse_positional_arguments(positional_tokens);
-    validate_all_required_arguments_have_parsed_values();
+  }
+
+  /// @brief Validates that all required arguments have each successfully parsed a value from the
+  /// command line. Should only be called after the parse() method has been called. If any command
+  /// line arguments require special consideration, such as --version or --help flags, they should
+  /// be handled before calling this method.
+  /// @throws std::invalid_argument if any required arguments are lacking parsed values.
+  void validate() const {
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&] {
+            if (argument.importance() == lector::Importance::Required
+                && !argument.has_parsed_value()) {
+              throw std::invalid_argument(
+                  "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
+            }
+          }());
+        },
+        arguments_);
   }
 
   /// @brief Returns the configuration of the help information of this collection of command line
@@ -1675,23 +1693,6 @@ private:
               if (!result.second) {
                 throw std::logic_error("Duplicate key '" + key + "' across two arguments.");
               }
-            }
-          }());
-        },
-        arguments_);
-  }
-
-  /// @brief Validates that all required arguments have each successfully parsed a value from argc
-  /// and argv. Called by the lector::Arguments::parse method.
-  /// @throws std::invalid_argument if one or more required arguments are missing a parsed value.
-  void validate_all_required_arguments_have_parsed_values() const {
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&] {
-            if (argument.importance() == lector::Importance::Required
-                && !argument.has_parsed_value()) {
-              throw std::invalid_argument(
-                  "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }
           }());
         },

@@ -1120,6 +1120,7 @@ TEST(Lector, ArgumentsEmptyExecutableOnlyNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::string expected_usage{"executable"};
   EXPECT_EQ(arguments.usage(), expected_usage);
@@ -1135,6 +1136,7 @@ TEST(Lector, ArgumentsEmptyExecutableOnlyWithConfiguration) {
   lector::Arguments arguments{test::configuration()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::string expected_usage{"executable"};
   EXPECT_EQ(arguments.usage(), expected_usage);
@@ -1153,6 +1155,7 @@ TEST(Lector, ArgumentsEmptyNoExecutableNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_TRUE(arguments.executable_path().empty());
   EXPECT_TRUE(arguments.usage().empty());
   EXPECT_TRUE(arguments.options().empty());
@@ -1164,6 +1167,7 @@ TEST(Lector, ArgumentsEmptyNoExecutableWithConfiguration) {
   lector::Arguments arguments{test::configuration()};
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_TRUE(arguments.executable_path().empty());
   EXPECT_TRUE(arguments.usage().empty());
   EXPECT_TRUE(arguments.options().empty());
@@ -1257,7 +1261,8 @@ TEST(Lector, ArgumentsMissingArgumentRequiredNoConfiguration) {
   const test::Command command{
     {"/path/to/executable", "--help"}
   };
-  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_ANY_THROW(arguments.validate());
 }
 
 TEST(Lector, ArgumentsMissingArgumentRequiredWithConfiguration) {
@@ -1267,7 +1272,8 @@ TEST(Lector, ArgumentsMissingArgumentRequiredWithConfiguration) {
   const test::Command command{
     {"/path/to/executable", "--help"}
   };
-  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+  arguments.parse(command.argc(), command.argv());
+  EXPECT_ANY_THROW(arguments.validate());
 }
 
 TEST(Lector, ArgumentsMissingArgumentOptionalInlineNoConfiguration) {
@@ -1277,6 +1283,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalInlineNoConfiguration) {
     {"/path/to/executable", "--output_directory=/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_ouput_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -1293,6 +1300,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalInlineWithConfiguration) {
     {"/path/to/executable", "--output_directory=/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_ouput_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -1308,6 +1316,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceNoConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_ouput_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -1324,6 +1333,7 @@ TEST(Lector, ArgumentsMissingArgumentOptionalWhitespaceWithConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_ouput_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -1412,6 +1422,7 @@ TEST(Lector, ArgumentsNoExecutableNoArgumentsNoConfiguration) {
   lector::Arguments arguments;
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_TRUE(arguments.executable_path().empty());
   EXPECT_TRUE(arguments.usage().empty());
   EXPECT_TRUE(arguments.options().empty());
@@ -1423,6 +1434,7 @@ TEST(Lector, ArgumentsNoExecutableNoArgumentsWithConfiguration) {
   lector::Arguments arguments{test::configuration()};
   const test::Command command;
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_TRUE(arguments.executable_path().empty());
   EXPECT_TRUE(arguments.usage().empty());
   EXPECT_TRUE(arguments.options().empty());
@@ -1475,6 +1487,7 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLongNoConfiguration) {
     {"/path/to/executable", "--key=200=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1503,6 +1516,7 @@ TEST(Lector, ArgumentsValidConfusingInlineShortLongLongWithConfiguration) {
     {"/path/to/executable", "--key=200=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1534,6 +1548,7 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLongNoConfiguration) {
     {"/path/to/executable", "--key=200=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1562,6 +1577,7 @@ TEST(Lector, ArgumentsValidConfusingInlineLongShortLongWithConfiguration) {
     {"/path/to/executable", "--key=200=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1593,6 +1609,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongNoConfiguration) {
     {"/path/to/executable", "--key=200", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1621,6 +1638,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongLongWithConfiguration) {
     {"/path/to/executable", "--key=200", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1652,6 +1670,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortNoConfiguration) {
     {"/path/to/executable", "--key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_confusing_short{
     arguments.get<test::Label::ConfusingShort>().parsed_value()};
@@ -1680,6 +1699,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceShortLongShortWithConfiguration) {
     {"/path/to/executable", "--key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_confusing_short{
     arguments.get<test::Label::ConfusingShort>().parsed_value()};
@@ -1711,6 +1731,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongNoConfiguration) {
     {"/path/to/executable", "--key=200", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1739,6 +1760,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortLongWithConfiguration) {
     {"/path/to/executable", "--key=200", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_EQ(arguments.get<test::Label::ConfusingShort>().parsed_value(), std::nullopt);
   const std::optional<std::int32_t>& parsed_confusing_long{
@@ -1770,6 +1792,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortNoConfiguration) {
     {"/path/to/executable", "--key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_confusing_short{
     arguments.get<test::Label::ConfusingShort>().parsed_value()};
@@ -1798,6 +1821,7 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortWithConfiguration) {
     {"/path/to/executable", "--key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_confusing_short{
     arguments.get<test::Label::ConfusingShort>().parsed_value()};
@@ -1826,6 +1850,7 @@ TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_boolean()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_value().has_value());
   const std::string expected_usage{"executable [--help]"};
@@ -1846,6 +1871,7 @@ TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedWithConfiguration) {
   lector::Arguments arguments{test::configuration(), test::singular_argument_boolean()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_value().has_value());
   const std::string expected_usage{"executable [--help]"};
@@ -1871,6 +1897,7 @@ TEST(Lector, ArgumentsValidIndividualHelpSpecifiedNoConfiguration) {
     {"/path/to/executable", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<bool>& parsed_argument{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value());
@@ -1894,6 +1921,7 @@ TEST(Lector, ArgumentsValidIndividualHelpSpecifiedWithConfiguration) {
     {"/path/to/executable", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<bool>& parsed_argument{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value());
@@ -1918,6 +1946,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_integer_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Iterations>().parsed_value().has_value());
   const std::string expected_usage{"executable [--iterations <number>]"};
@@ -1938,6 +1967,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_integer_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Iterations>().parsed_value().has_value());
   const std::string expected_usage{"executable [--iterations <number>]"};
@@ -1962,6 +1992,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsRequiredNoConfiguration) {
     {"/path/to/executable", "--iterations", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_argument{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -1986,6 +2017,7 @@ TEST(Lector, ArgumentsValidIndividualIterationsRequiredWithConfiguration) {
     {"/path/to/executable", "--iterations", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_argument{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -2010,6 +2042,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_filesystem_path_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::OutputDirectory>().parsed_value().has_value());
   const std::string expected_usage{"executable [--output_directory <path>]"};
@@ -2030,6 +2063,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_filesystem_path_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::OutputDirectory>().parsed_value().has_value());
   const std::string expected_usage{"executable [--output_directory <path>]"};
@@ -2054,6 +2088,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredNoConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_argument{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -2078,6 +2113,7 @@ TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredWithConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_argument{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -2102,6 +2138,7 @@ TEST(Lector, ArgumentsValidIndividualPointOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_data_structure_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Point>().parsed_value().has_value());
   const std::string expected_usage{"executable [--point <value>]"};
@@ -2122,6 +2159,7 @@ TEST(Lector, ArgumentsValidIndividualPointOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_data_structure_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Point>().parsed_value().has_value());
   const std::string expected_usage{"executable [--point <value>]"};
@@ -2146,6 +2184,7 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredNoConfiguration) {
     {"/path/to/executable", "--point", "4.0 5.0 6.0"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Point>& parsed_argument{
     arguments.get<test::Label::Point>().parsed_value()};
@@ -2170,6 +2209,7 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
     {"/path/to/executable", "--point", "4.0 5.0 6.0"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Point>& parsed_argument{
     arguments.get<test::Label::Point>().parsed_value()};
@@ -2194,6 +2234,7 @@ TEST(Lector, ArgumentsValidIndividualShapeOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_enumeration_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Shape>().parsed_value().has_value());
   const std::string expected_usage{"executable [--shape <value>]"};
@@ -2214,6 +2255,7 @@ TEST(Lector, ArgumentsValidIndividualShapeOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_enumeration_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Shape>().parsed_value().has_value());
   const std::string expected_usage{"executable [--shape <value>]"};
@@ -2238,6 +2280,7 @@ TEST(Lector, ArgumentsValidIndividualShapeRequiredNoConfiguration) {
     {"/path/to/executable", "--shape", "triangle"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_argument{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2262,6 +2305,7 @@ TEST(Lector, ArgumentsValidIndividualShapeRequiredWithConfiguration) {
     {"/path/to/executable", "--shape", "triangle"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_argument{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2286,6 +2330,7 @@ TEST(Lector, ArgumentsValidIndividualTitleOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_string_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Title>().parsed_value().has_value());
   const std::string expected_usage{"executable [--title <text>]"};
@@ -2306,6 +2351,7 @@ TEST(Lector, ArgumentsValidIndividualTitleOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_string_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Title>().parsed_value().has_value());
   const std::string expected_usage{"executable [--title <text>]"};
@@ -2330,6 +2376,7 @@ TEST(Lector, ArgumentsValidIndividualTitleRequiredNoConfiguration) {
     {"/path/to/executable", "--title", "Some Other Report"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::string>& parsed_argument{
     arguments.get<test::Label::Title>().parsed_value()};
@@ -2354,6 +2401,7 @@ TEST(Lector, ArgumentsValidIndividualTitleRequiredWithConfiguration) {
     {"/path/to/executable", "--title", "Some Other Report"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::string>& parsed_argument{
     arguments.get<test::Label::Title>().parsed_value()};
@@ -2378,6 +2426,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceOptionalNoConfiguration) {
   lector::Arguments arguments{test::singular_argument_floating_point_number_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Tolerance>().parsed_value().has_value());
   const std::string expected_usage{"executable [--tolerance <value>]"};
@@ -2398,6 +2447,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceOptionalWithConfiguration) {
     test::configuration(), test::singular_argument_floating_point_number_named_optional()};
   const test::Command command{{"/path/to/executable"}};
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   EXPECT_FALSE(arguments.get<test::Label::Tolerance>().parsed_value().has_value());
   const std::string expected_usage{"executable [--tolerance <value>]"};
@@ -2422,6 +2472,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceRequiredNoConfiguration) {
     {"/path/to/executable", "--tolerance", "0.015625"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<double>& parsed_argument{
     arguments.get<test::Label::Tolerance>().parsed_value()};
@@ -2447,6 +2498,7 @@ TEST(Lector, ArgumentsValidIndividualToleranceRequiredWithConfiguration) {
     {"/path/to/executable", "--tolerance", "0.015625"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<double>& parsed_argument{
     arguments.get<test::Label::Tolerance>().parsed_value()};
@@ -2478,6 +2530,7 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
      "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2522,6 +2575,7 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
      "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2568,6 +2622,7 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
     {"/path/to/executable", "-s=Circle", "-o=/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2611,6 +2666,7 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
     {"/path/to/executable", "-s=Circle", "-o=/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2658,6 +2714,7 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
      "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2702,6 +2759,7 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
      "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2748,6 +2806,7 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
     {"/path/to/executable", "-s=Circle", "-o", "/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2791,6 +2850,7 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
     {"/path/to/executable", "-s=Circle", "-o", "/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2837,6 +2897,7 @@ TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
     {"/path/to/executable", "Circle", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2878,6 +2939,7 @@ TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
     {"/path/to/executable", "Circle", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2923,6 +2985,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
      "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -2967,6 +3030,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
      "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -3013,6 +3077,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
     {"/path/to/executable", "-s", "Circle", "-o", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -3056,6 +3121,7 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
     {"/path/to/executable", "-s", "Circle", "-o", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<test::Shape>& parsed_shape{
     arguments.get<test::Label::Shape>().parsed_value()};
@@ -3100,6 +3166,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainNoConfiguration) {
     {"/path/to/executable", "--iterations", "200", "--iter", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_iterations{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -3131,6 +3198,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainWithConfiguration) {
     {"/path/to/executable", "--iterations", "200", "--iter", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_iterations{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -3164,6 +3232,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpNoConfiguration) {
     {"/path/to/executable", "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_iterations{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -3194,6 +3263,7 @@ TEST(Lector, ArgumentsValidSeveralIterationsHelpWithConfiguration) {
     {"/path/to/executable", "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_iterations{
     arguments.get<test::Label::Iterations>().parsed_value()};
@@ -3226,6 +3296,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpNoConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -3257,6 +3328,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpWithConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -3292,6 +3364,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpNoConfiguration) 
      "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -3330,6 +3403,7 @@ TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpWithConfiguration
      "--help"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
@@ -3368,6 +3442,7 @@ TEST(Lector, ArgumentsWeirdLongInlineNoConfiguration) {
     {"/path/to/executable", "==weird=key=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3380,6 +3455,7 @@ TEST(Lector, ArgumentsWeirdLongInlineWithConfiguration) {
     {"/path/to/executable", "==weird=key=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3392,6 +3468,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespaceNoConfiguration) {
     {"/path/to/executable", "==weird=key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3404,6 +3481,7 @@ TEST(Lector, ArgumentsWeirdLongWhitespaceWithConfiguration) {
     {"/path/to/executable", "==weird=key", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3416,6 +3494,7 @@ TEST(Lector, ArgumentsWeirdShortInlineNoConfiguration) {
     {"/path/to/executable", "=w=k=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3428,6 +3507,7 @@ TEST(Lector, ArgumentsWeirdShortInlineWithConfiguration) {
     {"/path/to/executable", "=w=k=200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3440,6 +3520,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespaceNoConfiguration) {
     {"/path/to/executable", "=w=k", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -3452,6 +3533,7 @@ TEST(Lector, ArgumentsWeirdShortWhitespaceWithConfiguration) {
     {"/path/to/executable", "=w=k", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
   const std::optional<std::int32_t>& parsed_weird{
     arguments.get<test::Label::Weird>().parsed_value()};
@@ -6777,6 +6859,7 @@ TEST(Lector, TutorialSection1Basic) {
     {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   if (arguments.get<test::Label::Help>().parsed_or_default_value()) {
     std::cout << arguments.help() << std::endl;
   } else {
@@ -6845,6 +6928,7 @@ TEST(Lector, TutorialSection1Help) {
     {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   if (arguments.get<test::Label::Help>().parsed_or_default_value()) {
     std::cout << arguments.help() << std::endl;
   } else {
@@ -6910,6 +6994,7 @@ TEST(Lector, TutorialSection3Subsection2) {
     {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i==200"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   const std::string expected_usage{
     "executable [<text>] ... __out_dir__ <path> [==iter== <number>]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
@@ -6949,6 +7034,7 @@ TEST(Lector, TutorialSection3Subsection3) {
     {"/path/to/executable", "--shape", "square"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   const test::Shape shape{arguments.get<test::Label::Shape>().parsed_or_default_value()};
   std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
   EXPECT_EQ(shape, test::Shape::Square);
@@ -6968,6 +7054,7 @@ TEST(Lector, TutorialSection3Subsection4) {
     {"/path/to/executable", "--point", "4.0 5.0 6.0"}
   };
   arguments.parse(command.argc(), command.argv());
+  arguments.validate();
   const test::Point point{arguments.get<test::Label::Point>().parsed_or_default_value()};
   std::cout << "Your favorite point is: " << point << std::endl;
   EXPECT_TRUE(

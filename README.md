@@ -48,6 +48,8 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
+    arguments.validate();
+
     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 
     const std::vector<std::string>& tokens{
@@ -72,7 +74,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether help information should be printed, prints the execution information, and obtains and prints the parsed arguments.
+The above example imports the Lector library, defines an enumeration of argument labels, creates a collection of arguments, parses the arguments from the command line `argc` and `argv` variables, checks whether help information should be printed, validates that all required arguments have parsed values, prints the execution information, and obtains and prints the parsed arguments.
 
 In the Lector library, command line arguments are strongly-typed, support arbitrary types, can be singular or repeatable, can be named (keyed) or positional (keyless), can be declared as required or optional, and feature strict error checking.
 
@@ -329,6 +331,21 @@ arguments.parse(argc, argv);
 ```
 
 This populates all arguments with their parsed values and performs strict error checking. See the [§3.5. Error Checking](#35-user-guide-error-checking) section for details.
+
+If any command line arguments require special consideration, such as typical `--version` or `--help` flags, they should be handled first. For example:
+
+```cpp
+if (arguments.get<Label::Help>().parsed_or_default_value()) {
+    std::cout << arguments.help() << std::endl;
+    return EXIT_SUCCESS;
+}
+```
+
+Once special cases have been handled, validate that all required arguments have parsed values with:
+
+```cpp
+arguments.validate();
+```
 
 Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 
@@ -683,7 +700,7 @@ int main(int argc, char* argv[]) {
 
 The Lector library performs strict error checking when defining command line arguments and again when parsing these arguments from the command line.
 
-The following checks are performed when defining command line arguments:
+The following checks are performed when defining command line arguments in the `lector::Arguments` constructor:
 
 - All arguments must have unique labels. For example, a `lector::Arguments` constructed from `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help." }` and `lector::SingularArgument<Label::Help, bool>{ {"--help"}, "Help." }` throws an exception because both arguments use the same label `Label::Help`.
 - All named arguments must each have at least one key. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {}, "Iterations." }` throws an exception because the set of keys is empty. To define a positional argument, omit the set of keys entirely. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ "Iterations." }` defines a positional argument.
@@ -694,13 +711,14 @@ The following checks are performed when defining command line arguments:
 - Boolean arguments are always false by default and cannot specify default values. For example, `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
 - A repeatable positional argument cannot be mixed with other positional arguments. For example, a `lector::Arguments` constructed from `lector::RepeatableArgument<Label::Tokens>{"List of tokens."}` and `lector::SingularArgument<Label::OutputDirectory>{"Output directory."}` throws an exception because the first is repeatable and both are positional.
 
-The following checks are performed when parsing command line arguments. These examples use the code from the [§1. Introduction](#1-introduction) section:
+The following checks are performed when parsing command line arguments with the `lector::Arguments::parse()` method. These examples use the code from the [§1. Introduction](#1-introduction) section:
 
-- Missing required arguments. For example, `path/to/my_application --iterations 200` throws an exception because the required argument `--output_directory <path>` is missing.
 - Duplicated arguments. For example, `path/to/my_application --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
 - Invalid argument values. For example, `path/to/my_application --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
 - Arguments missing values. For example, `path/to/my_application --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
 - Unknown command line tokens. For example, if the `Label::Tokens` argument was not defined, `path/to/my_application --output_directory /tmp --unknown` would throw an exception because the token `--unknown` would not match any key of any named argument, and since no positional arguments would be defined, it also would not match the value of any positional argument.
+
+Finally, the `lector::Arguments::validate()` method checks for missing required arguments. For example, with `path/to/my_application --iterations 200`, this method throws an exception because the required argument `--output_directory <path>` is missing.
 
 [(Back to User Guide)](#3-user-guide)
 
