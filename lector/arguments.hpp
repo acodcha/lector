@@ -690,9 +690,9 @@ public:
     return default_values_;
   }
 
-  /// @brief Returns whether this repeatable command line argument has a parsed value.
-  /// @return True if this repeatable command line argument has a parsed value; false if it does
-  /// not.
+  /// @brief Returns whether this repeatable command line argument has one or more parsed values.
+  /// @return True if this repeatable command line argument has one or more parsed values; false if
+  /// it has none.
   [[nodiscard]] bool has_parsed_value() const noexcept {
     return !parsed_values_.empty();
   }
