@@ -319,10 +319,12 @@ Supported argument types include:
 - Natural numbers: `std::uint8_t`, `std::uint16_t`, `std::uint32_t`, `std::uint64_t`.
 - Integer numbers: `std::int8_t`, `std::int16_t`, `std::int32_t`, `std::int64_t`.
 - Floating-point numbers: `float`, `double`, `long double`.
-- Strings: `std::string`. If the string contains whitespace, enclose it in double quotes (`""`).
+- Strings: `std::string`.
 - Paths: `std::filesystem::path`.
 - Enumerations: See the [§3.3. User Guide: Enumerations](#33-user-guide-enumerations) section.
 - Data Structures: See the [§3.4. User Guide: Data Structures](#34-user-guide-data-structures) section.
+
+Note: When specifying a string, a path, an enumeration, or a data structure on the command line, if it contains any whitespace, remember to enclose it in double quotes (`""`); otherwise, C++ will interpret each delimited segment as its own argument in `argc` and `argv`.
 
 Once all arguments have been defined, the `lector::Arguments::parse()` method can be used to parse `argc` and `argv`. For example:
 
@@ -595,6 +597,7 @@ int main(int argc, char* argv[]) {
     };
 
     arguments.parse(argc, argv);
+    arguments.validate();
 
     const my_project::Shape shape{
         arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
@@ -603,6 +606,14 @@ int main(int argc, char* argv[]) {
 
     return EXIT_SUCCESS;
 }
+```
+
+```bash
+path/to/my_application --shape SQUARE
+```
+
+```text
+Your favorite shape is: Square
 ```
 
 [(Back to User Guide)](#3-user-guide)
@@ -616,13 +627,14 @@ Data structures can be used as argument types, but require specializing the inpu
 #define MY_PROJECT_POINT_HPP
 
 #include <iostream>
+#include <lector/print.hpp>
 
 namespace my_project {
 
 struct Point {
-    double x{0.0};
-    double y{0.0};
-    double z{0.0};
+    float x{0.0F};
+    float y{0.0F};
+    float z{0.0F};
 };
 
 inline std::istream& operator>>(std::istream& input_stream, Point& point) {
@@ -631,7 +643,8 @@ inline std::istream& operator>>(std::istream& input_stream, Point& point) {
 }
 
 inline std::ostream& operator<<(std::ostream& output_stream, const Point& point) {
-    output_stream << point.x << " " << point.y << " " << point.z;
+    output_stream << lector::print(point.x) << " " << lector::print(point.y) << " "
+                  << lector::print(point.z);
     return output_stream;
 }
 
@@ -651,12 +664,12 @@ With the above definitions, the `lector::print()` and `lector::parse()` methods 
 #include "my_project/point.hpp"
 
 int main() {
-    const std::string printed_point{lector::print(my_project::Point{1.0, 2.0, 3.0})};
-    assert(printed_point == "1 2 3");
+    const std::string printed_point{lector::print(my_project::Point{1.0F, 2.0F, 3.0F})};
+    assert(printed_point == "1.000000000 2.000000000 3.000000000");
 
     const std::optional<my_project::Point> parsed_point{
         lector::parse<my_project::Point>("4.0 5.0 6.0")};
-    const my_project::Point expected_point{4.0, 5.0, 6.0};
+    const my_project::Point expected_point{4.0F, 5.0F, 6.0F};
     assert(parsed_point.has_value() &&
            parsed_point.value().x == expected_point.x &&
            parsed_point.value().y == expected_point.y &&
@@ -684,6 +697,7 @@ int main(int argc, char* argv[]) {
     };
 
     arguments.parse(argc, argv);
+    arguments.validate();
 
     const my_project::Point point{
         arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
@@ -692,6 +706,14 @@ int main(int argc, char* argv[]) {
 
     return EXIT_SUCCESS;
 }
+```
+
+```bash
+path/to/my_application --point "1.0 2.0 3.0"
+```
+
+```text
+Your favorite point is: 1.000000000 2.000000000 3.000000000
 ```
 
 [(Back to User Guide)](#3-user-guide)

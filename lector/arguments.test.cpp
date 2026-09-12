@@ -89,7 +89,8 @@ inline std::istream& operator>>(std::istream& input_stream, test::Point& point) 
 /// @brief Output stream operator for the test::Point data structure. Prints a test::Point data
 /// structure to an output stream.
 inline std::ostream& operator<<(std::ostream& output_stream, const test::Point& point) {
-  output_stream << point.x << " " << point.y << " " << point.z;
+  output_stream
+      << lector::print(point.x) << " " << lector::print(point.y) << " " << lector::print(point.z);
   return output_stream;
 }
 
@@ -2199,7 +2200,8 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredNoConfiguration) {
   expected_help << "Options:" << std::endl;
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --point \"4 5 6\"");
+  EXPECT_EQ(
+      arguments.execution(), "/path/to/executable --point \"4.000000000 5.000000000 6.000000000\"");
 }
 
 TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
@@ -2227,7 +2229,8 @@ TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
   expected_help << expected_options << std::endl << std::endl;
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --point \"4 5 6\"");
+  EXPECT_EQ(
+      arguments.execution(), "/path/to/executable --point \"4.000000000 5.000000000 6.000000000\"");
 }
 
 TEST(Lector, ArgumentsValidIndividualShapeOptionalNoConfiguration) {
@@ -4291,7 +4294,9 @@ TEST(Lector, RepeatableArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
   EXPECT_EQ(argument.usage(), "[--point <value>] ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "--point \"7 8 9\" --point \"10 11 12\"");
+  EXPECT_EQ(argument.execution(),
+            "--point \"7.000000000 8.000000000 9.000000000\" "
+            "--point \"10.00000000 11.00000000 12.00000000\"");
 }
 
 TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
@@ -4330,7 +4335,9 @@ TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
   EXPECT_EQ(argument.usage(), "--point <value> ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "--point \"7 8 9\" --point \"10 11 12\"");
+  EXPECT_EQ(argument.execution(),
+            "--point \"7.000000000 8.000000000 9.000000000\" "
+            "--point \"10.00000000 11.00000000 12.00000000\"");
 }
 
 TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
@@ -4375,7 +4382,8 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "\"7 8 9\" \"10 11 12\"");
+  EXPECT_EQ(argument.execution(),
+            "\"7.000000000 8.000000000 9.000000000\" \"10.00000000 11.00000000 12.00000000\"");
 }
 
 TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
@@ -4414,7 +4422,8 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "\"7 8 9\" \"10 11 12\"");
+  EXPECT_EQ(argument.execution(),
+            "\"7.000000000 8.000000000 9.000000000\" \"10.00000000 11.00000000 12.00000000\"");
 }
 
 TEST(Lector, RepeatableArgumentEnumerationDefault) {
@@ -6018,7 +6027,7 @@ TEST(Lector, SingularArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
   EXPECT_EQ(argument.usage(), "[--point <value>]");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "--point \"4 5 6\"");
+  EXPECT_EQ(argument.execution(), "--point \"4.000000000 5.000000000 6.000000000\"");
 }
 
 TEST(Lector, SingularArgumentDataStructureNamedRequired) {
@@ -6074,7 +6083,7 @@ TEST(Lector, SingularArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>]");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
-  EXPECT_EQ(argument.execution(), "\"4 5 6\"");
+  EXPECT_EQ(argument.execution(), "\"4.000000000 5.000000000 6.000000000\"");
 }
 
 TEST(Lector, SingularArgumentDataStructurePositionalRequired) {
@@ -7195,7 +7204,7 @@ TEST(Lector, TutorialSection3Subsection3) {
 
 TEST(Lector, TutorialSection3Subsection4) {
   const std::string printed_point{lector::print(test::Point{1.0, 2.0, 3.0})};
-  EXPECT_EQ(printed_point, "1 2 3");
+  EXPECT_EQ(printed_point, "1.000000000 2.000000000 3.000000000");
   const std::optional<test::Point> parsed_point{lector::parse<test::Point>("4.0 5.0 6.0")};
   const test::Point expected_point{4.0, 5.0, 6.0};
   EXPECT_TRUE(
