@@ -3796,7 +3796,7 @@ TEST(Lector, RepeatableArgumentBooleanDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_TRUE(argument.keys_with_value_type().empty());
-  EXPECT_TRUE(argument.usage().empty());
+  EXPECT_EQ(argument.usage(), "...");
   EXPECT_TRUE(argument.options().empty());
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(true));
@@ -3814,7 +3814,7 @@ TEST(Lector, RepeatableArgumentBooleanNamed) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-h, --help");
-  EXPECT_EQ(argument.usage(), "[--help]");
+  EXPECT_EQ(argument.usage(), "[--help] ...");
   EXPECT_EQ(argument.options(), "-h, --help  Display this help information and exit. Optional.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(true);
@@ -3833,7 +3833,7 @@ TEST(Lector, RepeatableArgumentBooleanNamed) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), true);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), true);
   EXPECT_EQ(argument.keys_with_value_type(), "-h, --help");
-  EXPECT_EQ(argument.usage(), "[--help]");
+  EXPECT_EQ(argument.usage(), "[--help] ...");
   EXPECT_EQ(argument.options(), "-h, --help  Display this help information and exit. Optional.");
   EXPECT_EQ(argument.execution(), "--help --help");
 }
@@ -3855,7 +3855,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(first.execution().empty());
   lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second;
@@ -3869,7 +3869,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_TRUE(second.parsed_values().empty());
   EXPECT_TRUE(second.parsed_or_default_values().empty());
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
-  EXPECT_EQ(second.usage(), "<number>");
+  EXPECT_EQ(second.usage(), "<number> ...");
   EXPECT_EQ(second.options(), "<number>");
   EXPECT_TRUE(second.execution().empty());
   second = first;
@@ -3887,7 +3887,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(second.execution().empty());
   second.set_parsed_value(test::ThreeHundred);
@@ -3905,7 +3905,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300");
   second.set_parsed_value(test::FourHundred);
@@ -3925,7 +3925,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
@@ -3947,7 +3947,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(first.execution().empty());
   lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second{first};
@@ -3965,7 +3965,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(second.execution().empty());
   second.set_parsed_value(test::ThreeHundred);
@@ -3983,7 +3983,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300");
   second.set_parsed_value(test::FourHundred);
@@ -4003,7 +4003,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
@@ -4020,7 +4020,7 @@ TEST(Lector, RepeatableArgumentConfusingLongDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::OneHundred));
@@ -4043,7 +4043,7 @@ TEST(Lector, RepeatableArgumentConfusingLongMain) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "--key=200 <number>");
-  EXPECT_EQ(argument.usage(), "[--key=200 <number>]");
+  EXPECT_EQ(argument.usage(), "[--key=200 <number>] ...");
   EXPECT_EQ(argument.options(), "--key=200 <number>  Long confusing argument.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -4064,7 +4064,7 @@ TEST(Lector, RepeatableArgumentConfusingLongMain) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "--key=200 <number>");
-  EXPECT_EQ(argument.usage(), "[--key=200 <number>]");
+  EXPECT_EQ(argument.usage(), "[--key=200 <number>] ...");
   EXPECT_EQ(argument.options(), "--key=200 <number>  Long confusing argument.");
   EXPECT_EQ(argument.execution(), "--key=200 300 --key=200 400");
 }
@@ -4081,7 +4081,7 @@ TEST(Lector, RepeatableArgumentConfusingShortDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::OneHundred));
@@ -4104,7 +4104,7 @@ TEST(Lector, RepeatableArgumentConfusingShortMain) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "--key <number>");
-  EXPECT_EQ(argument.usage(), "[--key <number>]");
+  EXPECT_EQ(argument.usage(), "[--key <number>] ...");
   EXPECT_EQ(argument.options(), "--key <number>  Short confusing argument.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -4125,7 +4125,7 @@ TEST(Lector, RepeatableArgumentConfusingShortMain) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "--key <number>");
-  EXPECT_EQ(argument.usage(), "[--key <number>]");
+  EXPECT_EQ(argument.usage(), "[--key <number>] ...");
   EXPECT_EQ(argument.options(), "--key <number>  Short confusing argument.");
   EXPECT_EQ(argument.execution(), "--key 300 --key 400");
 }
@@ -4142,7 +4142,7 @@ TEST(Lector, RepeatableArgumentDataStructureDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::FirstPoint));
@@ -4165,7 +4165,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::SecondPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
-  EXPECT_EQ(argument.usage(), "[--point <value>]");
+  EXPECT_EQ(argument.usage(), "[--point <value>] ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThirdPoint);
@@ -4186,7 +4186,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThirdPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourthPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
-  EXPECT_EQ(argument.usage(), "[--point <value>]");
+  EXPECT_EQ(argument.usage(), "[--point <value>] ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
   EXPECT_EQ(argument.execution(), "--point \"7 8 9\" --point \"10 11 12\"");
 }
@@ -4204,7 +4204,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
-  EXPECT_EQ(argument.usage(), "--point <value>");
+  EXPECT_EQ(argument.usage(), "--point <value> ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThirdPoint);
@@ -4223,7 +4223,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThirdPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourthPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "-p <value>, --point <value>");
-  EXPECT_EQ(argument.usage(), "--point <value>");
+  EXPECT_EQ(argument.usage(), "--point <value> ...");
   EXPECT_EQ(argument.options(), "-p <value>, --point <value>  Starting point.");
   EXPECT_EQ(argument.execution(), "--point \"7 8 9\" --point \"10 11 12\"");
 }
@@ -4245,7 +4245,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::SecondPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThirdPoint);
@@ -4266,7 +4266,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThirdPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourthPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
   EXPECT_EQ(argument.execution(), "\"7 8 9\" \"10 11 12\"");
 }
@@ -4284,7 +4284,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThirdPoint);
@@ -4303,7 +4303,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThirdPoint);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourthPoint);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Starting point.");
   EXPECT_EQ(argument.execution(), "\"7 8 9\" \"10 11 12\"");
 }
@@ -4320,7 +4320,7 @@ TEST(Lector, RepeatableArgumentEnumerationDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::Shape::Square));
@@ -4343,7 +4343,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Triangle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
-  EXPECT_EQ(argument.usage(), "[--shape <value>]");
+  EXPECT_EQ(argument.usage(), "[--shape <value>] ...");
   EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
@@ -4364,7 +4364,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Square);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
-  EXPECT_EQ(argument.usage(), "[--shape <value>]");
+  EXPECT_EQ(argument.usage(), "[--shape <value>] ...");
   EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
   EXPECT_EQ(argument.execution(), "--shape Square --shape Circle");
 }
@@ -4382,7 +4382,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
-  EXPECT_EQ(argument.usage(), "--shape <value>");
+  EXPECT_EQ(argument.usage(), "--shape <value> ...");
   EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
@@ -4401,7 +4401,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Square);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
-  EXPECT_EQ(argument.usage(), "--shape <value>");
+  EXPECT_EQ(argument.usage(), "--shape <value> ...");
   EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
   EXPECT_EQ(argument.execution(), "--shape Square --shape Circle");
 }
@@ -4423,7 +4423,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Triangle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
@@ -4444,7 +4444,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Square);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
   EXPECT_EQ(argument.execution(), "Square Circle");
 }
@@ -4462,7 +4462,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
@@ -4481,7 +4481,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::Shape::Square);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
   EXPECT_EQ(argument.execution(), "Square Circle");
 }
@@ -4498,7 +4498,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
-  EXPECT_EQ(argument.usage(), "<path>");
+  EXPECT_EQ(argument.usage(), "<path> ...");
   EXPECT_EQ(argument.options(), "<path>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(std::filesystem::path{"/some/path"}));
@@ -4521,7 +4521,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/second/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output_directory <path>");
-  EXPECT_EQ(argument.usage(), "[--output_directory <path>]");
+  EXPECT_EQ(argument.usage(), "[--output_directory <path>] ...");
   EXPECT_EQ(argument.options(), "-o <path>, --output_directory <path>  Output directory.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(std::filesystem::path{"/third/path"});
@@ -4542,7 +4542,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/third/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/fourth/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output_directory <path>");
-  EXPECT_EQ(argument.usage(), "[--output_directory <path>]");
+  EXPECT_EQ(argument.usage(), "[--output_directory <path>] ...");
   EXPECT_EQ(argument.options(), "-o <path>, --output_directory <path>  Output directory.");
   EXPECT_EQ(argument.execution(), "--output_directory /third/path --output_directory /fourth/path");
 }
@@ -4560,7 +4560,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output_directory <path>");
-  EXPECT_EQ(argument.usage(), "--output_directory <path>");
+  EXPECT_EQ(argument.usage(), "--output_directory <path> ...");
   EXPECT_EQ(argument.options(), "-o <path>, --output_directory <path>  Output directory.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(std::filesystem::path{"/third/path"});
@@ -4579,7 +4579,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/third/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/fourth/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "-o <path>, --output_directory <path>");
-  EXPECT_EQ(argument.usage(), "--output_directory <path>");
+  EXPECT_EQ(argument.usage(), "--output_directory <path> ...");
   EXPECT_EQ(argument.options(), "-o <path>, --output_directory <path>  Output directory.");
   EXPECT_EQ(argument.execution(), "--output_directory /third/path --output_directory /fourth/path");
 }
@@ -4601,7 +4601,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/second/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
-  EXPECT_EQ(argument.usage(), "[<path>]");
+  EXPECT_EQ(argument.usage(), "[<path>] ...");
   EXPECT_EQ(argument.options(), "<path>  Output directory.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(std::filesystem::path{"/third/path"});
@@ -4622,7 +4622,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/third/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/fourth/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
-  EXPECT_EQ(argument.usage(), "[<path>]");
+  EXPECT_EQ(argument.usage(), "[<path>] ...");
   EXPECT_EQ(argument.options(), "<path>  Output directory.");
   EXPECT_EQ(argument.execution(), "/third/path /fourth/path");
 }
@@ -4640,7 +4640,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
-  EXPECT_EQ(argument.usage(), "<path>");
+  EXPECT_EQ(argument.usage(), "<path> ...");
   EXPECT_EQ(argument.options(), "<path>  Output directory.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(std::filesystem::path{"/third/path"});
@@ -4659,7 +4659,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), std::filesystem::path{"/third/path"});
   EXPECT_EQ(argument.parsed_or_default_values().at(1), std::filesystem::path{"/fourth/path"});
   EXPECT_EQ(argument.keys_with_value_type(), "<path>");
-  EXPECT_EQ(argument.usage(), "<path>");
+  EXPECT_EQ(argument.usage(), "<path> ...");
   EXPECT_EQ(argument.options(), "<path>  Output directory.");
   EXPECT_EQ(argument.execution(), "/third/path /fourth/path");
 }
@@ -4676,7 +4676,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::OneOverSixteen));
@@ -4699,7 +4699,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixtyFour);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.usage(), "[--tolerance <value>]");
+  EXPECT_EQ(argument.usage(), "[--tolerance <value>] ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::OneOverEight);
@@ -4720,7 +4720,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverEight);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixteen);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.usage(), "[--tolerance <value>]");
+  EXPECT_EQ(argument.usage(), "[--tolerance <value>] ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
   EXPECT_EQ(
       argument.execution(), "--tolerance 0.125000000000000000 --tolerance 0.0625000000000000000");
@@ -4739,7 +4739,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.usage(), "--tolerance <value>");
+  EXPECT_EQ(argument.usage(), "--tolerance <value> ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::OneOverEight);
@@ -4758,7 +4758,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverEight);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixteen);
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
-  EXPECT_EQ(argument.usage(), "--tolerance <value>");
+  EXPECT_EQ(argument.usage(), "--tolerance <value> ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
   EXPECT_EQ(
       argument.execution(), "--tolerance 0.125000000000000000 --tolerance 0.0625000000000000000");
@@ -4781,7 +4781,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixtyFour);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::OneOverEight);
@@ -4802,7 +4802,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverEight);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixteen);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "[<value>]");
+  EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
   EXPECT_EQ(argument.execution(), "0.125000000000000000 0.0625000000000000000");
 }
@@ -4820,7 +4820,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::OneOverEight);
@@ -4839,7 +4839,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneOverEight);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::OneOverSixteen);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
-  EXPECT_EQ(argument.usage(), "<value>");
+  EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
   EXPECT_EQ(argument.execution(), "0.125000000000000000 0.0625000000000000000");
 }
@@ -4856,7 +4856,7 @@ TEST(Lector, RepeatableArgumentIntegerDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::OneHundred));
@@ -4879,7 +4879,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "[--iterations <number>]");
+  EXPECT_EQ(argument.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -4900,7 +4900,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "[--iterations <number>]");
+  EXPECT_EQ(argument.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(argument.execution(), "--iterations 300 --iterations 400");
 }
@@ -4918,7 +4918,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "--iterations <number>");
+  EXPECT_EQ(argument.usage(), "--iterations <number> ...");
   EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -4937,7 +4937,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(argument.usage(), "--iterations <number>");
+  EXPECT_EQ(argument.usage(), "--iterations <number> ...");
   EXPECT_EQ(argument.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(argument.execution(), "--iterations 300 --iterations 400");
 }
@@ -4959,7 +4959,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "[<number>]");
+  EXPECT_EQ(argument.usage(), "[<number>] ...");
   EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -4980,7 +4980,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "[<number>]");
+  EXPECT_EQ(argument.usage(), "[<number>] ...");
   EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
   EXPECT_EQ(argument.execution(), "300 400");
 }
@@ -4998,7 +4998,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -5017,7 +5017,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>  Number of iterations.");
   EXPECT_EQ(argument.execution(), "300 400");
 }
@@ -5042,7 +5042,7 @@ TEST(Lector, RepeatableArgumentInvalidBooleanParsedFalse) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-h, --help");
-  EXPECT_EQ(argument.usage(), "[--help]");
+  EXPECT_EQ(argument.usage(), "[--help] ...");
   EXPECT_EQ(argument.options(), "-h, --help  Display this help information and exit. Optional.");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(false));
@@ -5085,7 +5085,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(first.execution().empty());
   lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second;
@@ -5099,7 +5099,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_TRUE(second.parsed_values().empty());
   EXPECT_TRUE(second.parsed_or_default_values().empty());
   EXPECT_EQ(second.keys_with_value_type(), "<number>");
-  EXPECT_EQ(second.usage(), "<number>");
+  EXPECT_EQ(second.usage(), "<number> ...");
   EXPECT_EQ(second.options(), "<number>");
   EXPECT_TRUE(second.execution().empty());
   second = std::move(first);
@@ -5117,7 +5117,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(second.execution().empty());
   second.set_parsed_value(test::ThreeHundred);
@@ -5135,7 +5135,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300");
   second.set_parsed_value(test::FourHundred);
@@ -5155,7 +5155,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
@@ -5177,7 +5177,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(first.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(first.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(first.usage(), "[--iterations <number>]");
+  EXPECT_EQ(first.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(first.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(first.execution().empty());
   lector::RepeatableArgument<test::Label::Iterations, std::int32_t> second{std::move(first)};
@@ -5195,7 +5195,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_TRUE(second.execution().empty());
   second.set_parsed_value(test::ThreeHundred);
@@ -5213,7 +5213,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   ASSERT_EQ(second.parsed_or_default_values().size(), static_cast<std::size_t>(1UL));
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300");
   second.set_parsed_value(test::FourHundred);
@@ -5233,7 +5233,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(second.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(second.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(second.keys_with_value_type(), "-i <number>, --iterations <number>");
-  EXPECT_EQ(second.usage(), "[--iterations <number>]");
+  EXPECT_EQ(second.usage(), "[--iterations <number>] ...");
   EXPECT_EQ(second.options(), "-i <number>, --iterations <number>  Number of iterations.");
   EXPECT_EQ(second.execution(), "--iterations 300 --iterations 400");
 }
@@ -5250,7 +5250,7 @@ TEST(Lector, RepeatableArgumentStringDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
-  EXPECT_EQ(argument.usage(), "<text>");
+  EXPECT_EQ(argument.usage(), "<text> ...");
   EXPECT_EQ(argument.options(), "<text>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value("My Report"));
@@ -5273,7 +5273,7 @@ TEST(Lector, RepeatableArgumentStringNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My First Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Second Report");
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
-  EXPECT_EQ(argument.usage(), "[--title <text>]");
+  EXPECT_EQ(argument.usage(), "[--title <text>] ...");
   EXPECT_EQ(argument.options(), "-t <text>, --title <text>  Report title.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("My Third Report");
@@ -5294,7 +5294,7 @@ TEST(Lector, RepeatableArgumentStringNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My Third Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Fourth Report");
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
-  EXPECT_EQ(argument.usage(), "[--title <text>]");
+  EXPECT_EQ(argument.usage(), "[--title <text>] ...");
   EXPECT_EQ(argument.options(), "-t <text>, --title <text>  Report title.");
   EXPECT_EQ(argument.execution(), "--title \"My Third Report\" --title \"My Fourth Report\"");
 }
@@ -5312,7 +5312,7 @@ TEST(Lector, RepeatableArgumentStringNamedRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
-  EXPECT_EQ(argument.usage(), "--title <text>");
+  EXPECT_EQ(argument.usage(), "--title <text> ...");
   EXPECT_EQ(argument.options(), "-t <text>, --title <text>  Report title.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("My Third Report");
@@ -5331,7 +5331,7 @@ TEST(Lector, RepeatableArgumentStringNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My Third Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Fourth Report");
   EXPECT_EQ(argument.keys_with_value_type(), "-t <text>, --title <text>");
-  EXPECT_EQ(argument.usage(), "--title <text>");
+  EXPECT_EQ(argument.usage(), "--title <text> ...");
   EXPECT_EQ(argument.options(), "-t <text>, --title <text>  Report title.");
   EXPECT_EQ(argument.execution(), "--title \"My Third Report\" --title \"My Fourth Report\"");
 }
@@ -5353,7 +5353,7 @@ TEST(Lector, RepeatableArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My First Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Second Report");
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
-  EXPECT_EQ(argument.usage(), "[<text>]");
+  EXPECT_EQ(argument.usage(), "[<text>] ...");
   EXPECT_EQ(argument.options(), "<text>  Report title.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("My Third Report");
@@ -5374,7 +5374,7 @@ TEST(Lector, RepeatableArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My Third Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Fourth Report");
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
-  EXPECT_EQ(argument.usage(), "[<text>]");
+  EXPECT_EQ(argument.usage(), "[<text>] ...");
   EXPECT_EQ(argument.options(), "<text>  Report title.");
   EXPECT_EQ(argument.execution(), "\"My Third Report\" \"My Fourth Report\"");
 }
@@ -5392,7 +5392,7 @@ TEST(Lector, RepeatableArgumentStringPositionalRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
-  EXPECT_EQ(argument.usage(), "<text>");
+  EXPECT_EQ(argument.usage(), "<text> ...");
   EXPECT_EQ(argument.options(), "<text>  Report title.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value("My Third Report");
@@ -5411,7 +5411,7 @@ TEST(Lector, RepeatableArgumentStringPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), "My Third Report");
   EXPECT_EQ(argument.parsed_or_default_values().at(1), "My Fourth Report");
   EXPECT_EQ(argument.keys_with_value_type(), "<text>");
-  EXPECT_EQ(argument.usage(), "<text>");
+  EXPECT_EQ(argument.usage(), "<text> ...");
   EXPECT_EQ(argument.options(), "<text>  Report title.");
   EXPECT_EQ(argument.execution(), "\"My Third Report\" \"My Fourth Report\"");
 }
@@ -5428,7 +5428,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysDefault) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<number>");
-  EXPECT_EQ(argument.usage(), "<number>");
+  EXPECT_EQ(argument.usage(), "<number> ...");
   EXPECT_EQ(argument.options(), "<number>");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(argument.set_parsed_value(test::OneHundred));
@@ -5451,7 +5451,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::TwoHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
-  EXPECT_EQ(argument.usage(), "[==weird=key <number>]");
+  EXPECT_EQ(argument.usage(), "[==weird=key <number>] ...");
   EXPECT_EQ(argument.options(), "=w=k <number>, ==weird=key <number>  Weird argument.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -5472,7 +5472,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
-  EXPECT_EQ(argument.usage(), "[==weird=key <number>]");
+  EXPECT_EQ(argument.usage(), "[==weird=key <number>] ...");
   EXPECT_EQ(argument.options(), "=w=k <number>, ==weird=key <number>  Weird argument.");
   EXPECT_EQ(argument.execution(), "==weird=key 300 ==weird=key 400");
 }
@@ -5490,7 +5490,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysRequired) {
   EXPECT_TRUE(argument.parsed_values().empty());
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
-  EXPECT_EQ(argument.usage(), "==weird=key <number>");
+  EXPECT_EQ(argument.usage(), "==weird=key <number> ...");
   EXPECT_EQ(argument.options(), "=w=k <number>, ==weird=key <number>  Weird argument.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::ThreeHundred);
@@ -5509,7 +5509,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(0), test::ThreeHundred);
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::FourHundred);
   EXPECT_EQ(argument.keys_with_value_type(), "=w=k <number>, ==weird=key <number>");
-  EXPECT_EQ(argument.usage(), "==weird=key <number>");
+  EXPECT_EQ(argument.usage(), "==weird=key <number> ...");
   EXPECT_EQ(argument.options(), "=w=k <number>, ==weird=key <number>  Weird argument.");
   EXPECT_EQ(argument.execution(), "==weird=key 300 ==weird=key 400");
 }
@@ -6797,7 +6797,7 @@ TEST(Lector, TutorialSection1Basic) {
   }
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable [<text>] --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<text>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
@@ -6865,7 +6865,7 @@ TEST(Lector, TutorialSection1Help) {
   }
   EXPECT_TRUE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable [<text>] --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<text>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
@@ -6910,7 +6910,8 @@ TEST(Lector, TutorialSection3Subsection2) {
     {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i==200"}
   };
   arguments.parse(command.argc(), command.argv());
-  const std::string expected_usage{"executable [<text>] __out_dir__ <path> [==iter== <number>]"};
+  const std::string expected_usage{
+    "executable [<text>] ... __out_dir__ <path> [==iter== <number>]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");

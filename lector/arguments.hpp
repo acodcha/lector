@@ -802,10 +802,14 @@ public:
   /// enclosed in square braces if this command line argument is optional.
   /// @return The string of text that contains the usage information of this command line argument.
   [[nodiscard]] std::string usage() const {
+    const std::string longest_key_with_value_type_{longest_key_with_value_type()};
     if (importance() == lector::Importance::Optional) {
-      return "[" + longest_key_with_value_type() + "]";
+      return "[" + longest_key_with_value_type_ + "] ...";
     }
-    return longest_key_with_value_type();
+    if (longest_key_with_value_type_.empty()) {
+      return "...";
+    }
+    return longest_key_with_value_type_ + " ...";
   }
 
   /// @brief Prints the options information of this command line argument as a string of text. The
