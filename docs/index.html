@@ -309,11 +309,12 @@
 <li>Natural numbers: <code>std::uint8_t</code>, <code>std::uint16_t</code>, <code>std::uint32_t</code>, <code>std::uint64_t</code>.</li>
 <li>Integer numbers: <code>std::int8_t</code>, <code>std::int16_t</code>, <code>std::int32_t</code>, <code>std::int64_t</code>.</li>
 <li>Floating-point numbers: <code>float</code>, <code>double</code>, <code>long double</code>.</li>
-<li>Strings: <code>std::string</code>. If the string contains whitespace, enclose it in double quotes (<code>""</code>).</li>
+<li>Strings: <code>std::string</code>.</li>
 <li>Paths: <code>std::filesystem::path</code>.</li>
 <li>Enumerations: See the <a class="el" href="index.html#user_guide_enumerations">§3.3. User Guide: Enumerations</a> section.</li>
 <li>Data Structures: See the <a class="el" href="index.html#user_guide_data_structures">§3.4. User Guide: Data Structures</a> section.</li>
 </ul>
+<p>Note: When specifying a string, a path, an enumeration, or a data structure on the command line, if it contains any whitespace, remember to enclose it in double quotes (<code>""</code>); otherwise, C++ will interpret each delimited segment as its own argument in <code>argc</code> and <code>argv</code>.</p>
 <p>Once all arguments have been defined, the <code><a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">lector::Arguments::parse()</a></code> method can be used to parse <code>argc</code> and <code>argv</code>. For example:</p>
 <div class="fragment"><div class="line">arguments.parse(argc, argv);</div>
 </div><!-- fragment --><p>This populates all arguments with their parsed values and performs strict error checking. See the <a class="el" href="index.html#user_guide_error_checking">§3.5. User Guide: Error Checking</a> section for details.</p>
@@ -501,6 +502,7 @@
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    arguments.parse(argc, argv);</div>
+<div class="line">    arguments.validate();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> my_project::Shape shape{</div>
 <div class="line">        arguments.get&lt;Label::FavoriteShape&gt;().parsed_or_default_value()};</div>
@@ -509,6 +511,8 @@
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application --shape SQUARE</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Your favorite shape is: Square</div>
 </div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_data_structures"></a>
 §3.4. User Guide: Data Structures</h2>
@@ -517,13 +521,14 @@
 <div class="line"><span class="preprocessor">#define MY_PROJECT_POINT_HPP</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;lector/print.hpp&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">namespace </span>my_project {</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">struct </span>Point {</div>
-<div class="line">    <span class="keywordtype">double</span> x{0.0};</div>
-<div class="line">    <span class="keywordtype">double</span> y{0.0};</div>
-<div class="line">    <span class="keywordtype">double</span> z{0.0};</div>
+<div class="line">    <span class="keywordtype">float</span> x{0.0F};</div>
+<div class="line">    <span class="keywordtype">float</span> y{0.0F};</div>
+<div class="line">    <span class="keywordtype">float</span> z{0.0F};</div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">inline</span> std::istream&amp; operator&gt;&gt;(std::istream&amp; input_stream, Point&amp; point) {</div>
@@ -532,7 +537,8 @@
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">inline</span> std::ostream&amp; operator&lt;&lt;(std::ostream&amp; output_stream, <span class="keyword">const</span> Point&amp; point) {</div>
-<div class="line">    output_stream &lt;&lt; point.x &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; point.y &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; point.z;</div>
+<div class="line">    output_stream &lt;&lt; <a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(point.x) &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; <a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(point.y) &lt;&lt; <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line">                  &lt;&lt; <a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(point.z);</div>
 <div class="line">    <span class="keywordflow">return</span> output_stream;</div>
 <div class="line">}</div>
 <div class="line"> </div>
@@ -548,12 +554,12 @@
 <div class="line"><span class="preprocessor">#include &quot;my_project/point.hpp&quot;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
-<div class="line">    <span class="keyword">const</span> std::string printed_point{<a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(my_project::Point{1.0, 2.0, 3.0})};</div>
-<div class="line">    assert(printed_point == <span class="stringliteral">&quot;1 2 3&quot;</span>);</div>
+<div class="line">    <span class="keyword">const</span> std::string printed_point{<a class="code hl_function" href="namespacelector.html#a14ab972766e198d66923e65faaed57ba">lector::print</a>(my_project::Point{1.0F, 2.0F, 3.0F})};</div>
+<div class="line">    assert(printed_point == <span class="stringliteral">&quot;1.000000000 2.000000000 3.000000000&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> std::optional&lt;my_project::Point&gt; parsed_point{</div>
 <div class="line">        lector::parse&lt;my_project::Point&gt;(<span class="stringliteral">&quot;4.0 5.0 6.0&quot;</span>)};</div>
-<div class="line">    <span class="keyword">const</span> my_project::Point expected_point{4.0, 5.0, 6.0};</div>
+<div class="line">    <span class="keyword">const</span> my_project::Point expected_point{4.0F, 5.0F, 6.0F};</div>
 <div class="line">    assert(parsed_point.has_value() &amp;&amp;</div>
 <div class="line">           parsed_point.value().x == expected_point.x &amp;&amp;</div>
 <div class="line">           parsed_point.value().y == expected_point.y &amp;&amp;</div>
@@ -577,6 +583,7 @@
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    arguments.parse(argc, argv);</div>
+<div class="line">    arguments.validate();</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> my_project::Point point{</div>
 <div class="line">        arguments.get&lt;Label::FavoritePoint&gt;().parsed_or_default_value()};</div>
@@ -585,6 +592,8 @@
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
 <div class="line">}</div>
+</div><!-- fragment --><div class="fragment"><div class="line">path/to/my_application --point &quot;1.0 2.0 3.0&quot;</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Your favorite point is: 1.000000000 2.000000000 3.000000000</div>
 </div><!-- fragment --><p><a class="el" href="index.html#user_guide">(Back to User Guide)</a></p>
 <h2><a class="anchor" id="user_guide_error_checking"></a>
 §3.5. User Guide: Error Checking</h2>
