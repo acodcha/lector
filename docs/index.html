@@ -109,12 +109,10 @@
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> std::filesystem::path&amp; output_directory_path{</div>
 <div class="line">        arguments.get&lt;Label::OutputDirectory&gt;().parsed_or_default_value()};</div>
-<div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The output directory is: &quot;</span> &lt;&lt; output_directory_path &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keyword">const</span> std::int32_t iterations_count{</div>
 <div class="line">        arguments.get&lt;Label::Iterations&gt;().parsed_or_default_value()};</div>
-<div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;The number of iterations is: &quot;</span> &lt;&lt; iterations_count &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
@@ -280,7 +278,8 @@
 §3.1. User Guide: Arguments</h2>
 <p>The Lector library uses enumeration values to label arguments. For example, the code from the <a class="el" href="index.html#introduction">§1. Introduction</a> section defines the following enumeration:</p>
 <div class="fragment"><div class="line"><span class="keyword">enum class</span> Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};</div>
-</div><!-- fragment --><p>Defining an argument requires:</p>
+</div><!-- fragment --><p>The Lector library supports both singular arguments with <code><a class="el" href="classlector_1_1SingularArgument.html" title="A singular command line argument.">lector::SingularArgument</a></code> and repeatable arguments with <code><a class="el" href="classlector_1_1RepeatableArgument.html" title="A repeatable command line argument.">lector::RepeatableArgument</a></code>. Singular arguments can only appear once on the command line, whereas repeatable arguments can appear multiple times and thus hold multiple values. If a repeatable argument is named, each appearance on the command line must include both its key and its value, whereas if it is positional, its multiple appearances must appear in an uninterrupted sequence.</p>
+<p>Defining an argument requires:</p>
 <ul>
 <li>An enumeration value to be used as a label.</li>
 <li>A value type.</li>
