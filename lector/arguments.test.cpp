@@ -6907,7 +6907,7 @@ TEST(Lector, TutorialSection3Subsection2) {
     "Number of iterations. Optional. Default 100.", 100)
   };
   const test::Command command{
-    {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i=", "200"}
+    {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i==200"}
   };
   arguments.parse(command.argc(), command.argv());
   const std::string expected_usage{"executable [<text>] __out_dir__ <path> [==iter== <number>]"};
