@@ -62,12 +62,10 @@ int main(int argc, char* argv[]) {
 
     const std::filesystem::path& output_directory_path{
         arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
-
     std::cout << "The output directory is: " << output_directory_path << std::endl;
 
     const std::int32_t iterations_count{
         arguments.get<Label::Iterations>().parsed_or_default_value()};
-
     std::cout << "The number of iterations is: " << iterations_count << std::endl;
 
     return EXIT_SUCCESS;
@@ -283,6 +281,8 @@ The Lector library uses enumeration values to label arguments. For example, the 
 ```cpp
 enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
 ```
+
+The Lector library supports both singular arguments with `lector::SingularArgument` and repeatable arguments with `lector::RepeatableArgument`. Singular arguments can only appear once on the command line, whereas repeatable arguments can appear multiple times and thus hold multiple values. If a repeatable argument is named, each appearance on the command line must include both its key and its value, whereas if it is positional, its multiple appearances must appear in an uninterrupted sequence.
 
 Defining an argument requires:
 
