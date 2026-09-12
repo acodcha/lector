@@ -24,49 +24,49 @@
 /// enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
 ///
 /// int main(int argc, char* argv[]) {
-///   lector::Arguments arguments{
-///     lector::Configuration{
-///       "My Application",
-///       "Description of my application.",
-///       "Additional notes about my application."},
-///     lector::RepeatableArgument<test::Label::Tokens, std::string>{
-///       "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
-///     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
-///       {"-o", "--output_directory"}, "Output directory. Required."},
-///     lector::SingularArgument<Label::Iterations, std::int32_t>{
-///       {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
-///     lector::SingularArgument<Label::Help, bool>{
-///       {"-h", "--help"}, "Display this help information and exit. Optional."}
-///   };
+///     lector::Arguments arguments{
+///         lector::Configuration{
+///             "My Application",
+///             "Description of my application.",
+///             "Additional notes about my application."},
+///         lector::RepeatableArgument<Label::Tokens, std::string>{
+///             "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///         lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
+///             {"-o", "--output_directory"}, "Output directory. Required."},
+///         lector::SingularArgument<Label::Iterations, std::int32_t>{
+///             {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
+///         lector::SingularArgument<Label::Help, bool>{
+///             {"-h", "--help"}, "Display this help information and exit. Optional."}
+///     };
 ///
-///   arguments.parse(argc, argv);
+///     arguments.parse(argc, argv);
 ///
-///   if (arguments.get<Label::Help>().parsed_or_default_value()) {
-///     std::cout << arguments.help() << std::endl;
+///     if (arguments.get<Label::Help>().parsed_or_default_value()) {
+///         std::cout << arguments.help() << std::endl;
+///         return EXIT_SUCCESS;
+///     }
+///
+///     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
+///
+///     const std::vector<std::string>& tokens{
+///         arguments.get<Label::Tokens>().parsed_or_default_values()};
+///     std::cout << "The tokens are:";
+///     for (const std::string& token : tokens) {
+///         std::cout << " " << token;
+///     }
+///     std::cout << std::endl;
+///
+///     const std::filesystem::path& output_directory_path{
+///         arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
+///
+///     std::cout << "The output directory is: " << output_directory_path << std::endl;
+///
+///     const std::int32_t iterations_count{
+///         arguments.get<Label::Iterations>().parsed_or_default_value()};
+///
+///     std::cout << "The number of iterations is: " << iterations_count << std::endl;
+///
 ///     return EXIT_SUCCESS;
-///   }
-///
-///   std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
-///
-///   const std::vector<std::string>& tokens{
-///     arguments.get<test::Label::Tokens>().parsed_or_default_values()};
-///   std::cout << "The tokens are:";
-///   for (const std::string& token : tokens) {
-///     std::cout << " " << token;
-///   }
-///   std::cout << std::endl;
-///
-///   const std::filesystem::path& output_directory_path{
-///     arguments.get<Label::OutputDirectory>().parsed_or_default_value()};
-///
-///   std::cout << "The output directory is: " << output_directory_path << std::endl;
-///
-///   const std::int32_t iterations_count{
-///     arguments.get<Label::Iterations>().parsed_or_default_value()};
-///
-///   std::cout << "The number of iterations is: " << iterations_count << std::endl;
-///
-///   return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -292,18 +292,18 @@
 ///
 /// ```cpp
 /// lector::Arguments arguments{
-///   lector::Configuration{
-///     "My Application",
-///     "Description of my application.",
-///     "Additional notes about my application."},
-///   lector::RepeatableArgument<test::Label::Tokens, std::string>{
-///     "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
-///   lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
-///     {"-o", "--output_directory"}, "Output directory. Required."},
-///   lector::SingularArgument<Label::Iterations, std::int32_t>{
-///     {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
-///   lector::SingularArgument<Label::Help, bool>{
-///     {"-h", "--help"}, "Display this help information and exit. Optional."}
+///     lector::Configuration{
+///         "My Application",
+///         "Description of my application.",
+///         "Additional notes about my application."},
+///     lector::RepeatableArgument<Label::Tokens, std::string>{
+///         "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
+///         {"-o", "--output_directory"}, "Output directory. Required."},
+///     lector::SingularArgument<Label::Iterations, std::int32_t>{
+///         {"-i", "--iterations"}, "Number of iterations. Optional. Default 100.", 100},
+///     lector::SingularArgument<Label::Help, bool>{
+///         {"-h", "--help"}, "Display this help information and exit. Optional."}
 /// };
 /// ```
 ///
@@ -332,17 +332,17 @@
 ///
 /// ```cpp
 /// const lector::RepeatableArgument<Label::Tokens, std::string>& tokens{
-///   arguments.get<Label::Tokens>()};
+///     arguments.get<Label::Tokens>()};
 /// ```
 ///
 /// ```cpp
 /// const lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>& output_directory{
-///   arguments.get<Label::OutputDirectory>()};
+///     arguments.get<Label::OutputDirectory>()};
 /// ```
 ///
 /// ```cpp
 /// const lector::SingularArgument<Label::Iterations, std::int32_t>& iterations{
-///   arguments.get<Label::Iterations>()};
+///     arguments.get<Label::Iterations>()};
 /// ```
 ///
 /// ```cpp
@@ -375,8 +375,8 @@
 ///
 /// ```cpp
 /// if (arguments.get<Label::Help>().parsed_or_default_value()) {
-///   std::cout << arguments.help() << std::endl;
-///   return EXIT_SUCCESS;
+///     std::cout << arguments.help() << std::endl;
+///     return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -405,7 +405,7 @@
 ///
 /// The `lector::Arguments::usage()` and `lector::Arguments::options()` methods are similar to the `lector::Arguments::help()` method, but only display the usage and options portions of the full help information, respectively. They can also take optional line lengths to format their output.
 ///
-/// Execution information can be obtained via the  `lector::Arguments::execution()` method:
+/// Execution information can be obtained via the `lector::Arguments::execution()` method:
 ///
 /// ```cpp
 /// std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
@@ -457,17 +457,17 @@
 ///
 /// ```cpp
 /// lector::Arguments arguments{
-///   lector::RepeatableArgument<test::Label::Tokens, std::string>{
-///     "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
-///   lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
-///     {"o", "=o", "__out_dir__"}, "Output directory. Required."},
-///   lector::SingularArgument<Label::Iterations, std::int32_t>{
-///     {"=i=", "_it_", "==iter=="}, "Number of iterations. Optional. Default 100.", 100}
+///     lector::RepeatableArgument<Label::Tokens, std::string>{
+///         "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
+///         {"o", "=o", "__out_dir__"}, "Output directory. Required."},
+///     lector::SingularArgument<Label::Iterations, std::int32_t>{
+///         {"=i=", "_it_", "==iter=="}, "Number of iterations. Optional. Default 100.", 100}
 /// };
 /// ```
 ///
 /// ```bash
-/// path/to/my_application Hello World __out_dir__ /some/path =i= 200
+/// path/to/my_application Hello World __out_dir__ /some/path =i==200
 /// ```
 ///
 /// ```text
@@ -503,26 +503,26 @@
 ///
 /// template <>
 /// inline constexpr std::array<Name<my_project::Shape>, 3> Names<my_project::Shape>{
-///   {
-///     {my_project::Shape::Circle,   "Circle"},
-///     {my_project::Shape::Triangle, "Triangle"},
-///     {my_project::Shape::Square,   "Square"},
-///   }
+///     {
+///         {my_project::Shape::Circle,   "Circle"},
+///         {my_project::Shape::Triangle, "Triangle"},
+///         {my_project::Shape::Square,   "Square"},
+///     }
 /// };
 ///
 /// template <>
 /// inline constexpr std::array<Spelling<my_project::Shape>, 9> Spellings<my_project::Shape>{
-///   {
-///     {"Circle",   my_project::Shape::Circle},
-///     {"Triangle", my_project::Shape::Triangle},
-///     {"Square",   my_project::Shape::Square},
-///     {"circle",   my_project::Shape::Circle},
-///     {"triangle", my_project::Shape::Triangle},
-///     {"square",   my_project::Shape::Square},
-///     {"CIRCLE",   my_project::Shape::Circle},
-///     {"TRIANGLE", my_project::Shape::Triangle},
-///     {"SQUARE",   my_project::Shape::Square},
-///   }
+///     {
+///         {"Circle",   my_project::Shape::Circle},
+///         {"Triangle", my_project::Shape::Triangle},
+///         {"Square",   my_project::Shape::Square},
+///         {"circle",   my_project::Shape::Circle},
+///         {"triangle", my_project::Shape::Triangle},
+///         {"square",   my_project::Shape::Square},
+///         {"CIRCLE",   my_project::Shape::Circle},
+///         {"TRIANGLE", my_project::Shape::Triangle},
+///         {"SQUARE",   my_project::Shape::Square},
+///     }
 /// };
 ///
 /// }  // namespace lector
@@ -541,19 +541,19 @@
 /// #include "my_project/shape.hpp"
 ///
 /// int main() {
-///   const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
-///   assert(printed_triangle == "Triangle");
+///     const std::string printed_triangle{lector::print(my_project::Shape::Triangle)};
+///     assert(printed_triangle == "Triangle");
 ///
-///   const std::optional<my_project::Shape> parsed_triangle{
-///     lector::parse<my_project::Shape>("TRIANGLE")};
-///   assert(parsed_triangle.has_value() &&
-///          parsed_triangle.value() == my_project::Shape::Triangle);
+///     const std::optional<my_project::Shape> parsed_triangle{
+///         lector::parse<my_project::Shape>("TRIANGLE")};
+///     assert(parsed_triangle.has_value() &&
+///            parsed_triangle.value() == my_project::Shape::Triangle);
 ///
-///   const std::optional<my_project::Shape> invalid_shape{
-///     lector::parse<my_project::Shape>("Invalid Shape")};
-///   assert(!invalid_shape.has_value());
+///     const std::optional<my_project::Shape> invalid_shape{
+///         lector::parse<my_project::Shape>("Invalid Shape")};
+///     assert(!invalid_shape.has_value());
 ///
-///   return EXIT_SUCCESS;
+///     return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -570,19 +570,19 @@
 /// enum class Label : std::int8_t {FavoriteShape};
 ///
 /// int main(int argc, char* argv[]) {
-///   lector::Arguments arguments{
-///     lector::SingularArgument<Label::FavoriteShape, my_project::Shape>{
-///       {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle}
-///   };
+///     lector::Arguments arguments{
+///         lector::SingularArgument<Label::FavoriteShape, my_project::Shape>{
+///             {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle}
+///     };
 ///
-///   arguments.parse(argc, argv);
+///     arguments.parse(argc, argv);
 ///
-///   const my_project::Shape shape{
-///     arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
+///     const my_project::Shape shape{
+///         arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
 ///
-///   std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
+///     std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
 ///
-///   return EXIT_SUCCESS;
+///     return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -601,19 +601,19 @@
 /// namespace my_project {
 ///
 /// struct Point {
-///   double x{0.0};
-///   double y{0.0};
-///   double z{0.0};
+///     double x{0.0};
+///     double y{0.0};
+///     double z{0.0};
 /// };
 ///
 /// inline std::istream& operator>>(std::istream& input_stream, Point& point) {
-///   input_stream >> point.x >> point.y >> point.z;
-///   return input_stream;
+///     input_stream >> point.x >> point.y >> point.z;
+///     return input_stream;
 /// }
 ///
 /// inline std::ostream& operator<<(std::ostream& output_stream, const Point& point) {
-///   output_stream << point.x << " " << point.y << " " << point.z;
-///   return output_stream;
+///     output_stream << point.x << " " << point.y << " " << point.z;
+///     return output_stream;
 /// }
 ///
 /// }  // namespace my_project
@@ -632,18 +632,18 @@
 /// #include "my_project/point.hpp"
 ///
 /// int main() {
-///   const std::string printed_point{lector::print(my_project::Point{1.0, 2.0, 3.0})};
-///   assert(printed_point == "1 2 3");
+///     const std::string printed_point{lector::print(my_project::Point{1.0, 2.0, 3.0})};
+///     assert(printed_point == "1 2 3");
 ///
-///   const std::optional<my_project::Point> parsed_point{
-///     lector::parse<my_project::Point>("4.0 5.0 6.0")};
-///   const my_project::Point expected_point{4.0, 5.0, 6.0};
-///   assert(parsed_point.has_value() &&
-///          parsed_point.value().x == expected_point.x &&
-///          parsed_point.value().y == expected_point.y &&
-///          parsed_point.value().z == expected_point.z);
+///     const std::optional<my_project::Point> parsed_point{
+///         lector::parse<my_project::Point>("4.0 5.0 6.0")};
+///     const my_project::Point expected_point{4.0, 5.0, 6.0};
+///     assert(parsed_point.has_value() &&
+///            parsed_point.value().x == expected_point.x &&
+///            parsed_point.value().y == expected_point.y &&
+///            parsed_point.value().z == expected_point.z);
 ///
-///   return EXIT_SUCCESS;
+///     return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -659,19 +659,19 @@
 /// enum class Label : std::int8_t {FavoritePoint};
 ///
 /// int main(int argc, char* argv[]) {
-///   lector::Arguments arguments{
-///     lector::SingularArgument<Label::FavoritePoint, my_project::Point>{
-///       {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{} }
-///   };
+///     lector::Arguments arguments{
+///         lector::SingularArgument<Label::FavoritePoint, my_project::Point>{
+///             {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{} }
+///     };
 ///
-///   arguments.parse(argc, argv);
+///     arguments.parse(argc, argv);
 ///
-///   const my_project::Point point{
-///     arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
+///     const my_project::Point point{
+///         arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
 ///
-///   std::cout << "Your favorite point is: " << point << std::endl;
+///     std::cout << "Your favorite point is: " << point << std::endl;
 ///
-///   return EXIT_SUCCESS;
+///     return EXIT_SUCCESS;
 /// }
 /// ```
 ///
@@ -690,6 +690,7 @@
 /// - Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::SingularArgument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
 /// - All arguments must have descriptions. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
 /// - Boolean arguments are always false by default and cannot specify default values. For example, `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
+/// - A repeatable positional argument cannot be mixed with other positional arguments. For example, a `lector::Arguments` constructed from `lector::RepeatableArgument<Label::Tokens>{"List of tokens."}` and `lector::SingularArgument<Label::OutputDirectory>{"Output directory."}` throws an exception because the first is repeatable and both are positional.
 ///
 /// The following checks are performed when parsing command line arguments. These examples use the code from the [§1. Introduction](#1-introduction) section:
 ///
@@ -697,7 +698,7 @@
 /// - Duplicated arguments. For example, `path/to/my_application --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
 /// - Invalid argument values. For example, `path/to/my_application --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
 /// - Arguments missing values. For example, `path/to/my_application --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
-/// - Unknown command line tokens. For example, `path/to/my_application --output_directory /tmp --unknown` throws an exception because the token `--unknown` does not match any key of any named argument, and since no positional arguments are defined, it also cannot match the value of any positional argument.
+/// - Unknown command line tokens. For example, if the `Label::Tokens` argument was not defined, `path/to/my_application --output_directory /tmp --unknown` would throw an exception because the token `--unknown` would not match any key of any named argument, and since no positional arguments would be defined, it also would not match the value of any positional argument.
 ///
 /// \ref user_guide "(Back to User Guide)"
 ///
