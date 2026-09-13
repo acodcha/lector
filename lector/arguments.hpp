@@ -272,6 +272,12 @@ public:
     return description_;
   }
 
+  /// @brief Returns whether this singular command line argument has a default value.
+  /// @return True if this singular command line argument has a default value; false if it does not.
+  [[nodiscard]] bool has_default() const noexcept {
+    return default_value_.has_value();
+  }
+
   /// @brief Default value of this singular command line argument if it is optional and non-boolean,
   /// or std::nullopt otherwise. Set at construction.
   /// @return The default value of this singular command line argument.
@@ -682,6 +688,13 @@ public:
   /// @return The description of this command line argument.
   [[nodiscard]] std::string_view description() const noexcept {
     return description_;
+  }
+
+  /// @brief Returns whether this repeatable command line argument has one or more default values.
+  /// @return True if this repeatable command line argument has one or more default values; false if
+  /// it has none.
+  [[nodiscard]] bool has_default() const noexcept {
+    return !default_values_.empty();
   }
 
   /// @brief Default values of this repeatable command line argument. Set at construction.

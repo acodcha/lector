@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af4bb8d6ff2b5d34d8f9e79966845f4d0" id="r_af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908">lector::Form</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#af4bb8d6ff2b5d34d8f9e79966845f4d0">form</a> () const noexcept</td></tr>
 <tr class="memdesc:af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Form of this command line argument. A positional argument does not define any keys and must be specified in a specific order on the command line, whereas a named argument defines one or more keys and is specified on the command line by one of its keys. Named arguments can be specified in any order on the command line.  <br /></td></tr>
 <tr class="separator:af4bb8d6ff2b5d34d8f9e79966845f4d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d3781db30125c47f786e21027feed8" id="r_a40d3781db30125c47f786e21027feed8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a40d3781db30125c47f786e21027feed8">has_default</a> () const noexcept</td></tr>
+<tr class="memdesc:a40d3781db30125c47f786e21027feed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether this singular command line argument has a default value.  <br /></td></tr>
+<tr class="separator:a40d3781db30125c47f786e21027feed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0edf0614797a3366a24c816985ab3f69" id="r_a0edf0614797a3366a24c816985ab3f69"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1SingularArgument.html#a0edf0614797a3366a24c816985ab3f69">has_parsed</a> () const noexcept</td></tr>
 <tr class="memdesc:a0edf0614797a3366a24c816985ab3f69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether this singular command line argument has a parsed value.  <br /></td></tr>
 <tr class="separator:a0edf0614797a3366a24c816985ab3f69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -616,6 +619,36 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 <p>Form of this command line argument. A positional argument does not define any keys and must be specified in a specific order on the command line, whereas a named argument defines one or more keys and is specified on the command line by one of its keys. Named arguments can be specified in any order on the command line. </p>
 <dl class="section return"><dt>Returns</dt><dd>The form of this command line argument. </dd></dl>
+
+</div>
+</div>
+<a id="a40d3781db30125c47f786e21027feed8" name="a40d3781db30125c47f786e21027feed8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d3781db30125c47f786e21027feed8">&#9670;&#160;</a></span>has_default()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;auto LabelValue, typename Type &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classlector_1_1SingularArgument.html">lector::SingularArgument</a>&lt; LabelValue, Type &gt;::has_default </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns whether this singular command line argument has a default value. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if this singular command line argument has a default value; false if it does not. </dd></dl>
 
 </div>
 </div>
