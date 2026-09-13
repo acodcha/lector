@@ -3877,6 +3877,7 @@ TEST(Lector, RepeatableArgumentBooleanDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -3896,6 +3897,7 @@ TEST(Lector, RepeatableArgumentBooleanNamed) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -3912,6 +3914,7 @@ TEST(Lector, RepeatableArgumentBooleanNamed) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -3935,6 +3938,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(first.has_default());
   ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(first.default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
@@ -3954,6 +3958,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(second.has_default());
   EXPECT_TRUE(second.default_values().empty());
   EXPECT_FALSE(second.has_parsed());
   EXPECT_TRUE(second.parsed_values().empty());
@@ -3969,6 +3974,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -3988,6 +3994,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -4007,6 +4014,7 @@ TEST(Lector, RepeatableArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -4032,6 +4040,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(first.has_default());
   ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(first.default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
@@ -4051,6 +4060,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -4070,6 +4080,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -4089,6 +4100,7 @@ TEST(Lector, RepeatableArgumentCopyConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -4113,6 +4125,7 @@ TEST(Lector, RepeatableArgumentConfusingLongDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4133,6 +4146,7 @@ TEST(Lector, RepeatableArgumentConfusingLongMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -4153,6 +4167,7 @@ TEST(Lector, RepeatableArgumentConfusingLongMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -4177,6 +4192,7 @@ TEST(Lector, RepeatableArgumentConfusingShortDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4197,6 +4213,7 @@ TEST(Lector, RepeatableArgumentConfusingShortMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -4217,6 +4234,7 @@ TEST(Lector, RepeatableArgumentConfusingShortMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -4241,6 +4259,7 @@ TEST(Lector, RepeatableArgumentDataStructureDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4261,6 +4280,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.default_values().at(1), test::SecondPoint);
@@ -4281,6 +4301,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.default_values().at(1), test::SecondPoint);
@@ -4308,6 +4329,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4324,6 +4346,7 @@ TEST(Lector, RepeatableArgumentDataStructureNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4349,6 +4372,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.default_values().at(1), test::SecondPoint);
@@ -4369,6 +4393,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::FirstPoint);
   EXPECT_EQ(argument.default_values().at(1), test::SecondPoint);
@@ -4395,6 +4420,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4411,6 +4437,7 @@ TEST(Lector, RepeatableArgumentDataStructurePositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4434,6 +4461,7 @@ TEST(Lector, RepeatableArgumentEnumerationDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4454,6 +4482,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.default_values().at(1), test::Shape::Triangle);
@@ -4474,6 +4503,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.default_values().at(1), test::Shape::Triangle);
@@ -4499,6 +4529,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4515,6 +4546,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4538,6 +4570,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.default_values().at(1), test::Shape::Triangle);
@@ -4558,6 +4591,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::Shape::Circle);
   EXPECT_EQ(argument.default_values().at(1), test::Shape::Triangle);
@@ -4583,6 +4617,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4599,6 +4634,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4621,6 +4657,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4641,6 +4678,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.default_values().at(1), std::filesystem::path{"/second/path"});
@@ -4661,6 +4699,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.default_values().at(1), std::filesystem::path{"/second/path"});
@@ -4686,6 +4725,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4702,6 +4742,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4725,6 +4766,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.default_values().at(1), std::filesystem::path{"/second/path"});
@@ -4745,6 +4787,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), std::filesystem::path{"/first/path"});
   EXPECT_EQ(argument.default_values().at(1), std::filesystem::path{"/second/path"});
@@ -4770,6 +4813,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4786,6 +4830,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4808,6 +4853,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4828,6 +4874,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.default_values().at(1), test::OneOverSixtyFour);
@@ -4848,6 +4895,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.default_values().at(1), test::OneOverSixtyFour);
@@ -4874,6 +4922,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4890,6 +4939,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4914,6 +4964,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.default_values().at(1), test::OneOverSixtyFour);
@@ -4934,6 +4985,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneOverThirtyTwo);
   EXPECT_EQ(argument.default_values().at(1), test::OneOverSixtyFour);
@@ -4959,6 +5011,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -4975,6 +5028,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -4997,6 +5051,7 @@ TEST(Lector, RepeatableArgumentIntegerDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5017,6 +5072,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5037,6 +5093,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5062,6 +5119,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5078,6 +5136,7 @@ TEST(Lector, RepeatableArgumentIntegerNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -5101,6 +5160,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5121,6 +5181,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5146,6 +5207,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5162,6 +5224,7 @@ TEST(Lector, RepeatableArgumentIntegerPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -5192,6 +5255,7 @@ TEST(Lector, RepeatableArgumentInvalidBooleanParsedFalse) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5232,6 +5296,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(first.has_default());
   ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(first.default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
@@ -5251,6 +5316,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(second.has_default());
   EXPECT_TRUE(second.default_values().empty());
   EXPECT_FALSE(second.has_parsed());
   EXPECT_TRUE(second.parsed_values().empty());
@@ -5266,6 +5332,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5285,6 +5352,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5304,6 +5372,7 @@ TEST(Lector, RepeatableArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5329,6 +5398,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(first.has_default());
   ASSERT_EQ(first.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(first.default_values().at(0), test::OneHundred);
   EXPECT_EQ(first.default_values().at(1), test::TwoHundred);
@@ -5348,6 +5418,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5367,6 +5438,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5386,6 +5458,7 @@ TEST(Lector, RepeatableArgumentMoveConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(second.has_default());
   ASSERT_EQ(second.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(second.default_values().at(0), test::OneHundred);
   EXPECT_EQ(second.default_values().at(1), test::TwoHundred);
@@ -5410,6 +5483,7 @@ TEST(Lector, RepeatableArgumentStringDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5430,6 +5504,7 @@ TEST(Lector, RepeatableArgumentStringNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), "My First Report");
   EXPECT_EQ(argument.default_values().at(1), "My Second Report");
@@ -5450,6 +5525,7 @@ TEST(Lector, RepeatableArgumentStringNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), "My First Report");
   EXPECT_EQ(argument.default_values().at(1), "My Second Report");
@@ -5475,6 +5551,7 @@ TEST(Lector, RepeatableArgumentStringNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5491,6 +5568,7 @@ TEST(Lector, RepeatableArgumentStringNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -5514,6 +5592,7 @@ TEST(Lector, RepeatableArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), "My First Report");
   EXPECT_EQ(argument.default_values().at(1), "My Second Report");
@@ -5534,6 +5613,7 @@ TEST(Lector, RepeatableArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), "My First Report");
   EXPECT_EQ(argument.default_values().at(1), "My Second Report");
@@ -5559,6 +5639,7 @@ TEST(Lector, RepeatableArgumentStringPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5575,6 +5656,7 @@ TEST(Lector, RepeatableArgumentStringPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -5597,6 +5679,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5617,6 +5700,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5637,6 +5721,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_TRUE(argument.has_default());
   ASSERT_EQ(argument.default_values().size(), static_cast<std::size_t>(2UL));
   EXPECT_EQ(argument.default_values().at(0), test::OneHundred);
   EXPECT_EQ(argument.default_values().at(1), test::TwoHundred);
@@ -5662,6 +5747,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_values().empty());
@@ -5678,6 +5764,7 @@ TEST(Lector, RepeatableArgumentWeirdKeysRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_TRUE(argument.default_values().empty());
   EXPECT_TRUE(argument.has_parsed());
   ASSERT_EQ(argument.parsed_values().size(), static_cast<std::size_t>(2UL));
@@ -5700,6 +5787,7 @@ TEST(Lector, SingularArgumentBooleanDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -5719,6 +5807,7 @@ TEST(Lector, SingularArgumentBooleanNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value() && !argument.default_value().value());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -5734,6 +5823,7 @@ TEST(Lector, SingularArgumentBooleanNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value() && !argument.default_value().value());
   EXPECT_TRUE(argument.has_parsed());
   EXPECT_TRUE(argument.parsed_value().has_value() && argument.parsed_value().value());
@@ -5752,6 +5842,7 @@ TEST(Lector, SingularArgumentConfusingLongDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -5772,6 +5863,7 @@ TEST(Lector, SingularArgumentConfusingLongMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_FALSE(argument.has_parsed());
@@ -5788,6 +5880,7 @@ TEST(Lector, SingularArgumentConfusingLongMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_TRUE(argument.has_parsed());
@@ -5808,6 +5901,7 @@ TEST(Lector, SingularArgumentConfusingShortDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -5828,6 +5922,7 @@ TEST(Lector, SingularArgumentConfusingShortMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_FALSE(argument.has_parsed());
@@ -5844,6 +5939,7 @@ TEST(Lector, SingularArgumentConfusingShortMain) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_TRUE(argument.has_parsed());
@@ -5865,6 +5961,7 @@ TEST(Lector, SingularArgumentCopyAssignmentOperator) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(first.has_default());
   EXPECT_TRUE(
       first.default_value().has_value() && first.default_value().value() == test::OneHundred);
   EXPECT_FALSE(first.has_parsed());
@@ -5881,6 +5978,7 @@ TEST(Lector, SingularArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(second.has_default());
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_FALSE(second.has_parsed());
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -5895,6 +5993,7 @@ TEST(Lector, SingularArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_FALSE(second.has_parsed());
@@ -5911,6 +6010,7 @@ TEST(Lector, SingularArgumentCopyAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_TRUE(second.has_parsed());
@@ -5931,6 +6031,7 @@ TEST(Lector, SingularArgumentCopyConstructor) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(first.has_default());
   EXPECT_TRUE(
       first.default_value().has_value() && first.default_value().value() == test::OneHundred);
   EXPECT_FALSE(first.has_parsed());
@@ -5947,6 +6048,7 @@ TEST(Lector, SingularArgumentCopyConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_FALSE(second.has_parsed());
@@ -5963,6 +6065,7 @@ TEST(Lector, SingularArgumentCopyConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_TRUE(second.has_parsed());
@@ -5982,6 +6085,7 @@ TEST(Lector, SingularArgumentDataStructureDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6002,6 +6106,7 @@ TEST(Lector, SingularArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::FirstPoint);
   EXPECT_FALSE(argument.has_parsed());
@@ -6018,6 +6123,7 @@ TEST(Lector, SingularArgumentDataStructureNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::FirstPoint);
   EXPECT_TRUE(argument.has_parsed());
@@ -6039,6 +6145,7 @@ TEST(Lector, SingularArgumentDataStructureNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6058,6 +6165,7 @@ TEST(Lector, SingularArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::FirstPoint);
   EXPECT_FALSE(argument.has_parsed());
@@ -6074,6 +6182,7 @@ TEST(Lector, SingularArgumentDataStructurePositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::FirstPoint);
   EXPECT_TRUE(argument.has_parsed());
@@ -6095,6 +6204,7 @@ TEST(Lector, SingularArgumentDataStructurePositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6113,6 +6223,7 @@ TEST(Lector, SingularArgumentEnumerationDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6133,6 +6244,7 @@ TEST(Lector, SingularArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::Shape::Circle);
   EXPECT_FALSE(argument.has_parsed());
@@ -6149,6 +6261,7 @@ TEST(Lector, SingularArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::Shape::Circle);
   EXPECT_TRUE(argument.has_parsed());
@@ -6170,6 +6283,7 @@ TEST(Lector, SingularArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6189,6 +6303,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::Shape::Circle);
   EXPECT_FALSE(argument.has_parsed());
@@ -6205,6 +6320,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::Shape::Circle);
   EXPECT_TRUE(argument.has_parsed());
@@ -6226,6 +6342,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6244,6 +6361,7 @@ TEST(Lector, SingularArgumentFilesystemPathDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6264,6 +6382,7 @@ TEST(Lector, SingularArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == std::filesystem::path("/some/path"));
   EXPECT_FALSE(argument.has_parsed());
@@ -6280,6 +6399,7 @@ TEST(Lector, SingularArgumentFilesystemPathNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == std::filesystem::path("/some/path"));
   EXPECT_TRUE(argument.has_parsed());
@@ -6301,6 +6421,7 @@ TEST(Lector, SingularArgumentFilesystemPathNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6320,6 +6441,7 @@ TEST(Lector, SingularArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == std::filesystem::path("/some/path"));
   EXPECT_FALSE(argument.has_parsed());
@@ -6336,6 +6458,7 @@ TEST(Lector, SingularArgumentFilesystemPathPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == std::filesystem::path("/some/path"));
   EXPECT_TRUE(argument.has_parsed());
@@ -6357,6 +6480,7 @@ TEST(Lector, SingularArgumentFilesystemPathPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6375,6 +6499,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6395,6 +6520,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::OneOverThirtyTwo);
   EXPECT_FALSE(argument.has_parsed());
@@ -6411,6 +6537,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::OneOverThirtyTwo);
   EXPECT_TRUE(argument.has_parsed());
@@ -6432,6 +6559,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6451,6 +6579,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::OneOverThirtyTwo);
   EXPECT_FALSE(argument.has_parsed());
@@ -6467,6 +6596,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value()
               && argument.default_value().value() == test::OneOverThirtyTwo);
   EXPECT_TRUE(argument.has_parsed());
@@ -6488,6 +6618,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6506,6 +6637,7 @@ TEST(Lector, SingularArgumentIntegerDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6526,6 +6658,7 @@ TEST(Lector, SingularArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_FALSE(argument.has_parsed());
@@ -6542,6 +6675,7 @@ TEST(Lector, SingularArgumentIntegerNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_TRUE(argument.has_parsed());
@@ -6563,6 +6697,7 @@ TEST(Lector, SingularArgumentIntegerNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6582,6 +6717,7 @@ TEST(Lector, SingularArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_FALSE(argument.has_parsed());
@@ -6598,6 +6734,7 @@ TEST(Lector, SingularArgumentIntegerPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_TRUE(argument.has_parsed());
@@ -6619,6 +6756,7 @@ TEST(Lector, SingularArgumentIntegerPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6645,6 +6783,7 @@ TEST(Lector, SingularArgumentInvalidBooleanParsedFalse) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(argument.default_value().has_value() && !argument.default_value().value());
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6685,6 +6824,7 @@ TEST(Lector, SingularArgumentMoveAssignmentOperator) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(first.has_default());
   EXPECT_TRUE(
       first.default_value().has_value() && first.default_value().value() == test::OneHundred);
   EXPECT_FALSE(first.has_parsed());
@@ -6701,6 +6841,7 @@ TEST(Lector, SingularArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Required);
   EXPECT_EQ(second.form(), lector::Form::Positional);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(second.has_default());
   EXPECT_EQ(second.default_value(), std::nullopt);
   EXPECT_FALSE(second.has_parsed());
   EXPECT_EQ(second.parsed_value(), std::nullopt);
@@ -6715,6 +6856,7 @@ TEST(Lector, SingularArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_FALSE(second.has_parsed());
@@ -6731,6 +6873,7 @@ TEST(Lector, SingularArgumentMoveAssignmentOperator) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_TRUE(second.has_parsed());
@@ -6751,6 +6894,7 @@ TEST(Lector, SingularArgumentMoveConstructor) {
   EXPECT_EQ(first.importance(), lector::Importance::Optional);
   EXPECT_EQ(first.form(), lector::Form::Named);
   EXPECT_EQ(first.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(first.has_default());
   EXPECT_TRUE(
       first.default_value().has_value() && first.default_value().value() == test::OneHundred);
   EXPECT_FALSE(first.has_parsed());
@@ -6767,6 +6911,7 @@ TEST(Lector, SingularArgumentMoveConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_FALSE(second.has_parsed());
@@ -6783,6 +6928,7 @@ TEST(Lector, SingularArgumentMoveConstructor) {
   EXPECT_EQ(second.importance(), lector::Importance::Optional);
   EXPECT_EQ(second.form(), lector::Form::Named);
   EXPECT_EQ(second.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(second.has_default());
   EXPECT_TRUE(
       second.default_value().has_value() && second.default_value().value() == test::OneHundred);
   EXPECT_TRUE(second.has_parsed());
@@ -6802,6 +6948,7 @@ TEST(Lector, SingularArgumentStringDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6822,6 +6969,7 @@ TEST(Lector, SingularArgumentStringNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == "My Report");
   EXPECT_FALSE(argument.has_parsed());
@@ -6838,6 +6986,7 @@ TEST(Lector, SingularArgumentStringNamedOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == "My Report");
   EXPECT_TRUE(argument.has_parsed());
@@ -6859,6 +7008,7 @@ TEST(Lector, SingularArgumentStringNamedRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6878,6 +7028,7 @@ TEST(Lector, SingularArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == "My Report");
   EXPECT_FALSE(argument.has_parsed());
@@ -6894,6 +7045,7 @@ TEST(Lector, SingularArgumentStringPositionalOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == "My Report");
   EXPECT_TRUE(argument.has_parsed());
@@ -6915,6 +7067,7 @@ TEST(Lector, SingularArgumentStringPositionalRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6933,6 +7086,7 @@ TEST(Lector, SingularArgumentWeirdKeysDefault) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
@@ -6953,6 +7107,7 @@ TEST(Lector, SingularArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_FALSE(argument.has_parsed());
@@ -6969,6 +7124,7 @@ TEST(Lector, SingularArgumentWeirdKeysOptional) {
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_TRUE(argument.has_default());
   EXPECT_TRUE(
       argument.default_value().has_value() && argument.default_value().value() == test::OneHundred);
   EXPECT_TRUE(argument.has_parsed());
@@ -6990,6 +7146,7 @@ TEST(Lector, SingularArgumentWeirdKeysRequired) {
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
+  EXPECT_FALSE(argument.has_default());
   EXPECT_EQ(argument.default_value(), std::nullopt);
   EXPECT_FALSE(argument.has_parsed());
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
