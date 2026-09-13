@@ -281,7 +281,7 @@ public:
 
   /// @brief Returns whether this singular command line argument has a parsed value.
   /// @return True if this singular command line argument has a parsed value; false if it does not.
-  [[nodiscard]] bool has_parsed_value() const noexcept {
+  [[nodiscard]] bool has_parsed() const noexcept {
     return parsed_value_.has_value();
   }
 
@@ -693,7 +693,7 @@ public:
   /// @brief Returns whether this repeatable command line argument has one or more parsed values.
   /// @return True if this repeatable command line argument has one or more parsed values; false if
   /// it has none.
-  [[nodiscard]] bool has_parsed_value() const noexcept {
+  [[nodiscard]] bool has_parsed() const noexcept {
     return !parsed_values_.empty();
   }
 
@@ -1159,8 +1159,7 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&] {
-            if (argument.importance() == lector::Importance::Required
-                && !argument.has_parsed_value()) {
+            if (argument.importance() == lector::Importance::Required && !argument.has_parsed()) {
               throw std::invalid_argument(
                   "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
             }

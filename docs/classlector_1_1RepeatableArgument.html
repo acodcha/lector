@@ -117,9 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abae460df93a05ba2cc14086ef6c970f4" id="r_abae460df93a05ba2cc14086ef6c970f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a89f99245bf38da4acec3e654c955c908">lector::Form</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html#abae460df93a05ba2cc14086ef6c970f4">form</a> () const noexcept</td></tr>
 <tr class="memdesc:abae460df93a05ba2cc14086ef6c970f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Form of this command line argument. A positional argument does not define any keys and must be specified in a specific order on the command line, whereas a named argument defines one or more keys and is specified on the command line by one of its keys. Named arguments can be specified in any order on the command line.  <br /></td></tr>
 <tr class="separator:abae460df93a05ba2cc14086ef6c970f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedb5c3e9d6b2e2ad2a0c01be90da6639" id="r_aedb5c3e9d6b2e2ad2a0c01be90da6639"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html#aedb5c3e9d6b2e2ad2a0c01be90da6639">has_parsed_value</a> () const noexcept</td></tr>
-<tr class="memdesc:aedb5c3e9d6b2e2ad2a0c01be90da6639"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether this repeatable command line argument has one or more parsed values.  <br /></td></tr>
-<tr class="separator:aedb5c3e9d6b2e2ad2a0c01be90da6639"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1346b676d061641f16a11cbfbb18d52" id="r_af1346b676d061641f16a11cbfbb18d52"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html#af1346b676d061641f16a11cbfbb18d52">has_parsed</a> () const noexcept</td></tr>
+<tr class="memdesc:af1346b676d061641f16a11cbfbb18d52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether this repeatable command line argument has one or more parsed values.  <br /></td></tr>
+<tr class="separator:af1346b676d061641f16a11cbfbb18d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed18617e4a9abbefcc8868e062c999db" id="r_aed18617e4a9abbefcc8868e062c999db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacelector.html#a8a84b06fbb1b1f83f4178c59c22ece65">lector::Importance</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html#aed18617e4a9abbefcc8868e062c999db">importance</a> () const noexcept</td></tr>
 <tr class="memdesc:aed18617e4a9abbefcc8868e062c999db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Importance of this command line argument. A required argument must be provided by the user on the command line, whereas an optional argument may or may not be provided by the user on the command line. Set at construction.  <br /></td></tr>
 <tr class="separator:aed18617e4a9abbefcc8868e062c999db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -619,8 +619,8 @@ template&lt;auto LabelValue, typename Type &gt; </div>
 
 </div>
 </div>
-<a id="aedb5c3e9d6b2e2ad2a0c01be90da6639" name="aedb5c3e9d6b2e2ad2a0c01be90da6639"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedb5c3e9d6b2e2ad2a0c01be90da6639">&#9670;&#160;</a></span>has_parsed_value()</h2>
+<a id="af1346b676d061641f16a11cbfbb18d52" name="af1346b676d061641f16a11cbfbb18d52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1346b676d061641f16a11cbfbb18d52">&#9670;&#160;</a></span>has_parsed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -631,7 +631,7 @@ template&lt;auto LabelValue, typename Type &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument</a>&lt; LabelValue, Type &gt;::has_parsed_value </td>
+          <td class="memname">bool <a class="el" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument</a>&lt; LabelValue, Type &gt;::has_parsed </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
