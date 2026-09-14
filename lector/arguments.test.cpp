@@ -1180,6 +1180,38 @@ TEST(Lector, ArgumentsEmptyNoExecutableWithConfiguration) {
   EXPECT_TRUE(arguments.execution().empty());
 }
 
+TEST(Lector, ArgumentsExtraRepeatablePositionalToken) {
+  lector::Arguments arguments{test::repeatable_argument_integer_positional_required()};
+  const test::Command command{
+    std::vector<std::string>{"/path/to/executable", "200", "Hello"}
+  };
+  EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsExtraRepeatablePositionalTokens) {
+  lector::Arguments arguments{test::repeatable_argument_integer_positional_required()};
+  const test::Command command{
+    std::vector<std::string>{"/path/to/executable", "200", "Hello", "World"}
+  };
+  EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsExtraSingularPositionalToken) {
+  lector::Arguments arguments{test::singular_argument_integer_positional_required()};
+  const test::Command command{
+    std::vector<std::string>{"/path/to/executable", "200", "Hello"}
+  };
+  EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsExtraSingularPositionalTokens) {
+  lector::Arguments arguments{test::singular_argument_integer_positional_required()};
+  const test::Command command{
+    std::vector<std::string>{"/path/to/executable", "200", "Hello", "World"}
+  };
+  EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
+}
+
 TEST(Lector, ArgumentsExtraTokenNoConfiguration) {
   lector::Arguments arguments{
     test::singular_argument_integer_positional_optional(), test::singular_argument_boolean()};
@@ -1197,6 +1229,19 @@ TEST(Lector, ArgumentsExtraTokenWithConfiguration) {
     {"/path/to/executable", "200", "300", "--help"}
   };
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsInvalidLineLengthZero) {
+  lector::Arguments arguments{test::singular_argument_integer_named_optional()};
+  const test::Command command{
+    std::vector<std::string>{"/path/to/executable", "--iterations", "200"}
+  };
+  arguments.parse(command.argc(), command.argv());
+  arguments.validate();
+  EXPECT_ANY_THROW((void)arguments.usage(static_cast<std::size_t>(0UL)));
+  EXPECT_ANY_THROW((void)arguments.options(static_cast<std::size_t>(0UL)));
+  EXPECT_ANY_THROW((void)arguments.help(static_cast<std::size_t>(0UL)));
+  EXPECT_ANY_THROW((void)arguments.execution(static_cast<std::size_t>(0UL)));
 }
 
 TEST(Lector, ArgumentsInvalidValueForArgumentNamedInlineNoConfiguration) {
@@ -1417,6 +1462,12 @@ TEST(Lector, ArgumentsMissingValueArgumentMiddleWhitespaceWithConfiguration) {
     {"/path/to/executable", "--output_directory", "/path/to/output", "--iterations", "--help"}
   };
   EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
+
+TEST(Lector, ArgumentsMixedRepeatablePositionalWithOtherPositional) {
+  EXPECT_ANY_THROW((void)lector::Arguments(
+      test::repeatable_argument_integer_positional_optional(),
+      test::singular_argument_enumeration_positional_optional()));
 }
 
 TEST(Lector, ArgumentsNoExecutableNoArgumentsNoConfiguration) {
