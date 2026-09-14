@@ -524,18 +524,18 @@ private:
 
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
-  /// @throws std::logic_error if this command line argument has no keys.
+  /// @throws std::out_of_range if this command line argument has no keys.
   [[nodiscard]] const std::string& longest_key() const {
-    if (keys_.empty()) {
-      throw std::logic_error("A named argument must have at least one key.");
-    }
     std::size_t longest_key_index{0UL};
-    for (std::size_t index{1UL}; index < keys_.size(); ++index) {
-      if (keys_[index].size() > keys_[longest_key_index].size()) {
+    std::size_t longest_key_length{0UL};
+    for (std::size_t index{0UL}; index < keys_.size(); ++index) {
+      const std::size_t length{lector::code_points(keys_.at(index))};
+      if (length > longest_key_length) {
         longest_key_index = index;
+        longest_key_length = length;
       }
     }
-    return keys_[longest_key_index];
+    return keys_.at(longest_key_index);
   }
 
   /// @brief Prints the execution of this boolean command line argument as a string of text. The
@@ -929,18 +929,18 @@ private:
 
   /// @brief Returns the longest key of this command line argument.
   /// @return The longest key of this command line argument.
-  /// @throws std::logic_error if this command line argument has no keys.
+  /// @throws std::out_of_range if this command line argument has no keys.
   [[nodiscard]] const std::string& longest_key() const {
-    if (keys_.empty()) {
-      throw std::logic_error("A named argument must have at least one key.");
-    }
     std::size_t longest_key_index{0UL};
-    for (std::size_t index{1UL}; index < keys_.size(); ++index) {
-      if (keys_[index].size() > keys_[longest_key_index].size()) {
+    std::size_t longest_key_length{0UL};
+    for (std::size_t index{0UL}; index < keys_.size(); ++index) {
+      const std::size_t length{lector::code_points(keys_.at(index))};
+      if (length > longest_key_length) {
         longest_key_index = index;
+        longest_key_length = length;
       }
     }
-    return keys_[longest_key_index];
+    return keys_.at(longest_key_index);
   }
 
   /// @brief Prints the execution of this boolean command line argument as a string of text. The
@@ -1493,7 +1493,7 @@ private:
               using Type = typename std::decay_t<decltype(argument)>::ValueType;
               if (argument.arity() == lector::Arity::Singular) {
                 if (positional_token_index < positional_tokens.size()) {
-                  const std::string raw_value{positional_tokens[positional_token_index]};
+                  const std::string raw_value{positional_tokens.at(positional_token_index)};
                   const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
                   if (parsed_value.has_value()) {
                     argument.set_parsed_value(parsed_value.value());
@@ -1506,7 +1506,7 @@ private:
               } else {
                 // Repeatable arity: consume all remaining tokens.
                 while (positional_token_index < positional_tokens.size()) {
-                  const std::string raw_value{positional_tokens[positional_token_index]};
+                  const std::string raw_value{positional_tokens.at(positional_token_index)};
                   const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
                   if (parsed_value.has_value()) {
                     argument.set_parsed_value(parsed_value.value());
@@ -1722,19 +1722,17 @@ private:
       const std::vector<std::string_view>& positional_tokens,
       const std::size_t positional_token_index) {
     if (positional_token_index < positional_tokens.size()) {
-      const std::size_t unexpected_count{positional_tokens.size() - positional_token_index};
       std::string unexpected_tokens;
       for (std::size_t unexpected_token_index{positional_token_index};
            unexpected_token_index < positional_tokens.size(); ++unexpected_token_index) {
-        if (unexpected_token_index > positional_token_index) {
+        if (!unexpected_tokens.empty()) {
           unexpected_tokens.append(", ");
         }
         unexpected_tokens.push_back('\'');
-        unexpected_tokens.append(std::string{positional_tokens[unexpected_token_index]});
+        unexpected_tokens.append(std::string{positional_tokens.at(unexpected_token_index)});
         unexpected_tokens.push_back('\'');
       }
-      throw std::invalid_argument(std::to_string(unexpected_count)
-                                  + " unexpected command line tokens: " + unexpected_tokens + ".");
+      throw std::invalid_argument("Unexpected command line tokens: " + unexpected_tokens + ".");
     }
   }
 

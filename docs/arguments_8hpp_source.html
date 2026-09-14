@@ -587,18 +587,18 @@
 <div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span><span class="comment"></span> </div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span><span class="comment">  /// @brief Returns the longest key of this command line argument.</span></div>
 <div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span><span class="comment">  /// @return The longest key of this command line argument.</span></div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="comment">  /// @throws std::logic_error if this command line argument has no keys.</span></div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span><span class="comment">  /// @throws std::out_of_range if this command line argument has no keys.</span></div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span><span class="comment"></span>  [[nodiscard]] <span class="keyword">const</span> std::string&amp; longest_key()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>    <span class="keywordflow">if</span> (keys_.empty()) {</div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>      <span class="keywordflow">throw</span> std::logic_error(<span class="stringliteral">&quot;A named argument must have at least one key.&quot;</span>);</div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    }</div>
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>    std::size_t longest_key_index{0UL};</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>    <span class="keywordflow">for</span> (std::size_t index{1UL}; index &lt; keys_.size(); ++index) {</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>      <span class="keywordflow">if</span> (keys_[index].size() &gt; keys_[longest_key_index].size()) {</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>        longest_key_index = index;</div>
+<div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span>    std::size_t longest_key_index{0UL};</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span>    std::size_t longest_key_length{0UL};</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>    <span class="keywordflow">for</span> (std::size_t index{0UL}; index &lt; keys_.size(); ++index) {</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>      <span class="keyword">const</span> std::size_t length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(keys_.at(index))};</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>      <span class="keywordflow">if</span> (length &gt; longest_key_length) {</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>        longest_key_index = index;</div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>        longest_key_length = length;</div>
 <div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>      }</div>
 <div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    }</div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>    <span class="keywordflow">return</span> keys_[longest_key_index];</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>    <span class="keywordflow">return</span> keys_.at(longest_key_index);</div>
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>  }</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span><span class="comment"></span> </div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span><span class="comment">  /// @brief Prints the execution of this boolean command line argument as a string of text. The</span></div>
@@ -992,18 +992,18 @@
 <div class="line"><a id="l00929" name="l00929"></a><span class="lineno">  929</span><span class="comment"></span> </div>
 <div class="line"><a id="l00930" name="l00930"></a><span class="lineno">  930</span><span class="comment">  /// @brief Returns the longest key of this command line argument.</span></div>
 <div class="line"><a id="l00931" name="l00931"></a><span class="lineno">  931</span><span class="comment">  /// @return The longest key of this command line argument.</span></div>
-<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span><span class="comment">  /// @throws std::logic_error if this command line argument has no keys.</span></div>
+<div class="line"><a id="l00932" name="l00932"></a><span class="lineno">  932</span><span class="comment">  /// @throws std::out_of_range if this command line argument has no keys.</span></div>
 <div class="line"><a id="l00933" name="l00933"></a><span class="lineno">  933</span><span class="comment"></span>  [[nodiscard]] <span class="keyword">const</span> std::string&amp; longest_key()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>    <span class="keywordflow">if</span> (keys_.empty()) {</div>
-<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>      <span class="keywordflow">throw</span> std::logic_error(<span class="stringliteral">&quot;A named argument must have at least one key.&quot;</span>);</div>
-<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    }</div>
-<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>    std::size_t longest_key_index{0UL};</div>
-<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>    <span class="keywordflow">for</span> (std::size_t index{1UL}; index &lt; keys_.size(); ++index) {</div>
-<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>      <span class="keywordflow">if</span> (keys_[index].size() &gt; keys_[longest_key_index].size()) {</div>
-<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>        longest_key_index = index;</div>
+<div class="line"><a id="l00934" name="l00934"></a><span class="lineno">  934</span>    std::size_t longest_key_index{0UL};</div>
+<div class="line"><a id="l00935" name="l00935"></a><span class="lineno">  935</span>    std::size_t longest_key_length{0UL};</div>
+<div class="line"><a id="l00936" name="l00936"></a><span class="lineno">  936</span>    <span class="keywordflow">for</span> (std::size_t index{0UL}; index &lt; keys_.size(); ++index) {</div>
+<div class="line"><a id="l00937" name="l00937"></a><span class="lineno">  937</span>      <span class="keyword">const</span> std::size_t length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(keys_.at(index))};</div>
+<div class="line"><a id="l00938" name="l00938"></a><span class="lineno">  938</span>      <span class="keywordflow">if</span> (length &gt; longest_key_length) {</div>
+<div class="line"><a id="l00939" name="l00939"></a><span class="lineno">  939</span>        longest_key_index = index;</div>
+<div class="line"><a id="l00940" name="l00940"></a><span class="lineno">  940</span>        longest_key_length = length;</div>
 <div class="line"><a id="l00941" name="l00941"></a><span class="lineno">  941</span>      }</div>
 <div class="line"><a id="l00942" name="l00942"></a><span class="lineno">  942</span>    }</div>
-<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    <span class="keywordflow">return</span> keys_[longest_key_index];</div>
+<div class="line"><a id="l00943" name="l00943"></a><span class="lineno">  943</span>    <span class="keywordflow">return</span> keys_.at(longest_key_index);</div>
 <div class="line"><a id="l00944" name="l00944"></a><span class="lineno">  944</span>  }</div>
 <div class="line"><a id="l00945" name="l00945"></a><span class="lineno">  945</span><span class="comment"></span> </div>
 <div class="line"><a id="l00946" name="l00946"></a><span class="lineno">  946</span><span class="comment">  /// @brief Prints the execution of this boolean command line argument as a string of text. The</span></div>
@@ -1556,7 +1556,7 @@
 <div class="line"><a id="l01493" name="l01493"></a><span class="lineno"> 1493</span>              using Type = typename std::decay_t&lt;decltype(argument)&gt;::ValueType;</div>
 <div class="line"><a id="l01494" name="l01494"></a><span class="lineno"> 1494</span>              if (argument.arity() == lector::Arity::Singular) {</div>
 <div class="line"><a id="l01495" name="l01495"></a><span class="lineno"> 1495</span>                if (positional_token_index &lt; positional_tokens.size()) {</div>
-<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>                  const std::string raw_value{positional_tokens[positional_token_index]};</div>
+<div class="line"><a id="l01496" name="l01496"></a><span class="lineno"> 1496</span>                  const std::string raw_value{positional_tokens.at(positional_token_index)};</div>
 <div class="line"><a id="l01497" name="l01497"></a><span class="lineno"> 1497</span>                  const std::optional&lt;Type&gt; parsed_value{lector::parse&lt;Type&gt;(raw_value)};</div>
 <div class="line"><a id="l01498" name="l01498"></a><span class="lineno"> 1498</span>                  if (parsed_value.has_value()) {</div>
 <div class="line"><a id="l01499" name="l01499"></a><span class="lineno"> 1499</span>                    argument.set_parsed_value(parsed_value.value());</div>
@@ -1569,7 +1569,7 @@
 <div class="line"><a id="l01506" name="l01506"></a><span class="lineno"> 1506</span>              } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l01507" name="l01507"></a><span class="lineno"> 1507</span>                <span class="comment">// Repeatable arity: consume all remaining tokens.</span></div>
 <div class="line"><a id="l01508" name="l01508"></a><span class="lineno"> 1508</span>                while (positional_token_index &lt; positional_tokens.size()) {</div>
-<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>                  const std::string raw_value{positional_tokens[positional_token_index]};</div>
+<div class="line"><a id="l01509" name="l01509"></a><span class="lineno"> 1509</span>                  const std::string raw_value{positional_tokens.at(positional_token_index)};</div>
 <div class="line"><a id="l01510" name="l01510"></a><span class="lineno"> 1510</span>                  const std::optional&lt;Type&gt; parsed_value{lector::parse&lt;Type&gt;(raw_value)};</div>
 <div class="line"><a id="l01511" name="l01511"></a><span class="lineno"> 1511</span>                  if (parsed_value.has_value()) {</div>
 <div class="line"><a id="l01512" name="l01512"></a><span class="lineno"> 1512</span>                    argument.set_parsed_value(parsed_value.value());</div>
@@ -1785,53 +1785,51 @@
 <div class="line"><a id="l01722" name="l01722"></a><span class="lineno"> 1722</span>      <span class="keyword">const</span> std::vector&lt;std::string_view&gt;&amp; positional_tokens,</div>
 <div class="line"><a id="l01723" name="l01723"></a><span class="lineno"> 1723</span>      <span class="keyword">const</span> std::size_t positional_token_index) {</div>
 <div class="line"><a id="l01724" name="l01724"></a><span class="lineno"> 1724</span>    <span class="keywordflow">if</span> (positional_token_index &lt; positional_tokens.size()) {</div>
-<div class="line"><a id="l01725" name="l01725"></a><span class="lineno"> 1725</span>      <span class="keyword">const</span> std::size_t unexpected_count{positional_tokens.size() - positional_token_index};</div>
-<div class="line"><a id="l01726" name="l01726"></a><span class="lineno"> 1726</span>      std::string unexpected_tokens;</div>
-<div class="line"><a id="l01727" name="l01727"></a><span class="lineno"> 1727</span>      <span class="keywordflow">for</span> (std::size_t unexpected_token_index{positional_token_index};</div>
-<div class="line"><a id="l01728" name="l01728"></a><span class="lineno"> 1728</span>           unexpected_token_index &lt; positional_tokens.size(); ++unexpected_token_index) {</div>
-<div class="line"><a id="l01729" name="l01729"></a><span class="lineno"> 1729</span>        <span class="keywordflow">if</span> (unexpected_token_index &gt; positional_token_index) {</div>
-<div class="line"><a id="l01730" name="l01730"></a><span class="lineno"> 1730</span>          unexpected_tokens.append(<span class="stringliteral">&quot;, &quot;</span>);</div>
-<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>        }</div>
-<div class="line"><a id="l01732" name="l01732"></a><span class="lineno"> 1732</span>        unexpected_tokens.push_back(<span class="charliteral">&#39;\&#39;&#39;</span>);</div>
-<div class="line"><a id="l01733" name="l01733"></a><span class="lineno"> 1733</span>        unexpected_tokens.append(std::string{positional_tokens[unexpected_token_index]});</div>
-<div class="line"><a id="l01734" name="l01734"></a><span class="lineno"> 1734</span>        unexpected_tokens.push_back(<span class="charliteral">&#39;\&#39;&#39;</span>);</div>
-<div class="line"><a id="l01735" name="l01735"></a><span class="lineno"> 1735</span>      }</div>
-<div class="line"><a id="l01736" name="l01736"></a><span class="lineno"> 1736</span>      <span class="keywordflow">throw</span> std::invalid_argument(std::to_string(unexpected_count)</div>
-<div class="line"><a id="l01737" name="l01737"></a><span class="lineno"> 1737</span>                                  + <span class="stringliteral">&quot; unexpected command line tokens: &quot;</span> + unexpected_tokens + <span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a id="l01738" name="l01738"></a><span class="lineno"> 1738</span>    }</div>
-<div class="line"><a id="l01739" name="l01739"></a><span class="lineno"> 1739</span>  }</div>
-<div class="line"><a id="l01740" name="l01740"></a><span class="lineno"> 1740</span><span class="comment"></span> </div>
-<div class="line"><a id="l01741" name="l01741"></a><span class="lineno"> 1741</span><span class="comment">  /// @brief Computes and returns the maximum length of the printed keys and value type across all</span></div>
-<div class="line"><a id="l01742" name="l01742"></a><span class="lineno"> 1742</span><span class="comment">  /// arguments in this collection of command line arguments.</span></div>
-<div class="line"><a id="l01743" name="l01743"></a><span class="lineno"> 1743</span><span class="comment">  /// @return The maximum length of the printed keys and value type across all arguments in this</span></div>
-<div class="line"><a id="l01744" name="l01744"></a><span class="lineno"> 1744</span><span class="comment">  /// collection.</span></div>
-<div class="line"><a id="l01745" name="l01745"></a><span class="lineno"> 1745</span><span class="comment"></span>  [[nodiscard]] std::size_t maximum_length_of_keys_with_value_type()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01746" name="l01746"></a><span class="lineno"> 1746</span>    std::size_t maximum_length{0UL};</div>
-<div class="line"><a id="l01747" name="l01747"></a><span class="lineno"> 1747</span>    std::apply(</div>
-<div class="line"><a id="l01748" name="l01748"></a><span class="lineno"> 1748</span>        [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp;... argument) {</div>
-<div class="line"><a id="l01749" name="l01749"></a><span class="lineno"> 1749</span>          (..., [&amp;] {</div>
-<div class="line"><a id="l01750" name="l01750"></a><span class="lineno"> 1750</span>            <span class="keyword">const</span> std::size_t length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(argument.keys_with_value_type())};</div>
-<div class="line"><a id="l01751" name="l01751"></a><span class="lineno"> 1751</span>            maximum_length = std::max(maximum_length, length);</div>
-<div class="line"><a id="l01752" name="l01752"></a><span class="lineno"> 1752</span>          }());</div>
-<div class="line"><a id="l01753" name="l01753"></a><span class="lineno"> 1753</span>        },</div>
-<div class="line"><a id="l01754" name="l01754"></a><span class="lineno"> 1754</span>        arguments_);</div>
-<div class="line"><a id="l01755" name="l01755"></a><span class="lineno"> 1755</span>    <span class="keywordflow">return</span> maximum_length;</div>
-<div class="line"><a id="l01756" name="l01756"></a><span class="lineno"> 1756</span>  }</div>
-<div class="line"><a id="l01757" name="l01757"></a><span class="lineno"> 1757</span><span class="comment"></span> </div>
-<div class="line"><a id="l01758" name="l01758"></a><span class="lineno"> 1758</span><span class="comment">  /// @brief Configuration of the help information of this collection of command line arguments.</span></div>
-<div class="line"><a id="l01759" name="l01759"></a><span class="lineno"> 1759</span><span class="comment"></span>  <a class="code hl_struct" href="structlector_1_1Configuration.html">lector::Configuration</a> configuration_{};</div>
-<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span><span class="comment"></span> </div>
-<div class="line"><a id="l01761" name="l01761"></a><span class="lineno"> 1761</span><span class="comment">  /// @brief Variadic collection of command line arguments.</span></div>
-<div class="line"><a id="l01762" name="l01762"></a><span class="lineno"> 1762</span><span class="comment"></span>  std::tuple&lt;ArgumentTypes...&gt; arguments_;</div>
-<div class="line"><a id="l01763" name="l01763"></a><span class="lineno"> 1763</span><span class="comment"></span> </div>
-<div class="line"><a id="l01764" name="l01764"></a><span class="lineno"> 1764</span><span class="comment">  /// @brief Executable path of this collection of command line arguments. If the command line</span></div>
-<div class="line"><a id="l01765" name="l01765"></a><span class="lineno"> 1765</span><span class="comment">  /// arguments have not yet been parsed from argc and argv, this path is empty.</span></div>
-<div class="line"><a id="l01766" name="l01766"></a><span class="lineno"> 1766</span><span class="comment"></span>  std::filesystem::path executable_path_;</div>
-<div class="line"><a id="l01767" name="l01767"></a><span class="lineno"> 1767</span>};</div>
+<div class="line"><a id="l01725" name="l01725"></a><span class="lineno"> 1725</span>      std::string unexpected_tokens;</div>
+<div class="line"><a id="l01726" name="l01726"></a><span class="lineno"> 1726</span>      <span class="keywordflow">for</span> (std::size_t unexpected_token_index{positional_token_index};</div>
+<div class="line"><a id="l01727" name="l01727"></a><span class="lineno"> 1727</span>           unexpected_token_index &lt; positional_tokens.size(); ++unexpected_token_index) {</div>
+<div class="line"><a id="l01728" name="l01728"></a><span class="lineno"> 1728</span>        <span class="keywordflow">if</span> (!unexpected_tokens.empty()) {</div>
+<div class="line"><a id="l01729" name="l01729"></a><span class="lineno"> 1729</span>          unexpected_tokens.append(<span class="stringliteral">&quot;, &quot;</span>);</div>
+<div class="line"><a id="l01730" name="l01730"></a><span class="lineno"> 1730</span>        }</div>
+<div class="line"><a id="l01731" name="l01731"></a><span class="lineno"> 1731</span>        unexpected_tokens.push_back(<span class="charliteral">&#39;\&#39;&#39;</span>);</div>
+<div class="line"><a id="l01732" name="l01732"></a><span class="lineno"> 1732</span>        unexpected_tokens.append(std::string{positional_tokens.at(unexpected_token_index)});</div>
+<div class="line"><a id="l01733" name="l01733"></a><span class="lineno"> 1733</span>        unexpected_tokens.push_back(<span class="charliteral">&#39;\&#39;&#39;</span>);</div>
+<div class="line"><a id="l01734" name="l01734"></a><span class="lineno"> 1734</span>      }</div>
+<div class="line"><a id="l01735" name="l01735"></a><span class="lineno"> 1735</span>      <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;Unexpected command line tokens: &quot;</span> + unexpected_tokens + <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a id="l01736" name="l01736"></a><span class="lineno"> 1736</span>    }</div>
+<div class="line"><a id="l01737" name="l01737"></a><span class="lineno"> 1737</span>  }</div>
+<div class="line"><a id="l01738" name="l01738"></a><span class="lineno"> 1738</span><span class="comment"></span> </div>
+<div class="line"><a id="l01739" name="l01739"></a><span class="lineno"> 1739</span><span class="comment">  /// @brief Computes and returns the maximum length of the printed keys and value type across all</span></div>
+<div class="line"><a id="l01740" name="l01740"></a><span class="lineno"> 1740</span><span class="comment">  /// arguments in this collection of command line arguments.</span></div>
+<div class="line"><a id="l01741" name="l01741"></a><span class="lineno"> 1741</span><span class="comment">  /// @return The maximum length of the printed keys and value type across all arguments in this</span></div>
+<div class="line"><a id="l01742" name="l01742"></a><span class="lineno"> 1742</span><span class="comment">  /// collection.</span></div>
+<div class="line"><a id="l01743" name="l01743"></a><span class="lineno"> 1743</span><span class="comment"></span>  [[nodiscard]] std::size_t maximum_length_of_keys_with_value_type()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l01744" name="l01744"></a><span class="lineno"> 1744</span>    std::size_t maximum_length{0UL};</div>
+<div class="line"><a id="l01745" name="l01745"></a><span class="lineno"> 1745</span>    std::apply(</div>
+<div class="line"><a id="l01746" name="l01746"></a><span class="lineno"> 1746</span>        [&amp;](<span class="keyword">const</span> <span class="keyword">auto</span>&amp;... argument) {</div>
+<div class="line"><a id="l01747" name="l01747"></a><span class="lineno"> 1747</span>          (..., [&amp;] {</div>
+<div class="line"><a id="l01748" name="l01748"></a><span class="lineno"> 1748</span>            <span class="keyword">const</span> std::size_t length{<a class="code hl_function" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">lector::code_points</a>(argument.keys_with_value_type())};</div>
+<div class="line"><a id="l01749" name="l01749"></a><span class="lineno"> 1749</span>            maximum_length = std::max(maximum_length, length);</div>
+<div class="line"><a id="l01750" name="l01750"></a><span class="lineno"> 1750</span>          }());</div>
+<div class="line"><a id="l01751" name="l01751"></a><span class="lineno"> 1751</span>        },</div>
+<div class="line"><a id="l01752" name="l01752"></a><span class="lineno"> 1752</span>        arguments_);</div>
+<div class="line"><a id="l01753" name="l01753"></a><span class="lineno"> 1753</span>    <span class="keywordflow">return</span> maximum_length;</div>
+<div class="line"><a id="l01754" name="l01754"></a><span class="lineno"> 1754</span>  }</div>
+<div class="line"><a id="l01755" name="l01755"></a><span class="lineno"> 1755</span><span class="comment"></span> </div>
+<div class="line"><a id="l01756" name="l01756"></a><span class="lineno"> 1756</span><span class="comment">  /// @brief Configuration of the help information of this collection of command line arguments.</span></div>
+<div class="line"><a id="l01757" name="l01757"></a><span class="lineno"> 1757</span><span class="comment"></span>  <a class="code hl_struct" href="structlector_1_1Configuration.html">lector::Configuration</a> configuration_{};</div>
+<div class="line"><a id="l01758" name="l01758"></a><span class="lineno"> 1758</span><span class="comment"></span> </div>
+<div class="line"><a id="l01759" name="l01759"></a><span class="lineno"> 1759</span><span class="comment">  /// @brief Variadic collection of command line arguments.</span></div>
+<div class="line"><a id="l01760" name="l01760"></a><span class="lineno"> 1760</span><span class="comment"></span>  std::tuple&lt;ArgumentTypes...&gt; arguments_;</div>
+<div class="line"><a id="l01761" name="l01761"></a><span class="lineno"> 1761</span><span class="comment"></span> </div>
+<div class="line"><a id="l01762" name="l01762"></a><span class="lineno"> 1762</span><span class="comment">  /// @brief Executable path of this collection of command line arguments. If the command line</span></div>
+<div class="line"><a id="l01763" name="l01763"></a><span class="lineno"> 1763</span><span class="comment">  /// arguments have not yet been parsed from argc and argv, this path is empty.</span></div>
+<div class="line"><a id="l01764" name="l01764"></a><span class="lineno"> 1764</span><span class="comment"></span>  std::filesystem::path executable_path_;</div>
+<div class="line"><a id="l01765" name="l01765"></a><span class="lineno"> 1765</span>};</div>
+<div class="line"><a id="l01766" name="l01766"></a><span class="lineno"> 1766</span> </div>
+<div class="line"><a id="l01767" name="l01767"></a><span class="lineno"> 1767</span>}  <span class="comment">// namespace lector</span></div>
 <div class="line"><a id="l01768" name="l01768"></a><span class="lineno"> 1768</span> </div>
-<div class="line"><a id="l01769" name="l01769"></a><span class="lineno"> 1769</span>}  <span class="comment">// namespace lector</span></div>
-<div class="line"><a id="l01770" name="l01770"></a><span class="lineno"> 1770</span> </div>
-<div class="line"><a id="l01771" name="l01771"></a><span class="lineno"> 1771</span><span class="preprocessor">#endif  </span><span class="comment">// LECTOR_ARGUMENTS_HPP</span></div>
+<div class="line"><a id="l01769" name="l01769"></a><span class="lineno"> 1769</span><span class="preprocessor">#endif  </span><span class="comment">// LECTOR_ARGUMENTS_HPP</span></div>
 <div class="ttc" id="aclasslector_1_1Arguments_html"><div class="ttname"><a href="classlector_1_1Arguments.html">lector::Arguments</a></div><div class="ttdoc">A collection of command line arguments that can be parsed from argc and argv.</div><div class="ttdef"><b>Definition</b> arguments.hpp:1104</div></div>
 <div class="ttc" id="aclasslector_1_1Arguments_html_a1e6d3fb52acfe3eab582b1d519fbf2eb"><div class="ttname"><a href="classlector_1_1Arguments.html#a1e6d3fb52acfe3eab582b1d519fbf2eb">lector::Arguments::usage</a></div><div class="ttdeci">std::string usage(const std::size_t line_length) const</div><div class="ttdoc">Prints the usage information of this collection of command line arguments as a string of text....</div><div class="ttdef"><b>Definition</b> arguments.hpp:1226</div></div>
 <div class="ttc" id="aclasslector_1_1Arguments_html_a23d8933b7c15472a645c1815f16a99bd"><div class="ttname"><a href="classlector_1_1Arguments.html#a23d8933b7c15472a645c1815f16a99bd">lector::Arguments::options</a></div><div class="ttdeci">std::string options() const</div><div class="ttdoc">Prints the options information of this collection of command line argument as a string of text....</div><div class="ttdef"><b>Definition</b> arguments.hpp:1246</div></div>
