@@ -156,45 +156,51 @@ Functions</h2></td></tr>
 <tr class="memitem:a786b5f0d81bbfa73273d467ccb6cc34b" id="r_a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a786b5f0d81bbfa73273d467ccb6cc34b">code_points</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.  <br /></td></tr>
 <tr class="separator:a786b5f0d81bbfa73273d467ccb6cc34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13be2fe87e4ad2b5698d33c452798270" id="r_a13be2fe87e4ad2b5698d33c452798270"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a13be2fe87e4ad2b5698d33c452798270">collate_and_centre_align_with_left_bias</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a13be2fe87e4ad2b5698d33c452798270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
-<tr class="separator:a13be2fe87e4ad2b5698d33c452798270"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba1c5a2bd87ab319a5ec14a1ae9fb30" id="r_a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a4ba1c5a2bd87ab319a5ec14a1ae9fb30">collate_and_centre_align_with_right_bias</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
-<tr class="separator:a4ba1c5a2bd87ab319a5ec14a1ae9fb30"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9484c2b5b7e57f4e8aa9b2380bfd0e76" id="r_a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9484c2b5b7e57f4e8aa9b2380bfd0e76">collate_and_left_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
-<tr class="separator:a9484c2b5b7e57f4e8aa9b2380bfd0e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bf0153785e48f2ff2b2f6eb975f2b49" id="r_a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7bf0153785e48f2ff2b2f6eb975f2b49">collate_and_right_align</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
-<tr class="memdesc:a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart.  <br /></td></tr>
-<tr class="separator:a7bf0153785e48f2ff2b2f6eb975f2b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46669250edef337caa12ee941eb57ca" id="r_ad46669250edef337caa12ee941eb57ca"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad46669250edef337caa12ee941eb57ca">collate_and_align_centre_left</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:ad46669250edef337caa12ee941eb57ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:ad46669250edef337caa12ee941eb57ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd128dc210292e3d5b3125e4ddbe1480" id="r_abd128dc210292e3d5b3125e4ddbe1480"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#abd128dc210292e3d5b3125e4ddbe1480">collate_and_align_centre_right</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:abd128dc210292e3d5b3125e4ddbe1480"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are centre-aligned and spaced a short distance apart. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:abd128dc210292e3d5b3125e4ddbe1480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af621a710e6c34f0282cb53b2cbd06c06" id="r_af621a710e6c34f0282cb53b2cbd06c06"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af621a710e6c34f0282cb53b2cbd06c06">collate_and_align_left</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:af621a710e6c34f0282cb53b2cbd06c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are left-aligned and spaced a short distance apart.  <br /></td></tr>
+<tr class="separator:af621a710e6c34f0282cb53b2cbd06c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa134a7959e3fe654a6c181960a38da49" id="r_aa134a7959e3fe654a6c181960a38da49"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aa134a7959e3fe654a6c181960a38da49">collate_and_align_right</a> (const std::string_view first_column_text, const std::size_t first_column_width, const std::string_view second_column_text, const std::size_t second_column_width)</td></tr>
+<tr class="memdesc:aa134a7959e3fe654a6c181960a38da49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart.  <br /></td></tr>
+<tr class="separator:aa134a7959e3fe654a6c181960a38da49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87c2fdee65b8abf36a7cb5762f75392" id="r_ad87c2fdee65b8abf36a7cb5762f75392"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad87c2fdee65b8abf36a7cb5762f75392">contains_whitespace</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:ad87c2fdee65b8abf36a7cb5762f75392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether a string of text contains any whitespace characters.  <br /></td></tr>
 <tr class="separator:ad87c2fdee65b8abf36a7cb5762f75392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12fbadda4745d3082c5f7504bd22862a" id="r_a12fbadda4745d3082c5f7504bd22862a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">is_leading_byte</a> (const char character)</td></tr>
 <tr class="memdesc:a12fbadda4745d3082c5f7504bd22862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx.  <br /></td></tr>
 <tr class="separator:a12fbadda4745d3082c5f7504bd22862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfc62d097d03e81a8b2cb30a53a5a4cc" id="r_abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#abfc62d097d03e81a8b2cb30a53a5a4cc">join_and_centre_align_with_left_bias</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
-<tr class="memdesc:abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
-<tr class="separator:abfc62d097d03e81a8b2cb30a53a5a4cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a612d0a58ac6777bea0a55f9727330016" id="r_a612d0a58ac6777bea0a55f9727330016"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a612d0a58ac6777bea0a55f9727330016">join_and_centre_align_with_right_bias</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
-<tr class="memdesc:a612d0a58ac6777bea0a55f9727330016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
-<tr class="separator:a612d0a58ac6777bea0a55f9727330016"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a949efcf68c94184aace84277fc123761" id="r_a949efcf68c94184aace84277fc123761"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a949efcf68c94184aace84277fc123761">join_and_left_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
-<tr class="memdesc:a949efcf68c94184aace84277fc123761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
-<tr class="separator:a949efcf68c94184aace84277fc123761"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d617d581d3fec7778c9025e89bfce9a" id="r_a9d617d581d3fec7778c9025e89bfce9a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9d617d581d3fec7778c9025e89bfce9a">join_and_right_align</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
-<tr class="memdesc:a9d617d581d3fec7778c9025e89bfce9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines right-aligned.  <br /></td></tr>
-<tr class="separator:a9d617d581d3fec7778c9025e89bfce9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d56cf48ef3d6ce11ec47e7838681950" id="r_a0d56cf48ef3d6ce11ec47e7838681950"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a0d56cf48ef3d6ce11ec47e7838681950">join_and_align_center_left</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:a0d56cf48ef3d6ce11ec47e7838681950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:a0d56cf48ef3d6ce11ec47e7838681950"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7602b6069a8454d97bf1ef1fb8ab2dc" id="r_ac7602b6069a8454d97bf1ef1fb8ab2dc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ac7602b6069a8454d97bf1ef1fb8ab2dc">join_and_align_center_right</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:ac7602b6069a8454d97bf1ef1fb8ab2dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:ac7602b6069a8454d97bf1ef1fb8ab2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad118b2e903ee8d2943a25c5f6e3d232" id="r_aad118b2e903ee8d2943a25c5f6e3d232"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aad118b2e903ee8d2943a25c5f6e3d232">join_and_align_left</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:aad118b2e903ee8d2943a25c5f6e3d232"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines left-aligned.  <br /></td></tr>
+<tr class="separator:aad118b2e903ee8d2943a25c5f6e3d232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed5d1bb3d23b740374786736ff3ecaf3" id="r_aed5d1bb3d23b740374786736ff3ecaf3"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#aed5d1bb3d23b740374786736ff3ecaf3">join_and_align_right</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
+<tr class="memdesc:aed5d1bb3d23b740374786736ff3ecaf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines right-aligned.  <br /></td></tr>
+<tr class="separator:aed5d1bb3d23b740374786736ff3ecaf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b1dde915cb9ead99329697e201ba32f" id="r_a7b1dde915cb9ead99329697e201ba32f"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a7b1dde915cb9ead99329697e201ba32f">longest_word_length</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a7b1dde915cb9ead99329697e201ba32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the length of the longest word in a string of text. The length of a word is measured by its number of UTF-8 code points.  <br /></td></tr>
 <tr class="separator:a7b1dde915cb9ead99329697e201ba32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade6c1cb2d4ae667cc7a6c40d91eb1f84" id="r_ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ade6c1cb2d4ae667cc7a6c40d91eb1f84">pad_left</a> (const std::string_view text, const std::size_t length)</td></tr>
-<tr class="memdesc:ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text from the left with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged.  <br /></td></tr>
-<tr class="separator:ade6c1cb2d4ae667cc7a6c40d91eb1f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab138a6909b13b7e659c94330d276d840" id="r_ab138a6909b13b7e659c94330d276d840"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab138a6909b13b7e659c94330d276d840">pad_right</a> (const std::string_view text, const std::size_t length)</td></tr>
-<tr class="memdesc:ab138a6909b13b7e659c94330d276d840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text from the right with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged.  <br /></td></tr>
-<tr class="separator:ab138a6909b13b7e659c94330d276d840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce7322298059a1d05f22fa37c7149e8" id="r_a6ce7322298059a1d05f22fa37c7149e8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a6ce7322298059a1d05f22fa37c7149e8">pad_and_align_centre_left</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a6ce7322298059a1d05f22fa37c7149e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text with spaces to reach a specified length. The padding is added from both the left and right such that the text becomes centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. If the string of text is longer than the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a6ce7322298059a1d05f22fa37c7149e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2511f179bc2ddaba3f5b3ba275a166cd" id="r_a2511f179bc2ddaba3f5b3ba275a166cd"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a2511f179bc2ddaba3f5b3ba275a166cd">pad_and_align_centre_right</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a2511f179bc2ddaba3f5b3ba275a166cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text with spaces to reach a specified length. The padding is added from both the left and right such that the text becomes centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. If the string of text is longer than the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a2511f179bc2ddaba3f5b3ba275a166cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9261107121d304570bb394be4a71ec8" id="r_ab9261107121d304570bb394be4a71ec8"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ab9261107121d304570bb394be4a71ec8">pad_and_align_left</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:ab9261107121d304570bb394be4a71ec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text with spaces to reach a specified length. The padding is added from the right such that the text becomes left-aligned. If the string of text is longer than the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:ab9261107121d304570bb394be4a71ec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1bae7038ef484929a4cbc2cda97ebe" id="r_abd1bae7038ef484929a4cbc2cda97ebe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#abd1bae7038ef484929a4cbc2cda97ebe">pad_and_align_right</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:abd1bae7038ef484929a4cbc2cda97ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pads a string of text with spaces to reach a specified length. The padding is added from the left such that the text becomes right-aligned. If the string of text is longer than the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:abd1bae7038ef484929a4cbc2cda97ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a575d367a2203a7a0e48459c552af78b2" id="r_a575d367a2203a7a0e48459c552af78b2"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
 <tr class="memitem:a575d367a2203a7a0e48459c552af78b2"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; bool &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacelector.html#a575d367a2203a7a0e48459c552af78b2">parse</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a575d367a2203a7a0e48459c552af78b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string of text into a boolean value. For example, the string of text "true" returns the boolean value true.  <br /></td></tr>
@@ -340,21 +346,33 @@ Functions</h2></td></tr>
 <tr class="memitem:a9603ee0e67412a724ad26f78688d46da" id="r_a9603ee0e67412a724ad26f78688d46da"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string_view &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a9603ee0e67412a724ad26f78688d46da">tokenize</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a9603ee0e67412a724ad26f78688d46da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tokenizes a string of text into a vector of strings of text, where each string in the vector corresponds to a word in the original string. Words are defined as sequences of non-whitespace characters, and whitespace characters are used as delimiters. The function does not modify the original string and returns views into it, so the original string must remain valid for the lifetime of the returned vector.  <br /></td></tr>
 <tr class="separator:a9603ee0e67412a724ad26f78688d46da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a857a72276fefe6b3a63f926ef5dbb0cf" id="r_a857a72276fefe6b3a63f926ef5dbb0cf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a857a72276fefe6b3a63f926ef5dbb0cf">truncate_from_left</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a857a72276fefe6b3a63f926ef5dbb0cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates a string of text to a specified length by removing characters from the string's left end. If the string of text is already shorter than or equal to the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a857a72276fefe6b3a63f926ef5dbb0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e3f7d9a365f32edc2f08ec4b4feff74" id="r_a8e3f7d9a365f32edc2f08ec4b4feff74"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8e3f7d9a365f32edc2f08ec4b4feff74">truncate_from_right</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a8e3f7d9a365f32edc2f08ec4b4feff74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates a string of text to a specified length by removing characters from the string's right end. If the string of text is already shorter than or equal to the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a8e3f7d9a365f32edc2f08ec4b4feff74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c0334a561eaf4062e99645217205e1e" id="r_a8c0334a561eaf4062e99645217205e1e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8c0334a561eaf4062e99645217205e1e">truncate_to_centre_left</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a8c0334a561eaf4062e99645217205e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates a string of text to a specified length by removing characters from both ends of the string. If the total number of characters to be removed is odd, one fewer character is removed from the left. If the string of text is already shorter than or equal to the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a8c0334a561eaf4062e99645217205e1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3654a6caf0660bf6bb64f148f2aaa920" id="r_a3654a6caf0660bf6bb64f148f2aaa920"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a3654a6caf0660bf6bb64f148f2aaa920">truncate_to_centre_right</a> (const std::string_view text, const std::size_t length)</td></tr>
+<tr class="memdesc:a3654a6caf0660bf6bb64f148f2aaa920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Truncates a string of text to a specified length by removing characters from both ends of the string. If the total number of characters to be removed is odd, one fewer character is removed from the right. If the string of text is already shorter than or equal to the specified length, it is returned unchanged.  <br /></td></tr>
+<tr class="separator:a3654a6caf0660bf6bb64f148f2aaa920"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3dbae2688050c8117b86b38afdfaaa7" id="r_ad3dbae2688050c8117b86b38afdfaaa7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad3dbae2688050c8117b86b38afdfaaa7">wrap</a> (const std::string_view text, const std::size_t line_length)</td></tr>
 <tr class="memdesc:ad3dbae2688050c8117b86b38afdfaaa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a string of text to a line length and returns the result as a sequence of strings of text where each string in the sequence represents one line of text.  <br /></td></tr>
 <tr class="separator:ad3dbae2688050c8117b86b38afdfaaa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cfcc25878fd904057d85482b8c16174" id="r_a8cfcc25878fd904057d85482b8c16174"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8cfcc25878fd904057d85482b8c16174">wrap_and_centre_align_with_left_bias</a> (const std::string_view text, const std::size_t line_length)</td></tr>
-<tr class="memdesc:a8cfcc25878fd904057d85482b8c16174"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
-<tr class="separator:a8cfcc25878fd904057d85482b8c16174"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af64713e8d68898f37f4a4e1be900dc36" id="r_af64713e8d68898f37f4a4e1be900dc36"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#af64713e8d68898f37f4a4e1be900dc36">wrap_and_centre_align_with_right_bias</a> (const std::string_view text, const std::size_t line_length)</td></tr>
-<tr class="memdesc:af64713e8d68898f37f4a4e1be900dc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
-<tr class="separator:af64713e8d68898f37f4a4e1be900dc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44bd330c9016a93ce6be338042e52d9c" id="r_a44bd330c9016a93ce6be338042e52d9c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a44bd330c9016a93ce6be338042e52d9c">wrap_and_left_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
-<tr class="memdesc:a44bd330c9016a93ce6be338042e52d9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left-aligns and wraps a string of text to a line length.  <br /></td></tr>
-<tr class="separator:a44bd330c9016a93ce6be338042e52d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06746346e616da83ce64f0c7c315b218" id="r_a06746346e616da83ce64f0c7c315b218"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a06746346e616da83ce64f0c7c315b218">wrap_and_right_align</a> (const std::string_view text, const std::size_t line_length)</td></tr>
-<tr class="memdesc:a06746346e616da83ce64f0c7c315b218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right-aligns and wraps a string of text to a line length.  <br /></td></tr>
-<tr class="separator:a06746346e616da83ce64f0c7c315b218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cc519fba3ec1c8628a89285da960c5d" id="r_a5cc519fba3ec1c8628a89285da960c5d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a5cc519fba3ec1c8628a89285da960c5d">wrap_and_align_centre_left</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a5cc519fba3ec1c8628a89285da960c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps and centre-aligns a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
+<tr class="separator:a5cc519fba3ec1c8628a89285da960c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a511e68e20fcc6c76d7cae2f44c0252fa" id="r_a511e68e20fcc6c76d7cae2f44c0252fa"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a511e68e20fcc6c76d7cae2f44c0252fa">wrap_and_align_centre_right</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a511e68e20fcc6c76d7cae2f44c0252fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps and centre-aligns a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right.  <br /></td></tr>
+<tr class="separator:a511e68e20fcc6c76d7cae2f44c0252fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36624391723fc79e791e30dfd6c2e516" id="r_a36624391723fc79e791e30dfd6c2e516"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a36624391723fc79e791e30dfd6c2e516">wrap_and_align_left</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:a36624391723fc79e791e30dfd6c2e516"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps and left-aligns a string of text to a line length.  <br /></td></tr>
+<tr class="separator:a36624391723fc79e791e30dfd6c2e516"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3d6e01a43bb0d42873cfc08572bf0eb" id="r_ae3d6e01a43bb0d42873cfc08572bf0eb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae3d6e01a43bb0d42873cfc08572bf0eb">wrap_and_align_right</a> (const std::string_view text, const std::size_t line_length)</td></tr>
+<tr class="memdesc:ae3d6e01a43bb0d42873cfc08572bf0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps and right-aligns a string of text to a line length.  <br /></td></tr>
+<tr class="separator:ae3d6e01a43bb0d42873cfc08572bf0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -581,14 +599,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a13be2fe87e4ad2b5698d33c452798270" name="a13be2fe87e4ad2b5698d33c452798270"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13be2fe87e4ad2b5698d33c452798270">&#9670;&#160;</a></span>collate_and_centre_align_with_left_bias()</h2>
+<a id="ad46669250edef337caa12ee941eb57ca" name="ad46669250edef337caa12ee941eb57ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad46669250edef337caa12ee941eb57ca">&#9670;&#160;</a></span>collate_and_align_centre_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::collate_and_centre_align_with_left_bias </td>
+          <td class="memname">std::string lector::collate_and_align_centre_left </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -639,14 +657,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a4ba1c5a2bd87ab319a5ec14a1ae9fb30" name="a4ba1c5a2bd87ab319a5ec14a1ae9fb30"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ba1c5a2bd87ab319a5ec14a1ae9fb30">&#9670;&#160;</a></span>collate_and_centre_align_with_right_bias()</h2>
+<a id="abd128dc210292e3d5b3125e4ddbe1480" name="abd128dc210292e3d5b3125e4ddbe1480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd128dc210292e3d5b3125e4ddbe1480">&#9670;&#160;</a></span>collate_and_align_centre_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::collate_and_centre_align_with_right_bias </td>
+          <td class="memname">std::string lector::collate_and_align_centre_right </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -697,14 +715,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a9484c2b5b7e57f4e8aa9b2380bfd0e76" name="a9484c2b5b7e57f4e8aa9b2380bfd0e76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9484c2b5b7e57f4e8aa9b2380bfd0e76">&#9670;&#160;</a></span>collate_and_left_align()</h2>
+<a id="af621a710e6c34f0282cb53b2cbd06c06" name="af621a710e6c34f0282cb53b2cbd06c06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af621a710e6c34f0282cb53b2cbd06c06">&#9670;&#160;</a></span>collate_and_align_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::collate_and_left_align </td>
+          <td class="memname">std::string lector::collate_and_align_left </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -755,14 +773,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a7bf0153785e48f2ff2b2f6eb975f2b49" name="a7bf0153785e48f2ff2b2f6eb975f2b49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bf0153785e48f2ff2b2f6eb975f2b49">&#9670;&#160;</a></span>collate_and_right_align()</h2>
+<a id="aa134a7959e3fe654a6c181960a38da49" name="aa134a7959e3fe654a6c181960a38da49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa134a7959e3fe654a6c181960a38da49">&#9670;&#160;</a></span>collate_and_align_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::collate_and_right_align </td>
+          <td class="memname">std::string lector::collate_and_align_right </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>first_column_text</em>, </td>
@@ -873,14 +891,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="abfc62d097d03e81a8b2cb30a53a5a4cc" name="abfc62d097d03e81a8b2cb30a53a5a4cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfc62d097d03e81a8b2cb30a53a5a4cc">&#9670;&#160;</a></span>join_and_centre_align_with_left_bias()</h2>
+<a id="a0d56cf48ef3d6ce11ec47e7838681950" name="a0d56cf48ef3d6ce11ec47e7838681950"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d56cf48ef3d6ce11ec47e7838681950">&#9670;&#160;</a></span>join_and_align_center_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::join_and_centre_align_with_left_bias </td>
+          <td class="memname">std::string lector::join_and_align_center_left </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>lines</em></td><td>)</td>
@@ -900,14 +918,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a612d0a58ac6777bea0a55f9727330016" name="a612d0a58ac6777bea0a55f9727330016"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a612d0a58ac6777bea0a55f9727330016">&#9670;&#160;</a></span>join_and_centre_align_with_right_bias()</h2>
+<a id="ac7602b6069a8454d97bf1ef1fb8ab2dc" name="ac7602b6069a8454d97bf1ef1fb8ab2dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7602b6069a8454d97bf1ef1fb8ab2dc">&#9670;&#160;</a></span>join_and_align_center_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::join_and_centre_align_with_right_bias </td>
+          <td class="memname">std::string lector::join_and_align_center_right </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>lines</em></td><td>)</td>
@@ -927,14 +945,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a949efcf68c94184aace84277fc123761" name="a949efcf68c94184aace84277fc123761"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a949efcf68c94184aace84277fc123761">&#9670;&#160;</a></span>join_and_left_align()</h2>
+<a id="aad118b2e903ee8d2943a25c5f6e3d232" name="aad118b2e903ee8d2943a25c5f6e3d232"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad118b2e903ee8d2943a25c5f6e3d232">&#9670;&#160;</a></span>join_and_align_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::join_and_left_align </td>
+          <td class="memname">std::string lector::join_and_align_left </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>lines</em></td><td>)</td>
@@ -954,14 +972,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="a9d617d581d3fec7778c9025e89bfce9a" name="a9d617d581d3fec7778c9025e89bfce9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d617d581d3fec7778c9025e89bfce9a">&#9670;&#160;</a></span>join_and_right_align()</h2>
+<a id="aed5d1bb3d23b740374786736ff3ecaf3" name="aed5d1bb3d23b740374786736ff3ecaf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed5d1bb3d23b740374786736ff3ecaf3">&#9670;&#160;</a></span>join_and_align_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::join_and_right_align </td>
+          <td class="memname">std::string lector::join_and_align_right </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
           <td class="paramname"><em>lines</em></td><td>)</td>
@@ -1008,14 +1026,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="ade6c1cb2d4ae667cc7a6c40d91eb1f84" name="ade6c1cb2d4ae667cc7a6c40d91eb1f84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade6c1cb2d4ae667cc7a6c40d91eb1f84">&#9670;&#160;</a></span>pad_left()</h2>
+<a id="a6ce7322298059a1d05f22fa37c7149e8" name="a6ce7322298059a1d05f22fa37c7149e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ce7322298059a1d05f22fa37c7149e8">&#9670;&#160;</a></span>pad_and_align_centre_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::pad_left </td>
+          <td class="memname">std::string lector::pad_and_align_centre_left </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -1034,11 +1052,11 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Pads a string of text from the left with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged. </p>
+<p>Pads a string of text with spaces to reach a specified length. The padding is added from both the left and right such that the text becomes centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. If the string of text is longer than the specified length, it is returned unchanged. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad from the left. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The desired length of the padded string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The minimum length of the padded string of text. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1046,14 +1064,14 @@ template&lt;typename Type &gt; </div>
 
 </div>
 </div>
-<a id="ab138a6909b13b7e659c94330d276d840" name="ab138a6909b13b7e659c94330d276d840"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab138a6909b13b7e659c94330d276d840">&#9670;&#160;</a></span>pad_right()</h2>
+<a id="a2511f179bc2ddaba3f5b3ba275a166cd" name="a2511f179bc2ddaba3f5b3ba275a166cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2511f179bc2ddaba3f5b3ba275a166cd">&#9670;&#160;</a></span>pad_and_align_centre_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::pad_right </td>
+          <td class="memname">std::string lector::pad_and_align_centre_right </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -1072,11 +1090,87 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Pads a string of text from the right with spaces to reach a specified length. If the string of text is longer than the specified length, it is unchanged. </p>
+<p>Pads a string of text with spaces to reach a specified length. The padding is added from both the left and right such that the text becomes centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. If the string of text is longer than the specified length, it is returned unchanged. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad from the right. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The desired length of the padded string. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The minimum length of the padded string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The padded string of text. </dd></dl>
+
+</div>
+</div>
+<a id="ab9261107121d304570bb394be4a71ec8" name="ab9261107121d304570bb394be4a71ec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9261107121d304570bb394be4a71ec8">&#9670;&#160;</a></span>pad_and_align_left()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::pad_and_align_left </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pads a string of text with spaces to reach a specified length. The padding is added from the right such that the text becomes left-aligned. If the string of text is longer than the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The minimum length of the padded string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The padded string of text. </dd></dl>
+
+</div>
+</div>
+<a id="abd1bae7038ef484929a4cbc2cda97ebe" name="abd1bae7038ef484929a4cbc2cda97ebe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd1bae7038ef484929a4cbc2cda97ebe">&#9670;&#160;</a></span>pad_and_align_right()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::pad_and_align_right </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pads a string of text with spaces to reach a specified length. The padding is added from the left such that the text becomes right-aligned. If the string of text is longer than the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to pad. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The minimum length of the padded string of text. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2205,6 +2299,158 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
+<a id="a857a72276fefe6b3a63f926ef5dbb0cf" name="a857a72276fefe6b3a63f926ef5dbb0cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a857a72276fefe6b3a63f926ef5dbb0cf">&#9670;&#160;</a></span>truncate_from_left()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::truncate_from_left </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Truncates a string of text to a specified length by removing characters from the string's left end. If the string of text is already shorter than or equal to the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to truncate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The maximum length of the truncated string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The truncated string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a8e3f7d9a365f32edc2f08ec4b4feff74" name="a8e3f7d9a365f32edc2f08ec4b4feff74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e3f7d9a365f32edc2f08ec4b4feff74">&#9670;&#160;</a></span>truncate_from_right()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::truncate_from_right </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Truncates a string of text to a specified length by removing characters from the string's right end. If the string of text is already shorter than or equal to the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to truncate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The maximum length of the truncated string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The truncated string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a8c0334a561eaf4062e99645217205e1e" name="a8c0334a561eaf4062e99645217205e1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c0334a561eaf4062e99645217205e1e">&#9670;&#160;</a></span>truncate_to_centre_left()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::truncate_to_centre_left </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Truncates a string of text to a specified length by removing characters from both ends of the string. If the total number of characters to be removed is odd, one fewer character is removed from the left. If the string of text is already shorter than or equal to the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to truncate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The maximum length of the truncated string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The truncated string of text. </dd></dl>
+
+</div>
+</div>
+<a id="a3654a6caf0660bf6bb64f148f2aaa920" name="a3654a6caf0660bf6bb64f148f2aaa920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3654a6caf0660bf6bb64f148f2aaa920">&#9670;&#160;</a></span>truncate_to_centre_right()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lector::truncate_to_centre_right </td>
+          <td>(</td>
+          <td class="paramtype">const std::string_view&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::size_t&#160;</td>
+          <td class="paramname"><em>length</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Truncates a string of text to a specified length by removing characters from both ends of the string. If the total number of characters to be removed is odd, one fewer character is removed from the right. If the string of text is already shorter than or equal to the specified length, it is returned unchanged. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to truncate. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>The maximum length of the truncated string of text. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The truncated string of text. </dd></dl>
+
+</div>
+</div>
 <a id="ad3dbae2688050c8117b86b38afdfaaa7" name="ad3dbae2688050c8117b86b38afdfaaa7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3dbae2688050c8117b86b38afdfaaa7">&#9670;&#160;</a></span>wrap()</h2>
 
@@ -2249,14 +2495,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="a8cfcc25878fd904057d85482b8c16174" name="a8cfcc25878fd904057d85482b8c16174"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8cfcc25878fd904057d85482b8c16174">&#9670;&#160;</a></span>wrap_and_centre_align_with_left_bias()</h2>
+<a id="a5cc519fba3ec1c8628a89285da960c5d" name="a5cc519fba3ec1c8628a89285da960c5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cc519fba3ec1c8628a89285da960c5d">&#9670;&#160;</a></span>wrap_and_align_centre_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::wrap_and_centre_align_with_left_bias </td>
+          <td class="memname">std::string lector::wrap_and_align_centre_left </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -2275,7 +2521,7 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. </p>
+<p>Wraps and centre-aligns a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the left. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and centre-align. </td></tr>
@@ -2293,14 +2539,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="af64713e8d68898f37f4a4e1be900dc36" name="af64713e8d68898f37f4a4e1be900dc36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af64713e8d68898f37f4a4e1be900dc36">&#9670;&#160;</a></span>wrap_and_centre_align_with_right_bias()</h2>
+<a id="a511e68e20fcc6c76d7cae2f44c0252fa" name="a511e68e20fcc6c76d7cae2f44c0252fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a511e68e20fcc6c76d7cae2f44c0252fa">&#9670;&#160;</a></span>wrap_and_align_centre_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::wrap_and_centre_align_with_right_bias </td>
+          <td class="memname">std::string lector::wrap_and_align_centre_right </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -2319,7 +2565,7 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Centre-aligns and wraps a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. </p>
+<p>Wraps and centre-aligns a string of text to a line length. If the total required centre-aligning padding is odd, the text is biased by one space towards the right. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and centre-align. </td></tr>
@@ -2337,14 +2583,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="a44bd330c9016a93ce6be338042e52d9c" name="a44bd330c9016a93ce6be338042e52d9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a44bd330c9016a93ce6be338042e52d9c">&#9670;&#160;</a></span>wrap_and_left_align()</h2>
+<a id="a36624391723fc79e791e30dfd6c2e516" name="a36624391723fc79e791e30dfd6c2e516"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36624391723fc79e791e30dfd6c2e516">&#9670;&#160;</a></span>wrap_and_align_left()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::wrap_and_left_align </td>
+          <td class="memname">std::string lector::wrap_and_align_left </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -2363,7 +2609,7 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Left-aligns and wraps a string of text to a line length. </p>
+<p>Wraps and left-aligns a string of text to a line length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and left-align. </td></tr>
@@ -2381,14 +2627,14 @@ template&lt;typename EnumerationType &gt; </div>
 
 </div>
 </div>
-<a id="a06746346e616da83ce64f0c7c315b218" name="a06746346e616da83ce64f0c7c315b218"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06746346e616da83ce64f0c7c315b218">&#9670;&#160;</a></span>wrap_and_right_align()</h2>
+<a id="ae3d6e01a43bb0d42873cfc08572bf0eb" name="ae3d6e01a43bb0d42873cfc08572bf0eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3d6e01a43bb0d42873cfc08572bf0eb">&#9670;&#160;</a></span>wrap_and_align_right()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::string lector::wrap_and_right_align </td>
+          <td class="memname">std::string lector::wrap_and_align_right </td>
           <td>(</td>
           <td class="paramtype">const std::string_view&#160;</td>
           <td class="paramname"><em>text</em>, </td>
@@ -2407,7 +2653,7 @@ template&lt;typename EnumerationType &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Right-aligns and wraps a string of text to a line length. </p>
+<p>Wraps and right-aligns a string of text to a line length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to wrap and right-align. </td></tr>

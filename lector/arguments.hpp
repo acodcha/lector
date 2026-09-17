@@ -1275,7 +1275,7 @@ public:
     std::apply(
         [&](const auto&... argument) {
           (..., [&] {
-            result.append(lector::collate_and_left_align(
+            result.append(lector::collate_and_align_left(
                 argument.keys_with_value_type(), first_column_width, argument.description(),
                 second_column_width));
             ++argument_index;
@@ -1310,9 +1310,9 @@ public:
     validate_line_length(line_length);
     std::string result;
     if (configuration_.title.has_value() && !configuration_.title.value().empty()) {
-      result.append(lector::wrap_and_left_align(configuration_.title.value(), line_length));
+      result.append(lector::wrap_and_align_left(configuration_.title.value(), line_length));
     }
-    const std::string usage_{lector::wrap_and_left_align(usage(), line_length)};
+    const std::string usage_{lector::wrap_and_align_left(usage(), line_length)};
     if (!usage_.empty()) {
       if (!result.empty()) {
         result.push_back('\n');
@@ -1326,7 +1326,7 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(lector::wrap_and_left_align(configuration_.description.value(), line_length));
+      result.append(lector::wrap_and_align_left(configuration_.description.value(), line_length));
     }
     const std::string options_{options(line_length)};
     if (!options_.empty()) {
@@ -1342,7 +1342,7 @@ public:
         result.push_back('\n');
         result.push_back('\n');
       }
-      result.append(lector::wrap_and_left_align(configuration_.notes.value(), line_length));
+      result.append(lector::wrap_and_align_left(configuration_.notes.value(), line_length));
     }
     return result;
   }
@@ -1382,7 +1382,7 @@ public:
     if (printed_execution_arguments.empty()) {
       return executable_path_.string();
     }
-    return lector::wrap_and_left_align(
+    return lector::wrap_and_align_left(
         executable_path_.string() + " " + printed_execution_arguments, line_length);
   }
 
