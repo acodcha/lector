@@ -107,51 +107,51 @@ TEST(Lector, CodePoints) {
   EXPECT_EQ(lector::code_points("こんにちは"), static_cast<std::size_t>(5UL));
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasBothColumnsEmpty) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndAlignCentreLeftBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_align_centre_left("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasBothColumnsWhitespace) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndAlignCentreLeftBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_centre_left("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_left("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnEmpty) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreLeftFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_align_centre_left("", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "             the second\n"
             "              column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias(
+TEST(Lector, CollateAndAlignCentreLeftFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_align_centre_left(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "       This is the first column.          And this is\n"
             "                                           the second\n"
             "                                            column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnShort) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreLeftFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_align_centre_left("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "  Hello.    And this is\n"
             "             the second\n"
             "              column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasFirstColumnWhitespace) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreLeftFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_centre_left("    ", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "             the second\n"
             "              column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasTypical) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_left_bias(
+TEST(Lector, CollateAndAlignCentreLeftTypical) {
+  EXPECT_EQ(lector::collate_and_align_centre_left(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             "This is   And this is\n"
             "  the      the second\n"
@@ -159,59 +159,59 @@ TEST(Lector, CollateAndCentreAlignWithLeftBiasTypical) {
             "column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithLeftBiasVeryLongWord) {
+TEST(Lector, CollateAndAlignCentreLeftVeryLongWord) {
   EXPECT_EQ(
-      lector::collate_and_centre_align_with_left_bias("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_align_centre_left("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-  And this is\n"
       " g_word.    the second\n"
       "             column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasBothColumnsEmpty) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndAlignCentreRightBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_align_centre_right("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasBothColumnsWhitespace) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndAlignCentreRightBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_centre_right("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_centre_right("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnEmpty) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreRightFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_align_centre_right("", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "             the second\n"
             "               column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias(
+TEST(Lector, CollateAndAlignCentreRightFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_align_centre_right(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "        This is the first column.          And this is\n"
             "                                           the second\n"
             "                                             column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnShort) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreRightFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_align_centre_right("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "  Hello.     And this is\n"
             "             the second\n"
             "               column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasFirstColumnWhitespace) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignCentreRightFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_centre_right("    ", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "             the second\n"
             "               column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasTypical) {
-  EXPECT_EQ(lector::collate_and_centre_align_with_right_bias(
+TEST(Lector, CollateAndAlignCentreRightTypical) {
+  EXPECT_EQ(lector::collate_and_align_centre_right(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             " This is   And this is\n"
             "   the     the second\n"
@@ -219,59 +219,59 @@ TEST(Lector, CollateAndCentreAlignWithRightBiasTypical) {
             " column.");
 }
 
-TEST(Lector, CollateAndCentreAlignWithRightBiasVeryLongWord) {
+TEST(Lector, CollateAndAlignCentreRightVeryLongWord) {
   EXPECT_EQ(
-      lector::collate_and_centre_align_with_right_bias("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_align_centre_right("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-   And this is\n"
       " g_word.    the second\n"
       "              column.");
 }
 
-TEST(Lector, CollateAndLeftAlignBothColumnsEmpty) {
-  EXPECT_EQ(lector::collate_and_left_align("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndAlignLeftBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_align_left("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CollateAndLeftAlignBothColumnsWhitespace) {
-  EXPECT_EQ(lector::collate_and_left_align("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_left_align("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndAlignLeftBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_left("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_left("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CollateAndLeftAlignFirstColumnEmpty) {
-  EXPECT_EQ(lector::collate_and_left_align("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignLeftFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_align_left("", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CollateAndLeftAlignFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::collate_and_left_align(
+TEST(Lector, CollateAndAlignLeftFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_align_left(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "This is the first column.                 And this is\n"
             "                                          the second\n"
             "                                          column.");
 }
 
-TEST(Lector, CollateAndLeftAlignFirstColumnShort) {
-  EXPECT_EQ(lector::collate_and_left_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignLeftFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_align_left("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "Hello.      And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CollateAndLeftAlignFirstColumnWhitespace) {
-  EXPECT_EQ(lector::collate_and_left_align("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignLeftFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_left("    ", 10, "  And this is the second column.  ", 12),
             "            And this is\n"
             "            the second\n"
             "            column.");
 }
 
-TEST(Lector, CollateAndLeftAlignTypical) {
-  EXPECT_EQ(lector::collate_and_left_align(
+TEST(Lector, CollateAndAlignLeftTypical) {
+  EXPECT_EQ(lector::collate_and_align_left(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             "This is   And this is\n"
             "the       the second\n"
@@ -279,59 +279,59 @@ TEST(Lector, CollateAndLeftAlignTypical) {
             "column.");
 }
 
-TEST(Lector, CollateAndLeftAlignVeryLongWord) {
+TEST(Lector, CollateAndAlignLeftVeryLongWord) {
   EXPECT_EQ(
-      lector::collate_and_left_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_align_left("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-  And this is\n"
       "g_word.    the second\n"
       "           column.");
 }
 
-TEST(Lector, CollateAndRightAlignBothColumnsEmpty) {
-  EXPECT_EQ(lector::collate_and_right_align("", 1, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("", 1, "", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("", 2, "", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("", 2, "", 2), std::string{});
+TEST(Lector, CollateAndAlignRightBothColumnsEmpty) {
+  EXPECT_EQ(lector::collate_and_align_right("", 1, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("", 1, "", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("", 2, "", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("", 2, "", 2), std::string{});
 }
 
-TEST(Lector, CollateAndRightAlignBothColumnsWhitespace) {
-  EXPECT_EQ(lector::collate_and_right_align("  ", 1, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("  ", 1, "  ", 2), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("  ", 2, "  ", 1), std::string{});
-  EXPECT_EQ(lector::collate_and_right_align("  ", 2, "  ", 2), std::string{});
+TEST(Lector, CollateAndAlignRightBothColumnsWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_right("  ", 1, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("  ", 1, "  ", 2), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("  ", 2, "  ", 1), std::string{});
+  EXPECT_EQ(lector::collate_and_align_right("  ", 2, "  ", 2), std::string{});
 }
 
-TEST(Lector, CollateAndRightAlignFirstColumnEmpty) {
-  EXPECT_EQ(lector::collate_and_right_align("", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignRightFirstColumnEmpty) {
+  EXPECT_EQ(lector::collate_and_align_right("", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CollateAndRightAlignFirstColumnLargeWidth) {
-  EXPECT_EQ(lector::collate_and_right_align(
+TEST(Lector, CollateAndAlignRightFirstColumnLargeWidth) {
+  EXPECT_EQ(lector::collate_and_align_right(
                 "  This is the first column.  ", 40, "  And this is the second column.  ", 12),
             "               This is the first column.   And this is\n"
             "                                            the second\n"
             "                                               column.");
 }
 
-TEST(Lector, CollateAndRightAlignFirstColumnShort) {
-  EXPECT_EQ(lector::collate_and_right_align("  Hello.  ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignRightFirstColumnShort) {
+  EXPECT_EQ(lector::collate_and_align_right("  Hello.  ", 10, "  And this is the second column.  ", 12),
             "    Hello.   And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CollateAndRightAlignFirstColumnWhitespace) {
-  EXPECT_EQ(lector::collate_and_right_align("    ", 10, "  And this is the second column.  ", 12),
+TEST(Lector, CollateAndAlignRightFirstColumnWhitespace) {
+  EXPECT_EQ(lector::collate_and_align_right("    ", 10, "  And this is the second column.  ", 12),
             "             And this is\n"
             "              the second\n"
             "                 column.");
 }
 
-TEST(Lector, CollateAndRightAlignTypical) {
-  EXPECT_EQ(lector::collate_and_right_align(
+TEST(Lector, CollateAndAlignRightTypical) {
+  EXPECT_EQ(lector::collate_and_align_right(
                 "  This is the first column.  ", 8, "  And this is the second column.  ", 12),
             " This is   And this is\n"
             "     the    the second\n"
@@ -339,9 +339,9 @@ TEST(Lector, CollateAndRightAlignTypical) {
             " column.");
 }
 
-TEST(Lector, CollateAndRightAlignVeryLongWord) {
+TEST(Lector, CollateAndAlignRightVeryLongWord) {
   EXPECT_EQ(
-      lector::collate_and_right_align("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
+      lector::collate_and_align_right("  Very_long_word.  ", 9, "  And this is the second column.  ", 12),
       "Very_lon-   And this is\n"
       "  g_word.    the second\n"
       "                column.");
@@ -618,81 +618,79 @@ TEST(Lector, IsLeadingByte) {
   EXPECT_TRUE(lector::is_leading_byte('\xFF'));
 }
 
-TEST(Lector, JoinAndCentreAlignWithLeftBiasEmpty) {
-  EXPECT_EQ(lector::join_and_centre_align_with_left_bias(std::vector<std::string>{}), "");
+TEST(Lector, JoinAndAlignCentreLeftEmpty) {
+  EXPECT_EQ(lector::join_and_align_center_left(std::vector<std::string>{}), "");
 }
 
-TEST(Lector, JoinAndCentreAlignWithLeftBiasMultiple) {
-  EXPECT_EQ(lector::join_and_centre_align_with_left_bias(
+TEST(Lector, JoinAndAlignCentreLeftMultiple) {
+  EXPECT_EQ(lector::join_and_align_center_left(
                 {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
             "        Hello!  \n     Hello, world!  \n  Hello again, world!  ");
 }
 
-TEST(Lector, JoinAndCentreAlignWithLeftBiasSingle) {
-  EXPECT_EQ(
-      lector::join_and_centre_align_with_left_bias({"  Hello, world!  "}), "  Hello, world!  ");
+TEST(Lector, JoinAndAlignCentreLeftSingle) {
+  EXPECT_EQ(lector::join_and_align_center_left({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
-TEST(Lector, JoinAndCentreAlignWithLeftBiasUtf8) {
-  EXPECT_EQ(lector::join_and_centre_align_with_left_bias({"  Château.  ", "  Épée.  "}),
+TEST(Lector, JoinAndAlignCentreLeftUtf8) {
+  EXPECT_EQ(lector::join_and_align_center_left({"  Château.  ", "  Épée.  "}),
             "  Château.  \n   Épée.  ");
 }
 
-TEST(Lector, JoinAndCentreAlignWithRightBiasEmpty) {
-  EXPECT_EQ(lector::join_and_centre_align_with_right_bias(std::vector<std::string>{}), "");
+TEST(Lector, JoinAndAlignCentreRightEmpty) {
+  EXPECT_EQ(lector::join_and_align_center_right(std::vector<std::string>{}), "");
 }
 
-TEST(Lector, JoinAndCentreAlignWithRightBiasMultiple) {
-  EXPECT_EQ(lector::join_and_centre_align_with_right_bias(
+TEST(Lector, JoinAndAlignCentreRightMultiple) {
+  EXPECT_EQ(lector::join_and_align_center_right(
                 {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
             "         Hello!  \n     Hello, world!  \n  Hello again, world!  ");
 }
 
-TEST(Lector, JoinAndCentreAlignWithRightBiasSingle) {
-  EXPECT_EQ(
-      lector::join_and_centre_align_with_right_bias({"  Hello, world!  "}), "  Hello, world!  ");
+TEST(Lector, JoinAndAlignCentreRightSingle) {
+  EXPECT_EQ(lector::join_and_align_center_right({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
-TEST(Lector, JoinAndCentreAlignWithRightBiasUtf8) {
-  EXPECT_EQ(lector::join_and_centre_align_with_right_bias({"  Château.  ", "  Épée.  "}),
+TEST(Lector, JoinAndAlignCentreRightUtf8) {
+  EXPECT_EQ(lector::join_and_align_center_right({"  Château.  ", "  Épée.  "}),
             "  Château.  \n    Épée.  ");
 }
 
-TEST(Lector, JoinAndLeftAlignEmpty) {
-  EXPECT_EQ(lector::join_and_left_align(std::vector<std::string>{}), "");
+TEST(Lector, JoinAndAlignLeftEmpty) {
+  EXPECT_EQ(lector::join_and_align_left(std::vector<std::string>{}), "");
 }
 
-TEST(Lector, JoinAndLeftAlignMultiple) {
+TEST(Lector, JoinAndAlignLeftMultiple) {
   EXPECT_EQ(
-      lector::join_and_left_align({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+      lector::join_and_align_left({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
       "  Hello!  \n  Hello, world!  \n  Hello again, world!  ");
 }
 
-TEST(Lector, JoinAndLeftAlignSingle) {
-  EXPECT_EQ(lector::join_and_left_align({"  Hello, world!  "}), "  Hello, world!  ");
+TEST(Lector, JoinAndAlignLeftSingle) {
+  EXPECT_EQ(lector::join_and_align_left({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
-TEST(Lector, JoinAndLeftAlignUtf8) {
-  EXPECT_EQ(lector::join_and_left_align({"  Château.  ", "  Épée.  "}), "  Château.  \n  Épée.  ");
+TEST(Lector, JoinAndAlignLeftUtf8) {
+  EXPECT_EQ(lector::join_and_align_left({"  Château.  ", "  Épée.  "}), "  Château.  \n  Épée.  ");
 }
 
-TEST(Lector, JoinAndRightAlignEmpty) {
-  EXPECT_EQ(lector::join_and_right_align(std::vector<std::string>{}), "");
+TEST(Lector, JoinAndAlignRightEmpty) {
+  EXPECT_EQ(lector::join_and_align_right(std::vector<std::string>{}), "");
 }
 
-TEST(Lector, JoinAndRightAlignMultiple) {
+TEST(Lector, JoinAndAlignRightMultiple) {
   EXPECT_EQ(
-      lector::join_and_right_align({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
+      lector::join_and_align_right({"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
       "               Hello!  \n        Hello, world!  \n  Hello again, world!  ");
 }
 
-TEST(Lector, JoinAndRightAlignSingle) {
-  EXPECT_EQ(lector::join_and_right_align({"  Hello, world!  "}), "  Hello, world!  ");
+TEST(Lector, JoinAndAlignRightSingle) {
+  EXPECT_EQ(lector::join_and_align_right({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
-TEST(Lector, JoinAndRightAlignUtf8) {
+TEST(Lector, JoinAndAlignRightUtf8) {
   EXPECT_EQ(
-      lector::join_and_right_align({"  Château.  ", "  Épée.  "}), "  Château.  \n     Épée.  ");
+      lector::join_and_align_right({"  Château.  ", "  Épée.  "}), "  Château.  \n     Épée.  ");
 }
 
 TEST(Lector, LongestWordLengthEmpty) {
@@ -748,74 +746,144 @@ TEST(Lector, LongestWordLengthWhitespaceOnly) {
   EXPECT_EQ(lector::longest_word_length(" \t\n \t\n"), static_cast<std::size_t>(0UL));
 }
 
-TEST(Lector, PadLeftEmpty) {
-  EXPECT_EQ(lector::pad_left("", 0), "");
-  EXPECT_EQ(lector::pad_left("", 1), " ");
-  EXPECT_EQ(lector::pad_left("", 2), "  ");
-  EXPECT_EQ(lector::pad_left("", 3), "   ");
+TEST(Lector, PadAndAlignCentreLeftEmpty) {
+  EXPECT_EQ(lector::pad_and_align_centre_left("", 0), "");
+  EXPECT_EQ(lector::pad_and_align_centre_left("", 1), " ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("", 2), "  ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("", 3), "   ");
 }
 
-TEST(Lector, PadLeftLengthLong) {
-  EXPECT_EQ(lector::pad_left("Hello, world!", 13), "Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 14), " Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 15), "  Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 16), "   Hello, world!");
+TEST(Lector, PadAndAlignCentreLeftLengthLong) {
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 14), "Hello, world! ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 15), " Hello, world! ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 16), " Hello, world!  ");
 }
 
-TEST(Lector, PadLeftLengthShort) {
-  EXPECT_EQ(lector::pad_left("Hello, world!", 0), "Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 1), "Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 2), "Hello, world!");
-  EXPECT_EQ(lector::pad_left("Hello, world!", 3), "Hello, world!");
+TEST(Lector, PadAndAlignCentreLeftLengthShort) {
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_left("Hello, world!", 3), "Hello, world!");
 }
 
-TEST(Lector, PadLeftUtf8) {
-  EXPECT_EQ(lector::pad_left("château", 10), "   château");
-  EXPECT_EQ(lector::pad_left("été", 10), "       été");
-  EXPECT_EQ(lector::pad_left("œuf", 10), "       œuf");
-  EXPECT_EQ(lector::pad_left("こんにちは", 10), "     こんにちは");
+TEST(Lector, PadAndAlignCentreLeftUtf8) {
+  EXPECT_EQ(lector::pad_and_align_centre_left("château", 10), " château  ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("été", 10), "   été    ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("œuf", 10), "   œuf    ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("こんにちは", 10), "  こんにちは   ");
 }
 
-TEST(Lector, PadLeftWhitespace) {
-  EXPECT_EQ(lector::pad_left("  ", 10), "          ");
-  EXPECT_EQ(lector::pad_left("\t", 10), "         \t");
-  EXPECT_EQ(lector::pad_left("\n", 10), "         \n");
-  EXPECT_EQ(lector::pad_left(" \t\n \t\n", 10), "     \t\n \t\n");
+TEST(Lector, PadAndAlignCentreLeftWhitespace) {
+  EXPECT_EQ(lector::pad_and_align_centre_left("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("\t", 10), "    \t     ");
+  EXPECT_EQ(lector::pad_and_align_centre_left("\n", 10), "    \n     ");
+  EXPECT_EQ(lector::pad_and_align_centre_left(" \t\n \t\n", 10), "   \t\n \t\n  ");
 }
 
-TEST(Lector, PadRightEmpty) {
-  EXPECT_EQ(lector::pad_right("", 0), "");
-  EXPECT_EQ(lector::pad_right("", 1), " ");
-  EXPECT_EQ(lector::pad_right("", 2), "  ");
-  EXPECT_EQ(lector::pad_right("", 3), "   ");
+TEST(Lector, PadAndAlignCentreRightEmpty) {
+  EXPECT_EQ(lector::pad_and_align_centre_right("", 0), "");
+  EXPECT_EQ(lector::pad_and_align_centre_right("", 1), " ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("", 2), "  ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("", 3), "   ");
 }
 
-TEST(Lector, PadRightLengthLong) {
-  EXPECT_EQ(lector::pad_right("Hello, world!", 13), "Hello, world!");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 14), "Hello, world! ");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 15), "Hello, world!  ");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 16), "Hello, world!   ");
+TEST(Lector, PadAndAlignCentreRightLengthLong) {
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 14), " Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 15), " Hello, world! ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 16), "  Hello, world! ");
 }
 
-TEST(Lector, PadRightLengthShort) {
-  EXPECT_EQ(lector::pad_right("Hello, world!", 0), "Hello, world!");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 1), "Hello, world!");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 2), "Hello, world!");
-  EXPECT_EQ(lector::pad_right("Hello, world!", 3), "Hello, world!");
+TEST(Lector, PadAndAlignCentreRightLengthShort) {
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_centre_right("Hello, world!", 3), "Hello, world!");
 }
 
-TEST(Lector, PadRightUtf8) {
-  EXPECT_EQ(lector::pad_right("château", 10), "château   ");
-  EXPECT_EQ(lector::pad_right("été", 10), "été       ");
-  EXPECT_EQ(lector::pad_right("œuf", 10), "œuf       ");
-  EXPECT_EQ(lector::pad_right("こんにちは", 10), "こんにちは     ");
+TEST(Lector, PadAndAlignCentreRightUtf8) {
+  EXPECT_EQ(lector::pad_and_align_centre_right("château", 10), "  château ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("été", 10), "    été   ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("œuf", 10), "    œuf   ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("こんにちは", 10), "   こんにちは  ");
 }
 
-TEST(Lector, PadRightWhitespace) {
-  EXPECT_EQ(lector::pad_right("  ", 10), "          ");
-  EXPECT_EQ(lector::pad_right("\t", 10), "\t         ");
-  EXPECT_EQ(lector::pad_right("\n", 10), "\n         ");
-  EXPECT_EQ(lector::pad_right(" \t\n \t\n", 10), " \t\n \t\n    ");
+TEST(Lector, PadAndAlignCentreRightWhitespace) {
+  EXPECT_EQ(lector::pad_and_align_centre_right("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("\t", 10), "     \t    ");
+  EXPECT_EQ(lector::pad_and_align_centre_right("\n", 10), "     \n    ");
+  EXPECT_EQ(lector::pad_and_align_centre_right(" \t\n \t\n", 10), "   \t\n \t\n  ");
+}
+
+TEST(Lector, PadAndAlignLeftEmpty) {
+  EXPECT_EQ(lector::pad_and_align_left("", 0), "");
+  EXPECT_EQ(lector::pad_and_align_left("", 1), " ");
+  EXPECT_EQ(lector::pad_and_align_left("", 2), "  ");
+  EXPECT_EQ(lector::pad_and_align_left("", 3), "   ");
+}
+
+TEST(Lector, PadAndAlignLeftLengthLong) {
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 14), "Hello, world! ");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 15), "Hello, world!  ");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 16), "Hello, world!   ");
+}
+
+TEST(Lector, PadAndAlignLeftLengthShort) {
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_left("Hello, world!", 3), "Hello, world!");
+}
+
+TEST(Lector, PadAndAlignLeftUtf8) {
+  EXPECT_EQ(lector::pad_and_align_left("château", 10), "château   ");
+  EXPECT_EQ(lector::pad_and_align_left("été", 10), "été       ");
+  EXPECT_EQ(lector::pad_and_align_left("œuf", 10), "œuf       ");
+  EXPECT_EQ(lector::pad_and_align_left("こんにちは", 10), "こんにちは     ");
+}
+
+TEST(Lector, PadAndAlignLeftWhitespace) {
+  EXPECT_EQ(lector::pad_and_align_left("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_and_align_left("\t", 10), "\t         ");
+  EXPECT_EQ(lector::pad_and_align_left("\n", 10), "\n         ");
+  EXPECT_EQ(lector::pad_and_align_left(" \t\n \t\n", 10), " \t\n \t\n    ");
+}
+
+TEST(Lector, PadAndAlignRightEmpty) {
+  EXPECT_EQ(lector::pad_and_align_right("", 0), "");
+  EXPECT_EQ(lector::pad_and_align_right("", 1), " ");
+  EXPECT_EQ(lector::pad_and_align_right("", 2), "  ");
+  EXPECT_EQ(lector::pad_and_align_right("", 3), "   ");
+}
+
+TEST(Lector, PadAndAlignRightLengthLong) {
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 14), " Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 15), "  Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 16), "   Hello, world!");
+}
+
+TEST(Lector, PadAndAlignRightLengthShort) {
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 0), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 1), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 2), "Hello, world!");
+  EXPECT_EQ(lector::pad_and_align_right("Hello, world!", 3), "Hello, world!");
+}
+
+TEST(Lector, PadAndAlignRightUtf8) {
+  EXPECT_EQ(lector::pad_and_align_right("château", 10), "   château");
+  EXPECT_EQ(lector::pad_and_align_right("été", 10), "       été");
+  EXPECT_EQ(lector::pad_and_align_right("œuf", 10), "       œuf");
+  EXPECT_EQ(lector::pad_and_align_right("こんにちは", 10), "     こんにちは");
+}
+
+TEST(Lector, PadAndAlignRightWhitespace) {
+  EXPECT_EQ(lector::pad_and_align_right("  ", 10), "          ");
+  EXPECT_EQ(lector::pad_and_align_right("\t", 10), "         \t");
+  EXPECT_EQ(lector::pad_and_align_right("\n", 10), "         \n");
+  EXPECT_EQ(lector::pad_and_align_right(" \t\n \t\n", 10), "     \t\n \t\n");
 }
 
 TEST(Lector, QuoteBasicAlreadyContainsQuotes) {
@@ -902,473 +970,752 @@ TEST(Lector, Tokenize) {
   }
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasExcessiveWhitespace) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!", static_cast<std::size_t>(100UL)),
+TEST(Lector, TruncateFromLeftAscii) {
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 14), "Hello, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 12), "ello, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 11), "llo, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 10), "lo, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 9), "o, world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 8), ", world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 7), " world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 6), "world!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 5), "orld!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 4), "rld!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 3), "ld!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 2), "d!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 1), "!");
+  EXPECT_EQ(lector::truncate_from_left("Hello, world!", 0), "");
+}
+
+TEST(Lector, TruncateFromLeftEmpty) {
+  EXPECT_EQ(lector::truncate_from_left("", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("", 1), "");
+  EXPECT_EQ(lector::truncate_from_left("", 2), "");
+  EXPECT_EQ(lector::truncate_from_left("", 3), "");
+}
+
+TEST(Lector, TruncateFromLeftUtf8) {
+  EXPECT_EQ(lector::truncate_from_left("château", 8), "château");
+  EXPECT_EQ(lector::truncate_from_left("château", 7), "château");
+  EXPECT_EQ(lector::truncate_from_left("château", 6), "hâteau");
+  EXPECT_EQ(lector::truncate_from_left("château", 5), "âteau");
+  EXPECT_EQ(lector::truncate_from_left("château", 4), "teau");
+  EXPECT_EQ(lector::truncate_from_left("château", 3), "eau");
+  EXPECT_EQ(lector::truncate_from_left("château", 2), "au");
+  EXPECT_EQ(lector::truncate_from_left("château", 1), "u");
+  EXPECT_EQ(lector::truncate_from_left("château", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("été", 4), "été");
+  EXPECT_EQ(lector::truncate_from_left("été", 3), "été");
+  EXPECT_EQ(lector::truncate_from_left("été", 2), "té");
+  EXPECT_EQ(lector::truncate_from_left("été", 1), "é");
+  EXPECT_EQ(lector::truncate_from_left("été", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("œuf", 4), "œuf");
+  EXPECT_EQ(lector::truncate_from_left("œuf", 3), "œuf");
+  EXPECT_EQ(lector::truncate_from_left("œuf", 2), "uf");
+  EXPECT_EQ(lector::truncate_from_left("œuf", 1), "f");
+  EXPECT_EQ(lector::truncate_from_left("œuf", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 6), "こんにちは");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 5), "こんにちは");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 4), "んにちは");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 3), "にちは");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 2), "ちは");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 1), "は");
+  EXPECT_EQ(lector::truncate_from_left("こんにちは", 0), "");
+}
+
+TEST(Lector, TruncateFromLeftWhitespace) {
+  EXPECT_EQ(lector::truncate_from_left("  ", 3), "  ");
+  EXPECT_EQ(lector::truncate_from_left("  ", 2), "  ");
+  EXPECT_EQ(lector::truncate_from_left("  ", 1), " ");
+  EXPECT_EQ(lector::truncate_from_left("  ", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("\t\t", 3), "\t\t");
+  EXPECT_EQ(lector::truncate_from_left("\t\t", 2), "\t\t");
+  EXPECT_EQ(lector::truncate_from_left("\t\t", 1), "\t");
+  EXPECT_EQ(lector::truncate_from_left("\t\t", 0), "");
+  EXPECT_EQ(lector::truncate_from_left("\n\n", 3), "\n\n");
+  EXPECT_EQ(lector::truncate_from_left("\n\n", 2), "\n\n");
+  EXPECT_EQ(lector::truncate_from_left("\n\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_from_left("\n\n", 0), "");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 7), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 6), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 5), "\t\n \t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 4), "\n \t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 3), " \t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 2), "\t\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_from_left(" \t\n \t\n", 0), "");
+}
+
+TEST(Lector, TruncateFromRightAscii) {
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 14), "Hello, world!");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 12), "Hello, world");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 11), "Hello, worl");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 10), "Hello, wor");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 9), "Hello, wo");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 8), "Hello, w");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 7), "Hello, ");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 6), "Hello,");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 5), "Hello");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 4), "Hell");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 3), "Hel");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 2), "He");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 1), "H");
+  EXPECT_EQ(lector::truncate_from_right("Hello, world!", 0), "");
+}
+
+TEST(Lector, TruncateFromRightEmpty) {
+  EXPECT_EQ(lector::truncate_from_right("", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("", 1), "");
+  EXPECT_EQ(lector::truncate_from_right("", 2), "");
+  EXPECT_EQ(lector::truncate_from_right("", 3), "");
+}
+
+TEST(Lector, TruncateFromRightUtf8) {
+  EXPECT_EQ(lector::truncate_from_right("château", 8), "château");
+  EXPECT_EQ(lector::truncate_from_right("château", 7), "château");
+  EXPECT_EQ(lector::truncate_from_right("château", 6), "châtea");
+  EXPECT_EQ(lector::truncate_from_right("château", 5), "châte");
+  EXPECT_EQ(lector::truncate_from_right("château", 4), "chât");
+  EXPECT_EQ(lector::truncate_from_right("château", 3), "châ");
+  EXPECT_EQ(lector::truncate_from_right("château", 2), "ch");
+  EXPECT_EQ(lector::truncate_from_right("château", 1), "c");
+  EXPECT_EQ(lector::truncate_from_right("château", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("été", 4), "été");
+  EXPECT_EQ(lector::truncate_from_right("été", 3), "été");
+  EXPECT_EQ(lector::truncate_from_right("été", 2), "ét");
+  EXPECT_EQ(lector::truncate_from_right("été", 1), "é");
+  EXPECT_EQ(lector::truncate_from_right("été", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("œuf", 4), "œuf");
+  EXPECT_EQ(lector::truncate_from_right("œuf", 3), "œuf");
+  EXPECT_EQ(lector::truncate_from_right("œuf", 2), "œu");
+  EXPECT_EQ(lector::truncate_from_right("œuf", 1), "œ");
+  EXPECT_EQ(lector::truncate_from_right("œuf", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 6), "こんにちは");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 5), "こんにちは");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 4), "こんにち");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 3), "こんに");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 2), "こん");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 1), "こ");
+  EXPECT_EQ(lector::truncate_from_right("こんにちは", 0), "");
+}
+
+TEST(Lector, TruncateFromRightWhitespace) {
+  EXPECT_EQ(lector::truncate_from_right("  ", 3), "  ");
+  EXPECT_EQ(lector::truncate_from_right("  ", 2), "  ");
+  EXPECT_EQ(lector::truncate_from_right("  ", 1), " ");
+  EXPECT_EQ(lector::truncate_from_right("  ", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("\t\t", 3), "\t\t");
+  EXPECT_EQ(lector::truncate_from_right("\t\t", 2), "\t\t");
+  EXPECT_EQ(lector::truncate_from_right("\t\t", 1), "\t");
+  EXPECT_EQ(lector::truncate_from_right("\t\t", 0), "");
+  EXPECT_EQ(lector::truncate_from_right("\n\n", 3), "\n\n");
+  EXPECT_EQ(lector::truncate_from_right("\n\n", 2), "\n\n");
+  EXPECT_EQ(lector::truncate_from_right("\n\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_from_right("\n\n", 0), "");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 7), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 6), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 5), " \t\n \t");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 4), " \t\n ");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 3), " \t\n");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 2), " \t");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 1), " ");
+  EXPECT_EQ(lector::truncate_from_right(" \t\n \t\n", 0), "");
+}
+
+TEST(Lector, TruncateToCentreLeftAscii) {
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 14), "Hello, world!");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 12), "Hello, world");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 11), "ello, world");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 10), "ello, worl");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 9), "llo, worl");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 8), "llo, wor");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 7), "lo, wor");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 6), "lo, wo");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 5), "o, wo");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 4), "o, w");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 3), ", w");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 2), ", ");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 1), " ");
+  EXPECT_EQ(lector::truncate_to_centre_left("Hello, world!", 0), "");
+}
+
+TEST(Lector, TruncateToCentreLeftEmpty) {
+  EXPECT_EQ(lector::truncate_to_centre_left("", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("", 1), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("", 2), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("", 3), "");
+}
+
+TEST(Lector, TruncateToCentreLeftUtf8) {
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 8), "château");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 7), "château");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 6), "châtea");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 5), "hâtea");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 4), "hâte");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 3), "âte");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 2), "ât");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 1), "t");
+  EXPECT_EQ(lector::truncate_to_centre_left("château", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("été", 4), "été");
+  EXPECT_EQ(lector::truncate_to_centre_left("été", 3), "été");
+  EXPECT_EQ(lector::truncate_to_centre_left("été", 2), "ét");
+  EXPECT_EQ(lector::truncate_to_centre_left("été", 1), "t");
+  EXPECT_EQ(lector::truncate_to_centre_left("été", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("œuf", 4), "œuf");
+  EXPECT_EQ(lector::truncate_to_centre_left("œuf", 3), "œuf");
+  EXPECT_EQ(lector::truncate_to_centre_left("œuf", 2), "œu");
+  EXPECT_EQ(lector::truncate_to_centre_left("œuf", 1), "u");
+  EXPECT_EQ(lector::truncate_to_centre_left("œuf", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 6), "こんにちは");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 5), "こんにちは");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 4), "こんにち");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 3), "んにち");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 2), "んに");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 1), "に");
+  EXPECT_EQ(lector::truncate_to_centre_left("こんにちは", 0), "");
+}
+
+TEST(Lector, TruncateToCentreLeftWhitespace) {
+  EXPECT_EQ(lector::truncate_to_centre_left("  ", 3), "  ");
+  EXPECT_EQ(lector::truncate_to_centre_left("  ", 2), "  ");
+  EXPECT_EQ(lector::truncate_to_centre_left("  ", 1), " ");
+  EXPECT_EQ(lector::truncate_to_centre_left("  ", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("\t\t", 3), "\t\t");
+  EXPECT_EQ(lector::truncate_to_centre_left("\t\t", 2), "\t\t");
+  EXPECT_EQ(lector::truncate_to_centre_left("\t\t", 1), "\t");
+  EXPECT_EQ(lector::truncate_to_centre_left("\t\t", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left("\n\n", 3), "\n\n");
+  EXPECT_EQ(lector::truncate_to_centre_left("\n\n", 2), "\n\n");
+  EXPECT_EQ(lector::truncate_to_centre_left("\n\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_to_centre_left("\n\n", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 7), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 6), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 5), " \t\n \t");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 4), "\t\n \t");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 3), "\t\n ");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 2), "\n ");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_to_centre_left(" \t\n \t\n", 0), "");
+}
+
+TEST(Lector, TruncateToCentreRightAscii) {
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 14), "Hello, world!");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 13), "Hello, world!");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 12), "ello, world!");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 11), "ello, world");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 10), "llo, world");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 9), "llo, worl");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 8), "lo, worl");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 7), "lo, wor");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 6), "o, wor");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 5), "o, wo");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 4), ", wo");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 3), ", w");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 2), " w");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 1), " ");
+  EXPECT_EQ(lector::truncate_to_centre_right("Hello, world!", 0), "");
+}
+
+TEST(Lector, TruncateToCentreRightEmpty) {
+  EXPECT_EQ(lector::truncate_to_centre_right("", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("", 1), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("", 2), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("", 3), "");
+}
+
+TEST(Lector, TruncateToCentreRightUtf8) {
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 8), "château");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 7), "château");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 6), "hâteau");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 5), "hâtea");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 4), "âtea");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 3), "âte");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 2), "te");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 1), "t");
+  EXPECT_EQ(lector::truncate_to_centre_right("château", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("été", 4), "été");
+  EXPECT_EQ(lector::truncate_to_centre_right("été", 3), "été");
+  EXPECT_EQ(lector::truncate_to_centre_right("été", 2), "té");
+  EXPECT_EQ(lector::truncate_to_centre_right("été", 1), "t");
+  EXPECT_EQ(lector::truncate_to_centre_right("été", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("œuf", 4), "œuf");
+  EXPECT_EQ(lector::truncate_to_centre_right("œuf", 3), "œuf");
+  EXPECT_EQ(lector::truncate_to_centre_right("œuf", 2), "uf");
+  EXPECT_EQ(lector::truncate_to_centre_right("œuf", 1), "u");
+  EXPECT_EQ(lector::truncate_to_centre_right("œuf", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 6), "こんにちは");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 5), "こんにちは");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 4), "んにちは");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 3), "んにち");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 2), "にち");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 1), "に");
+  EXPECT_EQ(lector::truncate_to_centre_right("こんにちは", 0), "");
+}
+
+TEST(Lector, TruncateToCentreRightWhitespace) {
+  EXPECT_EQ(lector::truncate_to_centre_right("  ", 3), "  ");
+  EXPECT_EQ(lector::truncate_to_centre_right("  ", 2), "  ");
+  EXPECT_EQ(lector::truncate_to_centre_right("  ", 1), " ");
+  EXPECT_EQ(lector::truncate_to_centre_right("  ", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("\t\t", 3), "\t\t");
+  EXPECT_EQ(lector::truncate_to_centre_right("\t\t", 2), "\t\t");
+  EXPECT_EQ(lector::truncate_to_centre_right("\t\t", 1), "\t");
+  EXPECT_EQ(lector::truncate_to_centre_right("\t\t", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right("\n\n", 3), "\n\n");
+  EXPECT_EQ(lector::truncate_to_centre_right("\n\n", 2), "\n\n");
+  EXPECT_EQ(lector::truncate_to_centre_right("\n\n", 1), "\n");
+  EXPECT_EQ(lector::truncate_to_centre_right("\n\n", 0), "");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 7), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 6), " \t\n \t\n");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 5), "\t\n \t\n");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 4), "\t\n \t");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 3), "\n \t");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 2), "\n ");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 1), " ");
+  EXPECT_EQ(lector::truncate_to_centre_right(" \t\n \t\n", 0), "");
+}
+
+TEST(Lector, WrapAndAlignCentreLeftExcessiveWhitespace) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_left("Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_left("Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                " Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_left(" Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_left("  Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                " Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_left(" Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("  Hello, world!  ", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_left("Hello, world!\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_left("\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\n\nHello, world!", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_left("Hello, world!\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_left("\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\n\nHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "Hello, world!\t\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\tHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\t\tHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\t\tHello, world!", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_left(
                 " \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasInvalid) {
-  EXPECT_ANY_THROW((void)lector::wrap_and_centre_align_with_left_bias(
-      "Hello, world!", static_cast<std::size_t>(0UL)));
+TEST(Lector, WrapAndAlignCentreLeftInvalid) {
+  EXPECT_ANY_THROW(
+      (void)lector::wrap_and_align_centre_left("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasLineLengthFive) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
-                static_cast<std::size_t>(5UL)),
-            " The\nquick\nbrown\n fox\njumps\nover\n the\nlazy\ndog.");
+TEST(Lector, WrapAndAlignCentreLeftLineLengthFive) {
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+                                         static_cast<std::size_t>(5UL)),
+      " The\nquick\nbrown\n fox\njumps\nover\n the\nlazy\ndog.");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasLineLengthFour) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(4UL)),
+TEST(Lector, WrapAndAlignCentreLeftLineLengthFour) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("  Hello, world!  ", static_cast<std::size_t>(4UL)),
             "Hel-\nlo,\nwor-\nld!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasLineLengthOne) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(1UL)),
+TEST(Lector, WrapAndAlignCentreLeftLineLengthOne) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("  Hello, world!  ", static_cast<std::size_t>(1UL)),
             "H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasLineLengthThree) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(3UL)),
+TEST(Lector, WrapAndAlignCentreLeftLineLengthThree) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("  Hello, world!  ", static_cast<std::size_t>(3UL)),
             "He-\nll-\no,\nwo-\nrl-\nd!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasLineLengthTwo) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(2UL)),
+TEST(Lector, WrapAndAlignCentreLeftLineLengthTwo) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("  Hello, world!  ", static_cast<std::size_t>(2UL)),
             "H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasMultipleLines) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
-                "  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
-                static_cast<std::size_t>(12UL)),
-            "The quick\nbrown fox\njumps over\n the lazy\n   dog.");
+TEST(Lector, WrapAndAlignCentreLeftMultipleLines) {
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+                                         static_cast<std::size_t>(12UL)),
+      "The quick\nbrown fox\njumps over\n the lazy\n   dog.");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasUtf8Characters) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(
+TEST(Lector, WrapAndAlignCentreLeftUtf8Characters) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left(
                 "  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
             "J'ai hâte à\n  l'été!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasVeryLongWord) {
+TEST(Lector, WrapAndAlignCentreLeftVeryLongWord) {
   EXPECT_EQ(
-      lector::wrap_and_centre_align_with_left_bias(
+      lector::wrap_and_align_centre_left(
           "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
           static_cast<std::size_t>(10UL)),
       " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\n favorite\n  word!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithLeftBiasWhitespaceOnly) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(" ", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("  ", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("\t", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("\t\t", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("\n", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias("\n\n", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_left_bias(" \t\n", static_cast<std::size_t>(100UL)),
-            std::string{});
+TEST(Lector, WrapAndAlignCentreLeftWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap_and_align_centre_left("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_left(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasExcessiveWhitespace) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!", static_cast<std::size_t>(100UL)),
+TEST(Lector, WrapAndAlignCentreRightExcessiveWhitespace) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right("Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_right("Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_right("Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                " Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_right(" Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_right("  Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                " Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_centre_right(" Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("  Hello, world!  ", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_right("Hello, world!\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_right("\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\n\nHello, world!", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_right("Hello, world!\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_right("\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\n\nHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "Hello, world!\t\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\tHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\t\tHello, world!", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
-            "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\t\tHello, world!", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
+      "Hello, world!");
+  EXPECT_EQ(lector::wrap_and_align_centre_right(
                 " \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasInvalid) {
-  EXPECT_ANY_THROW((void)lector::wrap_and_centre_align_with_right_bias(
-      "Hello, world!", static_cast<std::size_t>(0UL)));
+TEST(Lector, WrapAndAlignCentreRightInvalid) {
+  EXPECT_ANY_THROW(
+      (void)lector::wrap_and_align_centre_right("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasLineLengthFive) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
+TEST(Lector, WrapAndAlignCentreRightLineLengthFive) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right(
                 "  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                 static_cast<std::size_t>(5UL)),
             " The\nquick\nbrown\n fox\njumps\n over\n the\n lazy\n dog.");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasLineLengthFour) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(4UL)),
+TEST(Lector, WrapAndAlignCentreRightLineLengthFour) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right("  Hello, world!  ", static_cast<std::size_t>(4UL)),
             "Hel-\n lo,\nwor-\n ld!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasLineLengthOne) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(1UL)),
+TEST(Lector, WrapAndAlignCentreRightLineLengthOne) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right("  Hello, world!  ", static_cast<std::size_t>(1UL)),
             "H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasLineLengthThree) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(3UL)),
+TEST(Lector, WrapAndAlignCentreRightLineLengthThree) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right("  Hello, world!  ", static_cast<std::size_t>(3UL)),
             "He-\nll-\n o,\nwo-\nrl-\n d!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasLineLengthTwo) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
-                "  Hello, world!  ", static_cast<std::size_t>(2UL)),
+TEST(Lector, WrapAndAlignCentreRightLineLengthTwo) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right("  Hello, world!  ", static_cast<std::size_t>(2UL)),
             "H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasMultipleLines) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
+TEST(Lector, WrapAndAlignCentreRightMultipleLines) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right(
                 "  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                 static_cast<std::size_t>(12UL)),
             " The quick\n brown fox\njumps over\n the lazy\n   dog.");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasUtf8Characters) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(
+TEST(Lector, WrapAndAlignCentreRightUtf8Characters) {
+  EXPECT_EQ(lector::wrap_and_align_centre_right(
                 "  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
             "J'ai hâte à\n   l'été!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasVeryLongWord) {
+TEST(Lector, WrapAndAlignCentreRightVeryLongWord) {
   EXPECT_EQ(
-      lector::wrap_and_centre_align_with_right_bias(
+      lector::wrap_and_align_centre_right(
           "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
           static_cast<std::size_t>(10UL)),
       " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\n favorite\n   word!");
 }
 
-TEST(Lector, WrapAndCentreAlignWithRightBiasWhitespaceOnly) {
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(" ", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("  ", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("\t", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("\t\t", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("\n", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias("\n\n", static_cast<std::size_t>(100UL)),
-            std::string{});
-  EXPECT_EQ(lector::wrap_and_centre_align_with_right_bias(" \t\n", static_cast<std::size_t>(100UL)),
-            std::string{});
+TEST(Lector, WrapAndAlignCentreRightWhitespaceOnly) {
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(
+      lector::wrap_and_align_centre_right(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
-TEST(Lector, WrapAndLeftAlignExcessiveWhitespace) {
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!", static_cast<std::size_t>(100UL)),
+TEST(Lector, WrapAndAlignLeftExcessiveWhitespace) {
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align(" Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left(" Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align(" Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left(" Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\n\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\n\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\tHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\t\tHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\t\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_left("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_left_align(
+  EXPECT_EQ(lector::wrap_and_align_left(
                 " \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
 }
 
-TEST(Lector, WrapAndLeftAlignInvalid) {
+TEST(Lector, WrapAndAlignLeftInvalid) {
   EXPECT_ANY_THROW(
-      (void)lector::wrap_and_left_align("Hello, world!", static_cast<std::size_t>(0UL)));
+      (void)lector::wrap_and_align_left("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapAndLeftAlignLineLengthFive) {
-  EXPECT_EQ(lector::wrap_and_left_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+TEST(Lector, WrapAndAlignLeftLineLengthFive) {
+  EXPECT_EQ(lector::wrap_and_align_left("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                         static_cast<std::size_t>(5UL)),
             "The\nquick\nbrown\nfox\njumps\nover\nthe\nlazy\ndog.");
 }
 
-TEST(Lector, WrapAndLeftAlignLineLengthFour) {
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(4UL)),
+TEST(Lector, WrapAndAlignLeftLineLengthFour) {
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!  ", static_cast<std::size_t>(4UL)),
             "Hel-\nlo,\nwor-\nld!");
 }
 
-TEST(Lector, WrapAndLeftAlignLineLengthOne) {
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(1UL)),
+TEST(Lector, WrapAndAlignLeftLineLengthOne) {
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!  ", static_cast<std::size_t>(1UL)),
             "H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!");
 }
 
-TEST(Lector, WrapAndLeftAlignLineLengthThree) {
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(3UL)),
+TEST(Lector, WrapAndAlignLeftLineLengthThree) {
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!  ", static_cast<std::size_t>(3UL)),
             "He-\nll-\no,\nwo-\nrl-\nd!");
 }
 
-TEST(Lector, WrapAndLeftAlignLineLengthTwo) {
-  EXPECT_EQ(lector::wrap_and_left_align("  Hello, world!  ", static_cast<std::size_t>(2UL)),
+TEST(Lector, WrapAndAlignLeftLineLengthTwo) {
+  EXPECT_EQ(lector::wrap_and_align_left("  Hello, world!  ", static_cast<std::size_t>(2UL)),
             "H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!");
 }
 
-TEST(Lector, WrapAndLeftAlignMultipleLines) {
-  EXPECT_EQ(lector::wrap_and_left_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+TEST(Lector, WrapAndAlignLeftMultipleLines) {
+  EXPECT_EQ(lector::wrap_and_align_left("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                         static_cast<std::size_t>(12UL)),
             "The quick\nbrown fox\njumps over\nthe lazy\ndog.");
 }
 
-TEST(Lector, WrapAndLeftAlignUtf8Characters) {
+TEST(Lector, WrapAndAlignLeftUtf8Characters) {
   EXPECT_EQ(
-      lector::wrap_and_left_align("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
+      lector::wrap_and_align_left("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
       "J'ai hâte à\nl'été!");
 }
 
-TEST(Lector, WrapAndLeftAlignVeryLongWord) {
-  EXPECT_EQ(lector::wrap_and_left_align(
+TEST(Lector, WrapAndAlignLeftVeryLongWord) {
+  EXPECT_EQ(lector::wrap_and_align_left(
                 "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
                 static_cast<std::size_t>(10UL)),
             "The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\nmy\nfavorite\nword!");
 }
 
-TEST(Lector, WrapAndLeftAlignWhitespaceOnly) {
-  EXPECT_EQ(lector::wrap_and_left_align("", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align(" ", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align("  ", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align("\t", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align("\t\t", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align("\n", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align("\n\n", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_left_align(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
+TEST(Lector, WrapAndAlignLeftWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap_and_align_left("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_left(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
-TEST(Lector, WrapAndRightAlignExcessiveWhitespace) {
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!", static_cast<std::size_t>(100UL)),
+TEST(Lector, WrapAndAlignRightExcessiveWhitespace) {
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align(" Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right(" Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align(" Hello, world! ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right(" Hello, world! ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!  ", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!\n\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\n\nHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\n\nHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\n\nHello, world!\n\n", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("Hello, world!\t\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\tHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\t\tHello, world!", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\t\tHello, world!", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
+  EXPECT_EQ(lector::wrap_and_align_right("\t\tHello, world!\t\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
-  EXPECT_EQ(lector::wrap_and_right_align(
+  EXPECT_EQ(lector::wrap_and_align_right(
                 " \n\t \n\tHello, world! \n\t \n\t", static_cast<std::size_t>(100UL)),
             "Hello, world!");
 }
 
-TEST(Lector, WrapAndRightAlignInvalid) {
+TEST(Lector, WrapAndAlignRightInvalid) {
   EXPECT_ANY_THROW(
-      (void)lector::wrap_and_right_align("Hello, world!", static_cast<std::size_t>(0UL)));
+      (void)lector::wrap_and_align_right("Hello, world!", static_cast<std::size_t>(0UL)));
 }
 
-TEST(Lector, WrapAndRightAlignLineLengthFive) {
-  EXPECT_EQ(lector::wrap_and_right_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+TEST(Lector, WrapAndAlignRightLineLengthFive) {
+  EXPECT_EQ(lector::wrap_and_align_right("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                          static_cast<std::size_t>(5UL)),
             "  The\nquick\nbrown\n  fox\njumps\n over\n  the\n lazy\n dog.");
 }
 
-TEST(Lector, WrapAndRightAlignLineLengthFour) {
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(4UL)),
+TEST(Lector, WrapAndAlignRightLineLengthFour) {
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!  ", static_cast<std::size_t>(4UL)),
             "Hel-\n lo,\nwor-\n ld!");
 }
 
-TEST(Lector, WrapAndRightAlignLineLengthOne) {
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(1UL)),
+TEST(Lector, WrapAndAlignRightLineLengthOne) {
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!  ", static_cast<std::size_t>(1UL)),
             "H\ne\nl\nl\no\n,\nw\no\nr\nl\nd\n!");
 }
 
-TEST(Lector, WrapAndRightAlignLineLengthThree) {
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(3UL)),
+TEST(Lector, WrapAndAlignRightLineLengthThree) {
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!  ", static_cast<std::size_t>(3UL)),
             "He-\nll-\n o,\nwo-\nrl-\n d!");
 }
 
-TEST(Lector, WrapAndRightAlignLineLengthTwo) {
-  EXPECT_EQ(lector::wrap_and_right_align("  Hello, world!  ", static_cast<std::size_t>(2UL)),
+TEST(Lector, WrapAndAlignRightLineLengthTwo) {
+  EXPECT_EQ(lector::wrap_and_align_right("  Hello, world!  ", static_cast<std::size_t>(2UL)),
             "H-\ne-\nl-\nl-\no,\nw-\no-\nr-\nl-\nd!");
 }
 
-TEST(Lector, WrapAndRightAlignMultipleLines) {
-  EXPECT_EQ(lector::wrap_and_right_align("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
+TEST(Lector, WrapAndAlignRightMultipleLines) {
+  EXPECT_EQ(lector::wrap_and_align_right("  The  quick  brown  fox  jumps  over  the  lazy  dog.  ",
                                          static_cast<std::size_t>(12UL)),
             " The quick\n brown fox\njumps over\n  the lazy\n      dog.");
 }
 
-TEST(Lector, WrapAndRightAlignUtf8Characters) {
+TEST(Lector, WrapAndAlignRightUtf8Characters) {
   EXPECT_EQ(
-      lector::wrap_and_right_align("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
+      lector::wrap_and_align_right("  J'ai  hâte  à  l'été!  ", static_cast<std::size_t>(11UL)),
       "J'ai hâte à\n     l'été!");
 }
 
-TEST(Lector, WrapAndRightAlignVeryLongWord) {
-  EXPECT_EQ(lector::wrap_and_right_align(
+TEST(Lector, WrapAndAlignRightVeryLongWord) {
+  EXPECT_EQ(lector::wrap_and_align_right(
                 "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
                 static_cast<std::size_t>(10UL)),
             "  The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n        my\n  favorite\n  "
             "   word!");
 }
 
-TEST(Lector, WrapAndRightAlignWhitespaceOnly) {
-  EXPECT_EQ(lector::wrap_and_right_align("", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align(" ", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align("  ", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align("\t", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align("\t\t", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align("\n", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align("\n\n", static_cast<std::size_t>(100UL)), std::string{});
-  EXPECT_EQ(lector::wrap_and_right_align(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
+TEST(Lector, WrapAndAlignRightWhitespaceOnly) {
+  EXPECT_EQ(lector::wrap_and_align_right("", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right(" ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right("  ", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right("\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right("\t\t", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right("\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right("\n\n", static_cast<std::size_t>(100UL)), std::string{});
+  EXPECT_EQ(lector::wrap_and_align_right(" \t\n", static_cast<std::size_t>(100UL)), std::string{});
 }
 
 TEST(Lector, WrapOnlyExcessiveWhitespace) {

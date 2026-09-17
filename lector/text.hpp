@@ -199,7 +199,7 @@ namespace lector {
   if (lector::contains_whitespace(text)) {
     return lector::quote(text);
   }
-  return std::string(text);
+  return std::string{text};
 }
 
 /// @brief Tokenizes a string of text into a vector of strings of text, where each string in the
@@ -231,99 +231,218 @@ namespace lector {
   return words;
 }
 
-/// @brief Pads a string of text from the left with spaces to reach a specified length. If the
-/// string of text is longer than the specified length, it is unchanged.
-/// @param[in] text The string of text to pad from the left.
-/// @param[in] length The desired length of the padded string.
-/// @return The padded string of text.
-[[nodiscard]] inline std::string pad_left(const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
-  if (text_length >= length) {
-    return std::string(text);
-  }
-  return std::string(length - text_length, ' ') + std::string{text};
-}
-
-/// @brief Pads a string of text from the right with spaces to reach a specified length. If the
-/// string of text is longer than the specified length, it is unchanged.
-/// @param[in] text The string of text to pad from the right.
-/// @param[in] length The desired length of the padded string.
-/// @return The padded string of text.
-[[nodiscard]] inline std::string pad_right(const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
-  if (text_length >= length) {
-    return std::string(text);
-  }
-  return std::string{text} + std::string(length - text_length, ' ');
-}
-
-/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
-/// string of text, with newline characters inserted between the lines, and the lines left-aligned.
-/// @param[in] lines Vector of strings to be joined and left-aligned.
-/// @return The joined and left-aligned string of text.
-[[nodiscard]] inline std::string join_and_left_align(const std::vector<std::string>& lines) {
-  // Handle the empty case immediately to prevent underflow later.
-  if (lines.empty()) {
+/// @brief Truncates a string of text to a specified length by removing characters from the string's
+/// left end. If the string of text is already shorter than or equal to the specified length, it is
+/// returned unchanged.
+/// @param[in] text The string of text to truncate.
+/// @param[in] length The maximum length of the truncated string of text.
+/// @return The truncated string of text.
+[[nodiscard]] inline std::string truncate_from_left(
+    const std::string_view text, const std::size_t length) {
+  if (length == static_cast<std::size_t>(0UL)) {
     return std::string{};
   }
-  // Calculate the exact total size.
-  std::size_t total_size{0UL};
-  for (const std::string& line : lines) {
-    total_size += line.size();
-  }
-  // Add space for the newline separators (one less than the total number of lines).
-  total_size += lines.size() - static_cast<std::size_t>(1UL);
-  // Create and allocate the resulting text.
-  std::string text;
-  text.reserve(total_size);
-  // Append the first line.
-  text.append(lines.front());
-  // Append subsequent lines prefixed by a newline.
-  for (std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
-    text.push_back('\n');
-    text.append(lines.at(line_index));
-  }
-  return text;
-}
-
-/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
-/// string of text, with newline characters inserted between the lines, and the lines right-aligned.
-/// @param[in] lines Vector of strings to be joined and right-aligned.
-/// @return The joined and right-aligned string of text.
-[[nodiscard]] inline std::string join_and_right_align(const std::vector<std::string>& lines) {
-  // Handle the empty case immediately to prevent underflow later.
-  if (lines.empty()) {
-    return std::string{};
-  }
-  // Compute the line lengths and find the maximum line length.
-  std::vector<std::size_t> line_lengths;
-  line_lengths.reserve(lines.size());
-  std::size_t longest_line_length{0UL};
-  for (const std::string& line : lines) {
-    const std::size_t length{lector::code_points(line)};
-    line_lengths.push_back(length);
-    longest_line_length = std::max(length, longest_line_length);
-  }
-  // Compute the exact total byte size.
-  std::size_t total_size{0UL};
-  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
-    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
-    total_size += lines.at(line_index).size() + padding;
-  }
-  total_size += lines.size() - static_cast<std::size_t>(1UL);
-  // Create and allocate the resulting text.
-  std::string text;
-  text.reserve(total_size);
-  // Append lines with padding.
-  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
-    if (line_index > 0UL) {
-      text.push_back('\n');
+  std::size_t count{0UL};
+  for (std::size_t reverse_index{0UL}; reverse_index < text.size(); ++reverse_index) {
+    const std::size_t index{text.size() - static_cast<std::size_t>(1UL) - reverse_index};
+    if (lector::is_leading_byte(text.at(index))) {
+      ++count;
+      if (count == length) {
+        return std::string{text.substr(index)};
+      }
     }
-    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
-    text.append(padding, ' ');
-    text.append(lines.at(line_index));
   }
-  return text;
+  return std::string{text};
+}
+
+/// @brief Truncates a string of text to a specified length by removing characters from the string's
+/// right end. If the string of text is already shorter than or equal to the specified length, it is
+/// returned unchanged.
+/// @param[in] text The string of text to truncate.
+/// @param[in] length The maximum length of the truncated string of text.
+/// @return The truncated string of text.
+[[nodiscard]] inline std::string truncate_from_right(
+    const std::string_view text, const std::size_t length) {
+  std::size_t count{0UL};
+  for (std::size_t index{0UL}; index < text.size(); ++index) {
+    if (lector::is_leading_byte(text.at(index))) {
+      if (count == length) {
+        return std::string{text.substr(static_cast<std::size_t>(0UL), index)};
+      }
+      ++count;
+    }
+  }
+  return std::string{text};
+}
+
+/// @brief Truncates a string of text to a specified length by removing characters from both ends of
+/// the string. If the total number of characters to be removed is odd, one fewer character is
+/// removed from the left. If the string of text is already shorter than or equal to the specified
+/// length, it is returned unchanged.
+/// @param[in] text The string of text to truncate.
+/// @param[in] length The maximum length of the truncated string of text.
+/// @return The truncated string of text.
+[[nodiscard]] inline std::string truncate_to_centre_left(
+    const std::string_view text, const std::size_t length) {
+  if (length == static_cast<std::size_t>(0UL)) {
+    return std::string{};
+  }
+  const std::size_t total_code_points{lector::code_points(text)};
+  if (total_code_points <= length) {
+    return std::string{text};
+  }
+  const std::size_t code_points_to_remove{total_code_points - length};
+  // Bias the result to the left. Drop fewer characters from the left end.
+  const std::size_t code_points_to_remove_from_left{
+    code_points_to_remove / static_cast<std::size_t>(2UL)};
+  const std::size_t begin_code_point_index{code_points_to_remove_from_left};
+  const std::size_t end_code_point_index{code_points_to_remove_from_left + length};
+  std::size_t begin_byte_index{0UL};
+  std::size_t end_byte_index{text.size()};
+  std::size_t code_point_count{0UL};
+  for (std::size_t i{0UL}; i < text.size(); ++i) {
+    if (lector::is_leading_byte(text[i])) {
+      if (code_point_count == begin_code_point_index) {
+        begin_byte_index = i;
+      }
+      if (code_point_count == end_code_point_index) {
+        end_byte_index = i;
+        break;
+      }
+      ++code_point_count;
+    }
+  }
+  return std::string{text.substr(begin_byte_index, end_byte_index - begin_byte_index)};
+}
+
+/// @brief Truncates a string of text to a specified length by removing characters from both ends of
+/// the string. If the total number of characters to be removed is odd, one fewer character is
+/// removed from the right. If the string of text is already shorter than or equal to the specified
+/// length, it is returned unchanged.
+/// @param[in] text The string of text to truncate.
+/// @param[in] length The maximum length of the truncated string of text.
+/// @return The truncated string of text.
+[[nodiscard]] inline std::string truncate_to_centre_right(
+    const std::string_view text, const std::size_t length) {
+  if (length == static_cast<std::size_t>(0UL)) {
+    return std::string{};
+  }
+  const std::size_t total_code_points{lector::code_points(text)};
+  if (total_code_points <= length) {
+    return std::string{text};
+  }
+  const std::size_t code_points_to_remove{total_code_points - length};
+  // Bias the result to the right. Drop fewer characters from the right end.
+  const std::size_t code_points_to_remove_from_right{
+    code_points_to_remove / static_cast<std::size_t>(2UL)};
+  const std::size_t code_points_to_remove_from_left{
+    code_points_to_remove - code_points_to_remove_from_right};
+  const std::size_t begin_code_point_index{code_points_to_remove_from_left};
+  const std::size_t end_code_point_index{code_points_to_remove_from_left + length};
+  std::size_t begin_byte_index{0UL};
+  std::size_t end_byte_index{text.size()};
+  std::size_t code_point_count{0UL};
+  for (std::size_t i{0UL}; i < text.size(); ++i) {
+    if (lector::is_leading_byte(text[i])) {
+      if (code_point_count == begin_code_point_index) {
+        begin_byte_index = i;
+      }
+      if (code_point_count == end_code_point_index) {
+        end_byte_index = i;
+        break;
+      }
+      ++code_point_count;
+    }
+  }
+  return std::string{text.substr(begin_byte_index, end_byte_index - begin_byte_index)};
+}
+
+/// @brief Pads a string of text with spaces to reach a specified length. The padding is added from
+/// both the left and right such that the text becomes centre-aligned. If the total required
+/// centre-aligning padding is odd, the text is biased by one space towards the left. If the string
+/// of text is longer than the specified length, it is returned unchanged.
+/// @param[in] text The string of text to pad.
+/// @param[in] length The minimum length of the padded string of text.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_and_align_centre_left(
+    const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string{text};
+  }
+  const std::size_t total_padding{length - text_length};
+  const std::size_t left_padding{total_padding / static_cast<std::size_t>(2UL)};
+  const std::size_t right_padding{total_padding - left_padding};
+  std::string result;
+  result.reserve(text.size() + total_padding);
+  result.append(left_padding, ' ');
+  result.append(text);
+  result.append(right_padding, ' ');
+  return result;
+}
+
+/// @brief Pads a string of text with spaces to reach a specified length. The padding is added from
+/// both the left and right such that the text becomes centre-aligned. If the total required
+/// centre-aligning padding is odd, the text is biased by one space towards the right. If the string
+/// of text is longer than the specified length, it is returned unchanged.
+/// @param[in] text The string of text to pad.
+/// @param[in] length The minimum length of the padded string of text.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_and_align_centre_right(
+    const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string{text};
+  }
+  const std::size_t total_padding{length - text_length};
+  const std::size_t right_padding{total_padding / static_cast<std::size_t>(2UL)};
+  const std::size_t left_padding{total_padding - right_padding};
+  std::string result;
+  result.reserve(text.size() + total_padding);
+  result.append(left_padding, ' ');
+  result.append(text);
+  result.append(right_padding, ' ');
+  return result;
+}
+
+/// @brief Pads a string of text with spaces to reach a specified length. The padding is added from
+/// the right such that the text becomes left-aligned. If the string of text is longer than the
+/// specified length, it is returned unchanged.
+/// @param[in] text The string of text to pad.
+/// @param[in] length The minimum length of the padded string of text.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_and_align_left(
+    const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string{text};
+  }
+  const std::size_t padding{length - text_length};
+  std::string result;
+  result.reserve(text.size() + padding);
+  result.append(text);
+  result.append(padding, ' ');
+  return result;
+}
+
+/// @brief Pads a string of text with spaces to reach a specified length. The padding is added from
+/// the left such that the text becomes right-aligned. If the string of text is longer than the
+/// specified length, it is returned unchanged.
+/// @param[in] text The string of text to pad.
+/// @param[in] length The minimum length of the padded string of text.
+/// @return The padded string of text.
+[[nodiscard]] inline std::string pad_and_align_right(
+    const std::string_view text, const std::size_t length) {
+  const std::size_t text_length{lector::code_points(text)};
+  if (text_length >= length) {
+    return std::string{text};
+  }
+  const std::size_t padding{length - text_length};
+  std::string result;
+  result.reserve(text.size() + padding);
+  result.append(padding, ' ');
+  result.append(text);
+  return result;
 }
 
 /// @brief Joins a vector of strings where each string corresponds to a line of text into a single
@@ -332,8 +451,7 @@ namespace lector {
 /// space towards the left.
 /// @param[in] lines Vector of strings to be joined and centre-aligned.
 /// @return The joined and centre-aligned string of text.
-[[nodiscard]] inline std::string join_and_centre_align_with_left_bias(
-    const std::vector<std::string>& lines) {
+[[nodiscard]] inline std::string join_and_align_center_left(const std::vector<std::string>& lines) {
   // Handle the empty case immediately to prevent underflow later.
   if (lines.empty()) {
     return std::string{};
@@ -379,7 +497,7 @@ namespace lector {
 /// space towards the right.
 /// @param[in] lines Vector of strings to be joined and centre-aligned.
 /// @return The joined and centre-aligned string of text.
-[[nodiscard]] inline std::string join_and_centre_align_with_right_bias(
+[[nodiscard]] inline std::string join_and_align_center_right(
     const std::vector<std::string>& lines) {
   // Handle the empty case immediately to prevent underflow later.
   if (lines.empty()) {
@@ -415,6 +533,75 @@ namespace lector {
     const std::size_t total_padding{longest_line_length - line_lengths.at(line_index)};
     const std::size_t left_padding{(total_padding + 1UL) / 2UL};
     text.append(left_padding, ' ');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines left-aligned.
+/// @param[in] lines Vector of strings to be joined and left-aligned.
+/// @return The joined and left-aligned string of text.
+[[nodiscard]] inline std::string join_and_align_left(const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Calculate the exact total size.
+  std::size_t total_size{0UL};
+  for (const std::string& line : lines) {
+    total_size += line.size();
+  }
+  // Add space for the newline separators (one less than the total number of lines).
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append the first line.
+  text.append(lines.front());
+  // Append subsequent lines prefixed by a newline.
+  for (std::size_t line_index{1UL}; line_index < lines.size(); ++line_index) {
+    text.push_back('\n');
+    text.append(lines.at(line_index));
+  }
+  return text;
+}
+
+/// @brief Joins a vector of strings where each string corresponds to a line of text into a single
+/// string of text, with newline characters inserted between the lines, and the lines right-aligned.
+/// @param[in] lines Vector of strings to be joined and right-aligned.
+/// @return The joined and right-aligned string of text.
+[[nodiscard]] inline std::string join_and_align_right(const std::vector<std::string>& lines) {
+  // Handle the empty case immediately to prevent underflow later.
+  if (lines.empty()) {
+    return std::string{};
+  }
+  // Compute the line lengths and find the maximum line length.
+  std::vector<std::size_t> line_lengths;
+  line_lengths.reserve(lines.size());
+  std::size_t longest_line_length{0UL};
+  for (const std::string& line : lines) {
+    const std::size_t length{lector::code_points(line)};
+    line_lengths.push_back(length);
+    longest_line_length = std::max(length, longest_line_length);
+  }
+  // Compute the exact total byte size.
+  std::size_t total_size{0UL};
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
+    total_size += lines.at(line_index).size() + padding;
+  }
+  total_size += lines.size() - static_cast<std::size_t>(1UL);
+  // Create and allocate the resulting text.
+  std::string text;
+  text.reserve(total_size);
+  // Append lines with padding.
+  for (std::size_t line_index{0UL}; line_index < lines.size(); ++line_index) {
+    if (line_index > 0UL) {
+      text.push_back('\n');
+    }
+    const std::size_t padding{longest_line_length - line_lengths.at(line_index)};
+    text.append(padding, ' ');
     text.append(lines.at(line_index));
   }
   return text;
@@ -507,50 +694,50 @@ namespace lector {
   return lines;
 }
 
-/// @brief Left-aligns and wraps a string of text to a line length.
-/// @param[in] text The string of text to wrap and left-align.
-/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
-/// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The wrapped and left-aligned string of text.
-/// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::string wrap_and_left_align(
-    const std::string_view text, const std::size_t line_length) {
-  return lector::join_and_left_align(lector::wrap(text, line_length));
-}
-
-/// @brief Right-aligns and wraps a string of text to a line length.
-/// @param[in] text The string of text to wrap and right-align.
-/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
-/// than zero. Very long words whose lengths exceed this line length are hyphenated.
-/// @return The wrapped and right-aligned string of text.
-/// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::string wrap_and_right_align(
-    const std::string_view text, const std::size_t line_length) {
-  return lector::join_and_right_align(lector::wrap(text, line_length));
-}
-
-/// @brief Centre-aligns and wraps a string of text to a line length. If the total required
+/// @brief Wraps and centre-aligns a string of text to a line length. If the total required
 /// centre-aligning padding is odd, the text is biased by one space towards the left.
 /// @param[in] text The string of text to wrap and centre-align.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
 /// @return The wrapped and centre-aligned string of text.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::string wrap_and_centre_align_with_left_bias(
+[[nodiscard]] inline std::string wrap_and_align_centre_left(
     const std::string_view text, const std::size_t line_length) {
-  return lector::join_and_centre_align_with_left_bias(lector::wrap(text, line_length));
+  return lector::join_and_align_center_left(lector::wrap(text, line_length));
 }
 
-/// @brief Centre-aligns and wraps a string of text to a line length. If the total required
+/// @brief Wraps and centre-aligns a string of text to a line length. If the total required
 /// centre-aligning padding is odd, the text is biased by one space towards the right.
 /// @param[in] text The string of text to wrap and centre-align.
 /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
 /// than zero. Very long words whose lengths exceed this line length are hyphenated.
 /// @return The wrapped and centre-aligned string of text.
 /// @throws std::invalid_argument if the desired line length is zero.
-[[nodiscard]] inline std::string wrap_and_centre_align_with_right_bias(
+[[nodiscard]] inline std::string wrap_and_align_centre_right(
     const std::string_view text, const std::size_t line_length) {
-  return lector::join_and_centre_align_with_right_bias(lector::wrap(text, line_length));
+  return lector::join_and_align_center_right(lector::wrap(text, line_length));
+}
+
+/// @brief Wraps and left-aligns a string of text to a line length.
+/// @param[in] text The string of text to wrap and left-align.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The wrapped and left-aligned string of text.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::string wrap_and_align_left(
+    const std::string_view text, const std::size_t line_length) {
+  return lector::join_and_align_left(lector::wrap(text, line_length));
+}
+
+/// @brief Wraps and right-aligns a string of text to a line length.
+/// @param[in] text The string of text to wrap and right-align.
+/// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
+/// than zero. Very long words whose lengths exceed this line length are hyphenated.
+/// @return The wrapped and right-aligned string of text.
+/// @throws std::invalid_argument if the desired line length is zero.
+[[nodiscard]] inline std::string wrap_and_align_right(
+    const std::string_view text, const std::size_t line_length) {
+  return lector::join_and_align_right(lector::wrap(text, line_length));
 }
 
 /// @brief Collates two strings of text, each representing a column, into a single string that
@@ -564,7 +751,7 @@ namespace lector {
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string collate_and_left_align(
+[[nodiscard]] inline std::string collate_and_align_left(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
@@ -617,7 +804,7 @@ namespace lector {
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string collate_and_right_align(
+[[nodiscard]] inline std::string collate_and_align_right(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
@@ -685,7 +872,7 @@ namespace lector {
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string collate_and_centre_align_with_left_bias(
+[[nodiscard]] inline std::string collate_and_align_centre_left(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
@@ -758,7 +945,7 @@ namespace lector {
 /// length exceeds this width are hyphenated.
 /// @return The string that contains the collated text.
 /// @throws std::invalid_argument if either desired column width is zero.
-[[nodiscard]] inline std::string collate_and_centre_align_with_right_bias(
+[[nodiscard]] inline std::string collate_and_align_centre_right(
     const std::string_view first_column_text, const std::size_t first_column_width,
     const std::string_view second_column_text, const std::size_t second_column_width) {
   // Use a gutter width of two spaces.
