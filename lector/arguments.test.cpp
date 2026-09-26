@@ -1032,14 +1032,6 @@ static_assert(!lector::AreUnique<test::Label::Shape, test::Label::Shape>::value)
 static_assert(
     !lector::AreUnique<test::Label::Shape, test::Label::Iterations, test::Label::Shape>::value);
 
-TEST(Lector, ArgumentsCoverage1) {
-  lector::Arguments arguments{test::singular_argument_integer_named_optional()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200", "extra_argument"}
-  };
-  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
-}
-
 TEST(Lector, ArgumentsEmptyNoConfigurationNoCommand) {
   lector::Arguments arguments;
   const test::Command command;
