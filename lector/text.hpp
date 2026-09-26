@@ -109,6 +109,26 @@ namespace lector {
   return count;
 }
 
+/// @brief Checks whether an ASCII character is one of the ASCII whitespace characters: space (' '),
+/// horizontal tab ('\t'), line feed ('\n'), vertical tab ('\v'), form feed ('\f'), or carriage
+/// return ('\r').
+/// @param[in] character The character to examine.
+/// @return True if the character is an ASCII whitespace character; false if it is not.
+[[nodiscard]] inline bool is_whitespace(const char character) {
+  return character == ' ' || character == '\t' || character == '\n' || character == '\v'
+         || character == '\f' || character == '\r';
+}
+
+/// @brief Checks whether a string of text contains any ASCII whitespace characters: space (' '),
+/// horizontal tab ('\t'), line feed ('\n'), vertical tab ('\v'), form feed ('\f'), or carriage
+/// return ('\r').
+/// @param[in] text The string of text to examine.
+/// @return True if the string of text contains any ASCII whitespace characters; false if it does
+/// not.
+[[nodiscard]] inline bool contains_whitespace(const std::string_view text) {
+  return std::any_of(text.begin(), text.end(), lector::is_whitespace);
+}
+
 /// @brief Computes and returns the length of the longest word in a string of text. The length of a
 /// word is measured by its number of UTF-8 code points.
 /// @param[in] text The string of text whose longest word length is to be computed.
@@ -140,13 +160,6 @@ namespace lector {
     current_longest_word_length = std::max(current_longest_word_length, current_word_length);
   }
   return current_longest_word_length;
-}
-
-/// @brief Checks whether a string of text contains any whitespace characters.
-/// @param[in] text The string of text to examine.
-/// @return true if the string of text contains any whitespace, or false otherwise.
-[[nodiscard]] inline bool contains_whitespace(const std::string_view text) {
-  return text.find_first_of(" \t\n\v\f\r") != std::string_view::npos;
 }
 
 /// @brief Encloses a string of text in quotes. Either single or double quotes are used depending on
