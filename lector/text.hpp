@@ -99,7 +99,7 @@ namespace lector {
 /// ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.
 /// @param[in] text The string of text whose UTF-8 code points are to be counted.
 /// @return The number of UTF-8 code points in the string of text.
-[[nodiscard]] inline std::size_t code_points(const std::string_view text) {
+[[nodiscard]] inline std::size_t count_code_points(const std::string_view text) {
   std::size_t count{0UL};
   for (const char character : text) {
     if (lector::is_leading_byte(character)) {
@@ -135,7 +135,7 @@ namespace lector {
     const std::string_view current_word{
       text.substr(current_word_start, index - current_word_start)};
     // Compute the length of the current word.
-    const std::size_t current_word_length{lector::code_points(current_word)};
+    const std::size_t current_word_length{lector::count_code_points(current_word)};
     // Update the longest word length.
     current_longest_word_length = std::max(current_longest_word_length, current_word_length);
   }
@@ -287,7 +287,7 @@ namespace lector {
   if (length == static_cast<std::size_t>(0UL)) {
     return std::string{};
   }
-  const std::size_t total_code_points{lector::code_points(text)};
+  const std::size_t total_code_points{lector::count_code_points(text)};
   if (total_code_points <= length) {
     return std::string{text};
   }
@@ -327,7 +327,7 @@ namespace lector {
   if (length == static_cast<std::size_t>(0UL)) {
     return std::string{};
   }
-  const std::size_t total_code_points{lector::code_points(text)};
+  const std::size_t total_code_points{lector::count_code_points(text)};
   if (total_code_points <= length) {
     return std::string{text};
   }
@@ -366,7 +366,7 @@ namespace lector {
 /// @return The padded string of text.
 [[nodiscard]] inline std::string pad_and_align_centre_left(
     const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
+  const std::size_t text_length{lector::count_code_points(text)};
   if (text_length >= length) {
     return std::string{text};
   }
@@ -390,7 +390,7 @@ namespace lector {
 /// @return The padded string of text.
 [[nodiscard]] inline std::string pad_and_align_centre_right(
     const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
+  const std::size_t text_length{lector::count_code_points(text)};
   if (text_length >= length) {
     return std::string{text};
   }
@@ -413,7 +413,7 @@ namespace lector {
 /// @return The padded string of text.
 [[nodiscard]] inline std::string pad_and_align_left(
     const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
+  const std::size_t text_length{lector::count_code_points(text)};
   if (text_length >= length) {
     return std::string{text};
   }
@@ -433,7 +433,7 @@ namespace lector {
 /// @return The padded string of text.
 [[nodiscard]] inline std::string pad_and_align_right(
     const std::string_view text, const std::size_t length) {
-  const std::size_t text_length{lector::code_points(text)};
+  const std::size_t text_length{lector::count_code_points(text)};
   if (text_length >= length) {
     return std::string{text};
   }
@@ -461,7 +461,7 @@ namespace lector {
   line_lengths.reserve(lines.size());
   std::size_t longest_line_length{0UL};
   for (const std::string& line : lines) {
-    const std::size_t length{lector::code_points(line)};
+    const std::size_t length{lector::count_code_points(line)};
     line_lengths.push_back(length);
     longest_line_length = std::max(length, longest_line_length);
   }
@@ -508,7 +508,7 @@ namespace lector {
   line_lengths.reserve(lines.size());
   std::size_t longest_line_length{0UL};
   for (const std::string& line : lines) {
-    const std::size_t length{lector::code_points(line)};
+    const std::size_t length{lector::count_code_points(line)};
     line_lengths.push_back(length);
     longest_line_length = std::max(length, longest_line_length);
   }
@@ -581,7 +581,7 @@ namespace lector {
   line_lengths.reserve(lines.size());
   std::size_t longest_line_length{0UL};
   for (const std::string& line : lines) {
-    const std::size_t length{lector::code_points(line)};
+    const std::size_t length{lector::count_code_points(line)};
     line_lengths.push_back(length);
     longest_line_length = std::max(length, longest_line_length);
   }
@@ -628,7 +628,7 @@ namespace lector {
   std::size_t current_line_code_point_size{0UL};
   for (const std::string_view current_word : words) {
     // Measure the current word.
-    const std::size_t current_word_code_point_size{lector::code_points(current_word)};
+    const std::size_t current_word_code_point_size{lector::count_code_points(current_word)};
     const std::size_t space_needed_for_hyphen{
       (current_line_code_point_size > static_cast<std::size_t>(0UL)) ?
           static_cast<std::size_t>(1UL) :
@@ -784,7 +784,7 @@ namespace lector {
     // Otherwise, if the second column is exhausted, skip this padding to avoid unnecessary trailing
     // whitespace.
     if (row_index < second_column.size()) {
-      const std::size_t first_cell_length{lector::code_points(first_cell)};
+      const std::size_t first_cell_length{lector::count_code_points(first_cell)};
       const std::size_t padding{first_column_width + gutter_width - first_cell_length};
       result.append(padding, ' ');
       result.append(second_column.at(row_index));
@@ -834,7 +834,7 @@ namespace lector {
     const std::string_view first_cell{
       row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
                                         std::string_view{}};
-    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    const std::size_t first_cell_length{lector::count_code_points(first_cell)};
     // Calculate the leading padding. The ternary operator protects against std::size_t underflow in
     // the extremely unlikely event a cell exceeds the column width.
     const std::size_t first_cell_padding{
@@ -848,7 +848,7 @@ namespace lector {
     // unnecessary trailing whitespace.
     if (row_index < second_column.size()) {
       const std::string_view second_cell{second_column.at(row_index)};
-      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_length{lector::count_code_points(second_cell)};
       const std::size_t second_cell_padding{
         second_column_width > second_cell_length ? second_column_width - second_cell_length :
                                                    static_cast<std::size_t>(0UL)};
@@ -902,7 +902,7 @@ namespace lector {
     const std::string_view first_cell{
       row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
                                         std::string_view{}};
-    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    const std::size_t first_cell_length{lector::count_code_points(first_cell)};
     // Calculate the total padding. The ternary operator protects against std::size_t underflow in
     // the extremely unlikely event a cell exceeds the column width.
     const std::size_t first_cell_total_padding{
@@ -919,7 +919,7 @@ namespace lector {
     // (first cell right padding + gutter + second cell left padding), and append the second cell.
     if (row_index < second_column.size()) {
       const std::string_view second_cell{second_column.at(row_index)};
-      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_length{lector::count_code_points(second_cell)};
       const std::size_t second_cell_total_padding{
         second_column_width > second_cell_length ? second_column_width - second_cell_length :
                                                    static_cast<std::size_t>(0UL)};
@@ -975,7 +975,7 @@ namespace lector {
     const std::string_view first_cell{
       row_index < first_column.size() ? std::string_view{first_column.at(row_index)} :
                                         std::string_view{}};
-    const std::size_t first_cell_length{lector::code_points(first_cell)};
+    const std::size_t first_cell_length{lector::count_code_points(first_cell)};
     // Calculate the total padding. The ternary operator protects against std::size_t underflow in
     // the extremely unlikely event a cell exceeds the column width.
     const std::size_t first_cell_total_padding{
@@ -992,7 +992,7 @@ namespace lector {
     // (first cell right padding + gutter + second cell left padding), and append the second cell.
     if (row_index < second_column.size()) {
       const std::string_view second_cell{second_column.at(row_index)};
-      const std::size_t second_cell_length{lector::code_points(second_cell)};
+      const std::size_t second_cell_length{lector::count_code_points(second_cell)};
       const std::size_t second_cell_total_padding{
         second_column_width > second_cell_length ? second_column_width - second_cell_length :
                                                    static_cast<std::size_t>(0UL)};

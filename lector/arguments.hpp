@@ -529,7 +529,7 @@ private:
     std::size_t longest_key_index{0UL};
     std::size_t longest_key_length{0UL};
     for (std::size_t index{0UL}; index < keys_.size(); ++index) {
-      const std::size_t length{lector::code_points(keys_.at(index))};
+      const std::size_t length{lector::count_code_points(keys_.at(index))};
       if (length > longest_key_length) {
         longest_key_index = index;
         longest_key_length = length;
@@ -934,7 +934,7 @@ private:
     std::size_t longest_key_index{0UL};
     std::size_t longest_key_length{0UL};
     for (std::size_t index{0UL}; index < keys_.size(); ++index) {
-      const std::size_t length{lector::code_points(keys_.at(index))};
+      const std::size_t length{lector::count_code_points(keys_.at(index))};
       if (length > longest_key_length) {
         longest_key_index = index;
         longest_key_length = length;
@@ -1745,7 +1745,7 @@ private:
     std::apply(
         [&](const auto&... argument) {
           (..., [&] {
-            const std::size_t length{lector::code_points(argument.keys_with_value_type())};
+            const std::size_t length{lector::count_code_points(argument.keys_with_value_type())};
             maximum_length = std::max(maximum_length, length);
           }());
         },

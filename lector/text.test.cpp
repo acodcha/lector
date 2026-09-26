@@ -93,20 +93,6 @@ TEST(Lector, ByteIntervalUtf8) {
   }
 }
 
-TEST(Lector, CodePoints) {
-  EXPECT_EQ(lector::code_points(""), static_cast<std::size_t>(0UL));
-  EXPECT_EQ(lector::code_points("Hello!!!"), static_cast<std::size_t>(8UL));
-  EXPECT_EQ(lector::code_points("$5"), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(lector::code_points("¢25"), static_cast<std::size_t>(3UL));
-  EXPECT_EQ(lector::code_points("£5"), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(lector::code_points("¥500"), static_cast<std::size_t>(4UL));
-  EXPECT_EQ(lector::code_points("5€"), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(lector::code_points("château"), static_cast<std::size_t>(7UL));
-  EXPECT_EQ(lector::code_points("été"), static_cast<std::size_t>(3UL));
-  EXPECT_EQ(lector::code_points("œuf"), static_cast<std::size_t>(3UL));
-  EXPECT_EQ(lector::code_points("こんにちは"), static_cast<std::size_t>(5UL));
-}
-
 TEST(Lector, CollateAndAlignCentreLeftBothColumnsEmpty) {
   EXPECT_EQ(lector::collate_and_align_centre_left("", 1, "", 1), std::string{});
   EXPECT_EQ(lector::collate_and_align_centre_left("", 1, "", 2), std::string{});
@@ -357,6 +343,20 @@ TEST(Lector, ContainsWhitespace) {
   EXPECT_TRUE(lector::contains_whitespace("\r"));
   EXPECT_FALSE(lector::contains_whitespace("Hello!"));
   EXPECT_TRUE(lector::contains_whitespace("Hello, world!"));
+}
+
+TEST(Lector, CountCodePoints) {
+  EXPECT_EQ(lector::count_code_points(""), static_cast<std::size_t>(0UL));
+  EXPECT_EQ(lector::count_code_points("Hello!!!"), static_cast<std::size_t>(8UL));
+  EXPECT_EQ(lector::count_code_points("$5"), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(lector::count_code_points("¢25"), static_cast<std::size_t>(3UL));
+  EXPECT_EQ(lector::count_code_points("£5"), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(lector::count_code_points("¥500"), static_cast<std::size_t>(4UL));
+  EXPECT_EQ(lector::count_code_points("5€"), static_cast<std::size_t>(2UL));
+  EXPECT_EQ(lector::count_code_points("château"), static_cast<std::size_t>(7UL));
+  EXPECT_EQ(lector::count_code_points("été"), static_cast<std::size_t>(3UL));
+  EXPECT_EQ(lector::count_code_points("œuf"), static_cast<std::size_t>(3UL));
+  EXPECT_EQ(lector::count_code_points("こんにちは"), static_cast<std::size_t>(5UL));
 }
 
 TEST(Lector, IsLeadingByte) {
