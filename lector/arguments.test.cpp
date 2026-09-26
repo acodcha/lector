@@ -152,10 +152,10 @@ enum class Label : std::int8_t {
   Shape,
   Point,
   Iterations,
+  IterationsDuplicateKeys,
   Tolerance,
-  ConfusingShort,
   ConfusingLong,
-  IterationsAgain,
+  ConfusingShort,
   Weird,
   Help,
 };
@@ -173,16 +173,16 @@ constexpr std::int32_t ThreeHundred{300};
 constexpr std::int32_t FourHundred{400};
 
 /// @brief The fraction 1/8.
-constexpr double OneOverEight{0.125};
+constexpr float OneOverEight{0.125F};
 
 /// @brief The fraction 1/16.
-constexpr double OneOverSixteen{0.0625};
+constexpr float OneOverSixteen{0.0625F};
 
 /// @brief The fraction 1/32.
-constexpr double OneOverThirtyTwo{0.03125};
+constexpr float OneOverThirtyTwo{0.03125F};
 
 /// @brief The fraction 1/64.
-constexpr double OneOverSixtyFour{0.015625};
+constexpr float OneOverSixtyFour{0.015625F};
 
 /// @brief Helper function that creates a simple lector::Configuration data structure for testing
 /// the lector::Arguments class.
@@ -245,17 +245,10 @@ std::vector<std::string> keys_integer() {
   return std::vector<std::string>{"-i", "--iterations"};
 }
 
-/// @brief Helper function that creates simple keys for an integer command line argument. The keys
-/// intentionally differ from those of test::keys_integer().
-/// @return Simple keys for an integer command line argument.
-std::vector<std::string> keys_integer_again_different_keys() {
-  return std::vector<std::string>{"-it", "--iter"};
-}
-
 /// @brief Helper function that creates simple keys for an integer command line argument. One of the
 /// keys intentionally duplicates a key from test::keys_integer().
 /// @return Simple keys for an integer command line argument.
-std::vector<std::string> keys_integer_again_duplicate_keys() {
+std::vector<std::string> keys_integer_duplicate_keys() {
   return std::vector<std::string>{"-it", "--iterations"};
 }
 
@@ -426,39 +419,39 @@ repeatable_argument_filesystem_path_positional_required() {
 /// @brief Helper function that creates a repeatable named optional floating-point number command
 /// line argument.
 /// @return The repeatable named optional floating-point number command line argument.
-lector::RepeatableArgument<test::Label::Tolerance, double>
+lector::RepeatableArgument<test::Label::Tolerance, float>
 repeatable_argument_floating_point_number_named_optional() {
-  return lector::RepeatableArgument<test::Label::Tolerance, double>{
+  return lector::RepeatableArgument<test::Label::Tolerance, float>{
     test::keys_floating_point_number(), "Tolerance value.",
-    std::vector<double>{test::OneOverThirtyTwo, test::OneOverSixtyFour}
+    std::vector<float>{test::OneOverThirtyTwo, test::OneOverSixtyFour}
   };
 }
 
 /// @brief Helper function that creates a repeatable named required floating-point number command
 /// line argument.
 /// @return The repeatable named required floating-point number command line argument.
-lector::RepeatableArgument<test::Label::Tolerance, double>
+lector::RepeatableArgument<test::Label::Tolerance, float>
 repeatable_argument_floating_point_number_named_required() {
-  return lector::RepeatableArgument<test::Label::Tolerance, double>{
+  return lector::RepeatableArgument<test::Label::Tolerance, float>{
     test::keys_floating_point_number(), "Tolerance value."};
 }
 
 /// @brief Helper function that creates a repeatable positional optional floating-point number
 /// command line argument.
 /// @return The repeatable positional optional floating-point number command line argument.
-lector::RepeatableArgument<test::Label::Tolerance, double>
+lector::RepeatableArgument<test::Label::Tolerance, float>
 repeatable_argument_floating_point_number_positional_optional() {
-  return lector::RepeatableArgument<test::Label::Tolerance, double>{
-    "Tolerance value.", std::vector<double>{test::OneOverThirtyTwo, test::OneOverSixtyFour}
+  return lector::RepeatableArgument<test::Label::Tolerance, float>{
+    "Tolerance value.", std::vector<float>{test::OneOverThirtyTwo, test::OneOverSixtyFour}
   };
 }
 
 /// @brief Helper function that creates a repeatable positional required floating-point number
 /// command line argument.
 /// @return The repeatable positional required floating-point number command line argument.
-lector::RepeatableArgument<test::Label::Tolerance, double>
+lector::RepeatableArgument<test::Label::Tolerance, float>
 repeatable_argument_floating_point_number_positional_required() {
-  return lector::RepeatableArgument<test::Label::Tolerance, double>{"Tolerance value."};
+  return lector::RepeatableArgument<test::Label::Tolerance, float>{"Tolerance value."};
 }
 
 /// @brief Helper function that creates a repeatable named optional integer command line argument.
@@ -742,54 +735,45 @@ singular_argument_filesystem_path_positional_required() {
 /// @brief Helper function that creates a singular named optional floating-point number command line
 /// argument.
 /// @return The singular named optional floating-point number command line argument.
-lector::SingularArgument<test::Label::Tolerance, double>
+lector::SingularArgument<test::Label::Tolerance, float>
 singular_argument_floating_point_number_named_optional() {
-  return lector::SingularArgument<test::Label::Tolerance, double>{
+  return lector::SingularArgument<test::Label::Tolerance, float>{
     test::keys_floating_point_number(), "Tolerance value.", test::OneOverThirtyTwo};
 }
 
 /// @brief Helper function that creates a singular named required floating-point number command line
 /// argument.
 /// @return The singular named required floating-point number command line argument.
-lector::SingularArgument<test::Label::Tolerance, double>
+lector::SingularArgument<test::Label::Tolerance, float>
 singular_argument_floating_point_number_named_required() {
-  return lector::SingularArgument<test::Label::Tolerance, double>{
+  return lector::SingularArgument<test::Label::Tolerance, float>{
     test::keys_floating_point_number(), "Tolerance value."};
 }
 
 /// @brief Helper function that creates a singular positional optional floating-point number command
 /// line argument.
 /// @return The singular positional optional floating-point number command line argument.
-lector::SingularArgument<test::Label::Tolerance, double>
+lector::SingularArgument<test::Label::Tolerance, float>
 singular_argument_floating_point_number_positional_optional() {
-  return lector::SingularArgument<test::Label::Tolerance, double>{
+  return lector::SingularArgument<test::Label::Tolerance, float>{
     "Tolerance value.", test::OneOverThirtyTwo};
 }
 
 /// @brief Helper function that creates a singular positional required floating-point number command
 /// line argument.
 /// @return The singular positional required floating-point number command line argument.
-lector::SingularArgument<test::Label::Tolerance, double>
+lector::SingularArgument<test::Label::Tolerance, float>
 singular_argument_floating_point_number_positional_required() {
-  return lector::SingularArgument<test::Label::Tolerance, double>{"Tolerance value."};
-}
-
-/// @brief Helper function that creates a singular named optional integer command line argument with
-/// differing keys.
-/// @return The singular named optional integer command line argument with differing keys.
-lector::SingularArgument<test::Label::IterationsAgain, std::int32_t>
-singular_argument_integer_again_different_keys() {
-  return lector::SingularArgument<test::Label::IterationsAgain, std::int32_t>{
-    test::keys_integer_again_different_keys(), "Number of iterations, again.", test::OneHundred};
+  return lector::SingularArgument<test::Label::Tolerance, float>{"Tolerance value."};
 }
 
 /// @brief Helper function that creates a singular named optional integer command line argument with
 /// duplicate keys.
 /// @return The singular named optional integer command line argument with duplicate keys.
-lector::SingularArgument<test::Label::IterationsAgain, std::int32_t>
-singular_argument_integer_again_duplicate_keys() {
-  return lector::SingularArgument<test::Label::IterationsAgain, std::int32_t>{
-    test::keys_integer_again_duplicate_keys(), "Number of iterations, again.", test::OneHundred};
+lector::SingularArgument<test::Label::IterationsDuplicateKeys, std::int32_t>
+singular_argument_integer_duplicate_keys() {
+  return lector::SingularArgument<test::Label::IterationsDuplicateKeys, std::int32_t>{
+    test::keys_integer_duplicate_keys(), "Number of iterations, again.", test::OneHundred};
 }
 
 /// @brief Helper function that creates a singular named optional integer command line argument.
@@ -961,11 +945,11 @@ public:
     delete_argv();
   }
 
-  /// @brief Copy constructor. Deleted to prevent double-free errors when a Command object is
+  /// @brief Copy constructor. Deleted to prevent multiple-free errors when a Command object is
   /// copied, since it manages a dynamically allocated array of C-strings.
   Command(const test::Command&) = delete;
 
-  /// @brief Copy assignment operator. Deleted to prevent double-free errors when a Command object
+  /// @brief Copy assignment operator. Deleted to prevent multiple-free errors when a Command object
   /// is copied, since it manages a dynamically allocated array of C-strings.
   test::Command& operator=(const test::Command&) = delete;
 
@@ -1048,6 +1032,14 @@ static_assert(!lector::AreUnique<test::Label::Shape, test::Label::Shape>::value)
 /// @brief Validate that a list of duplicated and unique types is not unique.
 static_assert(
     !lector::AreUnique<test::Label::Shape, test::Label::Iterations, test::Label::Shape>::value);
+
+TEST(Lector, ArgumentsCoverage1) {
+  lector::Arguments arguments{test::singular_argument_integer_named_optional()};
+  const test::Command command{
+    {"/path/to/executable", "--iterations", "200", "extra_argument"}
+  };
+  EXPECT_ANY_THROW(arguments.parse(command.argc(), command.argv()));
+}
 
 TEST(Lector, ArgumentsEmptyNoConfigurationNoCommand) {
   lector::Arguments arguments;
@@ -1166,13 +1158,13 @@ TEST(Lector, ArgumentsInvalidDuplicateArgumentWithConfigurationSeparated) {
 
 TEST(Lector, ArgumentsInvalidDuplicateKeysNoConfiguration) {
   EXPECT_ANY_THROW(lector::Arguments(test::singular_argument_integer_named_optional(),
-                                     test::singular_argument_integer_again_duplicate_keys()));
+                                     test::singular_argument_integer_duplicate_keys()));
 }
 
 TEST(Lector, ArgumentsInvalidDuplicateKeysWithConfiguration) {
   EXPECT_ANY_THROW(
       lector::Arguments(test::configuration(), test::singular_argument_integer_named_optional(),
-                        test::singular_argument_integer_again_duplicate_keys()));
+                        test::singular_argument_integer_duplicate_keys()));
 }
 
 TEST(Lector, ArgumentsInvalidDuplicatedTokenSingularPositionalNoConfiguration) {
@@ -1209,7 +1201,7 @@ TEST(Lector, ArgumentsInvalidLineLengthZero) {
 
 TEST(Lector, ArgumentsInvalidMissingKeyRequiredNoConfiguration) {
   lector::Arguments arguments{
-    test::singular_argument_filesystem_path_named_required(), test::singular_argument_boolean()};
+    test::singular_argument_integer_named_required(), test::singular_argument_boolean()};
   const test::Command command{
     {"/path/to/executable", "--help"}
   };
@@ -1219,7 +1211,7 @@ TEST(Lector, ArgumentsInvalidMissingKeyRequiredNoConfiguration) {
 
 TEST(Lector, ArgumentsInvalidMissingKeyRequiredWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required(),
+    test::configuration(), test::singular_argument_integer_named_required(),
     test::singular_argument_boolean()};
   const test::Command command{
     {"/path/to/executable", "--help"}
@@ -1288,14 +1280,15 @@ TEST(Lector, ArgumentsInvalidMissingValueWithConfigurationMiddle) {
 
 TEST(Lector, ArgumentsInvalidMixedRepeatablePositionalWithOtherPositional) {
   EXPECT_ANY_THROW((void)lector::Arguments(
-      test::repeatable_argument_integer_positional_optional(),
-      test::singular_argument_enumeration_positional_optional()));
+      test::repeatable_argument_floating_point_number_positional_optional(),
+      test::singular_argument_integer_positional_optional()));
 }
 
 TEST(Lector, ArgumentsInvalidUnmatchedTokenNoConfigurationRepeatablePositional) {
-  lector::Arguments arguments{test::repeatable_argument_integer_positional_required()};
+  lector::Arguments arguments{
+    test::repeatable_argument_floating_point_number_positional_required()};
   const test::Command command{
-    std::vector<std::string>{"/path/to/executable", "200", "Hello"}
+    std::vector<std::string>{"/path/to/executable", "1.0", "Hello"}
   };
   EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
 }
@@ -1310,9 +1303,9 @@ TEST(Lector, ArgumentsInvalidUnmatchedTokenNoConfigurationSingularPositional) {
 
 TEST(Lector, ArgumentsInvalidUnmatchedTokenWithConfigurationRepeatablePositional) {
   lector::Arguments arguments{
-    test::configuration(), test::repeatable_argument_integer_positional_required()};
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_required()};
   const test::Command command{
-    std::vector<std::string>{"/path/to/executable", "200", "Hello"}
+    std::vector<std::string>{"/path/to/executable", "1.0", "Hello"}
   };
   EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
 }
@@ -1327,9 +1320,10 @@ TEST(Lector, ArgumentsInvalidUnmatchedTokenWithConfigurationSingularPositional) 
 }
 
 TEST(Lector, ArgumentsInvalidUnmatchedTokensNoConfigurationRepeatablePositional) {
-  lector::Arguments arguments{test::repeatable_argument_integer_positional_required()};
+  lector::Arguments arguments{
+    test::repeatable_argument_floating_point_number_positional_required()};
   const test::Command command{
-    std::vector<std::string>{"/path/to/executable", "200", "Hello", "World"}
+    std::vector<std::string>{"/path/to/executable", "1.0", "Hello", "World"}
   };
   EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
 }
@@ -1344,9 +1338,9 @@ TEST(Lector, ArgumentsInvalidUnmatchedTokensNoConfigurationSingularPositional) {
 
 TEST(Lector, ArgumentsInvalidUnmatchedTokensWithConfigurationRepeatablePositional) {
   lector::Arguments arguments{
-    test::configuration(), test::repeatable_argument_integer_positional_required()};
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_required()};
   const test::Command command{
-    std::vector<std::string>{"/path/to/executable", "200", "Hello", "World"}
+    std::vector<std::string>{"/path/to/executable", "1.0", "Hello", "World"}
   };
   EXPECT_ANY_THROW((void)arguments.parse(command.argc(), command.argv()));
 }
@@ -1453,67 +1447,63 @@ TEST(Lector, ArgumentsInvalidValueWithConfigurationPositional) {
 
 TEST(Lector, ArgumentsValidMissingOptionalNoConfigurationInline) {
   lector::Arguments arguments{
-    test::singular_argument_filesystem_path_named_required(), test::singular_argument_boolean()};
+    test::singular_argument_integer_named_required(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "--output_directory=/path/to/output"}
+    {"/path/to/executable", "--iterations=200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_ouput_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_ouput_directory.has_value()
-              && parsed_ouput_directory.value() == std::filesystem::path("/path/to/output"));
+  EXPECT_TRUE(arguments.get<test::Label::Iterations>().parsed_value().has_value()
+              && arguments.get<test::Label::Iterations>().parsed_value().value()
+                     == static_cast<std::int32_t>(200));
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
 TEST(Lector, ArgumentsValidMissingOptionalNoConfigurationSeparated) {
   lector::Arguments arguments{
-    test::singular_argument_filesystem_path_named_required(), test::singular_argument_boolean()};
+    test::singular_argument_integer_named_required(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output"}
+    {"/path/to/executable", "--iterations", "200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_ouput_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_ouput_directory.has_value()
-              && parsed_ouput_directory.value() == std::filesystem::path("/path/to/output"));
+  EXPECT_TRUE(arguments.get<test::Label::Iterations>().parsed_value().has_value()
+              && arguments.get<test::Label::Iterations>().parsed_value().value()
+                     == static_cast<std::int32_t>(200));
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
 TEST(Lector, ArgumentsValidMissingOptionalWithConfigurationInline) {
   lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required(),
+    test::configuration(), test::singular_argument_integer_named_required(),
     test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "--output_directory=/path/to/output"}
+    {"/path/to/executable", "--iterations=200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_ouput_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_ouput_directory.has_value()
-              && parsed_ouput_directory.value() == std::filesystem::path("/path/to/output"));
+  EXPECT_TRUE(arguments.get<test::Label::Iterations>().parsed_value().has_value()
+              && arguments.get<test::Label::Iterations>().parsed_value().value()
+                     == static_cast<std::int32_t>(200));
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
 TEST(Lector, ArgumentsValidMissingOptionalWithConfigurationSeparated) {
   lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required(),
+    test::configuration(), test::singular_argument_integer_named_required(),
     test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output"}
+    {"/path/to/executable", "--iterations", "200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_ouput_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_ouput_directory.has_value()
-              && parsed_ouput_directory.value() == std::filesystem::path("/path/to/output"));
+  EXPECT_TRUE(arguments.get<test::Label::Iterations>().parsed_value().has_value()
+              && arguments.get<test::Label::Iterations>().parsed_value().value()
+                     == static_cast<std::int32_t>(200));
   EXPECT_EQ(arguments.get<test::Label::Help>().parsed_value(), std::nullopt);
 }
 
@@ -1883,702 +1873,22 @@ TEST(Lector, ArgumentsValidConfusingWhitespaceLongShortShortWithConfiguration) {
   EXPECT_EQ(arguments.execution(), "/path/to/executable --key 200");
 }
 
-TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_boolean()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-h, --help  Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualHelpNotSpecifiedWithConfiguration) {
-  lector::Arguments arguments{test::configuration(), test::singular_argument_boolean()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-h, --help  Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualHelpSpecifiedNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<bool>& parsed_argument{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value());
-  const std::string expected_usage{"executable [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-h, --help  Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --help");
-}
-
-TEST(Lector, ArgumentsValidIndividualHelpSpecifiedWithConfiguration) {
-  lector::Arguments arguments{test::configuration(), test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<bool>& parsed_argument{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value());
-  const std::string expected_usage{"executable [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-h, --help  Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --help");
-}
-
-TEST(Lector, ArgumentsValidIndividualIterationsOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_integer_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Iterations>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--iterations <number>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-i <number>, --iterations <number>  Number of iterations."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualIterationsOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_integer_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Iterations>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--iterations <number>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-i <number>, --iterations <number>  Number of iterations."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualIterationsRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_integer_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_argument{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == 200);
-  const std::string expected_usage{"executable --iterations <number>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-i <number>, --iterations <number>  Number of iterations."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200");
-}
-
-TEST(Lector, ArgumentsValidIndividualIterationsRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_integer_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_argument{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == 200);
-  const std::string expected_usage{"executable --iterations <number>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-i <number>, --iterations <number>  Number of iterations."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200");
-}
-
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_filesystem_path_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::OutputDirectory>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--output_directory <path>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-o <path>, --output_directory <path>  Output directory."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::OutputDirectory>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--output_directory <path>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-o <path>, --output_directory <path>  Output directory."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_filesystem_path_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_argument{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "/path/to/output");
-  const std::string expected_usage{"executable --output_directory <path>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-o <path>, --output_directory <path>  Output directory."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --output_directory /path/to/output");
-}
-
-TEST(Lector, ArgumentsValidIndividualOutputDirectoryRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_argument{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "/path/to/output");
-  const std::string expected_usage{"executable --output_directory <path>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-o <path>, --output_directory <path>  Output directory."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --output_directory /path/to/output");
-}
-
-TEST(Lector, ArgumentsValidIndividualPointOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_data_structure_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Point>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--point <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-p <value>, --point <value>  Starting point."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualPointOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_data_structure_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Point>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--point <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-p <value>, --point <value>  Starting point."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualPointRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_data_structure_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--point", "4.0 5.0 6.0"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Point>& parsed_argument{
-    arguments.get<test::Label::Point>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::SecondPoint);
-  const std::string expected_usage{"executable --point <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-p <value>, --point <value>  Starting point."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(
-      arguments.execution(), "/path/to/executable --point \"4.000000000 5.000000000 6.000000000\"");
-}
-
-TEST(Lector, ArgumentsValidIndividualPointRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_data_structure_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--point", "4.0 5.0 6.0"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Point>& parsed_argument{
-    arguments.get<test::Label::Point>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::SecondPoint);
-  const std::string expected_usage{"executable --point <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-p <value>, --point <value>  Starting point."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(
-      arguments.execution(), "/path/to/executable --point \"4.000000000 5.000000000 6.000000000\"");
-}
-
-TEST(Lector, ArgumentsValidIndividualShapeOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_enumeration_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Shape>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--shape <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-s <value>, --shape <value>  Favorite shape."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualShapeOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_enumeration_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Shape>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--shape <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-s <value>, --shape <value>  Favorite shape."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualShapeRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_enumeration_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--shape", "triangle"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Shape>& parsed_argument{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::Shape::Triangle);
-  const std::string expected_usage{"executable --shape <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-s <value>, --shape <value>  Favorite shape."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --shape Triangle");
-}
-
-TEST(Lector, ArgumentsValidIndividualShapeRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_enumeration_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--shape", "triangle"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Shape>& parsed_argument{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::Shape::Triangle);
-  const std::string expected_usage{"executable --shape <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-s <value>, --shape <value>  Favorite shape."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --shape Triangle");
-}
-
-TEST(Lector, ArgumentsValidIndividualTitleOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_string_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Title>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--title <text>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <text>, --title <text>  Report title."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualTitleOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_string_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Title>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--title <text>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <text>, --title <text>  Report title."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualTitleRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_string_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--title", "Some Other Report"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::string>& parsed_argument{
-    arguments.get<test::Label::Title>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "Some Other Report");
-  const std::string expected_usage{"executable --title <text>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <text>, --title <text>  Report title."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --title \"Some Other Report\"");
-}
-
-TEST(Lector, ArgumentsValidIndividualTitleRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_string_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--title", "Some Other Report"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::string>& parsed_argument{
-    arguments.get<test::Label::Title>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == "Some Other Report");
-  const std::string expected_usage{"executable --title <text>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <text>, --title <text>  Report title."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --title \"Some Other Report\"");
-}
-
-TEST(Lector, ArgumentsValidIndividualToleranceOptionalNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_floating_point_number_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Tolerance>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--tolerance <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <value>, --tolerance <value>  Tolerance value."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualToleranceOptionalWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_floating_point_number_named_optional()};
-  const test::Command command{{"/path/to/executable"}};
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  EXPECT_FALSE(arguments.get<test::Label::Tolerance>().parsed_value().has_value());
-  const std::string expected_usage{"executable [--tolerance <value>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <value>, --tolerance <value>  Tolerance value."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable");
-}
-
-TEST(Lector, ArgumentsValidIndividualToleranceRequiredNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_floating_point_number_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--tolerance", "0.015625"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<double>& parsed_argument{
-    arguments.get<test::Label::Tolerance>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::OneOverSixtyFour);
-  const std::string expected_usage{"executable --tolerance <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <value>, --tolerance <value>  Tolerance value."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --tolerance " + lector::print<double>(test::OneOverSixtyFour));
-}
-
-TEST(Lector, ArgumentsValidIndividualToleranceRequiredWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_floating_point_number_named_required()};
-  const test::Command command{
-    {"/path/to/executable", "--tolerance", "0.015625"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<double>& parsed_argument{
-    arguments.get<test::Label::Tolerance>().parsed_value()};
-  EXPECT_TRUE(parsed_argument.has_value() && parsed_argument.value() == test::OneOverSixtyFour);
-  const std::string expected_usage{"executable --tolerance <value>"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{"-t <value>, --tolerance <value>  Tolerance value."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --tolerance " + lector::print<double>(test::OneOverSixtyFour));
-}
-
 TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape=Circle",
-     "--output_directory=/path/to/output", "--iterations=200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory=/path/to/output",
+     "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2589,12 +1899,10 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2606,32 +1914,26 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape=Circle",
-     "--output_directory=/path/to/output", "--iterations=200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory=/path/to/output",
+     "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2642,12 +1944,10 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2662,30 +1962,25 @@ TEST(Lector, ArgumentsValidManyInlineLongKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s=Circle",
-     "-o=/path/to/output", "-i=200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o=/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2696,12 +1991,10 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2713,32 +2006,25 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s=Circle",
-     "-o=/path/to/output", "-i=200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o=/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2749,12 +2035,10 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2769,30 +2053,26 @@ TEST(Lector, ArgumentsValidManyInlineShortKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape=Circle",
-     "--output_directory=/path/to/output", "--iterations=200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory=/path/to/output",
+     "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2803,12 +2083,10 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2820,32 +2098,26 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape=Circle",
-     "--output_directory=/path/to/output", "--iterations=200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory=/path/to/output",
+     "--iterations=200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2856,12 +2128,10 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2876,30 +2146,25 @@ TEST(Lector, ArgumentsValidManyMixedLongKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s=Circle", "-o",
-     "/path/to/output", "-i=200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o", "/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2910,12 +2175,10 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2927,32 +2190,25 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s=Circle", "-o",
-     "/path/to/output", "-i=200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o", "/path/to/output", "-i=200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -2963,12 +2219,10 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -2983,24 +2237,20 @@ TEST(Lector, ArgumentsValidManyMixedShortKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
   lector::Arguments arguments{
-    test::singular_argument_enumeration_positional_required(),
     test::singular_argument_filesystem_path_positional_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "Circle", "/path/to/output", "-i", "200", "-h"}
+    {"/path/to/executable", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3010,10 +2260,9 @@ TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
   EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable <value> <path> [--iterations <number>] [--help]"};
+  const std::string expected_usage{"executable <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<value>                             Favorite shape.\n"
     "<path>                              Output directory.\n"
     "-i <number>, --iterations <number>  Number of iterations.\n"
     "-h, --help                          Display this help information and exit. Optional."};
@@ -3024,24 +2273,19 @@ TEST(Lector, ArgumentsValidManyPositionalNoConfiguration) {
   expected_help << "Options:" << std::endl;
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(
-      arguments.execution(), "/path/to/executable Circle /path/to/output --iterations 200 --help");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(), test::singular_argument_enumeration_positional_required(),
-    test::singular_argument_filesystem_path_positional_required(),
+    test::configuration(), test::singular_argument_filesystem_path_positional_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "Circle", "/path/to/output", "-i", "200", "-h"}
+    {"/path/to/executable", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3051,10 +2295,9 @@ TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
   EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable <value> <path> [--iterations <number>] [--help]"};
+  const std::string expected_usage{"executable <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<value>                             Favorite shape.\n"
     "<path>                              Output directory.\n"
     "-i <number>, --iterations <number>  Number of iterations.\n"
     "-h, --help                          Display this help information and exit. Optional."};
@@ -3068,30 +2311,25 @@ TEST(Lector, ArgumentsValidManyPositionalWithConfiguration) {
   expected_help << expected_options << std::endl << std::endl;
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(
-      arguments.execution(), "/path/to/executable Circle /path/to/output --iterations 200 --help");
+  EXPECT_EQ(arguments.execution(), "/path/to/executable /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape", "Circle",
-     "--output_directory", "/path/to/output", "--iterations", "200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory", "/path/to/output",
+     "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3102,12 +2340,10 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -3119,32 +2355,26 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "--shape", "Circle",
-     "--output_directory", "/path/to/output", "--iterations", "200", "--help"}
+    {"/path/to/executable", "0.125", "0.0625", "--output_directory", "/path/to/output",
+     "--iterations", "200", "--help"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3155,12 +2385,10 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -3175,30 +2403,25 @@ TEST(Lector, ArgumentsValidManyWhitespaceLongKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
   lector::Arguments arguments{
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
     test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s", "Circle", "-o",
-     "/path/to/output", "-i", "200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3209,12 +2432,10 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -3226,32 +2447,25 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysNoConfiguration) {
   expected_help << expected_options;
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
   lector::Arguments arguments{
-    test::configuration(),
-    test::repeatable_argument_string_positional_optional(),
-    test::singular_argument_enumeration_named_required(),
+    test::configuration(), test::repeatable_argument_floating_point_number_positional_optional(),
     test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
+    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
   const test::Command command{
-    {"/path/to/executable", "My Third Report", "My Fourth Report", "-s", "Circle", "-o",
-     "/path/to/output", "-i", "200", "-h"}
+    {"/path/to/executable", "0.125", "0.0625", "-o", "/path/to/output", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  ASSERT_EQ(
-      arguments.get<test::Label::Title>().parsed_values().size(), static_cast<std::size_t>(2UL));
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(0), "My Third Report");
-  EXPECT_EQ(arguments.get<test::Label::Title>().parsed_values().at(1), "My Fourth Report");
-  const std::optional<test::Shape>& parsed_shape{
-    arguments.get<test::Label::Shape>().parsed_value()};
-  EXPECT_TRUE(parsed_shape.has_value() && parsed_shape.value() == test::Shape::Circle);
+  ASSERT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().size(),
+            static_cast<std::size_t>(2UL));
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(0), 0.125F);
+  EXPECT_EQ(arguments.get<test::Label::Tolerance>().parsed_values().at(1), 0.0625F);
   const std::optional<std::filesystem::path>& parsed_output_directory{
     arguments.get<test::Label::OutputDirectory>().parsed_value()};
   EXPECT_TRUE(parsed_output_directory.has_value()
@@ -3262,12 +2476,10 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
   const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
   EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
   const std::string expected_usage{
-    "executable [<text>] ... --shape <value> --output_directory <path> "
-    "[--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                Report title.\n"
-    "-s <value>, --shape <value>           Favorite shape.\n"
+    "<value>                               Tolerance value.\n"
     "-o <path>, --output_directory <path>  Output directory.\n"
     "-i <number>, --iterations <number>    Number of iterations.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -3282,279 +2494,8 @@ TEST(Lector, ArgumentsValidManyWhitespaceShortKeysWithConfiguration) {
   expected_help << "Additional notes for the application for testing the lector library.";
   EXPECT_EQ(arguments.help(), expected_help.str());
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable \"My Third Report\" \"My Fourth Report\" --shape Circle "
+            "/path/to/executable 0.1250000000 0.06250000000 "
             "--output_directory /path/to/output --iterations 200 --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainNoConfiguration) {
-  lector::Arguments arguments{test::singular_argument_integer_named_optional(),
-                              test::singular_argument_integer_again_different_keys()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200", "--iter", "200"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<std::int32_t>& parsed_iterations_again{
-    arguments.get<test::Label::IterationsAgain>().parsed_value()};
-  EXPECT_TRUE(
-      parsed_iterations_again.has_value() && parsed_iterations_again.value() == test::TwoHundred);
-  const std::string expected_usage{"executable [--iterations <number>] [--iter <number>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-i <number>, --iterations <number>  Number of iterations.\n"
-    "-it <number>, --iter <number>       Number of iterations, again."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --iter 200");
-}
-
-TEST(Lector, ArgumentsValidSeveralIterationsIterationsAgainWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_integer_named_optional(),
-    test::singular_argument_integer_again_different_keys()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200", "--iter", "200"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<std::int32_t>& parsed_iterations_again{
-    arguments.get<test::Label::IterationsAgain>().parsed_value()};
-  EXPECT_TRUE(
-      parsed_iterations_again.has_value() && parsed_iterations_again.value() == test::TwoHundred);
-  const std::string expected_usage{"executable [--iterations <number>] [--iter <number>]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-i <number>, --iterations <number>  Number of iterations.\n"
-    "-it <number>, --iter <number>       Number of iterations, again."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --iter 200");
-}
-
-TEST(Lector, ArgumentsValidSeveralIterationsHelpNoConfiguration) {
-  lector::Arguments arguments{
-    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable [--iterations <number>] [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-i <number>, --iterations <number>  Number of iterations.\n"
-    "-h, --help                          Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralIterationsHelpWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_integer_named_optional(),
-    test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--iterations", "200", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable [--iterations <number>] [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-i <number>, --iterations <number>  Number of iterations.\n"
-    "-h, --help                          Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --iterations 200 --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpNoConfiguration) {
-  lector::Arguments arguments{
-    test::singular_argument_filesystem_path_named_required(), test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_output_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_output_directory.has_value()
-              && parsed_output_directory.value() == std::filesystem::path("/path/to/output"));
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable --output_directory <path> [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-o <path>, --output_directory <path>  Output directory.\n"
-    "-h, --help                            Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --output_directory /path/to/output --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryHelpWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output", "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_output_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_output_directory.has_value()
-              && parsed_output_directory.value() == std::filesystem::path("/path/to/output"));
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{"executable --output_directory <path> [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-o <path>, --output_directory <path>  Output directory.\n"
-    "-h, --help                            Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(), "/path/to/executable --output_directory /path/to/output --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpNoConfiguration) {
-  lector::Arguments arguments{
-    test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output", "--iterations", "200",
-     "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_output_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_output_directory.has_value()
-              && parsed_output_directory.value() == std::filesystem::path("/path/to/output"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{
-    "executable --output_directory <path> [--iterations <number>] [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-o <path>, --output_directory <path>  Output directory.\n"
-    "-i <number>, --iterations <number>    Number of iterations.\n"
-    "-h, --help                            Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options;
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --output_directory /path/to/output --iterations 200 --help");
-}
-
-TEST(Lector, ArgumentsValidSeveralOutputDirectoryIterationsHelpWithConfiguration) {
-  lector::Arguments arguments{
-    test::configuration(), test::singular_argument_filesystem_path_named_required(),
-    test::singular_argument_integer_named_optional(), test::singular_argument_boolean()};
-  const test::Command command{
-    {"/path/to/executable", "--output_directory", "/path/to/output", "--iterations", "200",
-     "--help"}
-  };
-  arguments.parse(command.argc(), command.argv());
-  arguments.validate();
-  EXPECT_EQ(arguments.executable_path(), std::filesystem::path("/path/to/executable"));
-  const std::optional<std::filesystem::path>& parsed_output_directory{
-    arguments.get<test::Label::OutputDirectory>().parsed_value()};
-  EXPECT_TRUE(parsed_output_directory.has_value()
-              && parsed_output_directory.value() == std::filesystem::path("/path/to/output"));
-  const std::optional<std::int32_t>& parsed_iterations{
-    arguments.get<test::Label::Iterations>().parsed_value()};
-  EXPECT_TRUE(parsed_iterations.has_value() && parsed_iterations.value() == test::TwoHundred);
-  const std::optional<bool>& parsed_help{arguments.get<test::Label::Help>().parsed_value()};
-  EXPECT_TRUE(parsed_help.has_value() && parsed_help.value());
-  const std::string expected_usage{
-    "executable --output_directory <path> [--iterations <number>] [--help]"};
-  EXPECT_EQ(arguments.usage(), expected_usage);
-  const std::string expected_options{
-    "-o <path>, --output_directory <path>  Output directory.\n"
-    "-i <number>, --iterations <number>    Number of iterations.\n"
-    "-h, --help                            Display this help information and exit. Optional."};
-  EXPECT_EQ(arguments.options(), expected_options);
-  std::ostringstream expected_help;
-  expected_help << "My Application" << std::endl << std::endl;
-  expected_help << "Usage:" << std::endl;
-  expected_help << expected_usage << std::endl << std::endl;
-  expected_help << "An application for testing the Lector library." << std::endl << std::endl;
-  expected_help << "Options:" << std::endl;
-  expected_help << expected_options << std::endl << std::endl;
-  expected_help << "Additional notes for the application for testing the lector library.";
-  EXPECT_EQ(arguments.help(), expected_help.str());
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable --output_directory /path/to/output --iterations 200 --help");
 }
 
 TEST(Lector, ArgumentsWeirdLongInlineNoConfiguration) {
@@ -4964,7 +3905,7 @@ TEST(Lector, RepeatableArgumentFilesystemPathPositionalRequired) {
 }
 
 TEST(Lector, RepeatableArgumentFloatingPointNumberDefault) {
-  lector::RepeatableArgument<test::Label::Tolerance, double> argument;
+  lector::RepeatableArgument<test::Label::Tolerance, float> argument;
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
@@ -4984,7 +3925,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberDefault) {
 }
 
 TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
-  lector::RepeatableArgument<test::Label::Tolerance, double> argument{
+  lector::RepeatableArgument<test::Label::Tolerance, float> argument{
     test::repeatable_argument_floating_point_number_named_optional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), test::keys_floating_point_number());
@@ -5027,12 +3968,11 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
   EXPECT_EQ(argument.usage(), "[--tolerance <value>] ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
-  EXPECT_EQ(
-      argument.execution(), "--tolerance 0.125000000000000000 --tolerance 0.0625000000000000000");
+  EXPECT_EQ(argument.execution(), "--tolerance 0.1250000000 --tolerance 0.06250000000");
 }
 
 TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
-  lector::RepeatableArgument<test::Label::Tolerance, double> argument{
+  lector::RepeatableArgument<test::Label::Tolerance, float> argument{
     test::repeatable_argument_floating_point_number_named_required()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), test::keys_floating_point_number());
@@ -5069,12 +4009,11 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberNamedRequired) {
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
   EXPECT_EQ(argument.usage(), "--tolerance <value> ...");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
-  EXPECT_EQ(
-      argument.execution(), "--tolerance 0.125000000000000000 --tolerance 0.0625000000000000000");
+  EXPECT_EQ(argument.execution(), "--tolerance 0.1250000000 --tolerance 0.06250000000");
 }
 
 TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
-  lector::RepeatableArgument<test::Label::Tolerance, double> argument{
+  lector::RepeatableArgument<test::Label::Tolerance, float> argument{
     test::repeatable_argument_floating_point_number_positional_optional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -5117,11 +4056,11 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>] ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
-  EXPECT_EQ(argument.execution(), "0.125000000000000000 0.0625000000000000000");
+  EXPECT_EQ(argument.execution(), "0.1250000000 0.06250000000");
 }
 
 TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
-  lector::RepeatableArgument<test::Label::Tolerance, double> argument{
+  lector::RepeatableArgument<test::Label::Tolerance, float> argument{
     test::repeatable_argument_floating_point_number_positional_required()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -5158,7 +4097,7 @@ TEST(Lector, RepeatableArgumentFloatingPointNumberPositionalRequired) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "<value> ...");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
-  EXPECT_EQ(argument.execution(), "0.125000000000000000 0.0625000000000000000");
+  EXPECT_EQ(argument.execution(), "0.1250000000 0.06250000000");
 }
 
 TEST(Lector, RepeatableArgumentIntegerDefault) {
@@ -6610,7 +5549,7 @@ TEST(Lector, SingularArgumentFilesystemPathPositionalRequired) {
 }
 
 TEST(Lector, SingularArgumentFloatingPointNumberDefault) {
-  lector::SingularArgument<test::Label::Tolerance, double> argument;
+  lector::SingularArgument<test::Label::Tolerance, float> argument;
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
   EXPECT_TRUE(argument.description().empty());
@@ -6630,7 +5569,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberDefault) {
 }
 
 TEST(Lector, SingularArgumentFloatingPointNumberNamedOptional) {
-  lector::SingularArgument<test::Label::Tolerance, double> argument{
+  lector::SingularArgument<test::Label::Tolerance, float> argument{
     test::singular_argument_floating_point_number_named_optional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), test::keys_floating_point_number());
@@ -6665,11 +5604,11 @@ TEST(Lector, SingularArgumentFloatingPointNumberNamedOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "-t <value>, --tolerance <value>");
   EXPECT_EQ(argument.usage(), "[--tolerance <value>]");
   EXPECT_EQ(argument.options(), "-t <value>, --tolerance <value>  Tolerance value.");
-  EXPECT_EQ(argument.execution(), "--tolerance 0.0156250000000000000");
+  EXPECT_EQ(argument.execution(), "--tolerance 0.01562500000");
 }
 
 TEST(Lector, SingularArgumentFloatingPointNumberNamedRequired) {
-  const lector::SingularArgument<test::Label::Tolerance, double> argument{
+  const lector::SingularArgument<test::Label::Tolerance, float> argument{
     test::singular_argument_floating_point_number_named_required()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_EQ(argument.keys(), test::keys_floating_point_number());
@@ -6689,7 +5628,7 @@ TEST(Lector, SingularArgumentFloatingPointNumberNamedRequired) {
 }
 
 TEST(Lector, SingularArgumentFloatingPointNumberPositionalOptional) {
-  lector::SingularArgument<test::Label::Tolerance, double> argument{
+  lector::SingularArgument<test::Label::Tolerance, float> argument{
     test::singular_argument_floating_point_number_positional_optional()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -6724,11 +5663,11 @@ TEST(Lector, SingularArgumentFloatingPointNumberPositionalOptional) {
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>]");
   EXPECT_EQ(argument.options(), "<value>  Tolerance value.");
-  EXPECT_EQ(argument.execution(), "0.0156250000000000000");
+  EXPECT_EQ(argument.execution(), "0.01562500000");
 }
 
 TEST(Lector, SingularArgumentFloatingPointNumberPositionalRequired) {
-  const lector::SingularArgument<test::Label::Tolerance, double> argument{
+  const lector::SingularArgument<test::Label::Tolerance, float> argument{
     test::singular_argument_floating_point_number_positional_required()};
   EXPECT_EQ(argument.label(), test::Label::Tolerance);
   EXPECT_TRUE(argument.keys().empty());
@@ -7280,8 +6219,8 @@ TEST(Lector, TutorialSection1Basic) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
-    lector::RepeatableArgument<test::Label::Tokens, std::string>(
-        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    lector::RepeatableArgument<test::Label::Tolerance, float>(
+        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
@@ -7293,7 +6232,7 @@ TEST(Lector, TutorialSection1Basic) {
     "Display this help information and exit. Optional.")
   };
   const test::Command command{
-    {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200"}
+    {"/path/to/executable", "0.25", "0.5", "-o", "/path/to/directory", "-i", "200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
@@ -7301,11 +6240,11 @@ TEST(Lector, TutorialSection1Basic) {
     std::cout << arguments.help() << std::endl;
   } else {
     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
-    const std::vector<std::string>& tokens{
-      arguments.get<test::Label::Tokens>().parsed_or_default_values()};
-    std::cout << "The tokens are:";
-    for (const std::string& token : tokens) {
-      std::cout << " " << token;
+    const std::vector<float>& tolerances{
+      arguments.get<test::Label::Tolerance>().parsed_or_default_values()};
+    std::cout << "The tolerances are:";
+    for (const float tolerance : tolerances) {
+      std::cout << " " << tolerance;
     }
     std::cout << std::endl;
     const std::filesystem::path& output_directory_path{
@@ -7317,13 +6256,13 @@ TEST(Lector, TutorialSection1Basic) {
   }
   EXPECT_FALSE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable [<text>] ... --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                List of tokens. Optional. Default 'Hi'.\n"
+    "<value>                               List of tolerances. Optional. Default 0.125.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -7339,7 +6278,8 @@ TEST(Lector, TutorialSection1Basic) {
   EXPECT_EQ(arguments.help(), expected_help);
   EXPECT_EQ(
       arguments.execution(),
-      "/path/to/executable Hello World --output_directory /path/to/directory --iterations 200");
+      "/path/to/executable 0.2500000000 0.5000000000 --output_directory /path/to/directory "
+      "--iterations 200");
 }
 
 TEST(Lector, TutorialSection1Help) {
@@ -7347,8 +6287,8 @@ TEST(Lector, TutorialSection1Help) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
-    lector::RepeatableArgument<test::Label::Tokens, std::string>(
-        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    lector::RepeatableArgument<test::Label::Tolerance, float>(
+        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
@@ -7360,7 +6300,7 @@ TEST(Lector, TutorialSection1Help) {
     "Display this help information and exit. Optional.")
   };
   const test::Command command{
-    {"/path/to/executable", "Hello", "World", "-o", "/path/to/directory", "-i", "200", "-h"}
+    {"/path/to/executable", "0.25", "0.5", "-o", "/path/to/directory", "-i", "200", "-h"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
@@ -7368,11 +6308,11 @@ TEST(Lector, TutorialSection1Help) {
     std::cout << arguments.help() << std::endl;
   } else {
     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
-    const std::vector<std::string>& tokens{
-      arguments.get<test::Label::Tokens>().parsed_or_default_values()};
-    std::cout << "The tokens are:";
-    for (const std::string& token : tokens) {
-      std::cout << " " << token;
+    const std::vector<float>& tolerances{
+      arguments.get<test::Label::Tolerance>().parsed_or_default_values()};
+    std::cout << "The tolerances are:";
+    for (const float tolerance : tolerances) {
+      std::cout << " " << tolerance;
     }
     std::cout << std::endl;
     const std::filesystem::path& output_directory_path{
@@ -7384,13 +6324,13 @@ TEST(Lector, TutorialSection1Help) {
   }
   EXPECT_TRUE(arguments.get<test::Label::Help>().parsed_or_default_value());
   const std::string expected_usage{
-    "executable [<text>] ... --output_directory <path> [--iterations <number>] [--help]"};
+    "executable [<value>] ... --output_directory <path> [--iterations <number>] [--help]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                List of tokens. Optional. Default 'Hi'.\n"
+    "<value>                               List of tolerances. Optional. Default 0.125.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -7405,8 +6345,8 @@ TEST(Lector, TutorialSection1Help) {
     "Additional notes about my application."};
   EXPECT_EQ(arguments.help(), expected_help);
   EXPECT_EQ(arguments.execution(),
-            "/path/to/executable Hello World --output_directory /path/to/directory --iterations "
-            "200 --help");
+            "/path/to/executable 0.2500000000 0.5000000000 --output_directory /path/to/directory "
+            "--iterations 200 --help");
 }
 
 TEST(Lector, TutorialSection3Subsection2) {
@@ -7414,8 +6354,8 @@ TEST(Lector, TutorialSection3Subsection2) {
     lector::Configuration{{"My Application"},
                           {"Description of my application."},
                           {"Additional notes about my application."}},
-    lector::RepeatableArgument<test::Label::Tokens, std::string>(
-        "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}
+    lector::RepeatableArgument<test::Label::Tolerance, float>(
+        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"o", "=o", "__out_dir__"}, "Output directory. Required."},
@@ -7424,18 +6364,18 @@ TEST(Lector, TutorialSection3Subsection2) {
     "Number of iterations. Optional. Default 100.", 100)
   };
   const test::Command command{
-    {"/path/to/executable", "Hello", "World", "__out_dir__", "/path/to/directory", "=i==200"}
+    {"/path/to/executable", "0.25", "0.5", "__out_dir__", "/path/to/directory", "=i==200"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   const std::string expected_usage{
-    "executable [<text>] ... __out_dir__ <path> [==iter== <number>]"};
+    "executable [<value>] ... __out_dir__ <path> [==iter== <number>]"};
   EXPECT_EQ(arguments.configuration().title, "My Application");
   EXPECT_EQ(arguments.configuration().description, "Description of my application.");
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<text>                                          List of tokens. Optional. Default 'Hi'.\n"
+    "<value>                                         List of tolerances. Optional. Default 0.125.\n"
     "o <path>, =o <path>, __out_dir__ <path>         Output directory. Required.\n"
     "=i= <number>, _it_ <number>, ==iter== <number>  Number of iterations. Optional. Default 100."};
   EXPECT_EQ(arguments.options(), expected_options);
@@ -7448,8 +6388,10 @@ TEST(Lector, TutorialSection3Subsection2) {
     expected_options + "\n\n"
     "Additional notes about my application."};
   EXPECT_EQ(arguments.help(), expected_help);
-  EXPECT_EQ(arguments.execution(),
-            "/path/to/executable Hello World __out_dir__ /path/to/directory ==iter== 200");
+  EXPECT_EQ(
+      arguments.execution(),
+      "/path/to/executable 0.2500000000 0.5000000000 __out_dir__ /path/to/directory "
+      "==iter== 200");
 }
 
 TEST(Lector, TutorialSection3Subsection3) {

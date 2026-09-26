@@ -21,7 +21,7 @@
 /// #include <filesystem>
 /// #include <lector/arguments.hpp>
 ///
-/// enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
+/// enum class Label : std::int8_t {Tolerances, OutputDirectory, Iterations, Help};
 ///
 /// int main(int argc, char* argv[]) {
 ///     lector::Arguments arguments{
@@ -29,8 +29,8 @@
 ///             "My Application",
 ///             "Description of my application.",
 ///             "Additional notes about my application."},
-///         lector::RepeatableArgument<Label::Tokens, std::string>{
-///             "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///         lector::RepeatableArgument<Label::Tolerances, float>{
+///             "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
 ///         lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
 ///             {"-o", "--output_directory"}, "Output directory. Required."},
 ///         lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -50,11 +50,11 @@
 ///
 ///     std::cout << "Execution:" << std::endl << arguments.execution() << std::endl;
 ///
-///     const std::vector<std::string>& tokens{
-///         arguments.get<Label::Tokens>().parsed_or_default_values()};
-///     std::cout << "The tokens are:";
-///     for (const std::string& token : tokens) {
-///         std::cout << " " << token;
+///     const std::vector<float>& tolerances{
+///         arguments.get<Label::Tolerances>().parsed_or_default_values()};
+///     std::cout << "The tolerances are:";
+///     for (const float tolerance : tolerances) {
+///         std::cout << " " << tolerance;
 ///     }
 ///     std::cout << std::endl;
 ///
@@ -277,7 +277,7 @@
 /// The Lector library uses enumeration values to label arguments. For example, the code from the \ref introduction "§1. Introduction" section defines the following enumeration:
 ///
 /// ```cpp
-/// enum class Label : std::int8_t {Tokens, OutputDirectory, Iterations, Help};
+/// enum class Label : std::int8_t {Tolerances, OutputDirectory, Iterations, Help};
 /// ```
 ///
 /// The Lector library supports both singular arguments with `lector::SingularArgument` and repeatable arguments with `lector::RepeatableArgument`. Singular arguments can only appear once on the command line, whereas repeatable arguments can appear multiple times and thus hold multiple values. If a repeatable argument is named, each appearance on the command line must include both its key and its value, whereas if it is positional, its multiple appearances must appear in an uninterrupted sequence.
@@ -298,8 +298,8 @@
 ///         "My Application",
 ///         "Description of my application.",
 ///         "Additional notes about my application."},
-///     lector::RepeatableArgument<Label::Tokens, std::string>{
-///         "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///     lector::RepeatableArgument<Label::Tolerances, float>{
+///         "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
 ///     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
 ///         {"-o", "--output_directory"}, "Output directory. Required."},
 ///     lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -350,8 +350,8 @@
 /// Individual command line arguments can be fetched via the `lector::Arguments::get()` method, using their labels as template parameters. For example:
 ///
 /// ```cpp
-/// const lector::RepeatableArgument<Label::Tokens, std::string>& tokens{
-///     arguments.get<Label::Tokens>()};
+/// const lector::RepeatableArgument<Label::Tolerances, std::string>& tolerances{
+///     arguments.get<Label::Tolerances>()};
 /// ```
 ///
 /// ```cpp
@@ -407,12 +407,12 @@
 /// My Application
 ///
 /// Usage:
-/// my_application [<text>] ... --output_directory <path> [--iterations <number>] [--help]
+/// my_application [<value>] ... --output_directory <path> [--iterations <number>] [--help]
 ///
 /// Description of my application.
 ///
 /// Options:
-/// <text>                                List of tokens. Optional. Default 'Hi'.
+/// <value>                               List of tolerances. Optional. Default 0.125.
 /// -o <path>, --output_directory <path>  Output directory. Required.
 /// -i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
 /// -h, --help                            Display this help information and exit. Optional.
@@ -431,13 +431,13 @@
 /// ```
 ///
 /// ```bash
-/// path/to/my_application Hello World --output_directory /some/path --iterations 200
+/// path/to/my_application 0.25 0.5 --output_directory /some/path --iterations 200
 /// ```
 ///
 /// ```text
 /// Execution:
-/// path/to/my_application Hello World --output_directory /some/path --iterations 200
-/// The tokens are: Hello World
+/// path/to/my_application 0.2500000000 0.5000000000 --output_directory /some/path --iterations 200
+/// The tolerances are: 0.25 0.5
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -447,13 +447,13 @@
 /// Inline key-value pairs of the form `key=value` are also supported:
 ///
 /// ```bash
-/// path/to/my_application Hello World --output_directory=/some/path --iterations=200
+/// path/to/my_application 0.25 0.5 --output_directory=/some/path --iterations=200
 /// ```
 ///
 /// ```text
 /// Execution:
-/// path/to/my_application Hello World --output_directory /some/path --iterations 200
-/// The tokens are: Hello World
+/// path/to/my_application 0.2500000000 0.5000000000 --output_directory /some/path --iterations 200
+/// The tolerances are: 0.25 0.5
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -461,13 +461,13 @@
 /// Named arguments can be defined with multiple keys. For example, the `Label::OutputDirectory` argument lists the `-o` and `--output_directory` keys, and the `Label::Iterations` argument lists the `-i` and `--iterations` keys. Any of these keys can be used on the command line:
 ///
 /// ```bash
-/// path/to/my_application Hello World -o /some/path -i=200
+/// path/to/my_application 0.25 0.5 -o /some/path -i=200
 /// ```
 ///
 /// ```text
 /// Execution:
-/// path/to/my_application Hello World --output_directory /some/path --iterations 200
-/// The tokens are: Hello World
+/// path/to/my_application 0.2500000000 0.5000000000 --output_directory /some/path --iterations 200
+/// The tolerances are: 0.25 0.5
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -476,8 +476,8 @@
 ///
 /// ```cpp
 /// lector::Arguments arguments{
-///     lector::RepeatableArgument<Label::Tokens, std::string>{
-///         "List of tokens. Optional. Default 'Hi'.", std::vector<std::string>{"Hi"}},
+///     lector::RepeatableArgument<Label::Tolerances, float>{
+///         "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
 ///     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
 ///         {"o", "=o", "__out_dir__"}, "Output directory. Required."},
 ///     lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -486,13 +486,13 @@
 /// ```
 ///
 /// ```bash
-/// path/to/my_application Hello World __out_dir__ /some/path =i==200
+/// path/to/my_application 0.25 0.5 __out_dir__ /some/path =i==200
 /// ```
 ///
 /// ```text
 /// Execution:
-/// path/to/my_application Hello World __out_dir__ /some/path ==iter== 200
-/// The tokens are: Hello World
+/// path/to/my_application 0.2500000000 0.5000000000 __out_dir__ /some/path ==iter== 200
+/// The tolerances are: 0.25 0.5
 /// The output directory is: /some/path
 /// The number of iterations is: 200
 /// ```
@@ -729,14 +729,14 @@
 /// - Keys cannot be duplicated across arguments. For example, a `lector::Arguments` constructed from `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "Iterations." }` and `lector::SingularArgument<Label::Help, bool>{ {"-i"}, "Help." }` throws an exception because the two arguments use the same key `-i`.
 /// - All arguments must have descriptions. For example, `lector::SingularArgument<Label::Iterations, std::int32_t>{ {"-i"}, "" }` throws an exception because the description is empty.
 /// - Boolean arguments are always false by default and cannot specify default values. For example, `lector::SingularArgument<Label::Help, bool>{ {"-h"}, "Help.", true }` throws an exception because `true` was specified as a default value.
-/// - A repeatable positional argument cannot be mixed with other positional arguments. For example, a `lector::Arguments` constructed from `lector::RepeatableArgument<Label::Tokens>{"List of tokens."}` and `lector::SingularArgument<Label::OutputDirectory>{"Output directory."}` throws an exception because the first is repeatable and both are positional.
+/// - A repeatable positional argument cannot be mixed with other positional arguments. For example, a `lector::Arguments` constructed from `lector::RepeatableArgument<Label::Tolerances>{"List of tolerances."}` and `lector::SingularArgument<Label::OutputDirectory>{"Output directory."}` throws an exception because the first is repeatable and both are positional.
 ///
 /// The following checks are performed when parsing command line arguments with the `lector::Arguments::parse()` method. These examples use the code from the [§1. Introduction](#1-introduction) section:
 ///
 /// - Duplicated arguments. For example, `path/to/my_application --output_directory /tmp --output_directory /home` throws an exception because the argument `--output_directory <path>` is duplicated.
 /// - Invalid argument values. For example, `path/to/my_application --output_directory /tmp --iterations hello` throws an exception because `hello` is not a valid value for the argument `--iterations <number>`.
 /// - Arguments missing values. For example, `path/to/my_application --output_directory /tmp --iterations` throws an exception because the argument `--iterations <number>` is missing its value.
-/// - Unknown command line tokens. For example, if the `Label::Tokens` argument was not defined, `path/to/my_application --output_directory /tmp --unknown` would throw an exception because the token `--unknown` would not match any key of any named argument, and since no positional arguments would be defined, it also would not match the value of any positional argument.
+/// - Unknown command line tokens. For example, `path/to/my_application --output_directory /tmp --unknown` would throw an exception because the token `--unknown` would not match any key or value of any argument.
 ///
 /// Finally, the `lector::Arguments::validate()` method checks for missing required arguments. For example, with `path/to/my_application --iterations 200`, this method throws an exception because the required argument `--output_directory <path>` is missing.
 ///
@@ -867,14 +867,14 @@
 ///
 /// ```bash
 /// bazel coverage //...
-/// genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+/// genhtml bazel-out/_coverage/_coverage_report.dat --demangle-cpp --output-directory coverage
 /// ```
 ///
 /// If using the Bazel build system on Windows, to compute the Lector library's code coverage, the [MSVC](<https://learn.microsoft.com/cpp/windows>) C++ compiler will not work, and the [LLVM Clang](<https://llvm.org>) C++ compiler must be used instead. Ensure that the LLVM library that contains the Clang C++ compiler is installed on your system; you can install it using the [Chocolatey](<https://chocolatey.org>) package manager with `choco install llvm`. Then, compute the Lector library's code coverage using the Bazel build system with:
 ///
 /// ```bash
 /// bazel coverage --compiler=clang-cl //...
-/// genhtml bazel-out/_coverage/_coverage_report.dat --output-directory coverage
+/// genhtml bazel-out/_coverage/_coverage_report.dat --demangle-cpp --output-directory coverage
 /// ```
 ///
 /// If using the CMake build system on Linux or macOS, compute the Lector library's code coverage with:
