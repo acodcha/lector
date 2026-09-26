@@ -71,10 +71,10 @@
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>AreUnique</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure that validates at compilation time that a specified variadic list of types are unique. Base data structure that contains an empty list of types and returns true. <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait that validates at compilation time that a specified variadic list of types are unique. Base type trait that contains an empty list of types and returns true. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>AreUnique&lt; FirstType, RemainingTypes... &gt;</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data structure that validates at compilation time that a specified variadic list of types are unique. Recursively compares a first type against the remaining variadic list of types. <br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait that validates at compilation time that a specified variadic list of types are unique. Recursively compares a first type against the remaining variadic list of types. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html">Arguments</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A collection of command line arguments that can be parsed from argc and argv.  <a href="classlector_1_1Arguments.html#details">More...</a><br /></td></tr>
@@ -82,20 +82,20 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlector_1_1Configuration.html">Configuration</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structlector_1_1Configuration.html" title="Configuration of the help information of a collection of command line arguments.">Configuration</a> of the help information of a collection of command line arguments.  <a href="structlector_1_1Configuration.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlector_1_1FindArgument.html">FindArgument</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait to provide short-circuit evaluation for lector::FindArgumentByLabel.  <a href="structlector_1_1FindArgument.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlector_1_1FindArgument_3_01Label_00_01false_00_01FirstArgument_00_01RemainingArgumentTypes_8_8_8_01_4.html">FindArgument&lt; Label, false, FirstArgument, RemainingArgumentTypes... &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">False branch of the short-circuit evaluation type trait. The command line argument has not yet been found and the remaining command line arguments should be searched.  <a href="structlector_1_1FindArgument_3_01Label_00_01false_00_01FirstArgument_00_01RemainingArgumentTypes_8_8_8_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlector_1_1FindArgument_3_01Label_00_01true_00_01FirstArgument_00_01RemainingArgumentTypes_8_8_8_01_4.html">FindArgument&lt; Label, true, FirstArgument, RemainingArgumentTypes... &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">True branch of the short-circuit evaluation type trait. The command line argument has been found and will now be returned; the remaining command line arguments do not need to be searched.  <a href="structlector_1_1FindArgument_3_01Label_00_01true_00_01FirstArgument_00_01RemainingArgumentTypes_8_8_8_01_4.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait used to extract a command line argument from a collection of command line arguments, using only its Label. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentByLabel&lt; Label, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type trait specialization used to extract a command line argument from a collection of command line arguments, using its Label and the types of the remaining command line arguments in the collection. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to provide short-circuit evaluation for lector::FindArgumentByLabel. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper&lt; Label, false, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">False branch of the short-circuit evaluation helper. The command line argument has not yet been found and the remaining command line arguments should be searched. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><b>FindArgumentHelper&lt; Label, true, FirstArgument, RemainingArgumentTypes... &gt;</b></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">True branch of the short-circuit evaluation helper. The command line argument has been found and will now be returned; the remaining command line arguments do not need to be searched. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1RepeatableArgument.html">RepeatableArgument</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A repeatable command line argument.  <a href="classlector_1_1RepeatableArgument.html#details">More...</a><br /></td></tr>

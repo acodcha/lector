@@ -448,17 +448,17 @@ private:
     }
   }
 
-  /// @brief Validates that this command line argument is not boolean. Called by constructors that
-  /// do not take keys. Boolean command line arguments must always specify one or more keys.
+  /// @brief Validates that this positional command line argument is not boolean. Boolean command
+  /// line arguments must always specify one or more keys and therefore cannot be positional.
   void validate_non_boolean_positional() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument("Boolean arguments must specify one or more keys.");
     }
   }
 
-  /// @brief Validates that this command line argument is not boolean. Called by constructors that
-  /// take default values. Boolean command line arguments are always optional and always default to
-  /// false, so they cannot specify default values.
+  /// @brief Validates that this command line argument that specifies a default value is not
+  /// boolean. Boolean command line arguments are always optional and always default to false, so
+  /// they cannot specify default values.
   void validate_non_boolean_default_value() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument(
@@ -853,17 +853,17 @@ public:
   }
 
 private:
-  /// @brief Validates that this command line argument is not boolean. Called by constructors that
-  /// do not take keys. Boolean command line arguments must always specify one or more keys.
+  /// @brief Validates that this positional command line argument is not boolean. Boolean command
+  /// line arguments must always specify one or more keys and therefore cannot be positional.
   void constexpr validate_non_boolean_positional() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument("Boolean arguments must specify one or more keys.");
     }
   }
 
-  /// @brief Validates that this command line argument is not boolean. Called by constructors that
-  /// take default values. Boolean command line arguments are always optional and always default to
-  /// false, so they cannot specify default values.
+  /// @brief Validates that this command line argument that specifies one or more default values is
+  /// not boolean. Boolean command line arguments are always optional and always default to false,
+  /// so they cannot specify default values.
   void constexpr validate_non_boolean_default_values() const {
     if constexpr (std::is_same_v<Type, bool>) {
       throw std::invalid_argument(
@@ -1038,34 +1038,35 @@ public:
 template <auto Label, typename... ArgumentTypes>
 struct FindArgumentByLabel;
 
-/// @brief Helper to provide short-circuit evaluation for lector::FindArgumentByLabel.
+/// @brief Type trait to provide short-circuit evaluation for lector::FindArgumentByLabel.
 /// @tparam Label The label of the command line argument to extract.
 /// @tparam Match Whether the command line argument was found or not.
 /// @tparam FirstArgument The type of the command line argument to extract.
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, bool Match, typename FirstArgument, typename... RemainingArgumentTypes>
-struct FindArgumentHelper;
+struct FindArgument;
 
-/// @brief True branch of the short-circuit evaluation helper. The command line argument has been
-/// found and will now be returned; the remaining command line arguments do not need to be searched.
+/// @brief True branch of the short-circuit evaluation type trait. The command line argument has
+/// been found and will now be returned; the remaining command line arguments do not need to be
+/// searched.
 /// @tparam Label The label of the command line argument to extract.
 /// @tparam FirstArgument The type of the command line argument to extract.
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
-struct FindArgumentHelper<Label, true, FirstArgument, RemainingArgumentTypes...> {
+struct FindArgument<Label, true, FirstArgument, RemainingArgumentTypes...> {
   using type = FirstArgument;
 };
 
-/// @brief False branch of the short-circuit evaluation helper. The command line argument has not
-/// yet been found and the remaining command line arguments should be searched.
+/// @brief False branch of the short-circuit evaluation type trait. The command line argument has
+/// not yet been found and the remaining command line arguments should be searched.
 /// @tparam Label The label of the command line argument to extract.
 /// @tparam FirstArgument The type of the command line argument to extract.
 /// @tparam ...RemainingArgumentTypes The variadic list of argument types in the collection of
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
-struct FindArgumentHelper<Label, false, FirstArgument, RemainingArgumentTypes...> {
+struct FindArgument<Label, false, FirstArgument, RemainingArgumentTypes...> {
   using type = typename FindArgumentByLabel<Label, RemainingArgumentTypes...>::type;
 };
 
@@ -1078,18 +1079,18 @@ struct FindArgumentHelper<Label, false, FirstArgument, RemainingArgumentTypes...
 /// command line arguments, excluding the command line argument to extract.
 template <auto Label, typename FirstArgument, typename... RemainingArgumentTypes>
 struct FindArgumentByLabel<Label, FirstArgument, RemainingArgumentTypes...> {
-  using type = typename FindArgumentHelper<Label, (FirstArgument::label() == Label), FirstArgument,
-                                           RemainingArgumentTypes...>::type;
+  using type = typename FindArgument<Label, (FirstArgument::label() == Label), FirstArgument,
+                                     RemainingArgumentTypes...>::type;
 };
 
-/// @brief Data structure that validates at compilation time that a specified variadic list of types
-/// are unique. Base data structure that contains an empty list of types and returns true.
+/// @brief Type trait that validates at compilation time that a specified variadic list of types are
+/// unique. Base type trait that contains an empty list of types and returns true.
 /// @tparam ...Types Variadic list of types to check for uniqueness.
 template <auto... Types>
 struct AreUnique : std::true_type {};
 
-/// @brief Data structure that validates at compilation time that a specified variadic list of types
-/// are unique. Recursively compares a first type against the remaining variadic list of types.
+/// @brief Type trait that validates at compilation time that a specified variadic list of types are
+/// unique. Recursively compares a first type against the remaining variadic list of types.
 /// @tparam FirstType The first type to compare.
 /// @tparam ...RemainingTypes The remaining types in the variadic list of types to compare.
 template <auto FirstType, auto... RemainingTypes>
@@ -1112,19 +1113,17 @@ public:
   /// @param[in] configuration The configuration data structure.
   /// @param[in] ...arguments The variadic list of command line arguments.
   /// @throws std::logic_error if the command line arguments are invalid.
-  explicit Arguments(lector::Configuration&& configuration, ArgumentTypes... arguments)
-    : configuration_{std::move(configuration)}, arguments_{std::move(arguments)...} {
-    validate_positional_arguments();
-    validate_keys();
+  explicit Arguments(const lector::Configuration& configuration, const ArgumentTypes&... arguments)
+    : configuration_{configuration}, arguments_{arguments...} {
+    validate_arguments();
   }
 
   /// @brief Constructor. Constructs a collection of command line arguments from a variadic list of
   /// command line arguments.
   /// @param[in] ...arguments The variadic list of command line arguments.
   /// @throws std::logic_error if the command line arguments are invalid.
-  explicit Arguments(ArgumentTypes... arguments) : arguments_{std::move(arguments)...} {
-    validate_positional_arguments();
-    validate_keys();
+  explicit Arguments(const ArgumentTypes&... arguments) : arguments_{arguments...} {
+    validate_arguments();
   }
 
   /// @brief Destructor. Destroys this collection of command line arguments.
@@ -1392,12 +1391,12 @@ private:
   /// the string of text contains very long words whose lengths exceed the desired line length.
   static constexpr std::size_t default_line_length_{80UL};
 
-  /// @brief The best matching argument for a command line argument token during parsing. The best
-  /// matching argument is the argument with the longest matching key, and if there are multiple
-  /// arguments with keys of the same length that match, then the best matching argument is the one
-  /// that is matched by a non-inline key rather than an inline key. Used to avoid shadowing when
-  /// multiple arguments have keys that are prefixes of each other, and to prefer non-inline matches
-  /// over inline matches when the key lengths are equal.
+  /// @brief Data structure that contains the best matching argument for a command line argument
+  /// token during parsing. The best matching argument is the argument with the longest matching
+  /// key, and if there are multiple arguments with keys of the same length that match, then the
+  /// best matching argument is the one that is matched by a non-inline key rather than an inline
+  /// key. Used to avoid shadowing when multiple arguments have keys that are prefixes of each
+  /// other, and to prefer non-inline matches over inline matches when the key lengths are equal.
   struct BestArgument final {
     /// @brief Index of this argument in the tuple of arguments. Used to identify this argument
     /// during parsing.
@@ -1419,6 +1418,60 @@ private:
     bool is_inline{false};
   };
 
+  /// @brief Validates that the arguments in this collection of command line arguments are
+  /// consistent.
+  /// @throws std::logic_error if a repeated positional argument is mixed with other positional
+  /// arguments, or if the same key is duplicated across two or more arguments.
+  void validate_arguments() const {
+    validate_positional_arguments();
+    validate_keys();
+  }
+
+  /// @brief Validates that this collection of command line arguments does not mix a repeated
+  /// positional command line argument with other positional arguments.
+  /// @throws std::logic_error if a repeated positional argument is mixed with other positional
+  /// arguments.
+  void validate_positional_arguments() const {
+    bool has_repeated_positional_argument{false};
+    std::size_t positional_argument_count{0UL};
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&] {
+            if (argument.form() == lector::Form::Positional) {
+              ++positional_argument_count;
+              if (argument.arity() == lector::Arity::Repeatable) {
+                has_repeated_positional_argument = true;
+              }
+            }
+          }());
+        },
+        arguments_);
+    if (has_repeated_positional_argument
+        && positional_argument_count >= static_cast<std::size_t>(2UL)) {
+      throw std::logic_error(
+          "A repeated positional argument cannot be mixed with any other positional arguments.");
+    }
+  }
+
+  /// @brief Validates that the same key is never duplicated across two or more arguments.
+  /// @throws std::logic_error if the same key is duplicated across two or more arguments.
+  void validate_keys() const {
+    std::unordered_set<std::string> unique_keys;
+    std::apply(
+        [&](const auto&... argument) {
+          (..., [&] {
+            for (const std::string& key : argument.keys()) {
+              const std::pair<std::unordered_set<std::string>::const_iterator, bool> result{
+                unique_keys.insert(key)};
+              if (!result.second) {
+                throw std::logic_error("Duplicate key '" + key + "' across two arguments.");
+              }
+            }
+          }());
+        },
+        arguments_);
+  }
+
   /// @brief Validates that a specified line length is strictly greater than zero.
   /// @param[in] line_length The desired line length to use when wrapping. Must be strictly greater
   /// than zero.
@@ -1429,8 +1482,7 @@ private:
     }
   }
 
-  /// @brief Parses the executable path from argc and argv. Called by the lector::Arguments::parse
-  /// method.
+  /// @brief Parses the executable path from argc and argv.
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
@@ -1441,9 +1493,8 @@ private:
   }
 
   /// @brief Parses argc and argv, except for the executable path, and attempts to match them to the
-  /// named arguments. Starts at the second argument in argv. Called by the lector::Arguments::parse
-  /// method. Remaining arguments that could not be matched to named arguments are treated as
-  /// positional arguments and returned.
+  /// named arguments. Starts at the second argument in argv. Remaining arguments that could not be
+  /// matched to named arguments are treated as positional arguments and returned.
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
@@ -1479,7 +1530,7 @@ private:
   }
 
   /// @brief Parses the remaining command line arguments that could not be matched to named
-  /// arguments as positional arguments. Called by the lector::Arguments::parse method.
+  /// arguments as positional arguments.
   /// @param[in] positional_tokens Collection of the remaining command line arguments that could not
   /// be matched to named arguments, which are treated as positional arguments.
   /// @throws std::invalid_argument if too many positional arguments are provided or if a positional
@@ -1558,8 +1609,7 @@ private:
     return best;
   }
 
-  /// @brief Checks whether a token is the exact match of an argument's key. Called by
-  /// lector::Arguments::find_best_argument().
+  /// @brief Checks whether a token is the exact match of an argument's key.
   /// @param[in] token The token to check.
   /// @param[in] argument_index The index of the argument that has the key.
   /// @param[in] argument_key The argument key against which to compare.
@@ -1575,7 +1625,7 @@ private:
   }
 
   /// @brief Checks whether a token contains an inline match of an argument's key of the form
-  /// "key=value". Called by lector::Arguments::find_best_argument().
+  /// "key=value".
   /// @tparam SingularArgument The type of the argument that has the key to be used in the
   /// comparison.
   /// @param[in] token The token to check.
@@ -1601,8 +1651,7 @@ private:
     return std::nullopt;
   }
 
-  /// @brief Populates an argument with its parsed value. Called by
-  /// lector::Arguments::parse_named_arguments().
+  /// @brief Populates an argument with its parsed value.
   /// @tparam ArgumentType The type of the argument to be populated.
   /// @param[in,out] argument The argument to be populated.
   /// @param[in] best_argument The lector::Arguments::BestArgument data structure that corresponds
@@ -1635,7 +1684,6 @@ private:
   }
 
   /// @brief Extracts the raw string value from an argv token for a non-boolean best argument.
-  /// Called by lector::Arguments::populate_argument().
   /// @param[in] best_argument The best argument.
   /// @param[in] best_argument_longest_key_with_value_type The longest key with value type of the
   /// best argument.
@@ -1665,50 +1713,6 @@ private:
     }
     throw std::invalid_argument(
         "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
-  }
-
-  /// @brief Validates that this collection of command line arguments does not mix a repeated
-  /// positional command line argument with other positional arguments.
-  void validate_positional_arguments() const {
-    bool has_repeated_positional_argument{false};
-    std::size_t positional_argument_count{0UL};
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&] {
-            if (argument.form() == lector::Form::Positional) {
-              ++positional_argument_count;
-              if (argument.arity() == lector::Arity::Repeatable) {
-                has_repeated_positional_argument = true;
-              }
-            }
-          }());
-        },
-        arguments_);
-    if (has_repeated_positional_argument
-        && positional_argument_count >= static_cast<std::size_t>(2UL)) {
-      throw std::logic_error(
-          "A repeated positional argument cannot be mixed with any other positional arguments.");
-    }
-  }
-
-  /// @brief Validates that the same key is never duplicated across two or more arguments. Called by
-  /// the constructor.
-  /// @throws std::logic_error if the same key is duplicated across two or more arguments.
-  void validate_keys() const {
-    std::unordered_set<std::string> unique_keys;
-    std::apply(
-        [&](const auto&... argument) {
-          (..., [&] {
-            for (const std::string& key : argument.keys()) {
-              const std::pair<std::unordered_set<std::string>::const_iterator, bool> result{
-                unique_keys.insert(key)};
-              if (!result.second) {
-                throw std::logic_error("Duplicate key '" + key + "' across two arguments.");
-              }
-            }
-          }());
-        },
-        arguments_);
   }
 
   /// @brief Validates that all raw positional tokens have been consumed by positional command line
