@@ -115,10 +115,10 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::SingularArgument` and `lector::Arguments` classes and the `lector::Configuration` data structure, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
-- The file `<lector/parse.hpp>` defines the `lector::parse()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
-- The file `<lector/print.hpp>` defines the `lector::print()` utility function. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section for usage.
-- The file `<lector/text.hpp>` defines general-purpose utilities for manipulating strings of text; these utilities are used by the `lector::Arguments` class.
+- The file `<lector/arguments.hpp>` defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
+- The file `<lector/parse.hpp>` defines the `lector::parse()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
+- The file `<lector/print.hpp>` defines the `lector::print()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
+- The file `<lector/text.hpp>` defines various general-purpose utility functions for manipulating strings of text. These utility functions are used by the `lector::Arguments` class.
 
 All of the Lector library's contents are neatly encapsulated within the `lector::` namespace.
 
