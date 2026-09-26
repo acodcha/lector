@@ -166,7 +166,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:aa134a7959e3fe654a6c181960a38da49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collates two strings of text, each representing a column, into a single string that contains newline-separated lines of text, with the lines formatted such that the two columns are right-aligned and spaced a short distance apart.  <br /></td></tr>
 <tr class="separator:aa134a7959e3fe654a6c181960a38da49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad87c2fdee65b8abf36a7cb5762f75392" id="r_ad87c2fdee65b8abf36a7cb5762f75392"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ad87c2fdee65b8abf36a7cb5762f75392">contains_whitespace</a> (const std::string_view text)</td></tr>
-<tr class="memdesc:ad87c2fdee65b8abf36a7cb5762f75392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether a string of text contains any whitespace characters.  <br /></td></tr>
+<tr class="memdesc:ad87c2fdee65b8abf36a7cb5762f75392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether a string of text contains any ASCII whitespace characters: space (' '), horizontal tab ('\t'), line feed ('<br  />
+'), vertical tab ('\v'), form feed ('\f'), or carriage return ('\r').  <br /></td></tr>
 <tr class="separator:ad87c2fdee65b8abf36a7cb5762f75392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b4487d191c00886da683a2928c33633" id="r_a8b4487d191c00886da683a2928c33633"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a8b4487d191c00886da683a2928c33633">count_code_points</a> (const std::string_view text)</td></tr>
 <tr class="memdesc:a8b4487d191c00886da683a2928c33633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts and returns the number of UTF-8 code points in a string of text. The number of UTF-8 code points is a useful approximation of the number of graphemes in the string, where ASCII characters and multi-byte UTF-8 characters are each counted as one unit of length.  <br /></td></tr>
@@ -174,6 +175,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a12fbadda4745d3082c5f7504bd22862a" id="r_a12fbadda4745d3082c5f7504bd22862a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a12fbadda4745d3082c5f7504bd22862a">is_leading_byte</a> (const char character)</td></tr>
 <tr class="memdesc:a12fbadda4745d3082c5f7504bd22862a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether a given character is the leading byte of a UTF-8 character. All UTF-8 characters measure either one, two, three, or four bytes. UTF-8 characters that measure only one byte are the ASCII characters. UTF-8 character that measure two, three, or four bytes are multi-byte characters and consist of a leading byte with a specific binary pattern and one or more continuation bytes of the binary pattern 10xxxxxx.  <br /></td></tr>
 <tr class="separator:a12fbadda4745d3082c5f7504bd22862a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae416da8541bb87a7db91f18b982e0cbc" id="r_ae416da8541bb87a7db91f18b982e0cbc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#ae416da8541bb87a7db91f18b982e0cbc">is_whitespace</a> (const char character)</td></tr>
+<tr class="memdesc:ae416da8541bb87a7db91f18b982e0cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether an ASCII character is one of the ASCII whitespace characters: space (' '), horizontal tab ('\t'), line feed ('<br  />
+'), vertical tab ('\v'), form feed ('\f'), or carriage return ('\r').  <br /></td></tr>
+<tr class="separator:ae416da8541bb87a7db91f18b982e0cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d56cf48ef3d6ce11ec47e7838681950" id="r_a0d56cf48ef3d6ce11ec47e7838681950"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelector.html#a0d56cf48ef3d6ce11ec47e7838681950">join_and_align_center_left</a> (const std::vector&lt; std::string &gt; &amp;lines)</td></tr>
 <tr class="memdesc:a0d56cf48ef3d6ce11ec47e7838681950"><td class="mdescLeft">&#160;</td><td class="mdescRight">Joins a vector of strings where each string corresponds to a line of text into a single string of text, with newline characters inserted between the lines, and the lines centre-aligned. If the total required centre-aligning padding is odd, the text is biased by one space towards the left.  <br /></td></tr>
 <tr class="separator:a0d56cf48ef3d6ce11ec47e7838681950"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -820,14 +825,15 @@ template&lt;typename Type &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Checks whether a string of text contains any whitespace characters. </p>
+<p>Checks whether a string of text contains any ASCII whitespace characters: space (' '), horizontal tab ('\t'), line feed ('<br  />
+'), vertical tab ('\v'), form feed ('\f'), or carriage return ('\r'). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>The string of text to examine. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the string of text contains any whitespace, or false otherwise. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the string of text contains any ASCII whitespace characters; false if it does not. </dd></dl>
 
 </div>
 </div>
@@ -888,6 +894,34 @@ template&lt;typename Type &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>True if the character is a leading byte; false if the character is a continuation byte. </dd></dl>
 </li>
 </ol>
+
+</div>
+</div>
+<a id="ae416da8541bb87a7db91f18b982e0cbc" name="ae416da8541bb87a7db91f18b982e0cbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae416da8541bb87a7db91f18b982e0cbc">&#9670;&#160;</a></span>is_whitespace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool lector::is_whitespace </td>
+          <td>(</td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>character</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether an ASCII character is one of the ASCII whitespace characters: space (' '), horizontal tab ('\t'), line feed ('<br  />
+'), vertical tab ('\v'), form feed ('\f'), or carriage return ('\r'). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">character</td><td>The character to examine. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the character is an ASCII whitespace character; false if it is not. </dd></dl>
 
 </div>
 </div>
