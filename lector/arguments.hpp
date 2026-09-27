@@ -1111,7 +1111,7 @@ public:
   /// @brief Constructor. Constructs a collection of command line arguments from a configuration
   /// data structure and a variadic list of command line arguments.
   /// @param[in] configuration The configuration data structure.
-  /// @param[in] ...arguments The variadic list of command line arguments.
+  /// @param[in] arguments... The variadic list of command line arguments.
   /// @throws std::logic_error if the command line arguments are invalid.
   explicit Arguments(const lector::Configuration& configuration, const ArgumentTypes&... arguments)
     : configuration_{configuration}, arguments_{arguments...} {
@@ -1120,7 +1120,7 @@ public:
 
   /// @brief Constructor. Constructs a collection of command line arguments from a variadic list of
   /// command line arguments.
-  /// @param[in] ...arguments The variadic list of command line arguments.
+  /// @param[in] arguments... The variadic list of command line arguments.
   /// @throws std::logic_error if the command line arguments are invalid.
   explicit Arguments(const ArgumentTypes&... arguments) : arguments_{arguments...} {
     validate_arguments();
