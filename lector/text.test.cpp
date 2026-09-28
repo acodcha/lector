@@ -878,40 +878,40 @@ TEST(Lector, IsWhitespace) {
 }
 
 TEST(Lector, JoinAndAlignCentreLeftEmpty) {
-  EXPECT_EQ(lector::join_and_align_center_left(std::vector<std::string>{}), "");
+  EXPECT_EQ(lector::join_and_align_centre_left(std::vector<std::string>{}), "");
 }
 
 TEST(Lector, JoinAndAlignCentreLeftMultiple) {
-  EXPECT_EQ(lector::join_and_align_center_left(
+  EXPECT_EQ(lector::join_and_align_centre_left(
                 {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
             "        Hello!  \n     Hello, world!  \n  Hello again, world!  ");
 }
 
 TEST(Lector, JoinAndAlignCentreLeftSingle) {
-  EXPECT_EQ(lector::join_and_align_center_left({"  Hello, world!  "}), "  Hello, world!  ");
+  EXPECT_EQ(lector::join_and_align_centre_left({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
 TEST(Lector, JoinAndAlignCentreLeftUtf8) {
-  EXPECT_EQ(lector::join_and_align_center_left({"  Château.  ", "  Épée.  "}),
+  EXPECT_EQ(lector::join_and_align_centre_left({"  Château.  ", "  Épée.  "}),
             "  Château.  \n   Épée.  ");
 }
 
 TEST(Lector, JoinAndAlignCentreRightEmpty) {
-  EXPECT_EQ(lector::join_and_align_center_right(std::vector<std::string>{}), "");
+  EXPECT_EQ(lector::join_and_align_centre_right(std::vector<std::string>{}), "");
 }
 
 TEST(Lector, JoinAndAlignCentreRightMultiple) {
-  EXPECT_EQ(lector::join_and_align_center_right(
+  EXPECT_EQ(lector::join_and_align_centre_right(
                 {"  Hello!  ", "  Hello, world!  ", "  Hello again, world!  "}),
             "         Hello!  \n     Hello, world!  \n  Hello again, world!  ");
 }
 
 TEST(Lector, JoinAndAlignCentreRightSingle) {
-  EXPECT_EQ(lector::join_and_align_center_right({"  Hello, world!  "}), "  Hello, world!  ");
+  EXPECT_EQ(lector::join_and_align_centre_right({"  Hello, world!  "}), "  Hello, world!  ");
 }
 
 TEST(Lector, JoinAndAlignCentreRightUtf8) {
-  EXPECT_EQ(lector::join_and_align_center_right({"  Château.  ", "  Épée.  "}),
+  EXPECT_EQ(lector::join_and_align_centre_right({"  Château.  ", "  Épée.  "}),
             "  Château.  \n    Épée.  ");
 }
 
@@ -1632,9 +1632,9 @@ TEST(Lector, WrapAndAlignCentreLeftUtf8Characters) {
 TEST(Lector, WrapAndAlignCentreLeftVeryLongWord) {
   EXPECT_EQ(
       lector::wrap_and_align_centre_left(
-          "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+          "  The  word  supercalifragilisticexpialidocious  is  my  favourite  word!  ",
           static_cast<std::size_t>(10UL)),
-      " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\n favorite\n  word!");
+      " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\nfavourite\n  word!");
 }
 
 TEST(Lector, WrapAndAlignCentreLeftWhitespaceOnly) {
@@ -1750,9 +1750,9 @@ TEST(Lector, WrapAndAlignCentreRightUtf8Characters) {
 TEST(Lector, WrapAndAlignCentreRightVeryLongWord) {
   EXPECT_EQ(
       lector::wrap_and_align_centre_right(
-          "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+          "  The  word  supercalifragilisticexpialidocious  is  my  favourite  word!  ",
           static_cast<std::size_t>(10UL)),
-      " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\n favorite\n   word!");
+      " The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n    my\n favourite\n   word!");
 }
 
 TEST(Lector, WrapAndAlignCentreRightWhitespaceOnly) {
@@ -1859,9 +1859,9 @@ TEST(Lector, WrapAndAlignLeftUtf8Characters) {
 
 TEST(Lector, WrapAndAlignLeftVeryLongWord) {
   EXPECT_EQ(lector::wrap_and_align_left(
-                "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+                "  The  word  supercalifragilisticexpialidocious  is  my  favourite  word!  ",
                 static_cast<std::size_t>(10UL)),
-            "The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\nmy\nfavorite\nword!");
+            "The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\nmy\nfavourite\nword!");
 }
 
 TEST(Lector, WrapAndAlignLeftWhitespaceOnly) {
@@ -1960,10 +1960,10 @@ TEST(Lector, WrapAndAlignRightUtf8Characters) {
 
 TEST(Lector, WrapAndAlignRightVeryLongWord) {
   EXPECT_EQ(lector::wrap_and_align_right(
-                "  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+                "  The  word  supercalifragilisticexpialidocious  is  my  favourite  word!  ",
                 static_cast<std::size_t>(10UL)),
-            "  The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n        my\n  favorite\n  "
-            "   word!");
+            "  The word\nsupercali-\nfragilist-\nicexpiali-\ndocious is\n        my\n"
+            " favourite\n     word!");
 }
 
 TEST(Lector, WrapAndAlignRightWhitespaceOnly) {
@@ -2049,9 +2049,9 @@ TEST(Lector, WrapOnlyUtf8Characters) {
 
 TEST(Lector, WrapOnlyVeryLongWord) {
   const std::vector<std::string> expected{
-    "The word", "supercali-", "fragilist-", "icexpiali-", "docious is", "my", "favorite", "word!"};
+    "The word", "supercali-", "fragilist-", "icexpiali-", "docious is", "my", "favourite", "word!"};
   EXPECT_EQ(
-      lector::wrap("  The  word  supercalifragilisticexpialidocious  is  my  favorite  word!  ",
+      lector::wrap("  The  word  supercalifragilisticexpialidocious  is  my  favourite  word!  ",
                    static_cast<std::size_t>(10UL)),
       expected);
 }

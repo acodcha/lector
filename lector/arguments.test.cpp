@@ -337,7 +337,7 @@ repeatable_argument_data_structure_positional_required() {
 lector::RepeatableArgument<test::Label::Shape, test::Shape>
 repeatable_argument_enumeration_named_optional() {
   return lector::RepeatableArgument<test::Label::Shape, test::Shape>{
-    test::keys_enumeration(), "Favorite shape.",
+    test::keys_enumeration(), "Favourite shape.",
     std::vector<test::Shape>{test::Shape::Circle, test::Shape::Triangle}
   };
 }
@@ -348,7 +348,7 @@ repeatable_argument_enumeration_named_optional() {
 lector::RepeatableArgument<test::Label::Shape, test::Shape>
 repeatable_argument_enumeration_named_required() {
   return lector::RepeatableArgument<test::Label::Shape, test::Shape>{
-    test::keys_enumeration(), "Favorite shape."};
+    test::keys_enumeration(), "Favourite shape."};
 }
 
 /// @brief Helper function that creates a repeatable positional optional enumeration command line
@@ -357,7 +357,7 @@ repeatable_argument_enumeration_named_required() {
 lector::RepeatableArgument<test::Label::Shape, test::Shape>
 repeatable_argument_enumeration_positional_optional() {
   return lector::RepeatableArgument<test::Label::Shape, test::Shape>{
-    "Favorite shape.", std::vector<test::Shape>{test::Shape::Circle, test::Shape::Triangle}
+    "Favourite shape.", std::vector<test::Shape>{test::Shape::Circle, test::Shape::Triangle}
   };
 }
 
@@ -366,7 +366,7 @@ repeatable_argument_enumeration_positional_optional() {
 /// @return The repeatable positional required enumeration command line argument.
 lector::RepeatableArgument<test::Label::Shape, test::Shape>
 repeatable_argument_enumeration_positional_required() {
-  return lector::RepeatableArgument<test::Label::Shape, test::Shape>{"Favorite shape."};
+  return lector::RepeatableArgument<test::Label::Shape, test::Shape>{"Favourite shape."};
 }
 
 /// @brief Helper function that creates a repeatable named optional filesystem path command line
@@ -667,7 +667,7 @@ singular_argument_data_structure_positional_required() {
 lector::SingularArgument<test::Label::Shape, test::Shape>
 singular_argument_enumeration_named_optional() {
   return lector::SingularArgument<test::Label::Shape, test::Shape>{
-    test::keys_enumeration(), "Favorite shape.", test::Shape::Circle};
+    test::keys_enumeration(), "Favourite shape.", test::Shape::Circle};
 }
 
 /// @brief Helper function that creates a singular named required enumeration command line argument.
@@ -675,7 +675,7 @@ singular_argument_enumeration_named_optional() {
 lector::SingularArgument<test::Label::Shape, test::Shape>
 singular_argument_enumeration_named_required() {
   return lector::SingularArgument<test::Label::Shape, test::Shape>{
-    test::keys_enumeration(), "Favorite shape."};
+    test::keys_enumeration(), "Favourite shape."};
 }
 
 /// @brief Helper function that creates a singular positional optional enumeration command line
@@ -684,7 +684,7 @@ singular_argument_enumeration_named_required() {
 lector::SingularArgument<test::Label::Shape, test::Shape>
 singular_argument_enumeration_positional_optional() {
   return lector::SingularArgument<test::Label::Shape, test::Shape>{
-    "Favorite shape.", test::Shape::Circle};
+    "Favourite shape.", test::Shape::Circle};
 }
 
 /// @brief Helper function that creates a singular positional required enumeration command line
@@ -692,7 +692,7 @@ singular_argument_enumeration_positional_optional() {
 /// @return The singular positional required enumeration command line argument.
 lector::SingularArgument<test::Label::Shape, test::Shape>
 singular_argument_enumeration_positional_required() {
-  return lector::SingularArgument<test::Label::Shape, test::Shape>{"Favorite shape."};
+  return lector::SingularArgument<test::Label::Shape, test::Shape>{"Favourite shape."};
 }
 
 /// @brief Helper function that creates a singular named optional filesystem path command line
@@ -3782,7 +3782,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
     test::repeatable_argument_enumeration_named_optional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -3797,13 +3797,13 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Triangle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "[--shape <value>] ...");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   argument.set_parsed_value(test::Shape::Circle);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -3820,7 +3820,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "[--shape <value>] ...");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "--shape Square --shape Circle");
 }
 
@@ -3829,7 +3829,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
     test::repeatable_argument_enumeration_named_required()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -3840,13 +3840,13 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "--shape <value> ...");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   argument.set_parsed_value(test::Shape::Circle);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -3861,7 +3861,7 @@ TEST(Lector, RepeatableArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "--shape <value> ...");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "--shape Square --shape Circle");
 }
 
@@ -3870,7 +3870,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
     test::repeatable_argument_enumeration_positional_optional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -3885,13 +3885,13 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Triangle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>] ...");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   argument.set_parsed_value(test::Shape::Circle);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -3908,7 +3908,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>] ...");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "Square Circle");
 }
 
@@ -3917,7 +3917,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
     test::repeatable_argument_enumeration_positional_required()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -3928,13 +3928,13 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_TRUE(argument.parsed_or_default_values().empty());
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "<value> ...");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   argument.set_parsed_value(test::Shape::Circle);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Repeatable);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -3949,7 +3949,7 @@ TEST(Lector, RepeatableArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.parsed_or_default_values().at(1), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "<value> ...");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "Square Circle");
 }
 
@@ -5542,7 +5542,7 @@ TEST(Lector, SingularArgumentEnumerationNamedOptional) {
     test::singular_argument_enumeration_named_optional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -5554,12 +5554,12 @@ TEST(Lector, SingularArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_value(), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "[--shape <value>]");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -5572,7 +5572,7 @@ TEST(Lector, SingularArgumentEnumerationNamedOptional) {
   EXPECT_EQ(argument.parsed_or_default_value(), test::Shape::Square);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "[--shape <value>]");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "--shape Square");
 }
 
@@ -5581,7 +5581,7 @@ TEST(Lector, SingularArgumentEnumerationNamedRequired) {
     test::singular_argument_enumeration_named_required()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_EQ(argument.keys(), test::keys_enumeration());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Named);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -5591,7 +5591,7 @@ TEST(Lector, SingularArgumentEnumerationNamedRequired) {
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "-s <value>, --shape <value>");
   EXPECT_EQ(argument.usage(), "--shape <value>");
-  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "-s <value>, --shape <value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
@@ -5601,7 +5601,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalOptional) {
     test::singular_argument_enumeration_positional_optional()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -5613,12 +5613,12 @@ TEST(Lector, SingularArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_value(), test::Shape::Circle);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>]");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   argument.set_parsed_value(test::Shape::Square);
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Optional);
@@ -5631,7 +5631,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalOptional) {
   EXPECT_EQ(argument.parsed_or_default_value(), test::Shape::Square);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "[<value>]");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_EQ(argument.execution(), "Square");
 }
 
@@ -5640,7 +5640,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalRequired) {
     test::singular_argument_enumeration_positional_required()};
   EXPECT_EQ(argument.label(), test::Label::Shape);
   EXPECT_TRUE(argument.keys().empty());
-  EXPECT_EQ(argument.description(), "Favorite shape.");
+  EXPECT_EQ(argument.description(), "Favourite shape.");
   EXPECT_EQ(argument.arity(), lector::Arity::Singular);
   EXPECT_EQ(argument.form(), lector::Form::Positional);
   EXPECT_EQ(argument.importance(), lector::Importance::Required);
@@ -5650,7 +5650,7 @@ TEST(Lector, SingularArgumentEnumerationPositionalRequired) {
   EXPECT_EQ(argument.parsed_value(), std::nullopt);
   EXPECT_EQ(argument.keys_with_value_type(), "<value>");
   EXPECT_EQ(argument.usage(), "<value>");
-  EXPECT_EQ(argument.options(), "<value>  Favorite shape.");
+  EXPECT_EQ(argument.options(), "<value>  Favourite shape.");
   EXPECT_TRUE(argument.execution().empty());
   EXPECT_ANY_THROW(static_cast<void>(argument.parsed_or_default_value()));
 }
@@ -6647,14 +6647,14 @@ TEST(Lector, TutorialSection3Subsection3) {
   const std::optional<test::Shape> invalid_shape{lector::parse<test::Shape>("Invalid Shape")};
   EXPECT_TRUE(!invalid_shape.has_value());
   lector::Arguments arguments{lector::SingularArgument<test::Label::Shape, test::Shape>(
-      {"-s", "--shape"}, "Your favorite shape. Optional.", test::Shape::Circle)};
+      {"-s", "--shape"}, "Your favourite shape. Optional.", test::Shape::Circle)};
   const test::Command command{
     {"/path/to/executable", "--shape", "square"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   const test::Shape shape{arguments.get<test::Label::Shape>().parsed_or_default_value()};
-  std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
+  std::cout << "Your favourite shape is: " << lector::print(shape) << std::endl;
   EXPECT_EQ(shape, test::Shape::Square);
 }
 
@@ -6667,14 +6667,14 @@ TEST(Lector, TutorialSection3Subsection4) {
       parsed_point.has_value() && parsed_point.value().x == expected_point.x
       && parsed_point.value().y == expected_point.y && parsed_point.value().z == expected_point.z);
   lector::Arguments arguments{lector::SingularArgument<test::Label::Point, test::Point>(
-      {"-p", "--point"}, "Your favorite point. Optional.", test::Point{})};
+      {"-p", "--point"}, "Your favourite point. Optional.", test::Point{})};
   const test::Command command{
     {"/path/to/executable", "--point", "4.0 5.0 6.0"}
   };
   arguments.parse(command.argc(), command.argv());
   arguments.validate();
   const test::Point point{arguments.get<test::Label::Point>().parsed_or_default_value()};
-  std::cout << "Your favorite point is: " << point << std::endl;
+  std::cout << "Your favourite point is: " << point << std::endl;
   EXPECT_TRUE(
       point.x == expected_point.x && point.y == expected_point.y && point.z == expected_point.z);
 }
