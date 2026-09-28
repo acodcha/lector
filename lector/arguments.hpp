@@ -337,8 +337,7 @@ public:
     if (default_value_.has_value()) {
       return default_value_.value();
     }
-    throw std::logic_error(
-        "No parsed or default value for argument '" + longest_key_with_value_type() + "'.");
+    throw std::logic_error("No parsed or default value for argument '" + options() + "'.");
   }
 
   /// @brief Sets the parsed value of this singular command line argument.
@@ -474,10 +473,7 @@ private:
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
-        if (longest_key().empty()) {
-          throw std::logic_error("Named arguments cannot have empty keys.");
-        }
-        throw std::logic_error("Empty key in named argument '" + longest_key_with_value_type()
+        throw std::logic_error("Empty key in named argument '" + options()
                                + "'. Named arguments cannot have empty keys.");
       }
     }
@@ -485,23 +481,22 @@ private:
     for (std::size_t first{0UL}; first < keys_size; ++first) {
       for (std::size_t second{first + static_cast<std::size_t>(1UL)}; second < keys_size;
            ++second) {
-        if (keys_[first] == keys_[second]) {
-          throw std::logic_error(
-              "Duplicated key '" + keys_[first] + "' in named argument '"
-              + longest_key_with_value_type() + "'. Named arguments cannot have duplicate keys.");
+        if (keys_.at(first) == keys_.at(second)) {
+          throw std::logic_error("Duplicate key '" + keys_.at(first) + "' in named argument '"
+                                 + options() + "'. Named arguments cannot have duplicate keys.");
         }
       }
     }
-  };
+  }
 
   /// @brief Validates the description of this command line argument.
   /// @throws std::logic_error if the description of this command line argument is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+      throw std::logic_error("Empty description in argument '" + options()
                              + "'. All arguments must have descriptions.");
     }
-  };
+  }
 
   /// @brief Prints the value type of this command line argument as a string of text.
   /// @return The string of text that contains the value type of this command line argument.
@@ -879,10 +874,7 @@ private:
     }
     for (const std::string& key : keys_) {
       if (key.empty()) {
-        if (longest_key().empty()) {
-          throw std::logic_error("Named arguments cannot have empty keys.");
-        }
-        throw std::logic_error("Empty key in named argument '" + longest_key_with_value_type()
+        throw std::logic_error("Empty key in named argument '" + options()
                                + "'. Named arguments cannot have empty keys.");
       }
     }
@@ -890,23 +882,22 @@ private:
     for (std::size_t first{0UL}; first < keys_size; ++first) {
       for (std::size_t second{first + static_cast<std::size_t>(1UL)}; second < keys_size;
            ++second) {
-        if (keys_[first] == keys_[second]) {
-          throw std::logic_error(
-              "Duplicated key '" + keys_[first] + "' in named argument '"
-              + longest_key_with_value_type() + "'. Named arguments cannot have duplicate keys.");
+        if (keys_.at(first) == keys_.at(second)) {
+          throw std::logic_error("Duplicate key '" + keys_.at(first) + "' in named argument '"
+                                 + options() + "'. Named arguments cannot have duplicate keys.");
         }
       }
     }
-  };
+  }
 
   /// @brief Validates the description of this command line argument.
   /// @throws std::logic_error if the description of this command line argument is empty.
   void validate_description() const {
     if (description_.empty()) {
-      throw std::logic_error("Empty description in argument '" + longest_key_with_value_type()
+      throw std::logic_error("Empty description in argument '" + options()
                              + "'. All arguments must have descriptions.");
     }
-  };
+  }
 
   /// @brief Prints the value type of this command line argument as a string of text.
   /// @return The string of text that contains the value type of this command line argument.
@@ -1154,7 +1145,7 @@ public:
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
-  /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
+  /// @throws std::invalid_argument if an invalid, unknown, duplicate, or missing argument is
   /// encountered.
   void parse(const int argc, char* argv[]) {
     parse_executable_path(argc, argv);
@@ -1163,9 +1154,9 @@ public:
   }
 
   /// @brief Validates that all required arguments have each successfully parsed a value from the
-  /// command line. Should only be called after the parse() method has been called. If any command
-  /// line arguments require special consideration, such as --version or --help flags, they should
-  /// be handled before calling this method.
+  /// command line. Should only be called after the lector::Arguments::parse() method has been
+  /// called. If any command line arguments require special consideration, such as --version or
+  /// --help flags, they should be handled before calling this method.
   /// @throws std::invalid_argument if any required arguments are lacking parsed values.
   void validate() const {
     std::apply(
@@ -1173,7 +1164,7 @@ public:
           (..., [&] {
             if (argument.importance() == lector::Importance::Required && !argument.has_parsed()) {
               throw std::invalid_argument(
-                  "Missing required argument '" + argument.longest_key_with_value_type() + "'.");
+                  "Missing required argument '" + argument.options() + "'.");
             }
           }());
         },
@@ -1500,7 +1491,7 @@ private:
   /// with the executable path.
   /// @return Collection of the remaining command line arguments that could not be matched to named
   /// arguments, which are treated as positional arguments.
-  /// @throws std::invalid_argument if an invalid, unknown, duplicated, or missing argument is
+  /// @throws std::invalid_argument if an invalid, unknown, duplicate, or missing argument is
   /// encountered.
   [[nodiscard]] std::vector<std::string_view> parse_named_arguments(const int argc, char* argv[]) {
     std::vector<std::string_view> positional_tokens;
@@ -1550,7 +1541,7 @@ private:
                     argument.set_parsed_value(parsed_value.value());
                   } else {
                     throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                                + argument.longest_key_with_value_type() + "'.");
+                                                + argument.options() + "'.");
                   }
                   ++positional_token_index;
                 }
@@ -1563,7 +1554,7 @@ private:
                     argument.set_parsed_value(parsed_value.value());
                   } else {
                     throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                                + argument.longest_key_with_value_type() + "'.");
+                                                + argument.options() + "'.");
                   }
                   ++positional_token_index;
                 }
@@ -1671,22 +1662,22 @@ private:
       argument.set_parsed_value(true);
     } else {
       // This is a non-boolean argument. Extract and parse its value.
-      const std::string raw_value{extract_raw_value(
-          best_argument, argument.longest_key_with_value_type(), argc, argv, argv_index)};
+      const std::string raw_value{
+        extract_raw_value(best_argument, argument.options(), argc, argv, argv_index)};
       const std::optional<Type> parsed_value{lector::parse<Type>(raw_value)};
       if (parsed_value.has_value()) {
         argument.set_parsed_value(parsed_value.value());
       } else {
-        throw std::invalid_argument("Invalid value '" + raw_value + "' for argument '"
-                                    + argument.longest_key_with_value_type() + "'.");
+        throw std::invalid_argument(
+            "Invalid value '" + raw_value + "' for argument '" + argument.options() + "'.");
       }
     }
   }
 
   /// @brief Extracts the raw string value from an argv token for a non-boolean best argument.
   /// @param[in] best_argument The best argument.
-  /// @param[in] best_argument_longest_key_with_value_type The longest key with value type of the
-  /// best argument.
+  /// @param[in] best_argument_options The options string of the best argument, for printing to an
+  /// error message if needed.
   /// @param[in] argc The number of command line arguments, including the executable path.
   /// @param[in] argv The array of C-strings that represents the command line arguments, starting
   /// with the executable path.
@@ -1696,9 +1687,8 @@ private:
   /// @throws std::invalid_argument if the command line arguments are missing the value for this
   /// best argument.
   [[nodiscard]] static std::string extract_raw_value(
-      const BestArgument& best_argument,
-      const std::string& best_argument_longest_key_with_value_type, const int argc, char* argv[],
-      std::size_t& argv_index) {
+      const BestArgument& best_argument, const std::string& best_argument_options, const int argc,
+      char* argv[], std::size_t& argv_index) {
     const std::string_view token{argv[argv_index]};
     if (best_argument.is_inline) {
       // The token contains an inline value of the form "key=value". Extract the last portion of the
@@ -1711,8 +1701,7 @@ private:
       ++argv_index;
       return std::string{argv[argv_index]};
     }
-    throw std::invalid_argument(
-        "Missing value for argument '" + best_argument_longest_key_with_value_type + "'.");
+    throw std::invalid_argument("Missing value for argument '" + best_argument_options + "'.");
   }
 
   /// @brief Validates that all raw positional tokens have been consumed by positional command line
