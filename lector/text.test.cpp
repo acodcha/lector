@@ -2067,4 +2067,80 @@ TEST(Lector, WrapOnlyWhitespaceOnly) {
   EXPECT_EQ(lector::wrap(" \t\n", static_cast<std::size_t>(100UL)), std::vector<std::string>{});
 }
 
+TEST(Lector, TutorialSection3Subsection6) {
+  EXPECT_TRUE(lector::is_leading_byte('A'));
+  EXPECT_TRUE(!lector::is_leading_byte('\x80'));
+  EXPECT_TRUE(lector::byte_interval("£5", 0).first == 0);
+  EXPECT_TRUE(lector::byte_interval("£5", 0).second == 2);
+  EXPECT_TRUE(lector::byte_interval("£5", 1).first == 2);
+  EXPECT_TRUE(lector::byte_interval("£5", 1).second == 3);
+  EXPECT_TRUE(lector::count_code_points("£5") == 2);
+
+  EXPECT_TRUE(!lector::is_whitespace('A'));
+  EXPECT_TRUE(lector::is_whitespace(' '));
+  EXPECT_TRUE(lector::is_whitespace('\n'));
+  EXPECT_TRUE(!lector::contains_whitespace("Hello!"));
+  EXPECT_TRUE(lector::contains_whitespace("This item costs ¥1000."));
+  EXPECT_TRUE(lector::longest_word_length("This item costs ¥1000.") == 6);
+  const std::vector<std::string_view> words{lector::tokenize("This item costs ¥1000.")};
+  EXPECT_TRUE(words.size() == 4);
+  EXPECT_TRUE(words.at(0) == "This");
+  EXPECT_TRUE(words.at(1) == "item");
+  EXPECT_TRUE(words.at(2) == "costs");
+  EXPECT_TRUE(words.at(3) == "¥1000.");
+
+  EXPECT_TRUE(lector::quote("Hello, world!") == "\"Hello, world!\"");
+  EXPECT_TRUE(lector::quote_if_contains_whitespace("Hello!") == "Hello!");
+  EXPECT_TRUE(lector::quote_if_contains_whitespace("Hello, world!") == "\"Hello, world!\"");
+
+  EXPECT_TRUE(lector::pad_and_align_left("$5", 4) == "$5  ");
+  EXPECT_TRUE(lector::pad_and_align_right("5€", 4) == "  5€");
+  EXPECT_TRUE(lector::pad_and_align_centre_left("£5", 7) == "  £5   ");
+  EXPECT_TRUE(lector::pad_and_align_centre_right("¥500", 7) == "  ¥500 ");
+
+  EXPECT_TRUE(lector::truncate_from_left("0.0€", 2) == "0€");
+  EXPECT_TRUE(lector::truncate_from_right("£5.00", 2) == "£5");
+  EXPECT_TRUE(lector::truncate_to_centre_left("αβγδε", 2) == "βγ");
+  EXPECT_TRUE(lector::truncate_to_centre_right("αβγδε", 2) == "γδ");
+
+  const std::string text{"The word supercalifragilisticexpialidocious is my favourite word!"};
+  const std::vector<std::string> wrapped_text{lector::wrap(text, 10)};
+  EXPECT_TRUE(wrapped_text.size() == 8);
+  EXPECT_TRUE(wrapped_text.at(0) == "The word");
+  EXPECT_TRUE(wrapped_text.at(1) == "supercali-");
+  EXPECT_TRUE(wrapped_text.at(2) == "fragilist-");
+  EXPECT_TRUE(wrapped_text.at(3) == "icexpiali-");
+  EXPECT_TRUE(wrapped_text.at(4) == "docious is");
+  EXPECT_TRUE(wrapped_text.at(5) == "my");
+  EXPECT_TRUE(wrapped_text.at(6) == "favourite");
+  EXPECT_TRUE(wrapped_text.at(7) == "word!");
+
+  EXPECT_TRUE(lector::join_and_align_left({"Hi,", "there!"}) == "Hi,\n" "there!");
+  EXPECT_TRUE(lector::join_and_align_right({"Hi,", "there!"}) == "   Hi,\n" "there!");
+  EXPECT_TRUE(lector::join_and_align_centre_left({"Hi,", "there!"}) == " Hi,\n" "there!");
+  EXPECT_TRUE(lector::join_and_align_centre_right({"Hi,", "there!"}) == "  Hi,\n" "there!");
+
+  EXPECT_TRUE(lector::wrap_and_align_left("Hi, there!", 6) == "Hi,\n" "there!");
+  EXPECT_TRUE(lector::wrap_and_align_right("Hi, there!", 6) == "   Hi,\n" "there!");
+  EXPECT_TRUE(lector::wrap_and_align_centre_left("Hi, there!", 6) == " Hi,\n" "there!");
+  EXPECT_TRUE(lector::wrap_and_align_centre_right("Hi, there!", 6) == "  Hi,\n" "there!");
+
+  EXPECT_TRUE(lector::collate_and_align_left("1st column.", 4, "2nd column.", 7) ==
+       "1st   2nd\n"
+       "col-  column.\n"
+       "umn.");
+  EXPECT_TRUE(lector::collate_and_align_right("1st column.", 4, "2nd column.", 7) ==
+       " 1st      2nd\n"
+       "col-  column.\n"
+       "umn.");
+  EXPECT_TRUE(lector::collate_and_align_centre_left("1st column.", 4, "2nd column.", 7) ==
+       "1st     2nd\n"
+       "col-  column.\n"
+       "umn.");
+  EXPECT_TRUE(lector::collate_and_align_centre_right("1st column.", 4, "2nd column.", 7) ==
+       " 1st    2nd\n"
+       "col-  column.\n"
+       "umn.");
+}
+
 }  // namespace

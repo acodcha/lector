@@ -754,9 +754,11 @@ When aligning strings of text for printing, in order to handle strings that may 
 ```cpp
 assert(lector::is_leading_byte('A'));
 assert(!lector::is_leading_byte('\x80'));
-assert(lector::byte_interval("5€", 0) == std::pair<std::size_t, std::size_t>{0, 1});
-assert(lector::byte_interval("5€", 1) == std::pair<std::size_t, std::size_t>{1, 3});
-assert(lector::count_code_points("5€") == 2);
+assert(lector::byte_interval("£5", 0).first == 0);
+assert(lector::byte_interval("£5", 0).second == 2);
+assert(lector::byte_interval("£5", 1).first == 2);
+assert(lector::byte_interval("£5", 1).second == 3);
+assert(lector::count_code_points("£5") == 2);
 ```
 
 The `lector::is_whitespace()`, `lector::contains_whitespace()`, `lector::longest_word_length()`, and `lector::tokenize()` functions handle whitespace in strings of text. For example:
@@ -766,14 +768,14 @@ assert(!lector::is_whitespace('A'));
 assert(lector::is_whitespace(' '));
 assert(lector::is_whitespace('\n'));
 assert(!lector::contains_whitespace("Hello!"));
-assert(lector::contains_whitespace("This item costs 10€."));
+assert(lector::contains_whitespace("This item costs ¥1000."));
 assert(lector::longest_word_length("This item costs ¥1000.") == 6);
-const std::vector<std::string_view> words{lector::tokenize("This item costs £10.")};
+const std::vector<std::string_view> words{lector::tokenize("This item costs ¥1000.")};
 assert(words.size() == 4);
 assert(words.at(0) == "This");
 assert(words.at(1) == "item");
 assert(words.at(2) == "costs");
-assert(words.at(3) == "£10.");
+assert(words.at(3) == "¥1000.");
 ```
 
 The `lector::quote()` and `lector::quote_if_contains_whitespace()` functions enclose a string of text in quotes. These are relevant when dealing with whitespace on the command line. For example:
