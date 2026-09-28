@@ -79,7 +79,7 @@
 <div class="line">            <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">            <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
 <div class="line">        <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;Label::Tolerances, float&gt;</a>{</div>
-<div class="line">            <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.125.&quot;</span>, std::vector&lt;float&gt;{0.125F}},</div>
+<div class="line">            <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.5, 1.0.&quot;</span>, std::vector&lt;float&gt;{0.5F, 1.0F}},</div>
 <div class="line">        <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">            {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">        <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
@@ -295,7 +295,7 @@
 <div class="line">        <span class="stringliteral">&quot;Description of my application.&quot;</span>,</div>
 <div class="line">        <span class="stringliteral">&quot;Additional notes about my application.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;Label::Tolerances, float&gt;</a>{</div>
-<div class="line">        <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.125.&quot;</span>, std::vector&lt;float&gt;{0.125F}},</div>
+<div class="line">        <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.5, 1.0.&quot;</span>, std::vector&lt;float&gt;{0.5F, 1.0F}},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">        {<span class="stringliteral">&quot;-o&quot;</span>, <span class="stringliteral">&quot;--output_directory&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>
@@ -368,7 +368,7 @@
 <div class="line">Description of my application.</div>
 <div class="line"> </div>
 <div class="line">Options:</div>
-<div class="line">&lt;value&gt;                               List of tolerances. Optional. Default 0.125.</div>
+<div class="line">&lt;value&gt;                               List of tolerances. Optional. Default 0.5, 1.0.</div>
 <div class="line">-o &lt;path&gt;, --output_directory &lt;path&gt;  Output directory. Required.</div>
 <div class="line">-i &lt;number&gt;, --iterations &lt;number&gt;    Number of iterations. Optional. Default 100.</div>
 <div class="line">-h, --help                            Display this help information and exit. Optional.</div>
@@ -402,7 +402,7 @@
 </div><!-- fragment --><p>Furthermore, keys do not need to start with a hyphen (<code>-</code>) and can be composed of any characters. For example, the following definitions are unusual but valid:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classlector_1_1Arguments.html">lector::Arguments</a> arguments{</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1RepeatableArgument.html">lector::RepeatableArgument&lt;Label::Tolerances, float&gt;</a>{</div>
-<div class="line">        <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.125.&quot;</span>, std::vector&lt;float&gt;{0.125F}},</div>
+<div class="line">        <span class="stringliteral">&quot;List of tolerances. Optional. Default 0.5, 1.0.&quot;</span>, std::vector&lt;float&gt;{0.5F, 1.0F}},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::OutputDirectory, std::filesystem::path&gt;</a>{</div>
 <div class="line">        {<span class="stringliteral">&quot;o&quot;</span>, <span class="stringliteral">&quot;=o&quot;</span>, <span class="stringliteral">&quot;__out_dir__&quot;</span>}, <span class="stringliteral">&quot;Output directory. Required.&quot;</span>},</div>
 <div class="line">    <a class="code hl_class" href="classlector_1_1SingularArgument.html">lector::SingularArgument&lt;Label::Iterations, std::int32_t&gt;</a>{</div>

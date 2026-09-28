@@ -6465,7 +6465,7 @@ TEST(Lector, TutorialSection1Basic) {
                           {"Description of my application."},
                           {"Additional notes about my application."}},
     lector::RepeatableArgument<test::Label::Tolerance, float>(
-        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
+        "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
@@ -6507,7 +6507,7 @@ TEST(Lector, TutorialSection1Basic) {
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<value>                               List of tolerances. Optional. Default 0.125.\n"
+    "<value>                               List of tolerances. Optional. Default 0.5, 1.0.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -6533,7 +6533,7 @@ TEST(Lector, TutorialSection1Help) {
                           {"Description of my application."},
                           {"Additional notes about my application."}},
     lector::RepeatableArgument<test::Label::Tolerance, float>(
-        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
+        "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"-o", "--output_directory"}, "Output directory. Required."},
@@ -6575,7 +6575,7 @@ TEST(Lector, TutorialSection1Help) {
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<value>                               List of tolerances. Optional. Default 0.125.\n"
+    "<value>                               List of tolerances. Optional. Default 0.5, 1.0.\n"
     "-o <path>, --output_directory <path>  Output directory. Required.\n"
     "-i <number>, --iterations <number>    Number of iterations. Optional. Default 100.\n"
     "-h, --help                            Display this help information and exit. Optional."};
@@ -6600,7 +6600,7 @@ TEST(Lector, TutorialSection3Subsection2) {
                           {"Description of my application."},
                           {"Additional notes about my application."}},
     lector::RepeatableArgument<test::Label::Tolerance, float>(
-        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}
+        "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}
     ),
     lector::SingularArgument<test::Label::OutputDirectory, std::filesystem::path>{
                           {"o", "=o", "__out_dir__"}, "Output directory. Required."},
@@ -6620,7 +6620,8 @@ TEST(Lector, TutorialSection3Subsection2) {
   EXPECT_EQ(arguments.configuration().notes, "Additional notes about my application.");
   EXPECT_EQ(arguments.usage(), expected_usage);
   const std::string expected_options{
-    "<value>                                         List of tolerances. Optional. Default 0.125.\n"
+    "<value>                                         "
+    "List of tolerances. Optional. Default 0.5, 1.0.\n"
     "o <path>, =o <path>, __out_dir__ <path>         Output directory. Required.\n"
     "=i= <number>, _it_ <number>, ==iter== <number>  Number of iterations. Optional. Default 100."};
   EXPECT_EQ(arguments.options(), expected_options);

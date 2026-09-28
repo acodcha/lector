@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
             "Description of my application.",
             "Additional notes about my application."},
         lector::RepeatableArgument<Label::Tolerances, float>{
-            "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
+            "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}},
         lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
             {"-o", "--output_directory"}, "Output directory. Required."},
         lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -302,7 +302,7 @@ lector::Arguments arguments{
         "Description of my application.",
         "Additional notes about my application."},
     lector::RepeatableArgument<Label::Tolerances, float>{
-        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
+        "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}},
     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
         {"-o", "--output_directory"}, "Output directory. Required."},
     lector::SingularArgument<Label::Iterations, std::int32_t>{
@@ -415,7 +415,7 @@ my_application [<value>] ... --output_directory <path> [--iterations <number>] [
 Description of my application.
 
 Options:
-<value>                               List of tolerances. Optional. Default 0.125.
+<value>                               List of tolerances. Optional. Default 0.5, 1.0.
 -o <path>, --output_directory <path>  Output directory. Required.
 -i <number>, --iterations <number>    Number of iterations. Optional. Default 100.
 -h, --help                            Display this help information and exit. Optional.
@@ -480,7 +480,7 @@ Furthermore, keys do not need to start with a hyphen (`-`) and can be composed o
 ```cpp
 lector::Arguments arguments{
     lector::RepeatableArgument<Label::Tolerances, float>{
-        "List of tolerances. Optional. Default 0.125.", std::vector<float>{0.125F}},
+        "List of tolerances. Optional. Default 0.5, 1.0.", std::vector<float>{0.5F, 1.0F}},
     lector::SingularArgument<Label::OutputDirectory, std::filesystem::path>{
         {"o", "=o", "__out_dir__"}, "Output directory. Required."},
     lector::SingularArgument<Label::Iterations, std::int32_t>{
