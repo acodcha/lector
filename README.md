@@ -115,10 +115,10 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The `<lector/arguments.hpp>` file defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
+- The `<lector/arguments.hpp>` file defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section and the [§3.2. User Guide: Command Line](#32-user-guide-command-line) section for usage.
 - The `<lector/parse.hpp>` file defines the `lector::parse()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
 - The `<lector/print.hpp>` file defines the `lector::print()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
-- The `<lector/text.hpp>` file defines various general-purpose utility functions for manipulating strings of text. These utility functions are used by the `lector::Arguments` class.
+- The `<lector/text.hpp>` file defines various general-purpose utility functions for manipulating strings of text. See the [§3.6. User Guide: Text Utilities](#36-user-guide-text-utilities) section for usage.
 
 All of the Lector library's contents are neatly encapsulated within the `lector::` namespace.
 
