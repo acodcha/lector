@@ -8,7 +8,7 @@ Contents:
 
 - [**§1. Introduction**](#1-introduction)
 - [**§2. Configuration**](#2-configuration): [Bazel](#21-configuration-bazel), [CMake](#22-configuration-cmake), [Meson](#23-configuration-meson)
-- [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Data Structures](#34-user-guide-data-structures), [Error Checking](#35-user-guide-error-checking)
+- [**§3. User Guide**](#3-user-guide): [Arguments](#31-user-guide-arguments), [Command Line](#32-user-guide-command-line), [Enumerations](#33-user-guide-enumerations), [Data Structures](#34-user-guide-data-structures), [Error Checking](#35-user-guide-error-checking), [Text Utilities](#36-user-guide-text-utilities)
 - [**§4. Developer Guide**](#4-developer-guide): [Formatting](#41-developer-guide-formatting), [Building](#42-developer-guide-building), [Testing](#43-developer-guide-testing), [Linting](#44-developer-guide-linting), [Coverage](#45-developer-guide-coverage), [Documentation](#46-developer-guide-documentation)
 - [**§5. License**](#5-license)
 
@@ -115,10 +115,10 @@ Finally, once your project's build system has been installed and configured, sim
 
 The Lector library is modular:
 
-- The file `<lector/arguments.hpp>` defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
-- The file `<lector/parse.hpp>` defines the `lector::parse()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
-- The file `<lector/print.hpp>` defines the `lector::print()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
-- The file `<lector/text.hpp>` defines various general-purpose utility functions for manipulating strings of text. These utility functions are used by the `lector::Arguments` class.
+- The `<lector/arguments.hpp>` file defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the [§1. Introduction](#1-introduction) section. See the [§3.1. User Guide: Arguments](#31-user-guide-arguments) section for usage.
+- The `<lector/parse.hpp>` file defines the `lector::parse()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
+- The `<lector/print.hpp>` file defines the `lector::print()` family of templated utility functions. See the [§3.3 User Guide: Enumerations](#33-user-guide-enumerations) section and the [§3.4. Data Structures](#34-user-guide-data-structures) section for usage.
+- The `<lector/text.hpp>` file defines various general-purpose utility functions for manipulating strings of text. These utility functions are used by the `lector::Arguments` class.
 
 All of the Lector library's contents are neatly encapsulated within the `lector::` namespace.
 
@@ -269,6 +269,7 @@ This section presents a comprehensive guide for using the Lector library in your
 - [§3.3. Enumerations](#33-user-guide-enumerations)
 - [§3.4. Data Structures](#34-user-guide-data-structures)
 - [§3.5. Error Checking](#35-user-guide-error-checking)
+- [§3.6. Text Utilities](#36-user-guide-text-utilities)
 
 See also <https://acodcha.github.io/lector> for the Lector library's complete documentation.
 
@@ -588,21 +589,21 @@ The `my_project::Shape` enumeration can also be used as a command line argument.
 #include <lector/print.hpp>
 #include "my_project/shape.hpp"
 
-enum class Label : std::int8_t {FavoriteShape};
+enum class Label : std::int8_t {FavouriteShape};
 
 int main(int argc, char* argv[]) {
     lector::Arguments arguments{
-        lector::SingularArgument<Label::FavoriteShape, my_project::Shape>{
-            {"-s", "--shape"}, "Your favorite shape. Optional.", my_project::Shape::Circle}
+        lector::SingularArgument<Label::FavouriteShape, my_project::Shape>{
+            {"-s", "--shape"}, "Your favourite shape. Optional.", my_project::Shape::Circle}
     };
 
     arguments.parse(argc, argv);
     arguments.validate();
 
     const my_project::Shape shape{
-        arguments.get<Label::FavoriteShape>().parsed_or_default_value()};
+        arguments.get<Label::FavouriteShape>().parsed_or_default_value()};
 
-    std::cout << "Your favorite shape is: " << lector::print(shape) << std::endl;
+    std::cout << "Your favourite shape is: " << lector::print(shape) << std::endl;
 
     return EXIT_SUCCESS;
 }
@@ -613,7 +614,7 @@ path/to/my_application --shape SQUARE
 ```
 
 ```text
-Your favorite shape is: Square
+Your favourite shape is: Square
 ```
 
 [(Back to User Guide)](#3-user-guide)
@@ -688,21 +689,21 @@ The `my_project::Point` data structure can also be used as a command line argume
 #include <lector/arguments.hpp>
 #include "my_project/point.hpp"
 
-enum class Label : std::int8_t {FavoritePoint};
+enum class Label : std::int8_t {FavouritePoint};
 
 int main(int argc, char* argv[]) {
     lector::Arguments arguments{
-        lector::SingularArgument<Label::FavoritePoint, my_project::Point>{
-            {"-p", "--point"}, "Your favorite point. Optional.", my_project::Point{} }
+        lector::SingularArgument<Label::FavouritePoint, my_project::Point>{
+            {"-p", "--point"}, "Your favourite point. Optional.", my_project::Point{} }
     };
 
     arguments.parse(argc, argv);
     arguments.validate();
 
     const my_project::Point point{
-        arguments.get<Label::FavoritePoint>().parsed_or_default_value()};
+        arguments.get<Label::FavouritePoint>().parsed_or_default_value()};
 
-    std::cout << "Your favorite point is: " << point << std::endl;
+    std::cout << "Your favourite point is: " << point << std::endl;
 
     return EXIT_SUCCESS;
 }
@@ -713,7 +714,7 @@ path/to/my_application --point "1.0 2.0 3.0"
 ```
 
 ```text
-Your favorite point is: 1.000000000 2.000000000 3.000000000
+Your favourite point is: 1.000000000 2.000000000 3.000000000
 ```
 
 [(Back to User Guide)](#3-user-guide)
@@ -741,6 +742,128 @@ The following checks are performed when parsing command line arguments with the 
 - Unknown command line tokens. For example, `path/to/my_application --output_directory /tmp --unknown` would throw an exception because the token `--unknown` would not match any key or value of any argument.
 
 Finally, the `lector::Arguments::validate()` method checks for missing required arguments. For example, with `path/to/my_application --iterations 200`, this method throws an exception because the required argument `--output_directory <path>` is missing.
+
+[(Back to User Guide)](#3-user-guide)
+
+### §3.6. User Guide: Text Utilities
+
+The `<lector/text.hpp>` file defines various general-purpose utility functions for manipulating strings of text. These utility functions are used by the `lector::Arguments` class, but may also be used independently in your C++ projects.
+
+When aligning strings of text for printing, in order to handle strings that may contain UTF-8 characters, the Lector library relies on code points rather than character bytes. The `lector::is_leading_byte()`, `lector::byte_interval()`, and `lector::count_code_points()` functions are used to identify, obtain, and count code points in strings of text that may contain UTF-8 characters. For example:
+
+```cpp
+assert(lector::is_leading_byte('A'));
+assert(!lector::is_leading_byte('\x80'));
+assert(lector::byte_interval("5€", 0) == std::pair<std::size_t, std::size_t>{0, 1});
+assert(lector::byte_interval("5€", 1) == std::pair<std::size_t, std::size_t>{1, 3});
+assert(lector::count_code_points("5€") == 2);
+```
+
+The `lector::is_whitespace()`, `lector::contains_whitespace()`, `lector::longest_word_length()`, and `lector::tokenize()` functions handle whitespace in strings of text. For example:
+
+```cpp
+assert(!lector::is_whitespace('A'));
+assert(lector::is_whitespace(' '));
+assert(lector::is_whitespace('\n'));
+assert(!lector::contains_whitespace("Hello!"));
+assert(lector::contains_whitespace("This item costs 10€."));
+assert(lector::longest_word_length("This item costs ¥1000.") == 6);
+const std::vector<std::string_view> words{lector::tokenize("This item costs £10.")};
+assert(words.size() == 4);
+assert(words.at(0) == "This");
+assert(words.at(1) == "item");
+assert(words.at(2) == "costs");
+assert(words.at(3) == "£10.");
+```
+
+The `lector::quote()` and `lector::quote_if_contains_whitespace()` functions enclose a string of text in quotes. These are relevant when dealing with whitespace on the command line. For example:
+
+```cpp
+assert(lector::quote("Hello, world!") == "\"Hello, world!\"");
+assert(lector::quote_if_contains_whitespace("Hello!") == "Hello!");
+assert(lector::quote_if_contains_whitespace("Hello, world!") == "\"Hello, world!\"");
+```
+
+The `lector::pad_and_align_left()`, `lector::pad_and_align_right()`, `lector::pad_and_align_centre_left()`, and `lector::pad_and_align_centre_right()` functions pad and align strings of text. For example:
+
+```cpp
+assert(lector::pad_and_align_left("$5", 4) == "$5  ");
+assert(lector::pad_and_align_right("5€", 4) == "  5€");
+assert(lector::pad_and_align_centre_left("£5", 7) == "  £5   ");
+assert(lector::pad_and_align_centre_right("¥500", 7) == "  ¥500 ");
+```
+
+The `lector::truncate_from_left()`, `lector::truncate_from_right()`, `lector::truncate_to_centre_left()`, and `lector::truncate_to_centre_right()` functions truncate strings of text. For example:
+
+```cpp
+assert(lector::truncate_from_left("0.0€", 2) == "0€");
+assert(lector::truncate_from_right("£5.00", 2) == "£5");
+assert(lector::truncate_to_centre_left("αβγδε", 2) == "βγ");
+assert(lector::truncate_to_centre_right("αβγδε", 2) == "γδ");
+```
+
+The `lector::wrap()` function wraps a string of text to a line length. Very long words whose lengths exceed this line length are hyphenated. For example:
+
+```cpp
+const std::string text{"The word supercalifragilisticexpialidocious is my favourite word!"};
+const std::vector<std::string> wrapped_text{lector::wrap(text, 10)};
+assert(wrapped_text.size() == 8);
+assert(wrapped_text.at(0) == "The word");
+assert(wrapped_text.at(1) == "supercali-");
+assert(wrapped_text.at(2) == "fragilist-");
+assert(wrapped_text.at(3) == "icexpiali-");
+assert(wrapped_text.at(4) == "docious is");
+assert(wrapped_text.at(5) == "my");
+assert(wrapped_text.at(6) == "favourite");
+assert(wrapped_text.at(7) == "word!");
+```
+
+The `lector::join_and_align_left()`, `lector::join_and_align_right()`, `lector::join_and_align_centre_left()`, and `lector::join_and_align_centre_right()` functions join and align lines of text into a single string of text, with newline characters and padding spaces inserted as needed. For example:
+
+```cpp
+assert(lector::join_and_align_left({"Hi,", "there!"}) == "Hi,\n"
+                                                         "there!");
+assert(lector::join_and_align_right({"Hi,", "there!"}) == "   Hi,\n"
+                                                          "there!");
+assert(lector::join_and_align_centre_left({"Hi,", "there!"}) == " Hi,\n"
+                                                                "there!");
+assert(lector::join_and_align_centre_right({"Hi,", "there!"}) == "  Hi,\n"
+                                                                 "there!");
+```
+
+The `lector::wrap_and_align_left()`, `lector::wrap_and_align_right()`, `lector::wrap_and_align_centre_left()`, and `lector::wrap_and_align_centre_right()` functions combine the wrapping and joining functions above. For example:
+
+```cpp
+assert(lector::wrap_and_align_left("Hi, there!", 6) == "Hi,\n"
+                                                       "there!");
+assert(lector::wrap_and_align_right("Hi, there!", 6) == "   Hi,\n"
+                                                        "there!");
+assert(lector::wrap_and_align_centre_left("Hi, there!", 6) == " Hi,\n"
+                                                              "there!");
+assert(lector::wrap_and_align_centre_right("Hi, there!", 6) == "  Hi,\n"
+                                                               "there!");
+```
+
+The `lector::collate_and_align_left()`, `lector::collate_and_align_right()`, `lector::collate_and_align_centre_left()`, and `lector::collate_and_align_centre_right()` functions collate and align two columns of text into a single string of text, with newline characters and padding inserted as needed. Very long words whose lengths exceed their column width are hyphenated. For example:
+
+```cpp
+assert(lector::collate_and_align_left("1st column.", 4, "2nd column.", 7) ==
+       "1st   2nd\n"
+       "col-  column.\n"
+       "umn.");
+assert(lector::collate_and_align_right("1st column.", 4, "2nd column.", 7) ==
+       " 1st      2nd\n"
+       "col-  column.\n"
+       "umn.");
+assert(lector::collate_and_align_centre_left("1st column.", 4, "2nd column.", 7) ==
+       "1st     2nd\n"
+       "col-  column.\n"
+       "umn.");
+assert(lector::collate_and_align_centre_right("1st column.", 4, "2nd column.", 7) ==
+       " 1st    2nd\n"
+       "col-  column.\n"
+       "umn.");
+```
 
 [(Back to User Guide)](#3-user-guide)
 
