@@ -114,8 +114,8 @@
 /// The Lector library is modular:
 ///
 /// - The `<lector/arguments.hpp>` file defines the `lector::SingularArgument` class, the `lector::RepeatableArgument` class, the `lector::Configuration` data structure, and the `lector::Arguments` class, as demonstrated in the \ref introduction "§1. Introduction" section. See the \ref user_guide_arguments "§3.1. User Guide: Arguments" section and the \ref user_guide_command_line "§3.2. User Guide: Command Line" section for usage.
-/// - The `<lector/parse.hpp>` file defines the `lector::parse()` family of templated utility functions. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section and the \ref user_guide_data_structures "§3.4. Data Structures" section for usage.
-/// - The `<lector/print.hpp>` file defines the `lector::print()` family of templated utility functions. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section and the \ref user_guide_data_structures "§3.4. Data Structures" section for usage.
+/// - The `<lector/parse.hpp>` file defines the `lector::parse()` family of templated utility functions. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section and the \ref user_guide_data_structures "§3.4. User Guide: Data Structures" section for usage.
+/// - The `<lector/print.hpp>` file defines the `lector::print()` family of templated utility functions. See the \ref user_guide_enumerations "§3.3 User Guide: Enumerations" section and the \ref user_guide_data_structures "§3.4. User Guide: Data Structures" section for usage.
 /// - The `<lector/text.hpp>` file defines various general-purpose utility functions for manipulating strings of text. See the \ref user_guide_text_utilities "§3.6. User Guide: Text Utilities" section for usage.
 ///
 /// All of the Lector library's contents are neatly encapsulated within the `lector::` namespace.
