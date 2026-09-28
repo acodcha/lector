@@ -133,7 +133,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the usage information of this collection of command line arguments as a string of text. The usage information consists of each argument's longest key and value type, enclosed in square braces for optional command line arguments. Lines are wrapped.  <br /></td></tr>
 <tr class="separator:a1e6d3fb52acfe3eab582b1d519fbf2eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a809d9d85b067adf117c721d85f509d97" id="r_a809d9d85b067adf117c721d85f509d97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlector_1_1Arguments.html#a809d9d85b067adf117c721d85f509d97">validate</a> () const</td></tr>
-<tr class="memdesc:a809d9d85b067adf117c721d85f509d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method.  <br /></td></tr>
+<tr class="memdesc:a809d9d85b067adf117c721d85f509d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">lector::Arguments::parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method.  <br /></td></tr>
 <tr class="separator:a809d9d85b067adf117c721d85f509d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -676,7 +676,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname">std::invalid_argument</td><td>if an invalid, unknown, duplicated, or missing argument is encountered. </td></tr>
+    <tr><td class="paramname">std::invalid_argument</td><td>if an invalid, unknown, duplicate, or missing argument is encountered. </td></tr>
   </table>
   </dd>
 </dl>
@@ -757,7 +757,7 @@ template&lt;typename... ArgumentTypes&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method. </p>
+<p>Validates that all required arguments have each successfully parsed a value from the command line. Should only be called after the <a class="el" href="classlector_1_1Arguments.html#aba7afe06f29efef5f7337fe93c3b1eba" title="Parses argc and argv to populate the parsed values of the command line arguments in this collection....">lector::Arguments::parse()</a> method has been called. If any command line arguments require special consideration, such as &ndash;version or &ndash;help flags, they should be handled before calling this method. </p>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
     <tr><td class="paramname">std::invalid_argument</td><td>if any required arguments are lacking parsed values. </td></tr>
